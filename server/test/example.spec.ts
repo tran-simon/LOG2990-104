@@ -15,7 +15,7 @@ describe('A starting set of test examples to showcase test-suite behaviour', () 
     };
     // When called, return a promise that resolves with a number
     function* promiseGenerator(): IterableIterator<Promise<number>> {
-        for (;;) {
+        for (; ;) {
             yield new Promise((res) => {
                 res(Math.random() * 100);
             });
@@ -30,7 +30,7 @@ describe('A starting set of test examples to showcase test-suite behaviour', () 
             // Get a promise of a value that will be later resolved
             const promiseOfValue = promiseGenerator().next();
             // Assign a value to our object
-            promiseOfValue.value.then((v) => {
+            promiseOfValue.value.then((v: number) => {
                 variableNeedingToBeChangedEachRun = v;
                 d();
             });

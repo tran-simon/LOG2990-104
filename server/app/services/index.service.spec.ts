@@ -21,6 +21,7 @@ class MockErrorDateService extends DateService {
 }
 
 describe('Index service', () => {
+
     let indexService: IndexService;
     let container: inversify.Container;
 
@@ -29,7 +30,7 @@ describe('Index service', () => {
         container.bind(Types.IndexService).to(IndexService);
         container.bind(Types.DateService).to(MockDateService);
         indexService = container.get<IndexService>(Types.IndexService);
-    });
+    })
 
     it('should return Hello World as title', (done: Mocha.Done) => {
         indexService.helloWorld().then((result: Message) => {
@@ -38,11 +39,9 @@ describe('Index service', () => {
         });
     });
 
-    it("should have a body that starts with 'Time is'", (done: Mocha.Done) => {
+    it('should have a body that starts with \'Time is\'', (done: Mocha.Done) => {
         indexService.helloWorld().then((result: Message) => {
-            expect(result.body)
-                .to.be.a('string')
-                .and.satisfy((body: string) => body.startsWith('Time is'));
+            expect(result.body).to.be.a('string').and.satisfy((body: string) => body.startsWith('Time is'));
             done();
         });
     });
@@ -53,14 +52,11 @@ describe('Index service', () => {
         container.bind(Types.DateService).to(MockErrorDateService);
         indexService = container.get<IndexService>(Types.IndexService);
 
-        indexService
-            .helloWorld()
-            .then((result: Message) => {
-                expect(result.title).to.equals('Error');
-                done();
-            })
-            .catch((error: unknown) => {
-                done(error);
-            });
-    });
+        indexService.helloWorld().then((result: Message) => {
+            expect(result.title).to.equals('Error');
+            done();
+        }).catch((error: unknown) => {
+            done(error);
+        });
+    })
 });
