@@ -1,22 +1,23 @@
 import { expect } from 'chai';
 import * as inversify from 'inversify';
-import Types from '../types';
-import { IndexService } from './index.service';
-import { DateService } from './date.service';
 import { Message } from '../../../common/communication/message';
+import Types from '../types';
+import { DateService } from './date.service';
+import { IndexService } from './index.service';
 
 class MockDateService extends DateService {
     async currentTime(): Promise<Message> {
         return {
-            title: `Time`,
+            title: 'Time',
             body: new Date(2020, 0, 10).toString(),
         };
     }
 }
 
+// tslint:disable-next-line
 class MockErrorDateService extends DateService {
     async currentTime(): Promise<Message> {
-        throw new Error(`error in the service`);
+        throw new Error('error in the service');
     }
 }
 
@@ -34,7 +35,7 @@ describe('Index service', () => {
 
     it('should return Hello World as title', (done: Mocha.Done) => {
         indexService.helloWorld().then((result: Message) => {
-            expect(result.title).to.equals(`Hello world`);
+            expect(result.title).to.equals('Hello world');
             done();
         });
     });

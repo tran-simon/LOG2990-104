@@ -16,7 +16,7 @@ describe('Date Service', () => {
     });
 
     it('currenTime should return a valid message', async () => {
-        let result = await dateService.currentTime();
+        const result = await dateService.currentTime();
         expect(result.title).to.equals('Time');
         expect(result.body).to.be.equal(new Date(0).toString());
     });
