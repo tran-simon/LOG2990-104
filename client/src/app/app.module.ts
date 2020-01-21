@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { EditorComponent } from './components/pages/editor/editor.component';
-import { HomeComponent } from './components/pages/home/home.component';
-import { UserGuideComponent } from './components/pages/user-guide/user-guide.component';
+import { EditorComponent } from './components/pages/editor-module/editor/editor.component';
+import { HomeComponent } from './components/pages/home-module/home/home.component';
+import { UserGuideComponent } from './components/pages/user-guide-module/user-guide/user-guide.component';
 
 @NgModule({
     imports: [
