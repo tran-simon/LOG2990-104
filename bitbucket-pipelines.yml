@@ -6,31 +6,29 @@
 image: atlassianlabs/docker-node-jdk-chrome-firefox
 
 pipelines:
-  default:
-    - step:
-        name: Install and test Client
-        caches:
-          - node
-        script:
-          - Xvfb :99 -ac -screen 0 1920x1080x24 &
-          - pushd client
-          - npm install
-          - npm run lint
-          - npm run build
-          - npm run coverage -- --browsers ChromeHeadlessNoSandbox
-          - popd
-        artifacts:
-          - ~/client/out
-    - step:
-        name: Install and test Server
-        caches:
-          - node
-        script:
-          - pushd server
-          - npm install
-          - npm run lint
-          - npm run coverage 
-          - popd
-        artifacts:
-          - ~/server/out
-
+    default:
+        - step:
+              name: Install and test Client
+              caches:
+                  - node
+              script:
+                  - Xvfb :99 -ac -screen 0 1920x1080x24 &
+                  - pushd client
+                  - npm install
+                  - npm run build
+                  - npm run test -- --browsers ChromeHeadlessNoSandbox
+                  - popd
+              artifacts:
+                  - ~/client/out
+        - step:
+              name: Install and test Server
+              caches:
+                  - node
+              script:
+                  - pushd server
+                  - npm install
+                  # TODO: Reenable once there are some tests
+                  #                  - npm run test
+                  - popd
+              artifacts:
+                  - ~/server/out
