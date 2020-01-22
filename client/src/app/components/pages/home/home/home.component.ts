@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-modal.component';
+import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
 
 @Component({
     selector: 'app-home',
@@ -11,6 +11,6 @@ export class HomeComponent {
     constructor(private dialog: MatDialog) {}
 
     openCreateModal(): void {
-        this.dialog.open(AbstractModalComponent, {});
+        this.dialog.open(CreateDrawingModalComponent, {});
     }
 }
