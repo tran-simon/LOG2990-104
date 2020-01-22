@@ -8,13 +8,16 @@ import { MatDialogModule } from '@angular/material';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { AbstractModalComponent } from './components/abstract-modal/abstract-modal.component';
 import { HomeComponent } from './components/pages/home/home.component';
 
 @NgModule({
     imports: [
         BrowserModule,
-        RouterModule.forRoot([{ path: '', component: HomeComponent }]),
+        RouterModule.forRoot([
+            { path: '', component: HomeComponent },
+            { path: 'edit', component: EditorComponent },
+            { path: 'help', component: UserGuideComponent },
+        ]),
         BrowserAnimationsModule,
         MatSliderModule,
         MatDialogModule,
