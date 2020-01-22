@@ -1,14 +1,6 @@
 <h1>Polydessin</h1>
 
-<p>
-    <button id="btn-new" (click)="route('edit')">
-        Créer
-    </button>
-</p>
-<p><button id="btn-galerie">Gallerie</button></p>
-<p>
-    <button id="btn-guide" (click)="route('help')">
-        Guide utilisateur
-    </button>
-</p>
-<p><button id="btn-continue">Continuer mon dessin</button></p>
+<p><button mat-stroked-button (click)="openCreateModal()">Créer</button></p>
+<p><button mat-stroked-button>Gallerie</button></p>
+<p><button mat-stroked-button>Guide utilisateur</button></p>
+<p><button mat-stroked-button>Continuer mon dessin</button></p>

@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonModuleModule } from '../../common-module/common-module.module';
+import { EditorComponent } from './editor/editor.component';
 
 @NgModule({
-    declarations: [],
-    imports: [CommonModule],
+    imports: [CommonModuleModule],
+    declarations: [EditorComponent],
 })
 export class EditorModuleModule {}

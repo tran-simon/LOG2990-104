@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonModuleModule } from '../../common-module/common-module.module';
+import { UserGuideComponent } from './user-guide/user-guide.component';
 
 @NgModule({
-    declarations: [],
-    imports: [CommonModule],
+    imports: [CommonModuleModule],
+    declarations: [UserGuideComponent],
 })
 export class UserGuideModuleModule {}

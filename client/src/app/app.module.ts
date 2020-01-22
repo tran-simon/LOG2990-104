@@ -1,33 +1,29 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { MatDialogModule } from '@angular/material';
-
-import { MatSliderModule } from '@angular/material/slider';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/pages/home/home.component';
+import { CommonModuleModule } from './components/common-module/common-module.module';
+import { EditorModuleModule } from './components/pages/editor-module/editor-module.module';
+import { EditorComponent } from './components/pages/editor-module/editor/editor.component';
+import { HomeModuleModule } from './components/pages/home-module/home-module.module';
+import { HomeComponent } from './components/pages/home-module/home/home.component';
+import { UserGuideModuleModule } from './components/pages/user-guide-module/user-guide-module.module';
+import { UserGuideComponent } from './components/pages/user-guide-module/user-guide/user-guide.component';
 
 @NgModule({
     imports: [
         BrowserModule,
+        CommonModuleModule,
         RouterModule.forRoot([
             { path: '', component: HomeComponent },
             { path: 'edit', component: EditorComponent },
             { path: 'help', component: UserGuideComponent },
         ]),
-        BrowserAnimationsModule,
-        MatSliderModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        FormsModule,
-        MatInputModule,
+        HomeModuleModule,
+        EditorModuleModule,
+        UserGuideModuleModule,
     ],
-    entryComponents: [AbstractModalComponent],
-    declarations: [AppComponent, HomeComponent, AbstractModalComponent],
+    declarations: [AppComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

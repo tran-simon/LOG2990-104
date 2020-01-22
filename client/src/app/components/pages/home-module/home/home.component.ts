@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { AbstractModalComponent } from '../../../common-module/abstract-modal/abstract-modal.component';
 
 @Component({
     selector: 'app-home',
@@ -7,9 +8,9 @@ import { Router } from '@angular/router';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-    constructor(private router: Router) {}
+    constructor(private dialog: MatDialog) {}
 
-    route(page: string) {
-        this.router.navigate([`${page}`]);
+    openCreateModal(): void {
+        this.dialog.open(AbstractModalComponent, {});
     }
 }

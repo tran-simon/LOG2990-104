@@ -1,9 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ModalComponent } from './modal/modal.component';
+import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+
+import { MatSliderModule } from '@angular/material/slider';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
 
 @NgModule({
-    declarations: [ModalComponent],
-    imports: [CommonModule],
+    imports: [CommonModule, BrowserAnimationsModule, MatSliderModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+    declarations: [AbstractModalComponent],
+    entryComponents: [AbstractModalComponent],
+    exports: [AbstractModalComponent, CommonModule, MatSliderModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule],
 })
 export class CommonModuleModule {}
