@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModuleModule } from '../../common-module/common-module.module';
+import { SharedModule } from '../../shared/shared.module';
 import { UserGuideComponent } from './user-guide/user-guide.component';
 
 @NgModule({
-    imports: [CommonModuleModule],
+    imports: [SharedModule],
     declarations: [UserGuideComponent],
 })
-export class UserGuideModuleModule {}
+export class UserGuideModule {}

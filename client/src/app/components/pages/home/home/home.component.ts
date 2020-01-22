@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { AbstractModalComponent } from '../../../common-module/abstract-modal/abstract-modal.component';
+import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-modal.component';
 
 @Component({
     selector: 'app-home',

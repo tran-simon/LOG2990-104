@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModuleModule } from '../../common-module/common-module.module';
+import { SharedModule } from '../../shared/shared.module';
 import { EditorComponent } from './editor/editor.component';
 
 @NgModule({
-    imports: [CommonModuleModule],
+    imports: [SharedModule],
     declarations: [EditorComponent],
 })
-export class EditorModuleModule {}
+export class EditorModule {}

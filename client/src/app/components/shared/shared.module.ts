@@ -12,4 +12,4 @@ import { AbstractModalComponent } from './abstract-modal/abstract-modal.componen
     entryComponents: [AbstractModalComponent],
     exports: [AbstractModalComponent, CommonModule, MatSliderModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule],
 })
-export class CommonModuleModule {}
+export class SharedModule {}
