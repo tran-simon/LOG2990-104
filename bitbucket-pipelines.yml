@@ -38,7 +38,7 @@ pipelines:
               name: Deploy Client In Prod
               caches:
                 - node
-              deployment: test
+              deployment: prod
               script:
                 - pushd client
                 - npm install
@@ -61,7 +61,7 @@ pipelines:
               name: Deploy Client In Dev
               caches:
                 - node
-              deployment: test
+              deployment: dev
               script:
                 - pushd client
                 - npm install
@@ -75,6 +75,6 @@ pipelines:
                 - npm run build:prod
                 - pipe: atlassian/firebase-deploy:0.3.0
                   variables:
-                    FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
+                    FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
                     FIREBASE_PROJECT: 'LOG2990-104-DEV'
                 - popd    
