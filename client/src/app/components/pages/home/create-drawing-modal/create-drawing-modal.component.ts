@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef} from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-modal.component';
 

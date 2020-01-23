@@ -4,9 +4,8 @@ import { CreateDrawingModalComponent } from './create-drawing-modal/create-drawi
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
-    imports: [SharedModule],
+  imports: [SharedModule],
     declarations: [CreateDrawingModalComponent, HomeComponent],
     entryComponents: [CreateDrawingModalComponent],
-    exports: [CreateDrawingModalComponent],
 })
 export class HomeModule {}
