@@ -32,7 +32,9 @@ pipelines:
                   - popd
               artifacts:
                   - ~/server/out
-        - step:
+    branches:
+       master:
+       - step:
               name: Deploy Client
               caches:
                 - node
