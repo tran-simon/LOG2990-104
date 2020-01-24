@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "log2990-104",
+    "dev": "log2990-104-dev"
+  }
+}
