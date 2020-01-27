@@ -9,10 +9,10 @@
         <button mat-raised-button>Guide utilisateur</button>
 
         <button mat-raised-button *ngIf="previousDrawings; else noPreviousDrawings">
-            Continuer un dessin
+            Continuer mon dessin
         </button>
         <ng-template #noPreviousDrawings>
-            <button mat-raised-button color:disabled>Continuer mon dessin</button>
+            <button mat-raised-button disabled>Continuer mon dessin</button>
         </ng-template>
     </div>
 </div>
