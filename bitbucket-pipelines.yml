@@ -50,7 +50,7 @@ pipelines:
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - pipe: atlassian/firebase-deploy:0.3.0
+                - pipe: atlassian/firebase-deploy:0.3.6
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_STAGING'
                     FIREBASE_PROJECT: 'log2990-104-staging'
@@ -72,7 +72,7 @@ pipelines:
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - pipe: atlassian/firebase-deploy:0.3.0
+                - pipe: atlassian/firebase-deploy:0.3.6
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
                     FIREBASE_PROJECT: 'log2990-104'
@@ -94,7 +94,7 @@ pipelines:
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - pipe: atlassian/firebase-deploy:0.3.0
+                - pipe: atlassian/firebase-deploy:0.3.6
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
                     FIREBASE_PROJECT: 'log2990-104-dev'
