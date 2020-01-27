@@ -9,6 +9,7 @@ import { HomeComponent } from './components/pages/home/home/home.component';
 import { UserGuideModule } from './components/pages/user-guide/user-guide.module';
 import { UserGuideComponent } from './components/pages/user-guide/user-guide/user-guide.component';
 import { SharedModule } from './components/shared/shared.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { SharedModule } from './components/shared/shared.module';
         HomeModule,
         EditorModule,
         UserGuideModule,
+        MatSidenavModule,
     ],
     declarations: [AppComponent],
     bootstrap: [AppComponent],

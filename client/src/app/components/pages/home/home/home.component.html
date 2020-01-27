@@ -3,9 +3,9 @@
 </div>
 
 
-<p><button mat-raised-button color="primary" (click)="openCreateModal()">Créer</button></p>
+<p><button mat-raised-button color="primary" (click)="openCreateModal('edit')">Créer</button></p>
 <p><button mat-raised-button color="primary">Gallerie</button></p>
-<p><button mat-raised-button color="primary">Guide utilisateur</button></p>
+<p><button mat-raised-button color="primary" (click)="openCreateModal('help')">Guide utilisateur</button></p>
 <p *ngIf="previousDrawings; else elseBlock">
     <button mat-raised-button color="primary">Continuer mon dessin</button>
 </p>
