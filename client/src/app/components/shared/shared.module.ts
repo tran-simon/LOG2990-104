@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatSidenavModule } from '@angular/material';
+
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
