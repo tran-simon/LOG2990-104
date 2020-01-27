@@ -82,7 +82,7 @@ pipelines:
               name: Deploy Client In Dev
               caches:
                 - node
-              deployment: dev
+              deployment: test
               script:
                 - pushd client
                 - npm install
