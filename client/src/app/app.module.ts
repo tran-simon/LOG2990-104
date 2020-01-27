@@ -14,14 +14,14 @@ import { SharedModule } from './components/shared/shared.module';
     imports: [
         BrowserModule,
         SharedModule,
+        HomeModule,
+        EditorModule,
+        UserGuideModule,
         RouterModule.forRoot([
             { path: '', component: HomeComponent },
             { path: 'edit', component: EditorComponent },
             { path: 'help', component: UserGuideComponent },
         ]),
-        HomeModule,
-        EditorModule,
-        UserGuideModule,
     ],
     declarations: [AppComponent],
     bootstrap: [AppComponent],
