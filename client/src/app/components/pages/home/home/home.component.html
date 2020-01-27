@@ -1,6 +1,16 @@
-<h1>Polydessin</h1>
+<div style="text-align: center">
+    <h1>Polydessin</h1>
+</div>
 
-<p><button mat-stroked-button (click)="openCreateModal()">Créer</button></p>
-<p><button mat-stroked-button>Gallerie</button></p>
-<p><button mat-stroked-button>Guide utilisateur</button></p>
-<p><button mat-stroked-button>Continuer mon dessin</button></p>
+
+<p><button mat-raised-button color="primary" (click)="openCreateModal()">Créer</button></p>
+<p><button mat-raised-button color="primary">Gallerie</button></p>
+<p><button mat-raised-button color="primary">Guide utilisateur</button></p>
+<p *ngIf="previousDrawings; else elseBlock">
+    <button mat-raised-button color="primary">Continuer mon dessin</button>
+</p>
+<ng-template #elseBlock>
+    <p>
+        <button mat-raised-button disabled>Continuer mon dessin</button>
+    </p>
+</ng-template>

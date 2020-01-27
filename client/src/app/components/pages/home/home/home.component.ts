@@ -8,6 +8,7 @@ import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+    previousDrawings = false;
     constructor(private dialog: MatDialog) {}
 
     openCreateModal(): void {
