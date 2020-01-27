@@ -32,3 +32,71 @@ pipelines:
                   - popd
               artifacts:
                   - ~/server/out
+    branches:
+       'release/*':
+       - step:
+              name: Deploy Client In staging to prepare for release
+              caches:
+                - node
+              deployment: staging
+              script:
+                - pushd client
+                - npm install
+                - >
+                  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+                    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+                    apt-get update && \
+                    apt-get install -y google-chrome-stable xvfb procps       
+                - npm run test:ci
+                #- npm run e2e:ci # TODO
+                - npm run build:prod
+                - pipe: atlassian/firebase-deploy:0.3.6
+                  variables:
+                    FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_STAGING'
+                    PROJECT_ID: 'log2990-104-staging'
+                - popd    
+       'master':
+       - step:
+              name: Deploy Client In Production
+              caches:
+                - node
+              deployment: production
+              script:
+                - pushd client
+                - npm install
+                - >
+                  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+                    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+                    apt-get update && \
+                    apt-get install -y google-chrome-stable xvfb procps       
+                - npm run test:ci
+                #- npm run e2e:ci # TODO
+                - npm run build:prod
+                - pipe: atlassian/firebase-deploy:0.3.6
+                  variables:
+                    FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
+                    PROJECT_ID: 'log2990-104'
+                - popd    
+       develop:
+       - step:
+              name: Deploy Client In dev
+              caches:
+                - node
+              deployment: test
+              script:
+                - pushd client
+                - npm install
+                - >
+                  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+                    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+                    apt-get update && \
+                    apt-get install -y google-chrome-stable xvfb procps       
+                - npm run test:ci
+                #- npm run e2e:ci # TODO
+                - npm run build:prod
+                - pipe: atlassian/firebase-deploy:0.3.6
+                  variables:
+                    FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
+                    PROJECT_ID: 'log2990-104-dev'
+                - popd    
+ 
