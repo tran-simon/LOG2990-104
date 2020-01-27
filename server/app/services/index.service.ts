@@ -10,4 +10,8 @@ export class IndexService {
             body: 'Lorem ipsum........',
         };
     }
+
+    indexMessage(): Message {
+        return { title: 'Index page', body: 'You have reached the index page.' };
+    }
 }

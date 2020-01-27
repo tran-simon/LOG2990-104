@@ -1,9 +1,9 @@
 import { Container } from 'inversify';
 import Types from './types';
 
-import { Server } from './server';
 import { Application } from './app';
 import { IndexController } from './controllers/index.controller';
+import { Server } from './server';
 import { IndexService } from './services/index.service';
 
 const container: Container = new Container();
