@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-drawing-surface',
@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     styleUrls: ['./drawing-surface.component.scss'],
 })
 export class DrawingSurfaceComponent {
-    width: number;
-    height: number;
-    color: number; // Use Color type when implemented
+    @Input() width: number;
+    @Input() height: number;
+    @Input() color: number; // Use Color type when implemented
 }
