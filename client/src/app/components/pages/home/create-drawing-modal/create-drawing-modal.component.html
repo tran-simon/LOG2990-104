@@ -1,8 +1,13 @@
 <app-abstract-modal>
-    <div content>
-      <app-text-form></app-text-form>
-    </div>
-    <div actions>
-        <button mat-stroked-button (click)="onCreateClick()">Create</button>
-    </div>
+  <div content>
+    <app-number-form #widthForm name="Width: "></app-number-form>
+    <app-number-form #heightForm name="Height: "></app-number-form>
+    <app-number-form #colorForm name="Color: "></app-number-form>
+  </div>
+  <div actions>
+    <button mat-stroked-button (click)="onCreateClick()"
+            [disabled]="widthForm.number.invalid || heightForm.number.invalid || colorForm.number.invalid">
+      Create
+    </button>
+  </div>
 </app-abstract-modal>
