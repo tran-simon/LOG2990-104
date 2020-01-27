@@ -94,8 +94,6 @@ pipelines:
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - pipe: atlassian/firebase-deploy:0.3.0
-                  variables:
-                    FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
-                    FIREBASE_PROJECT: 'LOG2990-104-DEV'
+                - firebase use dev
+                - firebase deploy --token $FIREBASE_TOKEN_CI_DEV
                 - popd    
