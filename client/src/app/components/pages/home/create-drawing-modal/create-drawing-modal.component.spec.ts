@@ -1,4 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { CreateDrawingModalComponent } from './create-drawing-modal.component';
 
@@ -8,7 +11,9 @@ describe('CreateDrawingModalComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            imports: [SharedModule, MatDialogModule, RouterTestingModule],
             declarations: [CreateDrawingModalComponent],
+            providers: [{ provide: MatDialogRef, useValue: {} }],
         }).compileComponents();
     }));
 
