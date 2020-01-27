@@ -53,7 +53,7 @@ pipelines:
                 - pipe: atlassian/firebase-deploy:0.3.6
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_STAGING'
-                    FIREBASE_PROJECT: 'log2990-104-staging'
+                    PROJECT_ID: 'log2990-104-staging'
                 - popd    
        'master':
        - step:
@@ -75,7 +75,7 @@ pipelines:
                 - pipe: atlassian/firebase-deploy:0.3.6
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
-                    FIREBASE_PROJECT: 'log2990-104'
+                    PROJECT_ID: 'log2990-104'
                 - popd    
        develop:
        - step:
@@ -97,6 +97,6 @@ pipelines:
                 - pipe: atlassian/firebase-deploy:0.3.6
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
-                    FIREBASE_PROJECT: 'log2990-104-dev'
+                    PROJECT_ID: 'log2990-104-dev'
                 - popd    
  
