@@ -53,7 +53,7 @@ pipelines:
                 - pipe: atlassian/firebase-deploy:0.3.0
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_STAGING'
-                    FIREBASE_PROJECT: 'LOG2990-104-STAGING'
+                    FIREBASE_PROJECT: 'log2990-104-staging'
                 - popd    
        'master':
        - step:
@@ -75,11 +75,11 @@ pipelines:
                 - pipe: atlassian/firebase-deploy:0.3.0
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
-                    FIREBASE_PROJECT: 'LOG2990-104'
+                    FIREBASE_PROJECT: 'log2990-104'
                 - popd    
        develop:
        - step:
-              name: Deploy Client In Dev
+              name: Deploy Client In dev
               caches:
                 - node
               deployment: test
@@ -94,6 +94,9 @@ pipelines:
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - firebase use dev
-                - firebase deploy --token $FIREBASE_TOKEN_CI_DEV
+                - pipe: atlassian/firebase-deploy:0.3.0
+                  variables:
+                    FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
+                    FIREBASE_PROJECT: 'log2990-104-dev'
                 - popd    
+ 
