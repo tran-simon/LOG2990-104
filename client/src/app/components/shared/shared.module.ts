@@ -6,6 +6,9 @@ import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, M
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
+import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { ColorLuminanceComponent } from './color-picker/color-square/color-luminance/color-luminance.component';
+import { ColorSquareComponent } from './color-picker/color-square/color-square.component';
 import { NumberFormComponent } from './forms/number-form/number-form.component';
 
 @NgModule({
@@ -21,7 +24,7 @@ import { NumberFormComponent } from './forms/number-form/number-form.component';
         MatInputModule,
         MatSidenavModule,
     ],
-    declarations: [AbstractModalComponent, NumberFormComponent],
+    declarations: [AbstractModalComponent, NumberFormComponent, ColorPickerComponent, ColorSquareComponent, ColorLuminanceComponent],
     entryComponents: [AbstractModalComponent],
     exports: [
         AbstractModalComponent,
@@ -35,6 +38,7 @@ import { NumberFormComponent } from './forms/number-form/number-form.component';
         MatInputModule,
         NumberFormComponent,
         MatSidenavModule,
+        ColorPickerComponent,
     ],
 })
 export class SharedModule {}

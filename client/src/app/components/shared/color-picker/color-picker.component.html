@@ -1,0 +1,16 @@
+<div id="color-picker">
+  <app-color-square [width]="width" [height]="height" [(color)]="color"></app-color-square>
+
+  <form [formGroup]="formGroup">
+    <app-number-form inputId="r" [formGroup]="formGroup">Rouge:</app-number-form>
+    <app-number-form inputId="g" [formGroup]="formGroup">Vert:</app-number-form>
+    <app-number-form inputId="b" [formGroup]="formGroup">Bleu:</app-number-form>
+    <app-number-form inputId="hex" [formGroup]="formGroup">Hex:</app-number-form>
+  </form>
+  <button mat-raised-button>OK</button>
+
+  <!--  BRIGHTNESS CONTROL-->
+
+
+
+</div>
