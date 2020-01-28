@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatSidenavModule } from '@angular/material';
+import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSidenavModule } from '@angular/material';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +18,7 @@ import { NumberFormComponent } from './forms/number-form/number-form.component';
         MatDialogModule,
         MatButtonModule,
         MatFormFieldModule,
+        MatIconModule,
         MatInputModule,
         MatSidenavModule,
     ],
@@ -32,6 +33,7 @@ import { NumberFormComponent } from './forms/number-form/number-form.component';
         MatDialogModule,
         MatButtonModule,
         MatFormFieldModule,
+        MatIconModule,
         MatInputModule,
         NumberFormComponent,
         MatSidenavModule,
