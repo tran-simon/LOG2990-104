@@ -18,7 +18,7 @@ export class EditorComponent implements OnInit {
     constructor(private router: ActivatedRoute) {}
 
     ngOnInit() {
-        this.router.params.subscribe(params => {
+        this.router.params.subscribe((params) => {
             this.params.surfaceWidth = +params.width || 500;
             this.params.surfaceHeight = +params.height || 300;
             this.params.surfaceColor = +params.color; // Change when Color type implemented
