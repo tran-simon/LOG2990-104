@@ -12,6 +12,7 @@ pipelines:
               caches:
                   - node
               script:
+                  - ./authorEmailCheck.sh
                   - Xvfb :99 -ac -screen 0 1920x1080x24 &
                   - pushd client
                   - npm install
@@ -40,6 +41,7 @@ pipelines:
                 - node
               deployment: staging
               script:
+                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
@@ -62,6 +64,7 @@ pipelines:
                 - node
               deployment: production
               script:
+                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
@@ -84,6 +87,7 @@ pipelines:
                 - node
               deployment: test
               script:
+                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
