@@ -20,19 +20,29 @@
     justify-content: space-between;
 }
 
-#toolbar-bottom-buttons {
+#toolbar-bottom-buttons{
+    padding-bottom: 20px;
+    padding-top: 15px;
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    background-color: rgb(20, 20, 20);
 }
 
-#toolbar-top-buttons > button, #toolbar-bottom-buttons > button {
+button {
     width: 50px;
     height: 50px;
+    color: white;
+}
+
+#back-button {
+    width: 60px;
+    height: 60px;
 }
 
 .toolbar-section-divider {
-    margin: 10px 0px;
+    padding: 10px 0px;
+    width: 100%;
 }
