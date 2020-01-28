@@ -7,15 +7,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
     styleUrls: ['./number-form.component.scss'],
 })
 export class NumberFormComponent implements OnInit {
-    formGroup: FormGroup;
-    @Input() name: string;
-    formControl = new FormControl('', [Validators.required, Validators.pattern(/^(([1-9]*)|(([1-9]*)\.([0-9]*)))$/)]);
+    static id = 0;
+    id = `number-input-${NumberFormComponent.id++}`;
+
+    @Input() formGroup: FormGroup;
+    @Input() inputId: string;
+
+    formControl = new FormControl('', [Validators.required, Validators.pattern(/^(([0-9]*)|(([0-9]*)\.([0-9]*)))$/)]);
 
     ngOnInit() {
-        this.formGroup = new FormGroup({ number: this.formControl });
-    }
-
-    get number() {
-        return this.formGroup.get('number');
+        this.formGroup.addControl(this.inputId, this.formControl);
     }
 }

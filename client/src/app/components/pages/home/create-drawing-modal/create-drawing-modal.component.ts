@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-modal.component';
-import { NumberFormComponent } from '../../../shared/forms/number-form/number-form.component';
 
 @Component({
     selector: 'app-create-drawing-modal',
@@ -10,16 +10,12 @@ import { NumberFormComponent } from '../../../shared/forms/number-form/number-fo
     styleUrls: ['./create-drawing-modal.component.scss'],
 })
 export class CreateDrawingModalComponent extends AbstractModalComponent {
-    @ViewChild('widthForm', { static: false }) widthForm: NumberFormComponent;
-    @ViewChild('heightForm', { static: false }) heightForm: NumberFormComponent;
-    @ViewChild('colorForm', { static: false }) colorForm: NumberFormComponent;
-
+    formGroup: FormGroup = new FormGroup({});
     constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
         super(dialogRef);
     }
 
     onCreateClick() {
-        const params = { width: this.widthForm.number, height: this.heightForm.number, color: this.colorForm.number };
-        this.router.navigate(['edit', { ...params }]).then(() => this.dialogRef.close());
+        this.router.navigate(['edit', { ...this.formGroup.value }]).then(() => this.dialogRef.close());
     }
 }
