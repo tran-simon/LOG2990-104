@@ -1,12 +1,14 @@
 <app-abstract-modal>
   <div content>
-    <app-number-form #widthForm name="Width: "></app-number-form>
-    <app-number-form #heightForm name="Height: "></app-number-form>
-    <app-number-form #colorForm name="Color: "></app-number-form>
+    <form [formGroup]="formGroup">
+      <app-number-form inputId="width" [formGroup]="formGroup">Width: </app-number-form>
+      <app-number-form inputId="height" [formGroup]="formGroup">Height: </app-number-form>
+      <app-number-form inputId="color" [formGroup]="formGroup">Color: </app-number-form>
+    </form>
   </div>
   <div actions>
     <button mat-stroked-button (click)="onCreateClick()"
-            [disabled]="widthForm.number.invalid || heightForm.number.invalid || colorForm.number.invalid">
+            [disabled]="formGroup.invalid">
       Create
     </button>
   </div>

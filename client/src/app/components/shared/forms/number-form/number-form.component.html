@@ -1,13 +1,15 @@
 <mat-form-field [formGroup]="formGroup">
-  <label for="number">{{name}}</label>
-  <input [formControl]="formControl" class="form-control" id="number" matInput
-         >
-  <div *ngIf="number.invalid && (number.dirty || number.touched)"
+  <label for="{{id}}">
+    <ng-content></ng-content>
+  </label>
+  <input [formControl]="formControl" class="form-control" id="{{id}}" matInput>
+
+  <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
        class="alert alert-danger">
-    <mat-error *ngIf="number.errors.required">
+    <mat-error *ngIf="formControl.errors.required">
       Name is required.
     </mat-error>
-    <mat-error *ngIf="number.errors.pattern">
+    <mat-error *ngIf="formControl.errors.pattern">
       Must be numeric
     </mat-error>
   </div>
