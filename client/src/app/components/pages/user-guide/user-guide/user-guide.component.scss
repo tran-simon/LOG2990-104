@@ -16,3 +16,19 @@ mat-sidenav {
     background-color: lightskyblue;
     width: 200px;
 }
+.prevButton {
+  position: absolute;
+  left: 10px;
+  bottom: 50px;
+}
+.nextButton {
+  position: absolute;
+  right: 10px;
+  bottom: 50px;
+}
+#mat-sidenav-buttons > button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
