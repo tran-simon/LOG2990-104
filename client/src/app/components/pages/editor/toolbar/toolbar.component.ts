@@ -32,11 +32,7 @@ export class ToolbarComponent {
 
     selectTool(selection: Tool) {
         if (this.selectedTool === selection) {
-            if (this.drawer.opened) {
-                this.drawer.close();
-            } else {
-                this.drawer.open();
-            }
+            this.drawer.toggle();
         } else {
             this.selectedTool = selection;
             this.drawer.open();
