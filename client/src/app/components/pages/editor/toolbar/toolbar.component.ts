@@ -28,7 +28,7 @@ export class ToolbarComponent {
     selectedTool: Tool;
 
     toggleCrayonOptions() {
-        if (this.selectedTool == this.tools.Crayon) {
+        if (this.selectedTool === this.tools.Crayon) {
             if (this.drawer.opened) {
                 this.drawer.close();
             } else {
@@ -41,7 +41,7 @@ export class ToolbarComponent {
     }
 
     togglePinceauOptions() {
-        if (this.selectedTool == this.tools.Pinceau) {
+        if (this.selectedTool === this.tools.Pinceau) {
             if (this.drawer.opened) {
                 this.drawer.close();
             } else {
@@ -54,7 +54,7 @@ export class ToolbarComponent {
     }
 
     toggleRectangleOptions() {
-        if (this.selectedTool == this.tools.Rectangle) {
+        if (this.selectedTool === this.tools.Rectangle) {
             if (this.drawer.opened) {
                 this.drawer.close();
             } else {
@@ -67,7 +67,7 @@ export class ToolbarComponent {
     }
 
     toggleLigneOptions() {
-        if (this.selectedTool == this.tools.Ligne) {
+        if (this.selectedTool === this.tools.Ligne) {
             if (this.drawer.opened) {
                 this.drawer.close();
             } else {
@@ -80,7 +80,7 @@ export class ToolbarComponent {
     }
 
     toggleColorPickerOptions() {
-        if (this.selectedTool == this.tools.ColorPicker) {
+        if (this.selectedTool === this.tools.ColorPicker) {
             if (this.drawer.opened) {
                 this.drawer.close();
             } else {
