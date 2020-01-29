@@ -26,9 +26,14 @@ mat-sidenav {
   right: 10px;
   bottom: 50px;
 }
-#mat-sidenav-buttons > button {
+#mat-sidenav-buttons {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  height: 300px;
+}
+
+#mat-sidenav-buttons > button {
+  width: 100%;
 }
