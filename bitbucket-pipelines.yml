@@ -34,6 +34,22 @@ pipelines:
                   - popd
               artifacts:
                   - ~/server/out
+    pull-requests:
+        '**':
+        - step:
+              name: Build Client for PR
+              caches:
+                  - node
+              script:
+                  - ./authorEmailCheck.sh
+                  - pushd client
+                  - npm install
+                  - npm run build:prod
+                  - npm run lint
+                  - npm run coverage
+                  - popd
+              artifacts:
+                  - ~/client.out/
     branches:
        '{release/*, hotfix/*}':
        - step:
