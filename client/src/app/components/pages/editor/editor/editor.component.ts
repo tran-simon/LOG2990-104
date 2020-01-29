@@ -13,7 +13,7 @@ export interface EditorParams {
     styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit {
-    private params: EditorParams = { surfaceColor: 0, surfaceHeight: 0, surfaceWidth: 0 };
+    params: EditorParams = { surfaceColor: 0, surfaceHeight: 0, surfaceWidth: 0 };
 
     constructor(private router: ActivatedRoute) {}
 
