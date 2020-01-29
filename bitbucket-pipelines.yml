@@ -6,7 +6,8 @@
 image: atlassianlabs/docker-node-jdk-chrome-firefox
 
 pipelines:
-    default:
+    pull-requests:
+        '**':
         - step:
               name: Install and test Client
               caches:
@@ -16,7 +17,7 @@ pipelines:
                   - Xvfb :99 -ac -screen 0 1920x1080x24 &
                   - pushd client
                   - npm install
-                  - npm run build
+                  - npm run build:prod
                   - npm run test -- --browsers ChromeHeadlessNoSandbox
                   - popd
               artifacts:

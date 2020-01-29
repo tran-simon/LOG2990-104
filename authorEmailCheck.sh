@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script to prevent developpers from commiting with their wrong emails. Pipeline will fail if a user commits with an email other than "...@polymtl.ca"
 
-RESULT=$(git shortlog -sne --all | grep -v "polymtl")
+RESULT=$(git shortlog -sne | grep -v "polymtl")
 
 set -eu
 set -o pipefail
