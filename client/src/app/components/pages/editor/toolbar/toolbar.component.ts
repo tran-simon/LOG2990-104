@@ -3,10 +3,10 @@ import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 
 enum Tool {
-    Crayon,
-    Pinceau,
+    Pencil,
+    Brush,
     Rectangle,
-    Ligne,
+    Line,
     ColorPicker,
 }
 
@@ -21,11 +21,11 @@ export class ToolbarComponent {
 
     tools = Tool;
 
-    epaisseurCrayon = 50;
-    epaisseurPinceau = 50;
-    minEpaisseur = 1;
-    maxEpaisseur = 100;
-    stepEpaisseur = 0.1;
+    thicknessPencil = 50;
+    thicknessBrush = 50;
+    minthickness = 1;
+    maxthickness = 100;
+    stepthickness = 0.1;
     selectedTool: Tool;
 
     constructor(private router: Router) {}

@@ -4,20 +4,20 @@
             <mat-icon>arrow_back</mat-icon>
         </button>
         <div class="toolbar-section-divider"></div>
-        <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Crayon}"
-            (click)="selectTool(tools.Crayon)">
+        <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Pencil}"
+            (click)="selectTool(tools.Pencil)">
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Pinceau}"
-            (click)="selectTool(tools.Pinceau)">
+        <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Brush}"
+            (click)="selectTool(tools.Brush)">
             <mat-icon>brush</mat-icon>
         </button>
         <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Rectangle}"
             (click)="selectTool(tools.Rectangle)">
             <mat-icon>crop_square</mat-icon>
         </button>
-        <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Ligne}"
-            (click)="selectTool(tools.Ligne)">
+        <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Line}"
+            (click)="selectTool(tools.Line)">
             <mat-icon>show_chart</mat-icon>
         </button>
         <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.ColorPicker}"
@@ -37,40 +37,40 @@
 <mat-drawer-container>
     <mat-drawer #drawer mode="side">
         <mat-drawer-content [ngSwitch]="selectedTool">
-            <div *ngSwitchCase="tools.Crayon" class="toolbar-tool-section">
+            <div *ngSwitchCase="tools.Pencil" class="toolbar-tool-section">
                 <h3 class="toolbar-option-section">Options du crayon</h3>
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="epaisseurCrayon">
+                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessPencil">
                 </mat-form-field>
-                <mat-slider [min]="minEpaisseur" [max]="maxEpaisseur" [step]="stepEpaisseur" thumbLabel="true"
-                    [(ngModel)]="epaisseurCrayon">
+                <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+                    [(ngModel)]="thicknessPencil">
                 </mat-slider>
             </div>
-            <div *ngSwitchCase="tools.Pinceau" class="toolbar-tool-section">
+            <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
                 <h3 class="toolbar-option-section">Options du pinceau</h3>
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="epaisseurPinceau">
+                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
                 </mat-form-field>
-                <mat-slider [min]="minEpaisseur" [max]="maxEpaisseur" [step]="stepEpaisseur" thumbLabel="true"
-                    [(ngModel)]="epaisseurPinceau">
+                <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+                    [(ngModel)]="thicknessBrush">
                 </mat-slider>
             </div>
             <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
                 <h3 class="toolbar-option-section">Options du rectangle</h3>
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="epaisseurPinceau">
+                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
                 </mat-form-field>
-                <mat-slider [min]="minEpaisseur" [max]="maxEpaisseur" [step]="stepEpaisseur" thumbLabel="true"
-                    [(ngModel)]="epaisseurPinceau">
+                <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+                    [(ngModel)]="thicknessBrush">
                 </mat-slider>
             </div>
-            <div *ngSwitchCase="tools.Ligne" class="toolbar-tool-section">
+            <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
                 <h3 class="toolbar-option-section">Options de la ligne</h3>
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="epaisseurPinceau">
+                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
                 </mat-form-field>
-                <mat-slider [min]="minEpaisseur" [max]="maxEpaisseur" [step]="stepEpaisseur" thumbLabel="true"
-                    [(ngModel)]="epaisseurPinceau">
+                <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+                    [(ngModel)]="thicknessBrush">
                 </mat-slider>
             </div>
             <div *ngSwitchCase="tools.ColorPicker" class="toolbar-tool-section">
@@ -79,7 +79,3 @@
         </mat-drawer-content>
     </mat-drawer>
 </mat-drawer-container>
-
-<div id=" test-container">
-
-</div>
