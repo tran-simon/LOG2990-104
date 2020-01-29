@@ -1,2 +1,9 @@
-<canvas #canvas id="color-square" [width]="width" [height]="height"></canvas>
-<app-color-luminance [color]="color" width="50" height="{{height}}"></app-color-luminance>
+<canvas #canvas id="color-square"
+                width="{{size}}"
+  height="{{size}}"
+  (mousemove)="onMouseMove($event)"
+  (mousedown)="onMouseDown($event)">
+</canvas>
+<app-color-luminance [color]="color"
+  (luminanceChanged)="luminanceChanged($event)"
+  width="50" height="{{size}}"></app-color-luminance>

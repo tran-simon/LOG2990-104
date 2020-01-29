@@ -23,6 +23,10 @@ export class Color {
         this.b = b;
     }
 
+    static color255(r255 = 0, g255 = 0, b255 = 0): Color {
+        return new Color(r255 / 255, g255 / 255, b255 / 255);
+    }
+
     /**
      * Creates a RGB color from HSL
      * based on: https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB
@@ -41,6 +45,47 @@ export class Color {
     }
 
     /**
+     * Gets hue value from RGB color
+     * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma
+     */
+    get hue(): number | undefined {
+        const M = Math.max(this.r, this.g, this.b);
+        const m = Math.min(this.r, this.g, this.b);
+        const C = M - m;
+
+        let h: number | undefined;
+        switch (M) {
+            case this.r:
+                h = ((this.g - this.b) / C) % 6;
+                break;
+            case this.g:
+                h = (this.b - this.r) / C + 2;
+                break;
+            case this.b:
+                h = (this.r - this.g) / C + 4;
+                break;
+        }
+        return h ? 60 * h : undefined;
+    }
+
+    /**
+     * Gets saturation from RGB color
+     * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Saturation
+     */
+    get saturation(): number {
+        const M = Math.max(this.r, this.g, this.b);
+        const m = Math.min(this.r, this.g, this.b);
+        const C = M - m;
+        const L = (M + m) / 2;
+
+        if (L === 1 || L === 0) {
+            return 0;
+        } else {
+            return C / (1 - Math.abs(2 * L - 1));
+        }
+    }
+
+    /**
      * Get HSL string `hsl(h,s%,l%)`
      * @param h hue (0 to 360)
      * @param s saturation (0 to 1)
@@ -50,8 +95,45 @@ export class Color {
         return `hsl(${h},${s * 100}%,${l * 100}%)`;
     }
 
+    toHex(value: number): string {
+        const stringValue = value.toString(16);
+        return stringValue.length !== 1 ? stringValue : '0' + stringValue;
+    }
+
+    get hex(): string {
+        const r = this.toHex(this.r255);
+        const g = this.toHex(this.g255);
+        const b = this.toHex(this.b255);
+
+        return `0x${r}${g}${b}`;
+    }
+
     get rgbString(): string {
-        return `rgb(${this.red * 255}, ${this.green * 255}, ${this.blue * 255})`;
+        return `rgb(${this.red * 255},${this.green * 255},${this.blue * 255})`;
+    }
+
+    set r255(value: number) {
+        this.r = value / 255;
+    }
+
+    get r255(): number {
+        return Math.round(this.r * 255);
+    }
+
+    set g255(value: number) {
+        this.g = value / 255;
+    }
+
+    get g255(): number {
+        return Math.round(this.g * 255);
+    }
+
+    set b255(value: number) {
+        this.b = value / 255;
+    }
+
+    get b255(): number {
+        return Math.round(this.b * 255);
     }
 
     get red(): number {

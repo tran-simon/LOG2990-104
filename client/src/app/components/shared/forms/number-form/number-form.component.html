@@ -2,7 +2,7 @@
   <label for="{{id}}">
     <ng-content></ng-content>
   </label>
-  <input [formControl]="formControl" class="form-control" id="{{id}}" matInput>
+  <input [formControl]="formControl" class="form-control" id="{{id}}" matInput [value]="value">
 
   <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched)"
        class="alert alert-danger">

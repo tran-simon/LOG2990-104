@@ -1,1 +1,4 @@
-<canvas #canvas id="color-square-lightness" width="{{width}}" height="{{height}}"></canvas>
+<canvas #canvas id="color-square-lightness" width="{{width}}" height="{{height}}"
+  (mousedown)="onMouseDown($event)"
+  (mousemove)="onMouseMove($event)"
+></canvas>

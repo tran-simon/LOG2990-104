@@ -9,8 +9,33 @@ import { Color } from './color';
 })
 export class ColorPickerComponent {
     color: Color = Color.BLUE;
-    width = 300;
-    height = 300;
+    size = 300;
 
     formGroup: FormGroup = new FormGroup({});
+
+    colorChange(color: Color) {
+        this.color = color;
+    }
+
+    changeColor(value: string, component: string) {
+        switch (component) {
+            case 'r':
+                this.color.r255 = +value;
+                break;
+            case 'g':
+                this.color.g255 = +value;
+                break;
+            case 'b':
+                this.color.b255 = +value;
+                break;
+        }
+    }
+
+    onClick() {
+        console.log('CLICK');
+    }
+
+    get hexForm() {
+        return this.formGroup.get('hex');
+    }
 }
