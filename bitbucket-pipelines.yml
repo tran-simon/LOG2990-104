@@ -12,6 +12,7 @@ pipelines:
               caches:
                   - node
               script:
+                  - ./authorEmailCheck.sh
                   - Xvfb :99 -ac -screen 0 1920x1080x24 &
                   - pushd client
                   - npm install
@@ -32,21 +33,38 @@ pipelines:
                   - popd
               artifacts:
                   - ~/server/out
+    pull-requests:
+        '**':
+        - step:
+              name: Build Client for PR
+              caches:
+                  - node
+              script:
+                  - ./authorEmailCheck.sh
+                  - pushd client
+                  - npm install
+                  - npm run build:prod
+                  - npm run lint
+                  - npm run coverage
+                  - popd
+              artifacts:
+                  - ~/client.out/
     branches:
-       'release/*':
+       '{release/*, hotfix/*}':
        - step:
               name: Deploy Client In staging to prepare for release
               caches:
                 - node
               deployment: staging
               script:
+                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
                   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
                     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
                     apt-get update && \
-                    apt-get install -y google-chrome-stable xvfb procps       
+                    apt-get install -y google-chrome-stable xvfb procps
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
@@ -54,7 +72,7 @@ pipelines:
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_STAGING'
                     PROJECT_ID: 'log2990-104-staging'
-                - popd    
+                - popd
        'master':
        - step:
               name: Deploy Client In Production
@@ -62,13 +80,14 @@ pipelines:
                 - node
               deployment: production
               script:
+                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
                   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
                     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
                     apt-get update && \
-                    apt-get install -y google-chrome-stable xvfb procps       
+                    apt-get install -y google-chrome-stable xvfb procps
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
@@ -76,7 +95,7 @@ pipelines:
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
                     PROJECT_ID: 'log2990-104'
-                - popd    
+                - popd
        develop:
        - step:
               name: Deploy Client In dev
@@ -84,13 +103,14 @@ pipelines:
                 - node
               deployment: test
               script:
+                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
                   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
                     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
                     apt-get update && \
-                    apt-get install -y google-chrome-stable xvfb procps       
+                    apt-get install -y google-chrome-stable xvfb procps
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
@@ -98,5 +118,5 @@ pipelines:
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
                     PROJECT_ID: 'log2990-104-dev'
-                - popd    
- 
+                - popd
+

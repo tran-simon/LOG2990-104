@@ -1,0 +1,15 @@
+<app-abstract-modal>
+  <div content>
+    <form [formGroup]="formGroup">
+      <app-number-form inputId="width" [formGroup]="formGroup">Width: </app-number-form>
+      <app-number-form inputId="height" [formGroup]="formGroup">Height: </app-number-form>
+      <app-number-form inputId="color" [formGroup]="formGroup">Color: </app-number-form>
+    </form>
+  </div>
+  <div actions>
+    <button mat-stroked-button (click)="onCreateClick()"
+            [disabled]="formGroup.invalid">
+      Create
+    </button>
+  </div>
+</app-abstract-modal>

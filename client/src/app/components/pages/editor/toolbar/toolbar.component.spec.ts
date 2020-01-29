@@ -1,22 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '../../../shared/shared.module';
+import { ToolbarComponent } from './toolbar.component';
 
-import { HomeComponent } from './home.component';
-
-describe('HomeComponent', () => {
-    let component: HomeComponent;
-    let fixture: ComponentFixture<HomeComponent>;
+describe('ToolbarComponent', () => {
+    let component: ToolbarComponent;
+    let fixture: ComponentFixture<ToolbarComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [SharedModule, RouterTestingModule],
-            declarations: [HomeComponent],
+            imports: [SharedModule],
+            declarations: [ToolbarComponent],
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(HomeComponent);
+        fixture = TestBed.createComponent(ToolbarComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

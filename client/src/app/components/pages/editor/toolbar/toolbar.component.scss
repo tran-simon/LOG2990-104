@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+#toolbar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    position: fixed;
+    width: 60px;
+    height: calc(100vh - 0px);
+
+    background-color: cornflowerblue;
+}
+
+#toolbar-top-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#toolbar-bottom-buttons{
+    padding-bottom: 20px;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(20, 20, 20);
+}
+
+button {
+    width: 50px;
+    height: 50px;
+    color: white;
+}
+
+#back-button {
+    width: 60px;
+    height: 60px;
+}
+
+.toolbar-section-divider {
+    padding: 10px 0px;
+    width: 100%;
+}
