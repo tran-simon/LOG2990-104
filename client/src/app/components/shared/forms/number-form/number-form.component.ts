@@ -24,8 +24,7 @@ export class NumberFormComponent implements OnInit {
             this.formGroup = new FormGroup({});
         }
         this.formGroup.addControl(this.inputId, this.formControl);
-
-        this.formControl.valueChanges.subscribe(value => {
+        this.formControl.valueChanges.subscribe((value) => {
             this.valueChange.emit(value);
         });
     }

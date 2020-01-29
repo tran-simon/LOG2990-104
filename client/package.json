@@ -19,7 +19,7 @@
     },
     "lint-staged": {
         "src/**/*.{ts, js, css, scss}": [
-            "prettier --single-quote --trailing-comma 'all' --write",
+            "prettier --single-quote --trailing-comma --arrow-parens=always 'all' --write",
             "git add"
         ],
         "package.json": [
