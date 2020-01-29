@@ -5,23 +5,23 @@
         </button>
         <div class="toolbar-section-divider"></div>
         <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Crayon}"
-            (click)="toggleCrayonOptions()">
+            (click)="selectTool(tools.Crayon)">
             <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Pinceau}"
-            (click)="togglePinceauOptions()">
+            (click)="selectTool(tools.Pinceau)">
             <mat-icon>brush</mat-icon>
         </button>
         <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Rectangle}"
-            (click)="toggleRectangleOptions()">
+            (click)="selectTool(tools.Rectangle)">
             <mat-icon>crop_square</mat-icon>
         </button>
         <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Ligne}"
-            (click)="toggleLigneOptions()">
+            (click)="selectTool(tools.Ligne)">
             <mat-icon>show_chart</mat-icon>
         </button>
         <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.ColorPicker}"
-            (click)="toggleColorPickerOptions()">
+            (click)="selectTool(tools.ColorPicker)">
             <mat-icon>colorize</mat-icon>
         </button>
     </div>

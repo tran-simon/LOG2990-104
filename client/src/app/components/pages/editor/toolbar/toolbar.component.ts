@@ -27,67 +27,15 @@ export class ToolbarComponent {
     stepEpaisseur = 0.1;
     selectedTool: Tool;
 
-    toggleCrayonOptions() {
-        if (this.selectedTool === this.tools.Crayon) {
+    selectTool(selection: Tool) {
+        if (this.selectedTool === selection) {
             if (this.drawer.opened) {
                 this.drawer.close();
             } else {
                 this.drawer.open();
             }
         } else {
-            this.selectedTool = this.tools.Crayon;
-            this.drawer.open();
-        }
-    }
-
-    togglePinceauOptions() {
-        if (this.selectedTool === this.tools.Pinceau) {
-            if (this.drawer.opened) {
-                this.drawer.close();
-            } else {
-                this.drawer.open();
-            }
-        } else {
-            this.selectedTool = this.tools.Pinceau;
-            this.drawer.open();
-        }
-    }
-
-    toggleRectangleOptions() {
-        if (this.selectedTool === this.tools.Rectangle) {
-            if (this.drawer.opened) {
-                this.drawer.close();
-            } else {
-                this.drawer.open();
-            }
-        } else {
-            this.selectedTool = this.tools.Rectangle;
-            this.drawer.open();
-        }
-    }
-
-    toggleLigneOptions() {
-        if (this.selectedTool === this.tools.Ligne) {
-            if (this.drawer.opened) {
-                this.drawer.close();
-            } else {
-                this.drawer.open();
-            }
-        } else {
-            this.selectedTool = this.tools.Ligne;
-            this.drawer.open();
-        }
-    }
-
-    toggleColorPickerOptions() {
-        if (this.selectedTool === this.tools.ColorPicker) {
-            if (this.drawer.opened) {
-                this.drawer.close();
-            } else {
-                this.drawer.open();
-            }
-        } else {
-            this.selectedTool = this.tools.ColorPicker;
+            this.selectedTool = selection;
             this.drawer.open();
         }
     }
