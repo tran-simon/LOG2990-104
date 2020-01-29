@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material';
+import { Router } from '@angular/router';
 
 enum Tool {
     Crayon,
@@ -27,6 +28,8 @@ export class ToolbarComponent {
     stepEpaisseur = 0.1;
     selectedTool: Tool;
 
+    constructor(private router: Router) {}
+
     selectTool(selection: Tool) {
         if (this.selectedTool === selection) {
             if (this.drawer.opened) {
@@ -38,5 +41,9 @@ export class ToolbarComponent {
             this.selectedTool = selection;
             this.drawer.open();
         }
+    }
+
+    goHome() {
+        this.router.navigate(['']);
     }
 }
