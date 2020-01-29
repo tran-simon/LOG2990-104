@@ -38,27 +38,27 @@ describe('ToolbarComponent', () => {
     });
 
     it('should select the crayon tool', () => {
-        component.selectTool(component.tools.Crayon);
+        component.selectTool(component.tools.Pencil);
 
-        expect(component.selectedTool).toBe(component.tools.Crayon);
+        expect(component.selectedTool).toBe(component.tools.Pencil);
     });
 
     it('should open the drawer when selecting the crayon tool', () => {
-        component.selectTool(component.tools.Crayon);
+        component.selectTool(component.tools.Pencil);
 
         expect(component.drawer.opened).toBe(true);
     });
 
     it('should close the drawer when selecting the crayon tool a second time', () => {
-        component.selectTool(component.tools.Crayon);
-        component.selectTool(component.tools.Crayon);
+        component.selectTool(component.tools.Pencil);
+        component.selectTool(component.tools.Pencil);
 
         expect(component.drawer.opened).toBe(false);
     });
 
     it('should leave the drawer open when selecting another tool', () => {
-        component.selectTool(component.tools.Crayon);
-        component.selectTool(component.tools.Pinceau);
+        component.selectTool(component.tools.Pencil);
+        component.selectTool(component.tools.Brush);
 
         expect(component.drawer.opened).toBe(true);
     });
