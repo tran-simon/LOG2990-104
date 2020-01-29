@@ -1,9 +1,14 @@
-import {ShapeProperties} from './ShapeProperties';
+import { Coordinate } from './Coordinate';
+import { ShapeProperties } from './ShapeProperties';
 
 export abstract class BaseShape {
-  properties: ShapeProperties;
+    properties: ShapeProperties;
 
-  constructor() {
-    this.properties = new ShapeProperties();
-  }
+    protected constructor() {
+        this.properties = new ShapeProperties();
+    }
+
+    getOrigin(): Coordinate {
+        return this.properties.origin;
+    }
 }

@@ -1,7 +1,7 @@
 import { BaseShape } from './BaseShape';
 import { Coordinate } from './Coordinate';
 
-export class Rectangle extends BaseShape {
+export class Line extends BaseShape {
     startCoordinate: Coordinate;
     endCoordinate: Coordinate;
 
