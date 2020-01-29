@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 export interface EditorParams {
-    width: number;
-    height: number;
-    color: number;
+    surfaceWidth: number;
+    surfaceHeight: number;
+    surfaceColor: number; // Change when Color type implemented
 }
 
 @Component({
@@ -13,15 +13,15 @@ export interface EditorParams {
     styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit {
-    private params: EditorParams = { color: 0, height: 0, width: 0 };
+    params: EditorParams = { surfaceColor: 0, surfaceHeight: 0, surfaceWidth: 0 };
 
     constructor(private router: ActivatedRoute) {}
 
     ngOnInit() {
         this.router.params.subscribe((params) => {
-            this.params.width = +params.width;
-            this.params.height = +params.height;
-            this.params.color = +params.color;
+            this.params.surfaceWidth = +params.width || 500;
+            this.params.surfaceHeight = +params.height || 300;
+            this.params.surfaceColor = +params.color; // Change when Color type implemented
         });
     }
 }

@@ -4,7 +4,7 @@
   </label>
   <input [formControl]="formControl" class="form-control" id="{{id}}" matInput [value]="value">
 
-  <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched)"
+  <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
        class="alert alert-danger">
     <mat-error *ngIf="formControl.errors.required">
       Valeur requise
