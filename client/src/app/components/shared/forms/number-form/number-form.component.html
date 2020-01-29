@@ -7,10 +7,10 @@
   <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched)"
        class="alert alert-danger">
     <mat-error *ngIf="formControl.errors.required">
-      Name is required.
+      Valeur requise
     </mat-error>
     <mat-error *ngIf="formControl.errors.pattern">
-      Must be numeric
+      Valeur doit être numérique
     </mat-error>
   </div>
 </mat-form-field>

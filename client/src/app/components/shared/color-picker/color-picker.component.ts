@@ -17,7 +17,7 @@ export class ColorPickerComponent {
         this.color = color;
     }
 
-    changeColor(value: string, component: string) {
+    colorFormEvent(value: string, component: string) {
         switch (component) {
             case 'r':
                 this.color.r255 = +value;

@@ -7,7 +7,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
     styleUrls: ['./number-form.component.scss'],
 })
 export class NumberFormComponent implements OnInit {
+    static readonly NUMERIC_REGEX: RegExp = new RegExp(/^(([0-9]*)|(([0-9]*)\.([0-9]*)))$/);
     static id = 0;
+
     id = `number-input-${NumberFormComponent.id++}`;
 
     @Input() formGroup: FormGroup;
@@ -18,14 +20,16 @@ export class NumberFormComponent implements OnInit {
     formControl: FormControl;
 
     ngOnInit() {
-        this.formControl = new FormControl(this.value, [Validators.required, Validators.pattern(/^(([0-9]*)|(([0-9]*)\.([0-9]*)))$/)]);
+        this.formControl = new FormControl(this.value, [Validators.required, Validators.pattern(NumberFormComponent.NUMERIC_REGEX)]);
 
         if (!this.formGroup) {
             this.formGroup = new FormGroup({});
         }
         this.formGroup.addControl(this.inputId, this.formControl);
         this.formControl.valueChanges.subscribe((value) => {
+          if (NumberFormComponent.NUMERIC_REGEX.test(value)) {
             this.valueChange.emit(value);
+          }
         });
     }
 }
