@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSidenavModule } from '@angular/material';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
@@ -22,6 +24,8 @@ import { NumberFormComponent } from './forms/number-form/number-form.component';
         MatInputModule,
         MatSidenavModule,
         MatExpansionModule,
+        MatDividerModule,
+        MatListModule,
     ],
     declarations: [AbstractModalComponent, NumberFormComponent],
     entryComponents: [AbstractModalComponent],
@@ -39,6 +43,8 @@ import { NumberFormComponent } from './forms/number-form/number-form.component';
         NumberFormComponent,
         MatSidenavModule,
         MatExpansionModule,
+        MatDividerModule,
+        MatListModule,
     ],
 })
 export class SharedModule {}

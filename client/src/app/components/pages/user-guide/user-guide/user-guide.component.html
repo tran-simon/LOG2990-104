@@ -63,7 +63,6 @@
                     <button (click)= "sidenav.toggle()">open</button>
                 </div>
             </ng-template>
-
             <div [ngSwitch]="selectedSubject">
               <div *ngSwitchCase="subjects.Bienvenue"><app-bienvenue></app-bienvenue></div>
               <div *ngSwitchCase="subjects.Sujet1"><app-sujet1></app-sujet1></div>

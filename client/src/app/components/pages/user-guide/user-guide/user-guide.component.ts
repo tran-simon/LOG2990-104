@@ -22,9 +22,9 @@ export class UserGuideComponent implements OnInit {
     subjects = Subject;
     selectedSubject: Subject;
     opened = false;
-    panelOpenState1: boolean = false;
-    panelOpenState2: boolean = false;
-    panelOpenState3: boolean = false;
+    panelOpenState1 = false;
+    panelOpenState2 = false;
+    panelOpenState3 = false;
 
     ngOnInit() {
         this.selectedSubject = this.subjects.Bienvenue;
