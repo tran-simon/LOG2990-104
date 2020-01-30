@@ -13,7 +13,7 @@ mat-sidenav, mat-sidenav-content {
 }
 mat-sidenav {
     scroll-behavior: auto;
-    background-color: lightskyblue;
+    background-color: cornflowerblue;
     width: 200px;
 }
 .prevButton {
@@ -26,7 +26,7 @@ mat-sidenav {
   right: 10px;
   bottom: 50px;
 }
-#mat-sidenav-buttons {
+#mat-sidenav-cat {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -34,6 +34,6 @@ mat-sidenav {
   height: 300px;
 }
 
-#mat-sidenav-buttons > button {
+#mat-sidenav-cat > button {
   width: 100%;
 }

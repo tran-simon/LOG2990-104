@@ -1,6 +1,6 @@
-import { BienvenueComponent } from './Bienvenue/bienvenue.component';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
+import { BienvenueComponent } from './Bienvenue/bienvenue.component';
 import { Sujet1Component } from './sujet1/sujet1.component';
 import { Sujet2Component } from './sujet2/sujet2.component';
 import { Sujet3Component } from './sujet3/sujet3.component';

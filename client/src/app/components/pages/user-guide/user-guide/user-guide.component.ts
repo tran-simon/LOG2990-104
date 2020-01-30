@@ -21,18 +21,28 @@ export class UserGuideComponent implements OnInit {
     sidenav: MatSidenav;
     subjects = Subject;
     selectedSubject: Subject;
+    opened = false;
+    panelOpenState1: boolean = false;
+    panelOpenState2: boolean = false;
+    panelOpenState3: boolean = false;
 
     ngOnInit() {
         this.selectedSubject = this.subjects.Bienvenue;
     }
 
     selectSubject(selection: Subject) {
-        if (selection >= this.subjects.Sujet6) {
-            this.selectedSubject = this.subjects.Sujet6;
-        } else if (selection <= this.subjects.Bienvenue) {
-            this.selectedSubject = this.subjects.Bienvenue;
-        } else {
-            this.selectedSubject = selection;
-        }
+        this.selectedSubject = selection;
+    }
+
+    openCategories() {
+        this.panelOpenState1 = true;
+        this.panelOpenState2 = true;
+        this.panelOpenState3 = true;
+    }
+
+    closeCategorie() {
+        this.panelOpenState1 = false;
+        this.panelOpenState2 = false;
+        this.panelOpenState3 = false;
     }
 }
