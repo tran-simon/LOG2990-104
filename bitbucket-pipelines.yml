@@ -95,18 +95,14 @@ pipelines:
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
                     PROJECT_ID: 'log2990-104'
-<<<<<<< HEAD
                 - popd
-=======
-                - popd
->>>>>>> origin/develop
-       develop:
-       - step:
-              name: Deploy Client In dev
-              caches:
+        develop:
+        - step:
+            name: Deploy Client In dev
+            caches:
                 - node
-              deployment: test
-              script:
+            deployment: test
+            script:
                 - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
@@ -122,10 +118,5 @@ pipelines:
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
                     PROJECT_ID: 'log2990-104-dev'
-<<<<<<< HEAD
                 - popd
 
-=======
-                - popd
-
->>>>>>> origin/develop
