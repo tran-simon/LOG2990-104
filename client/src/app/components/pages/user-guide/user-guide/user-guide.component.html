@@ -6,10 +6,11 @@
             <div id="mat-sidenav-buttons">
               <button mat-flat-button (click)="selectSubject(subjects.Bienvenue)">Bienvenue</button>
               <button mat-flat-button (click)="selectSubject(subjects.Sujet1)">Sujet1</button>
-              <button mat-flat-button>Sujet 3</button>
-              <button mat-flat-button>Sujet 4</button>
-              <button mat-flat-button>Sujet 5</button>
-              <button mat-flat-button>Sujet 6</button>
+              <button mat-flat-button (click)="selectSubject(subjects.Sujet2)">Sujet2</button>
+              <button mat-flat-button (click)="selectSubject(subjects.Sujet3)">Sujet3</button>
+              <button mat-flat-button (click)="selectSubject(subjects.Sujet4)">Sujet4</button>
+              <button mat-flat-button (click)="selectSubject(subjects.Sujet5)">Sujet5</button>
+              <button mat-flat-button (click)="selectSubject(subjects.Sujet6)">Sujet6</button>
             </div>
 
         </mat-sidenav>
@@ -23,11 +24,16 @@
                 </div>
             </ng-template>
             <div [ngSwitch]="selectedSubject">
-              <div *ngSwitchCase="subjects.Bienvenue">Bienvenue</div>
-              <div *ngSwitchCase="subjects.Sujet1"><app-sujetGuide></app-sujetGuide></div>
+              <div *ngSwitchCase="subjects.Bienvenue"><app-bienvenue></app-bienvenue></div>
+              <div *ngSwitchCase="subjects.Sujet1"><app-sujet1></app-sujet1></div>
+              <div *ngSwitchCase="subjects.Sujet2"><app-sujet2></app-sujet2></div>
+              <div *ngSwitchCase="subjects.Sujet3"><app-sujet3></app-sujet3></div>
+              <div *ngSwitchCase="subjects.Sujet4"><app-sujet4></app-sujet4></div>
+              <div *ngSwitchCase="subjects.Sujet5"><app-sujet5></app-sujet5></div>
+              <div *ngSwitchCase="subjects.Sujet6"><app-sujet6></app-sujet6></div>
             </div>
-            <button mat-button class="prevButton">precedent</button>
-            <button mat-button class = "nextButton">suivant</button>
+            <button mat-button class="prevButton" (click)="selectSubject(selectedSubject-1)">precedent</button>
+            <button mat-button class = "nextButton" (click)="selectSubject(selectedSubject+1)">suivant</button>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

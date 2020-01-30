@@ -4,6 +4,11 @@ import { MatSidenav } from '@angular/material';
 enum Subject {
     Bienvenue,
     Sujet1,
+    Sujet2,
+    Sujet3,
+    Sujet4,
+    Sujet5,
+    Sujet6,
 }
 
 @Component({
@@ -22,6 +27,12 @@ export class UserGuideComponent implements OnInit {
     }
 
     selectSubject(selection: Subject) {
-        this.selectedSubject = selection;
+        if (selection >= this.subjects.Sujet6) {
+            this.selectedSubject = this.subjects.Sujet6;
+        } else if (selection <= this.subjects.Bienvenue) {
+            this.selectedSubject = this.subjects.Bienvenue;
+        } else {
+            this.selectedSubject = selection;
+        }
     }
 }
