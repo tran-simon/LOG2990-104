@@ -18,38 +18,23 @@ pipelines:
                   - pushd client
                   - npm install
                   - npm run build:prod
+                  - npm run lint
                   - npm run test -- --browsers ChromeHeadlessNoSandbox
                   - popd
               artifacts:
                   - ~/client/out
-        - step:
-              name: Install and test Server
-              caches:
-                  - node
-              script:
-                  - pushd server
-                  - npm install
+ #       - step:
+ #             name: Install and test Server
+ #             caches:
+ #                 - node
+ #             script:
+                  #- pushd server
+                  #- npm install
                   # TODO: Reenable once there are some tests
                   #                  - npm run test
-                  - popd
-              artifacts:
-                  - ~/server/out
-    pull-requests:
-        '**':
-        - step:
-              name: Build Client for PR
-              caches:
-                  - node
-              script:
-                  - ./authorEmailCheck.sh
-                  - pushd client
-                  - npm install
-                  - npm run build:prod
-                  - npm run lint
-                  - npm run coverage
-                  - popd
-              artifacts:
-                  - ~/client.out/
+                  #- popd
+ #             artifacts:
+ #                 - ~/server/out
     branches:
        '{release/*, hotfix/*}':
        - step:
