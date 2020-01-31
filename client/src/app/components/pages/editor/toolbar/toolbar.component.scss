@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import "../../../../../assets/globalTheme";
 
 #toolbar-container {
     display: flex;
@@ -9,7 +10,7 @@
     width: 60px;
     height: calc(100vh - 0px);
 
-    background-color: cornflowerblue;
+    background-color: $primary;
 }
 
 #toolbar-top-buttons {
@@ -28,13 +29,13 @@
     width: 100%;
     align-items: center;
     justify-content: space-between;
-    background-color: rgb(20, 20, 20);
+    background-color: $secondary;
 }
 
 button {
     width: 50px;
     height: 50px;
-    color: white;
+    color: $accent;
 }
 
 #back-button {
@@ -45,4 +46,59 @@ button {
 .toolbar-section-divider {
     padding: 10px 0px;
     width: 100%;
+}
+
+mat-drawer-container {
+    position: fixed;
+    margin-left: 60px;
+    width: 100%;
+    height: calc(100vh - 0px);
+
+    background-color: transparent;
+}
+
+mat-drawer {
+    box-shadow: $elevationShadow;
+    background-color: $primaryDark;
+}
+
+mat-drawer-content {
+    margin: 0 !important;
+}
+
+mat-slider, mat-form-field{
+    width: 100%;
+    color: $accent;
+}
+
+::ng-deep .mat-accent .mat-slider-thumb {
+    background-color: $accent;
+} 
+::ng-deep .mat-accent .mat-slider-thumb-label {
+    background-color: $accent;
+} 
+::ng-deep .mat-accent .mat-slider-thumb-label-text {
+    color: $secondary;
+} 
+::ng-deep .mat-accent .mat-slider-track-fill {
+    background-color: $accent;
+}
+
+
+.toolbar-tool-section {
+    display: flex;
+    padding: 25px;
+    width: 300px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toolbar-option-section {
+    display: flex;
+    align-self: flex-start;
+    color: $accent;
+}
+
+.selected-tool {
+    background-color: $secondary;
 }
