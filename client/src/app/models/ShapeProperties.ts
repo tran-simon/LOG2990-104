@@ -1,5 +1,4 @@
 import { Color } from './Color';
-import { Coordinate } from './Coordinate';
 
 export class ShapeProperties {
     // Style
@@ -8,12 +7,7 @@ export class ShapeProperties {
     strokeOpacity: number;
     fillColor: Color;
     fillOpacity: number;
-
-    // Transformation
-    origin: Coordinate;
-    angle: number;
-    xScale: number;
-    yScale: number;
+    visible: boolean;
 
     constructor() {
         this.strokeWidth = 1;
@@ -21,10 +15,6 @@ export class ShapeProperties {
         this.strokeColor = new Color(0, 0, 0, 1);
         this.fillOpacity = 1.0;
         this.fillColor = new Color(255, 255, 255, 1);
-
-        this.origin = new Coordinate();
-        this.angle = 0; // In degrees
-        this.xScale = 1;
-        this.yScale = 1;
+        this.visible = true;
     }
 }

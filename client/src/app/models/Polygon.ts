@@ -1,14 +1,17 @@
 import { BaseShape } from './BaseShape';
 import { Coordinate } from './Coordinate';
 
-export class Line extends BaseShape {
+export const MIN_POLY_EDGE: number = 3;
+export const MAX_POLY_EDGE: number = 12;
+
+export class Polygon extends BaseShape {
     startCoordinate: Coordinate;
     endCoordinate: Coordinate;
+    readonly nEdge: number;
 
-    constructor() {
+    constructor(nEdge: number = MIN_POLY_EDGE) {
         super();
-        this.startCoordinate = new Coordinate();
-        this.endCoordinate = new Coordinate();
+        this.nEdge = nEdge <= MAX_POLY_EDGE && nEdge >= MIN_POLY_EDGE ? nEdge : MIN_POLY_EDGE;
     }
 
     getCenter(): Coordinate {

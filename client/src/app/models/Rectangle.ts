@@ -1,19 +1,20 @@
-import { BaseShape } from './BaseShape';
-import { Coordinate } from './Coordinate';
+import { Polygon } from './Polygon';
 
-export class Rectangle extends BaseShape {
-    startCoordinate: Coordinate;
-    endCoordinate: Coordinate;
+export class Rectangle extends Polygon {
+    height: number;
+    width: number;
 
     constructor() {
-        super();
-        this.startCoordinate = new Coordinate();
-        this.endCoordinate = new Coordinate();
+        super(4);
+        this.height = 0;
+        this.width = 0;
     }
 
-    getOrigin(): Coordinate {
-        this.properties.origin.x = (this.startCoordinate.x + this.endCoordinate.x) / 2;
-        this.properties.origin.y = (this.startCoordinate.y + this.endCoordinate.y) / 2;
-        return this.properties.origin;
+    getHeight(): number {
+        return this.endCoordinate.y - this.startCoordinate.y;
+    }
+
+    getWidth(): number {
+        return this.endCoordinate.x - this.startCoordinate.x;
     }
 }

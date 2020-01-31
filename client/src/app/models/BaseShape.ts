@@ -1,14 +1,16 @@
 import { Coordinate } from './Coordinate';
 import { ShapeProperties } from './ShapeProperties';
 
-export abstract class BaseShape {
+export class BaseShape {
     properties: ShapeProperties;
+    origin: Coordinate;
 
-    protected constructor() {
+    constructor() {
         this.properties = new ShapeProperties();
+        this.origin = new Coordinate();
     }
 
-    getOrigin(): Coordinate {
-        return this.properties.origin;
+    getCenter(): Coordinate {
+        return this.origin;
     }
 }
