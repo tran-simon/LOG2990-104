@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {Component, EventEmitter, Input, NgIterable, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {defaultErrorMessages} from "./error-messages";
+
 
 @Component({
   selector: 'app-custom-input',
@@ -13,17 +15,33 @@ export class CustomInputComponent implements OnInit {
   @Input() protected formGroup = new FormGroup({});
   @Input() protected format = (v: string) => v;
   @Input() stringToMatch: string;
+  @Input() messages :string;
 
   protected formControl: FormControl;
 
   @Input() value = "";
   @Output() valueChange = new EventEmitter<string>();
 
+  @Input() errorMessages: Dictionary<string> = defaultErrorMessages();
+
+
   ngOnInit() {
     if (!this.formControl) {
       this.formControl = new FormControl(this.value, this.makeValidators());
     }
     this.formGroup.setControl(this.id, this.formControl);
+  }
+
+  onBlur(value = "") {
+    if (this.formControl) {
+      this.value = this.format(this.formControl.valid ? value : this.value);
+      this.formControl.setValue(this.value);
+      this.valueChange.emit(this.value)
+    }
+  }
+
+  getErrorMessage(errorName:string):string{
+    return this.errorMessages[errorName];
   }
 
   protected makeValidators(): ValidatorFn[] {
@@ -33,10 +51,9 @@ export class CustomInputComponent implements OnInit {
     return validators;
   }
 
-  onBlur(value = "") {
-    this.value = this.format(this.formControl.valid ? value : this.value);
-    this.formControl.setValue(this.value);
-    this.valueChange.emit(this.value)
+  get errors(): NgIterable<string>{
+    const errors: ValidationErrors | null = this.formControl.errors;
+    return errors ? Object.keys(errors) : [];
   }
 
 }

@@ -10,6 +10,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ColorLuminanceComponent } from './color-picker/color-luminance/color-luminance.component';
 import { NumberFormComponent } from './inputs/number-form/number-form.component';
 import { CustomInputComponent } from './inputs/custom-input/custom-input.component';
+import {NumberInputComponent} from "./inputs/number-input/number-input.component";
 
 @NgModule({
     imports: [
@@ -25,23 +26,24 @@ import { CustomInputComponent } from './inputs/custom-input/custom-input.compone
         MatInputModule,
         MatSidenavModule,
     ],
-    declarations: [AbstractModalComponent, NumberFormComponent, ColorPickerComponent, ColorLuminanceComponent, CustomInputComponent],
+    declarations: [AbstractModalComponent, NumberFormComponent, ColorPickerComponent, ColorLuminanceComponent, CustomInputComponent, NumberInputComponent],
     entryComponents: [AbstractModalComponent],
-    exports: [
-        AbstractModalComponent,
-        ReactiveFormsModule,
-        FormsModule,
-        CommonModule,
-        MatSliderModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        NumberFormComponent,
-        MatSidenavModule,
-        ColorPickerComponent,
-      CustomInputComponent,
-    ],
+  exports: [
+    AbstractModalComponent,
+    ReactiveFormsModule,
+    FormsModule,
+    CommonModule,
+    MatSliderModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    NumberFormComponent,
+    MatSidenavModule,
+    ColorPickerComponent,
+    CustomInputComponent,
+    NumberInputComponent,
+  ],
 })
 export class SharedModule {}

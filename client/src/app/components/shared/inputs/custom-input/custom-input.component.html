@@ -6,9 +6,8 @@
 
   <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
        class="alert alert-danger">
-    <mat-error *ngIf="formControl.errors.required">
-      Valeur requise
+    <mat-error *ngFor="let error of errors">
+      {{getErrorMessage(error)}}
     </mat-error>
-    <ng-content select="[errors]"></ng-content>
   </div>
 </mat-form-field>

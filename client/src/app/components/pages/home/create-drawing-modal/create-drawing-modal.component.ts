@@ -12,6 +12,7 @@ import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-
 export class CreateDrawingModalComponent extends AbstractModalComponent {
     formGroup: FormGroup = new FormGroup({});
     width = '0';//todo
+  height = '0';
     constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
         super(dialogRef);
     }

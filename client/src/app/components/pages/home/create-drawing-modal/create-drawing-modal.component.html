@@ -2,9 +2,8 @@
   <div content>
     <form [formGroup]="formGroup">
 
-      <app-custom-input
-        [(value)]='width'
-        stringToMatch='^(\d*\.)?\d*$' >Width: </app-custom-input>
+      <app-number-input [(value)]='height'></app-number-input>
+
       <app-number-form id="width" [formGroup]="formGroup">Width: </app-number-form>
       <app-number-form id="height" [formGroup]="formGroup">Height: </app-number-form>
       <app-number-form id="color" [formGroup]="formGroup">Color: </app-number-form>

@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {safeGet} from "../../../../utils/utils";
 
 @Component({
   selector: 'app-number-form',
@@ -38,10 +37,5 @@ export class NumberFormComponent implements OnInit {
       this.formGroup = new FormGroup({});
     }
     this.formGroup.addControl(this.id, this.formControl);
-  }
-
-  makeValidators(){
-    const validators = [];
-
   }
 }
