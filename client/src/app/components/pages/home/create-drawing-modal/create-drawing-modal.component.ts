@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-modal.component';
+import {Color} from "../../../../utils/color/color";
 
 @Component({
     selector: 'app-create-drawing-modal',
@@ -10,14 +11,17 @@ import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-
     styleUrls: ['./create-drawing-modal.component.scss'],
 })
 export class CreateDrawingModalComponent extends AbstractModalComponent {
-    formGroup: FormGroup = new FormGroup({});
-    width = '0';//todo
-  height = '0';
+  formGroup = new FormGroup({});
+    width = "500";
+    height = "500";
+    color = Color.WHITE;
     constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
         super(dialogRef);
     }
 
     onCreateClick() {
-        this.router.navigate(['edit', { ...this.formGroup.value }]).then(() => this.dialogRef.close());
+        this.router.navigate(['edit',
+          {width: this.width, height: this.height,color: this.color.hex}
+          ]).then(() => this.dialogRef.close());
     }
 }

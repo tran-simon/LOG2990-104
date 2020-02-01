@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ColorLuminanceComponent } from './color-picker/color-luminance/color-luminance.component';
-import { NumberFormComponent } from './inputs/number-form/number-form.component';
 import { CustomInputComponent } from './inputs/custom-input/custom-input.component';
 import {NumberInputComponent} from "./inputs/number-input/number-input.component";
 
@@ -26,7 +25,14 @@ import {NumberInputComponent} from "./inputs/number-input/number-input.component
         MatInputModule,
         MatSidenavModule,
     ],
-    declarations: [AbstractModalComponent, NumberFormComponent, ColorPickerComponent, ColorLuminanceComponent, CustomInputComponent, NumberInputComponent],
+  declarations: [
+    AbstractModalComponent,
+    ColorPickerComponent,
+    ColorLuminanceComponent,
+    CustomInputComponent,
+    NumberInputComponent
+  ],
+
     entryComponents: [AbstractModalComponent],
   exports: [
     AbstractModalComponent,
@@ -39,7 +45,6 @@ import {NumberInputComponent} from "./inputs/number-input/number-input.component
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    NumberFormComponent,
     MatSidenavModule,
     ColorPickerComponent,
     CustomInputComponent,

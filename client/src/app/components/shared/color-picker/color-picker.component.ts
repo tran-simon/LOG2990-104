@@ -1,4 +1,13 @@
-import {Component, ElementRef, HostListener, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Color } from '../../../utils/color/color';
 
@@ -9,13 +18,15 @@ import { Color } from '../../../utils/color/color';
 })
 export class ColorPickerComponent {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
+  @Input() color = Color.WHITE;
+  @Output() colorChange = new EventEmitter<Color>();//todo
+
 
   private mouseIsDown = false;
   private luminance = 0.5;
   private renderingContext: CanvasRenderingContext2D;
 
 
-  color: Color = Color.BLUE;
     size = 300;
 
     formGroup: FormGroup = new FormGroup({});
@@ -32,6 +43,7 @@ export class ColorPickerComponent {
   ngOnChanges(changes: SimpleChanges): void {
     console.log("chaning")
     this.draw(this.size);
+    this.colorChange.emit(this.color);
   }
 
   draw(size: number) {
@@ -82,9 +94,9 @@ export class ColorPickerComponent {
     this.mouseIsDown = false;
   }
 
-    colorChange(color: Color) {
-        this.color = color;
-    }
+    // colorChange(color: Color) {
+    //     this.color = color;
+    // }
 
     colorFormEvent(value: string, component: string) {
       let {red, green, blue} = this.color;
@@ -110,7 +122,11 @@ export class ColorPickerComponent {
         return this.formGroup.get('hex');
     }
 
+
     get red(){
       return this.color.r255.toString()
     }
+
+
+
 }

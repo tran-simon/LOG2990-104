@@ -1,12 +1,10 @@
 <app-abstract-modal>
   <div content>
     <form [formGroup]="formGroup">
-
-      <app-number-input [(value)]='height'></app-number-input>
-
-      <app-number-form id="width" [formGroup]="formGroup">Width: </app-number-form>
-      <app-number-form id="height" [formGroup]="formGroup">Height: </app-number-form>
-      <app-number-form id="color" [formGroup]="formGroup">Color: </app-number-form>
+      <app-number-input [(value)]='width' [formGroup]="formGroup">Largeur: </app-number-input>
+      <app-number-input [(value)]='height' [formGroup]="formGroup">Hauteur: </app-number-input>
+      <app-color-picker [(color)]="color" [formGroup]="formGroup"></app-color-picker>
+      <label>{{color.hex}}</label>
     </form>
   </div>
   <div actions>

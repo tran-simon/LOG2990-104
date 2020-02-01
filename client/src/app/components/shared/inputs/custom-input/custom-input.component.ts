@@ -10,26 +10,24 @@ import {defaultErrorMessages} from "./error-messages";
 })
 export class CustomInputComponent implements OnInit {
   static id = 0;
-  @Input() protected id = `custom-input-${CustomInputComponent.id++}`;
-  @Input() protected required = false;
-  @Input() protected formGroup = new FormGroup({});
-  @Input() protected format = (v: string) => v;
+  @Input() id = `custom-input-${CustomInputComponent.id++}`;
+  @Input() formGroup = new FormGroup({});
+  @Input() format = (v: string) => v;
   @Input() stringToMatch: string;
   @Input() messages :string;
 
-  protected formControl: FormControl;
+  formControl: FormControl;
 
   @Input() value = "";
   @Output() valueChange = new EventEmitter<string>();
 
   @Input() errorMessages: Dictionary<string> = defaultErrorMessages();
 
-
   ngOnInit() {
     if (!this.formControl) {
       this.formControl = new FormControl(this.value, this.makeValidators());
     }
-    this.formGroup.setControl(this.id, this.formControl);
+    this.formGroup.addControl(this.id, this.formControl);
   }
 
   onBlur(value = "") {
@@ -44,9 +42,8 @@ export class CustomInputComponent implements OnInit {
     return this.errorMessages[errorName];
   }
 
-  protected makeValidators(): ValidatorFn[] {
+  makeValidators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
-    this.required && validators.push(Validators.required);
     this.stringToMatch && validators.push(Validators.pattern(this.stringToMatch));
     return validators;
   }

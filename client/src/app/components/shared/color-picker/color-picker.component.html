@@ -11,10 +11,14 @@
     width="50" height="{{size}}"></app-color-luminance>
 
   <form [formGroup]="formGroup">
-    <app-number-form [value]="red" (valueChange)="colorFormEvent($event, 'r')" inputId="r" [formGroup]="formGroup">Rouge :</app-number-form>
-    <app-number-form [value]="color.g255.toString()" (valueChange)="colorFormEvent($event, 'g')" inputId="g" [formGroup]="formGroup">Vert:</app-number-form>
-    <app-number-form [value]="color.b255.toString()" (valueChange)="colorFormEvent($event, 'b')" inputId="b" [formGroup]="formGroup">Bleu:</app-number-form>
-    <app-number-form [value]="color.hex" inputId="hex" [formGroup]="formGroup">Hex:</app-number-form>
+<!--    <app-number-input [(value)]="red" [formGroup]="formGroup">Rouge: </app-number-input>-->
+<!--    <app-number-input [(value)]="green" [formGroup]="formGroup">Vert: </app-number-input>-->
+<!--    <app-number-input [(value)]="blue" [formGroup]="formGroup">Blueu: </app-number-input>-->
+
+<!--    <app-number-form [value]="red" (valueChange)="colorFormEvent($event, 'r')" inputId="r" [formGroup]="formGroup">Rouge :</app-number-form>-->
+<!--    <app-number-form [value]="color.g255.toString()" (valueChange)="colorFormEvent($event, 'g')" inputId="g" [formGroup]="formGroup">Vert:</app-number-form>-->
+<!--    <app-number-form [value]="color.b255.toString()" (valueChange)="colorFormEvent($event, 'b')" inputId="b" [formGroup]="formGroup">Bleu:</app-number-form>-->
+<!--    <app-number-form [value]="color.hex" inputId="hex" [formGroup]="formGroup">Hex:</app-number-form>-->
   </form>
   <button mat-raised-button (click)="onClick()">OK</button>
 

@@ -8,6 +8,7 @@ export class Color {
   static RED = new Color(1);
   static GREEN = new Color(0, 1, 0);
   static BLUE = new Color(0, 0, 1);
+  static WHITE = new Color(1, 1, 1);
 
   private readonly r: number;
   private readonly g: number;
