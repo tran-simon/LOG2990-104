@@ -5,4 +5,12 @@ import { Component } from '@angular/core';
     templateUrl: './user-guide.component.html',
     styleUrls: ['./user-guide.component.scss'],
 })
-export class UserGuideComponent {}
+export class UserGuideComponent {
+    opened: boolean;
+    previous() {
+        console.log('previous');
+    }
+    next() {
+        console.log('next');
+    }
+}
