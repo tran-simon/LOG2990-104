@@ -1,5 +1,5 @@
-export const DEFAULT_RGB_VALUE: number = 255;
-export const DEFAULT_ALPHA_VALUE: number = 1;
+export const DEFAULT_RGB_VALUE = 255;
+export const DEFAULT_ALPHA_VALUE = 1;
 
 export class Color {
     private r: number;
@@ -14,7 +14,7 @@ export class Color {
         this.a = a >= 0.0 && a <= 1.0 ? a : 1.0;
     }
 
-    //Muttators
+    // Muttators
     setR(red: number): void {
         if (this.isValidColor(red)) {
             this.r = red;
@@ -47,7 +47,7 @@ export class Color {
         }
     }
 
-    //Accessors
+    // Accessors
     getR(): number {
         if (this.r === null) {
             return DEFAULT_RGB_VALUE;

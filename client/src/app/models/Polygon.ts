@@ -1,8 +1,8 @@
 import { BaseShape } from './BaseShape';
 import { Coordinate } from './Coordinate';
 
-export const MIN_POLY_EDGE: number = 3;
-export const MAX_POLY_EDGE: number = 12;
+export const MIN_POLY_EDGE = 3;
+export const MAX_POLY_EDGE = 12;
 
 export class Polygon extends BaseShape {
     startCoordinate: Coordinate;

@@ -1,5 +1,5 @@
-import { Rectangle } from './Rectangle';
 import { Coordinate } from './Coordinate';
+import { Rectangle } from './Rectangle';
 
 describe('Rectangle', () => {
     let rectangle: Rectangle;
