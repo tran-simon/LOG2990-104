@@ -11,7 +11,8 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { Color } from '../../color';
+import { Color } from '../../../../utils/color/color';
+//todo: better path?
 
 @Component({
     selector: 'app-color-luminance',
