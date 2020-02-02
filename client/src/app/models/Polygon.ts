@@ -13,10 +13,4 @@ export class Polygon extends BaseShape {
         super();
         this.nEdge = nEdge <= MAX_POLY_EDGE && nEdge >= MIN_POLY_EDGE ? nEdge : MIN_POLY_EDGE;
     }
-
-    getCenter(): Coordinate {
-        this.origin.x = (this.startCoordinate.x + this.endCoordinate.x) / 2;
-        this.origin.y = (this.startCoordinate.y + this.endCoordinate.y) / 2;
-        return this.origin;
-    }
 }

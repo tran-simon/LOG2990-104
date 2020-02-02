@@ -12,4 +12,7 @@ describe('Polygon', () => {
         polygon = new Polygon(13);
         expect(polygon.nEdge).toBe(MIN_POLY_EDGE);
     });
+    it('should create', () => {
+        expect(polygon).toBeTruthy();
+    });
 });

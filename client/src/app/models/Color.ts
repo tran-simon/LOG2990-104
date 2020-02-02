@@ -2,82 +2,83 @@ export const DEFAULT_RGB_VALUE = 255;
 export const DEFAULT_ALPHA_VALUE = 1;
 
 export class Color {
-    private r: number;
-    private g: number;
-    private b: number;
-    private a: number;
+    private red: number;
 
-    constructor(r: number = DEFAULT_RGB_VALUE, g: number = DEFAULT_RGB_VALUE, b: number = DEFAULT_RGB_VALUE, a: number = 1) {
-        this.setR(r);
-        this.setG(g);
-        this.setB(b);
-        this.a = a >= 0.0 && a <= 1.0 ? a : 1.0;
+    get Red(): number {
+        if (this.red === null) {
+            return DEFAULT_RGB_VALUE;
+        } else {
+            return this.red;
+        }
     }
 
-    // Muttators
-    setR(red: number): void {
+    set Red(red: number) {
         if (this.isValidColor(red)) {
-            this.r = red;
+            this.red = red;
         } else {
-            this.r = DEFAULT_RGB_VALUE;
+            this.red = DEFAULT_RGB_VALUE;
         }
     }
 
-    setG(green: number): void {
+    private green: number;
+
+    get Green(): number {
+        if (this.green === null) {
+            return DEFAULT_RGB_VALUE;
+        } else {
+            return this.green;
+        }
+    }
+
+    set Green(green: number) {
         if (this.isValidColor(green)) {
-            this.g = green;
+            this.green = green;
         } else {
-            this.g = DEFAULT_RGB_VALUE;
+            this.green = DEFAULT_RGB_VALUE;
         }
     }
 
-    setB(blue: number): void {
+    private blue: number;
+
+    get Blue(): number {
+        if (this.blue === null) {
+            return DEFAULT_RGB_VALUE;
+        } else {
+            return this.blue;
+        }
+    }
+
+    set Blue(blue: number) {
         if (this.isValidColor(blue)) {
-            this.b = blue;
+            this.blue = blue;
         } else {
-            this.b = DEFAULT_RGB_VALUE;
+            this.blue = DEFAULT_RGB_VALUE;
         }
     }
 
-    setA(alpha: number): void {
-        if (alpha >= 0 && alpha <= 1) {
-            this.a = alpha;
-        } else {
-            this.a = DEFAULT_ALPHA_VALUE;
-        }
-    }
+    private alpha: number;
 
-    // Accessors
-    getR(): number {
-        if (this.r === null) {
-            return DEFAULT_RGB_VALUE;
-        } else {
-            return this.r;
-        }
-    }
-
-    getG(): number {
-        if (this.g === null) {
-            return DEFAULT_RGB_VALUE;
-        } else {
-            return this.g;
-        }
-    }
-
-    getB(): number {
-        if (this.b === null) {
-            return DEFAULT_RGB_VALUE;
-        } else {
-            return this.b;
-        }
-    }
-
-    getA(): number {
-        if (this.a !== null) {
-            return this.a;
+    get Alpha(): number {
+        if (this.alpha !== null) {
+            return this.alpha;
         } else {
             return DEFAULT_ALPHA_VALUE;
         }
+    }
+
+    set Alpha(alpha: number) {
+        if (alpha >= 0 && alpha <= 1) {
+            this.alpha = alpha;
+        } else {
+            this.alpha = DEFAULT_ALPHA_VALUE;
+        }
+    }
+
+    constructor(r: number = DEFAULT_RGB_VALUE, g: number = DEFAULT_RGB_VALUE, b: number = DEFAULT_RGB_VALUE, a: number = DEFAULT_ALPHA_VALUE) {
+        this.Red = r;
+        this.Green = g;
+        this.Blue = b;
+        this.Alpha = a;
     }
 
     private isValidColor(value: number): boolean {
@@ -93,6 +94,6 @@ export class Color {
     }
 
     getHexValue(): string {
-        return '#' + this.toHexString(this.getR()) + this.toHexString(this.getG()) + this.toHexString(this.getB());
+        return '#' + this.toHexString(this.Red) + this.toHexString(this.Green) + this.toHexString(this.Blue);
     }
 }

@@ -9,28 +9,27 @@ describe('Rectangle', () => {
     it('Should init as polygon of 4 edges', () => {
         expect(rectangle.nEdge).toBe(4);
     });
-    it('Should return (+width,+height) if startCoordinate is topLeft of endCoordinate', () => {
+    it('Should return +width if startCoordinate is topLeft of endCoordinate', () => {
         rectangle.startCoordinate = new Coordinate(1, 1);
         rectangle.endCoordinate = new Coordinate(3, 3);
-        expect(rectangle.getWidth()).toBeGreaterThan(0);
-        expect(rectangle.getHeight()).toBeGreaterThan(0);
+        expect(rectangle.Width).toBeGreaterThan(0);
     });
-    it('Should return (-width,+height) if startCoordinate is topRight of endCoordinate', () => {
+    it('Should return +height if startCoordinate is topLeft of endCoordinate', () => {
         rectangle.startCoordinate = new Coordinate(1, 1);
-        rectangle.endCoordinate = new Coordinate(-3, 3);
-        expect(rectangle.getWidth()).toBeLessThan(0);
-        expect(rectangle.getHeight()).toBeGreaterThan(0);
+        rectangle.endCoordinate = new Coordinate(3, 3);
+        expect(rectangle.Height).toBeGreaterThan(0);
     });
-    it('Should return (+width,-height) if startCoordinate is BottomLeft of endCoordinate', () => {
-        rectangle.startCoordinate = new Coordinate(1, 1);
-        rectangle.endCoordinate = new Coordinate(3, -3);
-        expect(rectangle.getWidth()).toBeGreaterThan(0);
-        expect(rectangle.getHeight()).toBeLessThan(0);
-    });
-    it('Should return (-width,-height) if startCoordinate is BottomRight of endCoordinate', () => {
+    it('Should return -width if startCoordinate is BottomRight of endCoordinate', () => {
         rectangle.startCoordinate = new Coordinate(1, 1);
         rectangle.endCoordinate = new Coordinate(-3, -3);
-        expect(rectangle.getWidth()).toBeLessThan(0);
-        expect(rectangle.getHeight()).toBeLessThan(0);
+        expect(rectangle.Width).toBeLessThan(0);
+    });
+    it('Should return -height if startCoordinate is BottomRight of endCoordinate', () => {
+        rectangle.startCoordinate = new Coordinate(1, 1);
+        rectangle.endCoordinate = new Coordinate(-3, -3);
+        expect(rectangle.Height).toBeLessThan(0);
+    });
+    it('should create', () => {
+        expect(rectangle).toBeTruthy();
     });
 });
