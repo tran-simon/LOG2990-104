@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSidenavModule } from '@angular/material';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSidenavModule} from '@angular/material';
 
 import { MatSliderModule } from '@angular/material/slider';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-lightness/color-lightness.component';
+import {CustomInputComponent} from 'src/app/components/shared/inputs/custom-input/custom-input.component';
+import {NumberInputComponent} from 'src/app/components/shared/inputs/number-input/number-input.component';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
-import { ColorLuminanceComponent } from './color-picker/color-luminance/color-luminance.component';
-import { CustomInputComponent } from './inputs/custom-input/custom-input.component';
-import {NumberInputComponent} from "./inputs/number-input/number-input.component";
 
 @NgModule({
     imports: [
@@ -28,9 +28,9 @@ import {NumberInputComponent} from "./inputs/number-input/number-input.component
   declarations: [
     AbstractModalComponent,
     ColorPickerComponent,
-    ColorLuminanceComponent,
+    ColorLightnessComponent,
+    NumberInputComponent,
     CustomInputComponent,
-    NumberInputComponent
   ],
 
     entryComponents: [AbstractModalComponent],
@@ -47,8 +47,8 @@ import {NumberInputComponent} from "./inputs/number-input/number-input.component
     MatInputModule,
     MatSidenavModule,
     ColorPickerComponent,
-    CustomInputComponent,
     NumberInputComponent,
+    CustomInputComponent,
   ],
 })
 export class SharedModule {}

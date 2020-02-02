@@ -2,6 +2,9 @@
     "extends": "../common/tslint.json",
     "rulesDirectory": ["codelyzer"],
     "rules": {
+        "variable-name": {
+          "options": ["ban-keywords", "check-format", "allow-leading-underscore"]
+        },
         "deprecation": {
             "severity": "warn"
         },

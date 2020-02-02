@@ -2,7 +2,7 @@
   <label for="{{id}}">
     <ng-content select="label"></ng-content>
   </label>
-  <input #input matInput (blur)="onBlur(input.value)" [formControl]="formControl" id="{{id}}" >
+  <input #input matInput (blur)="onBlur(input.value)" [(ngModel)]="value" [formControl]="formControl" id="{{id}}" >
 
   <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
        class="alert alert-danger">

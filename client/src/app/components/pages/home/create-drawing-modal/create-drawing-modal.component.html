@@ -3,8 +3,7 @@
     <form [formGroup]="formGroup">
       <app-number-input [(value)]='width' [formGroup]="formGroup">Largeur: </app-number-input>
       <app-number-input [(value)]='height' [formGroup]="formGroup">Hauteur: </app-number-input>
-      <app-color-picker [(color)]="color" [formGroup]="formGroup"></app-color-picker>
-      <label>{{color.hex}}</label>
+      <app-color-picker #colorpicker  [formGroup]="formGroup"></app-color-picker>
     </form>
   </div>
   <div actions>

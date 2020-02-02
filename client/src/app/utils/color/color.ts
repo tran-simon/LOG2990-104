@@ -2,7 +2,7 @@
  * Represents a color.
  * Values must be between 0 and 1
  */
-import {MathUtil} from "../math/math-util";
+import {MathUtil} from '../math/math-util';
 
 export class Color {
   static RED = new Color(1);
@@ -10,24 +10,33 @@ export class Color {
   static BLUE = new Color(0, 0, 1);
   static WHITE = new Color(1, 1, 1);
 
-  private readonly r: number;
-  private readonly g: number;
-  private readonly b: number;
+  private readonly _red: number;
+  private readonly _green: number;
+  private readonly _blue: number;
 
   /**
    * Values must be in range 0 to 1
    * If not in range, values will be made to fit
-   *
-   * @param r red
-   * @param g green
-   * @param b blue
    */
   constructor(r = 0, g = 0, b = 0) {
-    this.r = MathUtil.fit(r);
-    this.g = MathUtil.fit(g);
-    this.b = MathUtil.fit(b);
+    this._red = MathUtil.fit(r);
+    this._green = MathUtil.fit(g);
+    this._blue = MathUtil.fit(b);
   }
 
+  /**
+   * Creates a color from hex string
+   */
+  static hex(hexString: string): Color {
+    const r = parseInt(hexString.substr(1, 2), 16);
+    const g = parseInt(hexString.substr(3, 2), 16);
+    const b = parseInt(hexString.substr(5, 2), 16);
+    return Color.color255(r, g, b)
+  }
+
+  /**
+   * Creates a color from values between 0 and 255
+   */
   static color255(r255 = 0, g255 = 0, b255 = 0): Color {
     return new Color(r255 / 255, g255 / 255, b255 / 255);
   }
@@ -37,7 +46,7 @@ export class Color {
    * based on: https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB
    * @param H hue from 0 to 360
    * @param S Saturation from 0 to 1
-   * @param L luminance from 0 to 1
+   * @param L lightness from 0 to 1
    */
   static hsl(H: number, S: number, L: number) {
     const f = (n: number) => {
@@ -54,20 +63,20 @@ export class Color {
    * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma
    */
   get hue(): number | undefined {
-    const M = Math.max(this.r, this.g, this.b);
-    const m = Math.min(this.r, this.g, this.b);
+    const M = Math.max(this._red, this._green, this._blue);
+    const m = Math.min(this._red, this._green, this._blue);
     const C = M - m;
 
     let h: number | undefined;
     switch (M) {
-      case this.r:
-        h = ((this.g - this.b) / C) % 6;
+      case this._red:
+        h = ((this._green - this._blue) / C) % 6;
         break;
-      case this.g:
-        h = (this.b - this.r) / C + 2;
+      case this._green:
+        h = (this._blue - this._red) / C + 2;
         break;
-      case this.b:
-        h = (this.r - this.g) / C + 4;
+      case this._blue:
+        h = (this._red - this._green) / C + 4;
         break;
     }
     return h ? 60 * h : undefined;
@@ -78,8 +87,8 @@ export class Color {
    * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Saturation
    */
   get saturation(): number {
-    const M = Math.max(this.r, this.g, this.b);
-    const m = Math.min(this.r, this.g, this.b);
+    const M = Math.max(this._red, this._green, this._blue);
+    const m = Math.min(this._red, this._green, this._blue);
     const C = M - m;
     const L = (M + m) / 2;
 
@@ -91,30 +100,38 @@ export class Color {
   }
 
   /**
+   * Gets lightness from RGB color
+   * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Saturation
+   */
+  get lightness(): number {
+    const M = Math.max(this._red, this._green, this._blue);
+    const m = Math.min(this._red, this._green, this._blue);
+    return (M + m) / 2;
+  }
+
+  /**
    * Get HSL string `hsl(h,s%,l%)`
    * @param h hue (0 to 360)
    * @param s saturation (0 to 1)
-   * @param l luminance (0 to 1)
+   * @param l lightness (0 to 1)
    */
   static getHslString(h: number, s: number, l: number): string {
     return `hsl(${h},${s * 100}%,${l * 100}%)`;
   }
 
-  toHex(value: number): string {
-    const stringValue = value.toString(16);
-    return stringValue.length !== 1 ? stringValue : '0' + stringValue;
-  }
-
   get hex(): string {
-    const r = this.toHex(this.r255);
-    const g = this.toHex(this.g255);
-    const b = this.toHex(this.b255);
-
-    return `0x${r}${g}${b}`;
+    const r = MathUtil.toHex(this.r255);
+    const g = MathUtil.toHex(this.g255);
+    const b = MathUtil.toHex(this.b255);
+    return `#${r}${g}${b}`;
   }
 
-  get color255(){
-    return
+  get hexNoSharpSign(): string {
+    return this.hex.substring(1);
+  }
+
+  get color255(): Color255 {
+    return {red: this.r255, green: this.g255, blue: this.b255};
   }
 
   get rgbString(): string {
@@ -122,28 +139,32 @@ export class Color {
   }
 
   get r255(): number {
-    return Math.round(this.r * 255);
+    return Math.round(this._red * 255);
   }
 
   get g255(): number {
-    return Math.round(this.g * 255);
+    return Math.round(this._green * 255);
   }
 
   get b255(): number {
-    return Math.round(this.b * 255);
+    return Math.round(this._blue * 255);
   }
 
   get red(): number {
-    return this.r;
+    return this._red;
   }
 
   get green(): number {
-    return this.g;
+    return this._green;
   }
 
   get blue(): number {
-    return this.b;
+    return this._blue;
   }
 }
 
-
+export interface Color255 {
+  readonly red: number;
+  readonly green: number;
+  readonly blue: number;
+}

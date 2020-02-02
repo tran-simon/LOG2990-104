@@ -1,58 +1,51 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   HostListener,
-  Input,
-  Output,
-  SimpleChanges,
+  Input, OnChanges, OnInit, SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Color } from '../../../utils/color/color';
+import {FormGroup} from '@angular/forms';
+import {Dictionary} from 'src/app/components/shared/inputs/custom-input/error-messages';
+import {Color, Color255} from 'src/app/utils/color/color';
 
 @Component({
-    selector: 'app-color-picker',
-    templateUrl: './color-picker.component.html',
-    styleUrls: ['./color-picker.component.scss'],
+  selector: 'app-color-picker',
+  templateUrl: './color-picker.component.html',
+  styleUrls: ['./color-picker.component.scss'],
 })
-export class ColorPickerComponent {
-  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() color = Color.WHITE;
-  @Output() colorChange = new EventEmitter<Color>();//todo
-
+export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
+  @Input() _color = Color.GREEN;
 
   private mouseIsDown = false;
-  private luminance = 0.5;
   private renderingContext: CanvasRenderingContext2D;
+  hexInputErrorMessages: Dictionary<string> = {pattern: 'Doit être une couleur valide'};
 
+  size = 300;
 
-    size = 300;
-
-    formGroup: FormGroup = new FormGroup({});
+  formGroup: FormGroup = new FormGroup({});
 
   ngOnInit(): void {
     this.renderingContext = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
-
   }
 
   ngAfterViewInit(): void {
-    this.draw(this.size);
+    this.draw();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("chaning")
-    this.draw(this.size);
-    this.colorChange.emit(this.color);
+    this.draw();
   }
 
-  draw(size: number) {
+  draw(size = this.size, lightness = this.color.lightness) {
     if (this.renderingContext) {
       for (let i = 0; i < size; i++) {
         const h = (i / size) * 360;
         const gradient = this.renderingContext.createLinearGradient(0, 0, 0, size);
-        gradient.addColorStop(0, Color.getHslString(h, 0, this.luminance));
-        gradient.addColorStop(1, Color.getHslString(h, 1, this.luminance));
+        gradient.addColorStop(0, Color.getHslString(h, 0, lightness));
+        gradient.addColorStop(1, Color.getHslString(h, 1, lightness));
 
         this.renderingContext.fillStyle = gradient;
         this.renderingContext.fillRect(i, 0, 1, size);
@@ -60,73 +53,60 @@ export class ColorPickerComponent {
     }
   }
 
-  luminanceChanged(luminance: number) {
-    this.luminance = luminance;
-    this.draw(this.size);
+  lightnessChanged(lightness: number): void {
     const h = this.color.hue;
     const s = this.color.saturation;
-    if (h) {
-      this.color = Color.hsl(h, s, luminance);
-      // this.colorChange.emit(this.color);
-    }
+    this.color = Color.hsl(h ? h : 0, s, lightness);
+    this.draw();
   }
 
-  updateColor(event: MouseEvent) {
+  colorChange(value: number, component: string): void {
+    let {red, green, blue}: Color255 = this.color.color255;
+    switch (component) {
+      case 'r':
+        red = value;
+        break;
+      case 'g':
+        green = value;
+        break;
+      case 'b':
+        blue = value;
+        break
+    }
+    this.color = Color.color255(red, green, blue);
+    this.draw()
+  }
+
+  hexChange(value: string): void {
+    this.color = Color.hex(value);
+    this.draw();
+  }
+
+  onMouseDown(event: MouseEvent): void {
+    this.mouseIsDown = true;
     const h = (event.offsetX / this.size) * 360;
     const s = event.offsetY / this.size;
-    this.color = Color.hsl(h, s, 0.5);
-    // this.colorChange.emit(this.color);
+    this.color = Color.hsl(h, s, this.color.lightness);
   }
 
-  onMouseDown(event: MouseEvent) {
-    this.mouseIsDown = true;
-    this.updateColor(event);
-  }
-
-  onMouseMove(event: MouseEvent) {
+  onMouseMove(event: MouseEvent): void {
     if (this.mouseIsDown) {
-      this.updateColor(event);
+      const h = (event.offsetX / this.size) * 360;
+      const s = event.offsetY / this.size;
+      this.color = Color.hsl(h, s, this.color.lightness);
     }
   }
 
   @HostListener('window:mouseup', ['$event'])
-  onMouseUp() {
+  onMouseUp(): void {
     this.mouseIsDown = false;
   }
 
-    // colorChange(color: Color) {
-    //     this.color = color;
-    // }
+  get color(): Color {
+    return this._color;
+  }
 
-    colorFormEvent(value: string, component: string) {
-      let {red, green, blue} = this.color;
-        switch (component) {
-            case 'r':
-              red = +value / 255;
-                break;
-            case 'g':
-              green = +value / 255 ;
-                break;
-            case 'b':
-              blue = +value / 255;
-                break;
-        }
-      this.color = new Color(red, green, blue);
-    }
-
-    onClick() {
-        console.log('CLICK');
-    }
-
-    get hexForm() {
-        return this.formGroup.get('hex');
-    }
-
-
-    get red(){
-      return this.color.r255.toString()
-    }
-
-
-
+  set color(value: Color) {
+    this._color = value;
+  }
 }

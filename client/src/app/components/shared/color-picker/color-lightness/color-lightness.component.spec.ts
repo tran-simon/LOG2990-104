@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ColorLuminanceComponent } from './color-luminance.component';
+import { ColorLightnessComponent } from './color-lightness.component';
 
 describe('ColorLightnessComponent', () => {
-    let component: ColorLuminanceComponent;
-    let fixture: ComponentFixture<ColorLuminanceComponent>;
+    let component: ColorLightnessComponent;
+    let fixture: ComponentFixture<ColorLightnessComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ColorLuminanceComponent],
+            declarations: [ColorLightnessComponent],
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ColorLuminanceComponent);
+        fixture = TestBed.createComponent(ColorLightnessComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

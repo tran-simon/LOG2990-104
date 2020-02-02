@@ -1,4 +1,4 @@
-<div id="color-picker">
+<div id="color-picker" [style.background-color]="color.hex">
   <canvas #canvas id="color-square"
     width="{{size}}"
     height="{{size}}"
@@ -6,20 +6,14 @@
     (mousedown)="onMouseDown($event)">
   </canvas>
 
-  <app-color-luminance [color]="color"
-    (luminanceChanged)="luminanceChanged($event)"
-    width="50" height="{{size}}"></app-color-luminance>
+  <app-color-lightness [color]="color"
+    (lightnessChanged)="lightnessChanged($event)"
+    width="50" height="{{size}}"></app-color-lightness>
 
   <form [formGroup]="formGroup">
-<!--    <app-number-input [(value)]="red" [formGroup]="formGroup">Rouge: </app-number-input>-->
-<!--    <app-number-input [(value)]="green" [formGroup]="formGroup">Vert: </app-number-input>-->
-<!--    <app-number-input [(value)]="blue" [formGroup]="formGroup">Blueu: </app-number-input>-->
-
-<!--    <app-number-form [value]="red" (valueChange)="colorFormEvent($event, 'r')" inputId="r" [formGroup]="formGroup">Rouge :</app-number-form>-->
-<!--    <app-number-form [value]="color.g255.toString()" (valueChange)="colorFormEvent($event, 'g')" inputId="g" [formGroup]="formGroup">Vert:</app-number-form>-->
-<!--    <app-number-form [value]="color.b255.toString()" (valueChange)="colorFormEvent($event, 'b')" inputId="b" [formGroup]="formGroup">Bleu:</app-number-form>-->
-<!--    <app-number-form [value]="color.hex" inputId="hex" [formGroup]="formGroup">Hex:</app-number-form>-->
+    <app-number-input #redinput [value]="color.r255.toString()" (valueChange)="colorChange(+redinput.value, 'r')" [formGroup]="formGroup">Rouge: </app-number-input>
+    <app-number-input #greeninput [value]="color.g255.toString()" (valueChange)="colorChange(+greeninput.value, 'g')" [formGroup]="formGroup">Rouge: </app-number-input>
+    <app-number-input #blueinput [value]="color.b255.toString()" (valueChange)="colorChange(+blueinput.value, 'b')" [formGroup]="formGroup">Rouge: </app-number-input>
+    <app-custom-input #hexinput [errorMessages]="hexInputErrorMessages" stringToMatch="^\#[0-9a-fA-F]{6}$" [value]="color.hex" (valueChange)="hexChange(hexinput.value)" [formGroup]="formGroup">Hex: </app-custom-input>
   </form>
-  <button mat-raised-button (click)="onClick()">OK</button>
-
 </div>

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {Component, ViewChild} from '@angular/core';
+import { FormGroup} from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-modal.component';
-import {Color} from "../../../../utils/color/color";
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import {ColorPickerComponent} from 'src/app/components/shared/color-picker/color-picker.component';
 
 @Component({
     selector: 'app-create-drawing-modal',
@@ -11,17 +11,19 @@ import {Color} from "../../../../utils/color/color";
     styleUrls: ['./create-drawing-modal.component.scss'],
 })
 export class CreateDrawingModalComponent extends AbstractModalComponent {
+  @ViewChild('colorpicker', {static: true}) colorPicker: ColorPickerComponent;
+
   formGroup = new FormGroup({});
-    width = "500";
-    height = "500";
-    color = Color.WHITE;
+    width = '500';
+    height = '500';
+
     constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
         super(dialogRef);
     }
 
     onCreateClick() {
         this.router.navigate(['edit',
-          {width: this.width, height: this.height,color: this.color.hex}
+          {width: this.width, height: this.height, color: this.colorPicker.color.hexNoSharpSign}
           ]).then(() => this.dialogRef.close());
     }
 }
