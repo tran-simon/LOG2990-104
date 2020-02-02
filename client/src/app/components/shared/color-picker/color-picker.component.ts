@@ -60,17 +60,17 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
     this.draw();
   }
 
-  colorChange(value: number, component: string): void {
+  colorChange(value: string, component: string): void {
     let {red, green, blue}: Color255 = this.color.color255;
     switch (component) {
       case 'r':
-        red = value;
+        red = +value;
         break;
       case 'g':
-        green = value;
+        green = +value;
         break;
       case 'b':
-        blue = value;
+        blue = +value;
         break
     }
     this.color = Color.color255(red, green, blue);
@@ -97,7 +97,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  @HostListener('window:mouseup', ['$event'])
+  @HostListener('window:mouseup')
   onMouseUp(): void {
     this.mouseIsDown = false;
   }

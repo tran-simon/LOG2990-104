@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, NgIterable, OnInit, Output} from '@angul
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {defaultErrorMessages, Dictionary} from './error-messages';
 
-
 @Component({
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
