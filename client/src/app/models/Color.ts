@@ -1,4 +1,4 @@
-export const DEFAULT_RGB_VALUE = 255;
+export const RGB_VALUE = 255;
 export const DEFAULT_ALPHA_VALUE = 1;
 
 export class Color {
@@ -6,7 +6,7 @@ export class Color {
 
     get Red(): number {
         if (this.red === null) {
-            return DEFAULT_RGB_VALUE;
+            return RGB_VALUE;
         } else {
             return this.red;
         }
@@ -16,7 +16,7 @@ export class Color {
         if (this.isValidColor(red)) {
             this.red = red;
         } else {
-            this.red = DEFAULT_RGB_VALUE;
+            this.red = RGB_VALUE;
         }
     }
 
@@ -24,7 +24,7 @@ export class Color {
 
     get Green(): number {
         if (this.green === null) {
-            return DEFAULT_RGB_VALUE;
+            return RGB_VALUE;
         } else {
             return this.green;
         }
@@ -34,7 +34,7 @@ export class Color {
         if (this.isValidColor(green)) {
             this.green = green;
         } else {
-            this.green = DEFAULT_RGB_VALUE;
+            this.green = RGB_VALUE;
         }
     }
 
@@ -42,7 +42,7 @@ export class Color {
 
     get Blue(): number {
         if (this.blue === null) {
-            return DEFAULT_RGB_VALUE;
+            return RGB_VALUE;
         } else {
             return this.blue;
         }
@@ -52,7 +52,7 @@ export class Color {
         if (this.isValidColor(blue)) {
             this.blue = blue;
         } else {
-            this.blue = DEFAULT_RGB_VALUE;
+            this.blue = RGB_VALUE;
         }
     }
 
@@ -74,7 +74,7 @@ export class Color {
         }
     }
 
-    constructor(r: number = DEFAULT_RGB_VALUE, g: number = DEFAULT_RGB_VALUE, b: number = DEFAULT_RGB_VALUE, a: number = DEFAULT_ALPHA_VALUE) {
+    constructor(r: number = RGB_VALUE, g: number = RGB_VALUE, b: number = RGB_VALUE, a: number = DEFAULT_ALPHA_VALUE) {
         this.Red = r;
         this.Green = g;
         this.Blue = b;

@@ -1,4 +1,4 @@
-import { Color, DEFAULT_ALPHA_VALUE, DEFAULT_RGB_VALUE } from './Color';
+import { Color, DEFAULT_ALPHA_VALUE, RGB_VALUE } from './Color';
 
 describe('Color', () => {
     let color: Color;
@@ -7,15 +7,15 @@ describe('Color', () => {
     });
     it('Should be red at DEFAULT_RGB_VALUE on init', () => {
         color = new Color();
-        expect(color.Red).toBe(DEFAULT_RGB_VALUE);
+        expect(color.Red).toBe(RGB_VALUE);
     });
     it('Should be green at DEFAULT_RGB_VALUE and DEFAULT_ALPHA_VALUE on init', () => {
         color = new Color();
-        expect(color.Green).toBe(DEFAULT_RGB_VALUE);
+        expect(color.Green).toBe(RGB_VALUE);
     });
     it('Should be blue at DEFAULT_RGB_VALUE and DEFAULT_ALPHA_VALUE on init', () => {
         color = new Color();
-        expect(color.Blue).toBe(DEFAULT_RGB_VALUE);
+        expect(color.Blue).toBe(RGB_VALUE);
     });
     it('Should be DEFAULT_RGB_VALUE and DEFAULT_ALPHA_VALUE on init', () => {
         color = new Color();
@@ -23,15 +23,15 @@ describe('Color', () => {
     });
     it('Should be red at DEFAULT_RGB_VALUE if input out of range', () => {
         color = new Color(256, 0, 0, 1);
-        expect(color.Red).toBe(DEFAULT_RGB_VALUE);
+        expect(color.Red).toBe(RGB_VALUE);
     });
     it('Should be green at DEFAULT_RGB_VALUE if input out of range', () => {
         color = new Color(0, -1, 0, 1);
-        expect(color.Green).toBe(DEFAULT_RGB_VALUE);
+        expect(color.Green).toBe(RGB_VALUE);
     });
     it('Should be blue at DEFAULT_RGB_VALUE if input out of range', () => {
         color = new Color(0, 0, 255.1, 1);
-        expect(color.Blue).toBe(DEFAULT_RGB_VALUE);
+        expect(color.Blue).toBe(RGB_VALUE);
     });
     it('Should be DEFAULT_ALPHA_VALUE if alpha input is out of range', () => {
         color = new Color(0, 0, 0, -4);
