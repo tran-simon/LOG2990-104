@@ -1,31 +1,34 @@
+import { Coordinate } from './Coordinate';
 import { Polygon } from './Polygon';
 
 export class Rectangle extends Polygon {
-    height: number;
+    private height: number;
 
     get Height(): number {
-        if (this.endCoordinate === null || this.startCoordinate === null) {
-            this.height = 0;
-        } else {
-            this.height = this.endCoordinate.y - this.startCoordinate.y;
-        }
         return this.height;
     }
 
-    width: number;
+    set Height(height: number) {
+        this.height = !height ? 0 : Math.abs(height);
+    }
+
+    private width: number;
 
     get Width(): number {
-        if (this.endCoordinate === null || this.startCoordinate === null) {
-            this.width = 0;
-        } else {
-            this.width = this.endCoordinate.x - this.startCoordinate.x;
-        }
         return this.width;
     }
 
-    constructor() {
+    set Width(width: number) {
+        this.width = !width ? 0 : Math.abs(width);
+    }
+
+    constructor(width: number = 0, height: number = 0) {
         super(4);
-        this.height = 0;
-        this.width = 0;
+        this.Width = width;
+        this.Height = height;
+    }
+
+    get center(): Coordinate {
+        return new Coordinate(this.origin.x + this.Width / 2, this.origin.y + this.Height / 2);
     }
 }

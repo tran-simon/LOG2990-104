@@ -5,73 +5,41 @@ export class Color {
     private red: number;
 
     get Red(): number {
-        if (this.red === null) {
-            return RGB_VALUE;
-        } else {
-            return this.red;
-        }
+        return !this.red ? RGB_VALUE : this.red;
     }
 
     set Red(red: number) {
-        if (this.isValidColor(red)) {
-            this.red = red;
-        } else {
-            this.red = RGB_VALUE;
-        }
+        this.red = this.isValidColor(red) ? red : RGB_VALUE;
     }
 
     private green: number;
 
     get Green(): number {
-        if (this.green === null) {
-            return RGB_VALUE;
-        } else {
-            return this.green;
-        }
+        return !this.green ? RGB_VALUE : this.green;
     }
 
     set Green(green: number) {
-        if (this.isValidColor(green)) {
-            this.green = green;
-        } else {
-            this.green = RGB_VALUE;
-        }
+        this.green = this.isValidColor(green) ? green : RGB_VALUE;
     }
 
     private blue: number;
 
     get Blue(): number {
-        if (this.blue === null) {
-            return RGB_VALUE;
-        } else {
-            return this.blue;
-        }
+        return !this.blue ? RGB_VALUE : this.blue;
     }
 
     set Blue(blue: number) {
-        if (this.isValidColor(blue)) {
-            this.blue = blue;
-        } else {
-            this.blue = RGB_VALUE;
-        }
+        this.blue = this.isValidColor(blue) ? blue : RGB_VALUE;
     }
 
     private alpha: number;
 
     get Alpha(): number {
-        if (this.alpha !== null) {
-            return this.alpha;
-        } else {
-            return DEFAULT_ALPHA_VALUE;
-        }
+        return !this.alpha ? DEFAULT_ALPHA_VALUE : this.alpha;
     }
 
     set Alpha(alpha: number) {
-        if (alpha >= 0 && alpha <= 1) {
-            this.alpha = alpha;
-        } else {
-            this.alpha = DEFAULT_ALPHA_VALUE;
-        }
+        this.alpha = !!alpha && alpha >= 0 && alpha <= 1 ? alpha : DEFAULT_ALPHA_VALUE;
     }
 
     constructor(r: number = RGB_VALUE, g: number = RGB_VALUE, b: number = RGB_VALUE, a: number = DEFAULT_ALPHA_VALUE) {

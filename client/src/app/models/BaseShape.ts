@@ -4,15 +4,17 @@ import { ShapeProperties } from './ShapeProperties';
 export class BaseShape {
     properties: ShapeProperties;
     origin: Coordinate;
-    protected center: Coordinate;
+    startCoord: Coordinate;
+    endCoord: Coordinate;
 
-    get Center(): Coordinate {
-        this.center = this.origin;
-        return this.center;
+    get center(): Coordinate {
+        return this.origin;
     }
 
     constructor() {
         this.properties = new ShapeProperties();
-        this.center = this.origin = new Coordinate();
+        this.origin = new Coordinate();
+        this.startCoord = new Coordinate();
+        this.endCoord = new Coordinate();
     }
 }

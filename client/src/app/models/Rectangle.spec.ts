@@ -1,4 +1,3 @@
-import { Coordinate } from './Coordinate';
 import { Rectangle } from './Rectangle';
 
 describe('Rectangle', () => {
@@ -6,28 +5,36 @@ describe('Rectangle', () => {
     beforeEach(() => {
         rectangle = new Rectangle();
     });
-    it('Should init as polygon of 4 edges', () => {
-        expect(rectangle.nEdge).toBe(4);
+    it('Should init as polygon with 4 edges', () => {
+        expect(rectangle.NbEdge).toBe(4);
     });
-    it('Should return +width if startCoordinate is topLeft of endCoordinate', () => {
-        rectangle.startCoordinate = new Coordinate(1, 1);
-        rectangle.endCoordinate = new Coordinate(3, 3);
-        expect(rectangle.Width).toBeGreaterThan(0);
+    it('should init with width = 0', () => {
+        expect(rectangle.Width).toBe(0);
     });
-    it('Should return +height if startCoordinate is topLeft of endCoordinate', () => {
-        rectangle.startCoordinate = new Coordinate(1, 1);
-        rectangle.endCoordinate = new Coordinate(3, 3);
-        expect(rectangle.Height).toBeGreaterThan(0);
+    it('should init with height = 0', () => {
+        expect(rectangle.Height).toBe(0);
     });
-    it('Should return -width if startCoordinate is BottomRight of endCoordinate', () => {
-        rectangle.startCoordinate = new Coordinate(1, 1);
-        rectangle.endCoordinate = new Coordinate(-3, -3);
-        expect(rectangle.Width).toBeLessThan(0);
+    it('Should have height = 0 on invalid inputs', () => {
+        rectangle.Height = Number.NaN;
+        expect(rectangle.Height).toBe(0);
     });
-    it('Should return -height if startCoordinate is BottomRight of endCoordinate', () => {
-        rectangle.startCoordinate = new Coordinate(1, 1);
-        rectangle.endCoordinate = new Coordinate(-3, -3);
-        expect(rectangle.Height).toBeLessThan(0);
+    it('Should have width = 0 on invalid inputs', () => {
+        rectangle.Width = Number.NaN;
+        expect(rectangle.Width).toBe(0);
+    });
+    it('Should have positive height on negative values', () => {
+        rectangle.Height = -5;
+        expect(rectangle.Height).toBe(5);
+    });
+    it('Should have positive width on negative values', () => {
+        rectangle.Width = -5;
+        expect(rectangle.Width).toBe(5);
+    });
+    it('Should have center.x = 0 on init', () => {
+        expect(rectangle.center.x).toBe(0);
+    });
+    it('Should have center.y = 0 on init', () => {
+        expect(rectangle.center.y).toBe(0);
     });
     it('should create', () => {
         expect(rectangle).toBeTruthy();
