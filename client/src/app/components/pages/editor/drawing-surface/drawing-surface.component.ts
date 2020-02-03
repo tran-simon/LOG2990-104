@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Color } from 'src/app/utils/color/color';
 
 @Component({
     selector: 'app-drawing-surface',
@@ -8,5 +9,5 @@ import { Component, Input } from '@angular/core';
 export class DrawingSurfaceComponent {
     @Input() width: number;
     @Input() height: number;
-    @Input() color: number; // Use Color type when implemented
+    @Input() color = Color.WHITE;
 }
