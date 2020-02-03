@@ -6,11 +6,11 @@ import { Component } from '@angular/core';
     styleUrls: ['./user-guide.component.scss'],
 })
 export class UserGuideComponent {
-  opened: boolean;
-  previous() {
-    console.log('previous')
-  }
-  next() {
-    console.log('next')
-  }
+    opened: boolean;
+    previous() {
+        console.log('previous');
+    }
+    next() {
+        console.log('next');
+    }
 }
