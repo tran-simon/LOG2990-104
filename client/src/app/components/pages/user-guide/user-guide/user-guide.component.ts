@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
+import { Router } from '@angular/router';
 
 enum Subject {
   Bienvenue,
@@ -25,6 +26,7 @@ export class UserGuideComponent implements OnInit {
   panelOpenState1 = false;
   panelOpenState2 = false;
   panelOpenState3 = false;
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.selectedSubject = this.subjects.Bienvenue;
@@ -44,5 +46,11 @@ export class UserGuideComponent implements OnInit {
     this.panelOpenState1 = false;
     this.panelOpenState2 = false;
     this.panelOpenState3 = false;
+  }
+  goHome() {
+    window.history.back();
+  }
+  openPage(nextLink: string): void {
+    this.router.navigate([nextLink]);
   }
 }

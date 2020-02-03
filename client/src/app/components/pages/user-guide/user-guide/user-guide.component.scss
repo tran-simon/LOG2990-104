@@ -29,20 +29,16 @@ mat-sidenav {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 300px;
+  height: 400px;
 }
 
 #mat-sidenav-cat > button {
   width: 100%;
-  background-color: cornflowerblue;
-}
-mat-expansion-panel-header {
-  background-color: cornflowerblue;
-}
-mat-expansion-panel {
-  background-color: cornflowerblue;
 }
 #buttoncat {
+  width: 100%;
+}
+#buttonBack{
   width: 100%;
   background-color: cornflowerblue;
 }
