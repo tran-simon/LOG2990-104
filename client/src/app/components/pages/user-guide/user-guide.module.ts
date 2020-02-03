@@ -10,16 +10,16 @@ import { Sujet6Component } from './sujet6/sujet6.component';
 import { UserGuideComponent } from './user-guide/user-guide.component';
 
 @NgModule({
-    imports: [SharedModule],
-    declarations: [
-        UserGuideComponent,
-        BienvenueComponent,
-        Sujet1Component,
-        Sujet2Component,
-        Sujet3Component,
-        Sujet4Component,
-        Sujet5Component,
-        Sujet6Component,
-    ],
+  imports: [SharedModule],
+  declarations: [
+    UserGuideComponent,
+    BienvenueComponent,
+    Sujet1Component,
+    Sujet2Component,
+    Sujet3Component,
+    Sujet4Component,
+    Sujet5Component,
+    Sujet6Component,
+  ],
 })
 export class UserGuideModule {}

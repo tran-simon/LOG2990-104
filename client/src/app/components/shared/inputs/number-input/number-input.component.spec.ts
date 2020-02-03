@@ -7,30 +7,30 @@ import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-in
 import { NumberInputComponent } from './number-input.component';
 
 describe('NumberInputComponent', () => {
-    let component: NumberInputComponent;
-    let fixture: ComponentFixture<NumberInputComponent>;
+  let component: NumberInputComponent;
+  let fixture: ComponentFixture<NumberInputComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [BrowserAnimationsModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
-            declarations: [NumberInputComponent, CustomInputComponent],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [BrowserAnimationsModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
+      declarations: [NumberInputComponent, CustomInputComponent],
+    }).compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(NumberInputComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NumberInputComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-    it('can make regex string', () => {
-        expect(NumberInputComponent.makeRegexString(false, false)).toEqual('^([0-9]*)$');
-        expect(NumberInputComponent.makeRegexString(true, false)).toEqual('^-?([0-9]*)$');
-        expect(NumberInputComponent.makeRegexString(false, true)).toEqual('^([0-9]*.)?[0-9]*$');
-        expect(NumberInputComponent.makeRegexString(true, true)).toEqual('^-?([0-9]*.)?[0-9]*$');
-    });
+  it('can make regex string', () => {
+    expect(NumberInputComponent.makeRegexString(false, false)).toEqual('^([0-9]*)$');
+    expect(NumberInputComponent.makeRegexString(true, false)).toEqual('^-?([0-9]*)$');
+    expect(NumberInputComponent.makeRegexString(false, true)).toEqual('^([0-9]*.)?[0-9]*$');
+    expect(NumberInputComponent.makeRegexString(true, true)).toEqual('^-?([0-9]*.)?[0-9]*$');
+  });
 });
