@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from 'src/app/components/shared/shared.module';
 
 import { DrawingSurfaceComponent } from './drawing-surface.component';
 
@@ -8,6 +9,7 @@ describe('DrawingSurfaceComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            imports: [SharedModule],
             declarations: [DrawingSurfaceComponent],
         }).compileComponents();
     }));
