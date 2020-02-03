@@ -11,7 +11,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import {Color} from 'src/app/utils/color/color';
+import { Color } from 'src/app/utils/color/color';
 
 @Component({
   selector: 'app-color-lightness',

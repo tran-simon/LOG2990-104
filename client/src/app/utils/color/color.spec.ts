@@ -1,4 +1,4 @@
-import {Color} from './color';
+import { Color } from './color';
 
 describe('Color', () => {
   let colorFromHSL: Color;
@@ -38,7 +38,7 @@ describe('Color', () => {
     expect(colorFromHSL.saturation).toBeCloseTo(0.5, 5);
   });
   it('can calculate lightness', () => {
-    expect(colorFromHSL.lightness).toBeCloseTo(0.4, 5)
+    expect(colorFromHSL.lightness).toBeCloseTo(0.4, 5);
   });
 
   it('can get hex value', () => {

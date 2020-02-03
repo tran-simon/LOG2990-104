@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {defaultErrorMessages, ErrorMessages} from 'src/app/components/shared/inputs/custom-input/error-messages';
-import {Color, Color255} from 'src/app/utils/color/color';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/custom-input/error-messages';
+import { Color, Color255 } from 'src/app/utils/color/color';
 
 @Component({
   selector: 'app-color-picker',

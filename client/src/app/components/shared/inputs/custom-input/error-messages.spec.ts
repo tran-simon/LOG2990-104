@@ -1,4 +1,4 @@
-import {defaultErrorMessages} from 'src/app/components/shared/inputs/custom-input/error-messages';
+import { defaultErrorMessages } from 'src/app/components/shared/inputs/custom-input/error-messages';
 
 describe('ErrorMessages', () => {
   it('can get default error messages', () => {
