@@ -7,5 +7,19 @@ export interface KeyboardEventHandler {
 
   ctrlE?(event: KeyboardEvent): boolean;
 
+  ctrlX?(event: KeyboardEvent): boolean;
+
+  ctrlC?(event: KeyboardEvent): boolean;
+
+  ctrlV?(event: KeyboardEvent): boolean;
+
+  ctrlD?(event: KeyboardEvent): boolean;
+
+  ctrlA?(event: KeyboardEvent): boolean;
+
+  ctrlZ?(event: KeyboardEvent): boolean;
+
+  ctrlShiftZ?(event: KeyboardEvent): boolean;
+
   keyDown(event: KeyboardEvent): void;
 }
