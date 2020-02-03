@@ -4,13 +4,12 @@ import { CustomInputComponent } from '../custom-input/custom-input.component';
 @Component({
   selector: 'app-hex-input',
   templateUrl: '../custom-input/custom-input.component.html',
-  styleUrls: ['../custom-input/custom-input.component.scss']
+  styleUrls: ['../custom-input/custom-input.component.scss'],
 })
 export class HexInputComponent extends CustomInputComponent implements OnInit {
   ngOnInit() {
     this.stringToMatch = '^[0-9a-fA-F]*$';
-    this.format = (v: string): string =>
-      this.maxLength ? v.toUpperCase().padStart(this.maxLength, '0') : v.toUpperCase();
+    this.format = (v: string): string => (this.maxLength ? v.toUpperCase().padStart(this.maxLength, '0') : v.toUpperCase());
     super.ngOnInit();
   }
 }

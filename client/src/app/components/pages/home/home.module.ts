@@ -8,5 +8,4 @@ import { HomeComponent } from './home/home.component';
   declarations: [CreateDrawingModalComponent, HomeComponent],
   entryComponents: [CreateDrawingModalComponent],
 })
-export class HomeModule {
-}
+export class HomeModule {}

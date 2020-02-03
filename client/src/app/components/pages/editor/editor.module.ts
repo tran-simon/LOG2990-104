@@ -9,5 +9,4 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   declarations: [DrawingSurfaceComponent, EditorComponent, ToolbarComponent],
   exports: [EditorComponent],
 })
-export class EditorModule {
-}
+export class EditorModule {}

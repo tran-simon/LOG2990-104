@@ -18,13 +18,12 @@ import { SharedModule } from './components/shared/shared.module';
     EditorModule,
     UserGuideModule,
     RouterModule.forRoot([
-      {path: '', component: HomeComponent},
-      {path: 'edit', component: EditorComponent},
-      {path: 'help', component: UserGuideComponent},
+      { path: '', component: HomeComponent },
+      { path: 'edit', component: EditorComponent },
+      { path: 'help', component: UserGuideComponent },
     ]),
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

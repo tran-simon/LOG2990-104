@@ -12,9 +12,8 @@ describe('CustomInputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
-      declarations: [CustomInputComponent]
-    })
-      .compileComponents();
+      declarations: [CustomInputComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

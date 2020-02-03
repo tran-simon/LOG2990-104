@@ -5,7 +5,7 @@ import { defaultErrorMessages, ErrorMessages } from './error-messages';
 @Component({
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
-  styleUrls: ['./custom-input.component.scss']
+  styleUrls: ['./custom-input.component.scss'],
 })
 export class CustomInputComponent implements OnInit, OnChanges {
   static id = 0;

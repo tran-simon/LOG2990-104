@@ -14,10 +14,9 @@ export interface EditorParams {
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit {
-  params: EditorParams = {surfaceColor: Color.WHITE, surfaceHeight: 0, surfaceWidth: 0};
+  params: EditorParams = { surfaceColor: Color.WHITE, surfaceHeight: 0, surfaceWidth: 0 };
 
-  constructor(private router: ActivatedRoute) {
-  }
+  constructor(private router: ActivatedRoute) {}
 
   ngOnInit() {
     this.router.params.subscribe((params) => {

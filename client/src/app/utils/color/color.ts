@@ -134,7 +134,7 @@ export class Color {
   }
 
   get color255(): Color255 {
-    return {red: this.r255, green: this.g255, blue: this.b255};
+    return { red: this.r255, green: this.g255, blue: this.b255 };
   }
 
   get rgbString(): string {

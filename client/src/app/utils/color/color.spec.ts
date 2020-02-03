@@ -47,7 +47,7 @@ describe('Color', () => {
   });
 
   it('can create color from hex', () => {
-    const {red, green, blue} = Color.hex(colorFromHSL.hex);
+    const { red, green, blue } = Color.hex(colorFromHSL.hex);
     expect(red).toBeCloseTo(0.2, 5);
     expect(green).toBeCloseTo(0.6, 5);
     expect(blue).toBeCloseTo(0.2, 5);

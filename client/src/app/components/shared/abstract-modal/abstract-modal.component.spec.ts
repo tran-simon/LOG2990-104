@@ -12,8 +12,8 @@ describe('AbstractModalComponent', () => {
       imports: [MatDialogModule, MatFormFieldModule],
       declarations: [AbstractModalComponent],
       providers: [
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: MatDialogRef, useValue: {}}
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
       ],
     }).compileComponents();
   }));

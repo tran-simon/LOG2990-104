@@ -14,12 +14,12 @@ describe('IndexService', () => {
 
   beforeEach(() =>
     TestBed.configureTestingModule({
-      providers: [{provide: HttpClient, useValue: httpClientSpy}],
+      providers: [{ provide: HttpClient, useValue: httpClientSpy }],
     }),
   );
 
   it('should return expected message (HttpClient called once)', inject([IndexService], (service: IndexService) => {
-    const expectedMessage: Message = {body: 'Hello', title: 'World'};
+    const expectedMessage: Message = { body: 'Hello', title: 'World' };
 
     httpClientSpy.get.and.returnValue(of(expectedMessage));
 

@@ -19,7 +19,7 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./color-lightness.component.scss'],
 })
 export class ColorLightnessComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() width = 50;
   @Input() height = 300;
   @Input() hue = 0;
