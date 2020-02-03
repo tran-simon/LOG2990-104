@@ -35,6 +35,13 @@ export class Color {
   }
 
   /**
+   * Creates a color from a hex string with no sharp sign (i.e. "FFA012")
+   */
+  static hexNoSharpSign(hexString: string): Color {
+    return Color.hex('#' + hexString);
+  }
+
+  /**
    * Creates a color from values between 0 and 255
    */
   static color255(r255 = 0, g255 = 0, b255 = 0): Color {

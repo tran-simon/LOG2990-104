@@ -22,7 +22,6 @@ describe('Color', () => {
   });
 
   it('can generate Hsl string', () => {
-
     const hslString = Color.getHslString(120, 0.5, 0.75);
     expect(hslString).toEqual('hsl(120,50%,75%)');
   });
@@ -52,5 +51,13 @@ describe('Color', () => {
     expect(red).toBeCloseTo(0.2, 5);
     expect(green).toBeCloseTo(0.6, 5);
     expect(blue).toBeCloseTo(0.2, 5);
+  });
+
+  it('can create color from hex string with no sharp sign', () => {
+    const {red, green, blue} = Color.hexNoSharpSign(colorFromHSL.hex);
+    expect(red).toBeCloseTo(0.2, 5);
+    expect(green).toBeCloseTo(0.6, 5);
+    expect(blue).toBeCloseTo(0.2, 5);
   })
+
 });
