@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-    selector: 'app-abstract-modal',
-    templateUrl: './abstract-modal.component.html',
-    styleUrls: ['./abstract-modal.component.scss'],
+  selector: 'app-abstract-modal',
+  templateUrl: './abstract-modal.component.html',
+  styleUrls: ['./abstract-modal.component.scss'],
 })
 export class AbstractModalComponent {
-    constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {}
+  constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {}
 
-    onCloseClick() {
-        this.dialogRef.close();
-    }
+  onCloseClick() {
+    this.dialogRef.close();
+  }
 }
