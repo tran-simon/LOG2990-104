@@ -2,7 +2,7 @@
  * Represents a color.
  * Values must be between 0 and 1
  */
-import {MathUtil} from '../math/math-util';
+import { MathUtil } from '../math/math-util';
 
 export class Color {
   static RED = new Color(1);
@@ -134,7 +134,7 @@ export class Color {
   }
 
   get color255(): Color255 {
-    return {red: this.r255, green: this.g255, blue: this.b255};
+    return { red: this.r255, green: this.g255, blue: this.b255 };
   }
 
   get rgbString(): string {

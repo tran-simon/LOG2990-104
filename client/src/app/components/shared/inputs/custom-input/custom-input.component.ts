@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, NgIterable, OnChanges, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {defaultErrorMessages, ErrorMessages} from './error-messages';
+import { Component, EventEmitter, Input, NgIterable, OnChanges, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { defaultErrorMessages, ErrorMessages } from './error-messages';
 
 @Component({
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
-  styleUrls: ['./custom-input.component.scss']
+  styleUrls: ['./custom-input.component.scss'],
 })
 export class CustomInputComponent implements OnInit, OnChanges {
   static id = 0;
@@ -52,7 +52,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   getErrorMessage(errorName: string): string {
-    return this.errorMessages[errorName] || ''
+    return this.errorMessages[errorName] || '';
   }
 
   makeValidators(): ValidatorFn[] {
@@ -68,10 +68,10 @@ export class CustomInputComponent implements OnInit, OnChanges {
       validators.push(Validators.pattern(this.stringToMatch));
     }
     if (this.maxLength) {
-      validators.push(Validators.maxLength(this.maxLength))
+      validators.push(Validators.maxLength(this.maxLength));
     }
     if (this.minLength) {
-      validators.push(Validators.minLength(this.minLength))
+      validators.push(Validators.minLength(this.minLength));
     }
     return validators;
   }

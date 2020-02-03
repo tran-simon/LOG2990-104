@@ -1,4 +1,4 @@
-import {MathUtil} from './math-util';
+import { MathUtil } from './math-util';
 
 describe('MathUtil', () => {
   it('can fit', () => {

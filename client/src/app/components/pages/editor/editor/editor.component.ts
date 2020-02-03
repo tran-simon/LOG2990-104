@@ -7,53 +7,53 @@ import { RectangleTool } from '../../../../models/RectangleTool';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 export interface EditorParams {
-    surfaceWidth: number;
-    surfaceHeight: number;
-    surfaceColor: Color;
+  surfaceWidth: number;
+  surfaceHeight: number;
+  surfaceColor: Color;
 }
 
 @Component({
-    selector: 'app-editor',
-    templateUrl: './editor.component.html',
-    styleUrls: ['./editor.component.scss'],
+  selector: 'app-editor',
+  templateUrl: './editor.component.html',
+  styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements AfterViewInit, OnInit {
-    params: EditorParams = { surfaceColor: Color.WHITE, surfaceHeight: 0, surfaceWidth: 0 };
+  params: EditorParams = { surfaceColor: Color.WHITE, surfaceHeight: 0, surfaceWidth: 0 };
 
-    @ViewChild('drawingSurface', { static: false })
-    drawingSurface: DrawingSurfaceComponent;
+  @ViewChild('drawingSurface', { static: false })
+  drawingSurface: DrawingSurfaceComponent;
 
-    constructor(private router: ActivatedRoute) {}
+  constructor(private router: ActivatedRoute) {}
 
-    tools = {
-        // todo - move to afterInit where drawing surface is defined
-        line: new LineTool(this.drawingSurface),
-        rectangle: new RectangleTool(this.drawingSurface),
-    };
+  tools = {
+    // todo - move to afterInit where drawing surface is defined
+    line: new LineTool(this.drawingSurface),
+    rectangle: new RectangleTool(this.drawingSurface),
+  };
 
-    currentTool: CreatorTool = new LineTool(this.drawingSurface);
+  currentTool: CreatorTool = new LineTool(this.drawingSurface);
 
-    ngOnInit() {
-        this.router.params.subscribe((params) => {
-            this.params.surfaceWidth = params.width ? +params.width : 500;
-            this.params.surfaceHeight = params.height ? +params.height : 300;
-            this.params.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
-        });
-    }
+  ngOnInit() {
+    this.router.params.subscribe((params) => {
+      this.params.surfaceWidth = params.width ? +params.width : 500;
+      this.params.surfaceHeight = params.height ? +params.height : 300;
+      this.params.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
+    });
+  }
 
-    ngAfterViewInit() {
-        this.selectLineTool();
-    }
+  ngAfterViewInit() {
+    this.selectLineTool();
+  }
 
-    handleMouseEvent(e: MouseEvent) {
-        this.currentTool.handleMouseEvent(e);
-    }
+  handleMouseEvent(e: MouseEvent) {
+    this.currentTool.handleMouseEvent(e);
+  }
 
-    selectLineTool() {
-        this.currentTool = new LineTool(this.drawingSurface);
-    }
+  selectLineTool() {
+    this.currentTool = new LineTool(this.drawingSurface);
+  }
 
-    selectRectangleTool() {
-        this.currentTool = new RectangleTool(this.drawingSurface);
-    }
+  selectRectangleTool() {
+    this.currentTool = new RectangleTool(this.drawingSurface);
+  }
 }

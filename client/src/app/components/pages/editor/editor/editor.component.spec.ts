@@ -6,23 +6,23 @@ import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { EditorComponent } from './editor.component';
 
 describe('EditorComponent', () => {
-    let component: EditorComponent;
-    let fixture: ComponentFixture<EditorComponent>;
+  let component: EditorComponent;
+  let fixture: ComponentFixture<EditorComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [RouterTestingModule, SharedModule],
-            declarations: [EditorComponent, DrawingSurfaceComponent, ToolbarComponent],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, SharedModule],
+      declarations: [EditorComponent, DrawingSurfaceComponent, ToolbarComponent],
+    }).compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(EditorComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditorComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

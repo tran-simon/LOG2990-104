@@ -11,19 +11,19 @@ import { UserGuideComponent } from './components/pages/user-guide/user-guide/use
 import { SharedModule } from './components/shared/shared.module';
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        SharedModule,
-        HomeModule,
-        EditorModule,
-        UserGuideModule,
-        RouterModule.forRoot([
-            { path: '', component: HomeComponent },
-            { path: 'edit', component: EditorComponent },
-            { path: 'help', component: UserGuideComponent },
-        ]),
-    ],
-    declarations: [AppComponent],
-    bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    SharedModule,
+    HomeModule,
+    EditorModule,
+    UserGuideModule,
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent },
+      { path: 'edit', component: EditorComponent },
+      { path: 'help', component: UserGuideComponent },
+    ]),
+  ],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

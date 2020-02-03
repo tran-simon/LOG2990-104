@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatDialogModule, MatFormFieldModule, MatInputModule} from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {CustomInputComponent} from 'src/app/components/shared/inputs/custom-input/custom-input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 
 import { NumberInputComponent } from './number-input.component';
 
@@ -14,8 +14,7 @@ describe('NumberInputComponent', () => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
       declarations: [NumberInputComponent, CustomInputComponent],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -31,7 +30,7 @@ describe('NumberInputComponent', () => {
   it('can make regex string', () => {
     expect(NumberInputComponent.makeRegexString(false, false)).toEqual('^([0-9]*)$');
     expect(NumberInputComponent.makeRegexString(true, false)).toEqual('^-?([0-9]*)$');
-    expect(NumberInputComponent.makeRegexString(false, true)).toEqual('^([0-9]*\.)?[0-9]*$');
-    expect(NumberInputComponent.makeRegexString(true, true)).toEqual('^-?([0-9]*\.)?[0-9]*$')
-  })
+    expect(NumberInputComponent.makeRegexString(false, true)).toEqual('^([0-9]*.)?[0-9]*$');
+    expect(NumberInputComponent.makeRegexString(true, true)).toEqual('^-?([0-9]*.)?[0-9]*$');
+  });
 });
