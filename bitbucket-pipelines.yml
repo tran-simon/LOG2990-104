@@ -6,59 +6,55 @@
 image: atlassianlabs/docker-node-jdk-chrome-firefox
 
 pipelines:
-    pull-requests:
-        '**':
+    default:
         - step:
               name: Install and test Client
               caches:
                   - node
               script:
-                  - ./authorEmailCheck.sh
                   - Xvfb :99 -ac -screen 0 1920x1080x24 &
                   - pushd client
                   - npm install
-                  - npm run build:prod
-                  - npm run lint
+                  - npm run build
                   - npm run test -- --browsers ChromeHeadlessNoSandbox
                   - popd
               artifacts:
                   - ~/client/out
- #       - step:
- #             name: Install and test Server
- #             caches:
- #                 - node
- #             script:
-                  #- pushd server
-                  #- npm install
+        - step:
+              name: Install and test Server
+              caches:
+                  - node
+              script:
+                  - pushd server
+                  - npm install
                   # TODO: Reenable once there are some tests
                   #                  - npm run test
-                  #- popd
- #             artifacts:
- #                 - ~/server/out
+                  - popd
+              artifacts:
+                  - ~/server/out
     branches:
-       '{release/*, hotfix/*}':
+       'release/*':
        - step:
               name: Deploy Client In staging to prepare for release
               caches:
                 - node
               deployment: staging
               script:
-                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
                   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
                     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
                     apt-get update && \
-                    apt-get install -y google-chrome-stable xvfb procps
+                    apt-get install -y google-chrome-stable xvfb procps       
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - pipe: atlassian/firebase-deploy:0.3.6
+                - pipe: atlassian/firebase-deploy:0.3.0
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_STAGING'
-                    PROJECT_ID: 'log2990-104-staging'
-                - popd
+                    FIREBASE_PROJECT: 'LOG2990-104-STAGING'
+                - popd    
        'master':
        - step:
               name: Deploy Client In Production
@@ -66,43 +62,40 @@ pipelines:
                 - node
               deployment: production
               script:
-                - ./authorEmailCheck.sh
                 - pushd client
                 - npm install
                 - >
                   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
                     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
                     apt-get update && \
-                    apt-get install -y google-chrome-stable xvfb procps
+                    apt-get install -y google-chrome-stable xvfb procps       
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - pipe: atlassian/firebase-deploy:0.3.6
+                - pipe: atlassian/firebase-deploy:0.3.0
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
-                    PROJECT_ID: 'log2990-104'
-                - popd
-        develop:
-        - step:
-            name: Deploy Client In dev
-            caches:
+                    FIREBASE_PROJECT: 'LOG2990-104'
+                - popd    
+       develop:
+       - step:
+              name: Deploy Client In Dev
+              caches:
                 - node
-            deployment: test
-            script:
-                - ./authorEmailCheck.sh
+              deployment: dev
+              script:
                 - pushd client
                 - npm install
                 - >
                   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
                     sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
                     apt-get update && \
-                    apt-get install -y google-chrome-stable xvfb procps
+                    apt-get install -y google-chrome-stable xvfb procps       
                 - npm run test:ci
                 #- npm run e2e:ci # TODO
                 - npm run build:prod
-                - pipe: atlassian/firebase-deploy:0.3.6
+                - pipe: atlassian/firebase-deploy:0.3.0
                   variables:
                     FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI_DEV'
-                    PROJECT_ID: 'log2990-104-dev'
-                - popd
-
+                    FIREBASE_PROJECT: 'LOG2990-104-DEV'
+                - popd    
