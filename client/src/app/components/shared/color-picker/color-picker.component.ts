@@ -1,13 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  Input, OnChanges, OnInit, SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {defaultErrorMessages, Dictionary} from 'src/app/components/shared/inputs/custom-input/error-messages';
+import {defaultErrorMessages, ErrorMessages} from 'src/app/components/shared/inputs/custom-input/error-messages';
 import {Color, Color255} from 'src/app/utils/color/color';
 
 @Component({
@@ -21,7 +14,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private mouseIsDown = false;
   private renderingContext: CanvasRenderingContext2D;
-  hexInputErrorMessages: Dictionary<string> = defaultErrorMessages({pattern: 'Doit être une couleur valide'});
+  hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({pattern: 'Doit être une couleur valide'});
 
   size = 300;
 
@@ -71,10 +64,10 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
         break;
       case 'b':
         blue = parseInt(value, 16);
-        break
+        break;
     }
     this.color = Color.color255(red, green, blue);
-    this.draw()
+    this.draw();
   }
 
   hexChange(value: string): void {

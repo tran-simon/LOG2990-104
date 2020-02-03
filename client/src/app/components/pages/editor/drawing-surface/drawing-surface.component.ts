@@ -9,5 +9,5 @@ import {Color} from 'src/app/utils/color/color';
 export class DrawingSurfaceComponent {
     @Input() width: number;
     @Input() height: number;
-    @Input() color: Color;
+  @Input() color = Color.WHITE;
 }

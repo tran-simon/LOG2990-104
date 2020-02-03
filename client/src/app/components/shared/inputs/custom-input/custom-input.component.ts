@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, NgIterable, OnChanges, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {defaultErrorMessages, Dictionary} from './error-messages';
+import {defaultErrorMessages, ErrorMessages} from './error-messages';
 
 @Component({
   selector: 'app-custom-input',
@@ -26,7 +26,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   @Input() value = '';
   @Output() valueChange = new EventEmitter<string>();
 
-  @Input() errorMessages: Dictionary<string> = defaultErrorMessages();
+  @Input() errorMessages: ErrorMessages<string> = defaultErrorMessages();
   @Input() format = (v: string) => v;
 
   ngOnInit() {
@@ -52,7 +52,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   getErrorMessage(errorName: string): string {
-    return this.errorMessages[errorName];
+    return this.errorMessages[errorName] || ''
   }
 
   makeValidators(): ValidatorFn[] {
