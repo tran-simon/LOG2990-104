@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../../shared/shared.module';
+import { Subject1Component } from 'src/app/components/pages/user-guide/subject1/subject1.component';
+import { Subject2Component } from 'src/app/components/pages/user-guide/subject2/subject2.component';
+import { Subject3Component } from 'src/app/components/pages/user-guide/subject3/subject3.component';
+import { Subject4Component } from 'src/app/components/pages/user-guide/subject4/subject4.component';
+import { Subject5Component } from 'src/app/components/pages/user-guide/subject5/subject5.component';
+import { Subject6Component } from 'src/app/components/pages/user-guide/subject6/subject6.component';
 
-import { BienvenueComponent } from '../Bienvenue/bienvenue.component';
-import { Sujet1Component } from '../sujet1/sujet1.component';
-import { Sujet2Component } from '../sujet2/sujet2.component';
-import { Sujet3Component } from '../sujet3/sujet3.component';
-import { Sujet4Component } from '../sujet4/sujet4.component';
-import { Sujet5Component } from '../sujet5/sujet5.component';
-import { Sujet6Component } from '../sujet6/sujet6.component';
+import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
+import { SharedModule } from '../../../shared/shared.module';
 import { UserGuideComponent } from './user-guide.component';
 
 describe('UserGuideComponent', () => {
@@ -19,13 +19,13 @@ describe('UserGuideComponent', () => {
       imports: [SharedModule],
       declarations: [
         UserGuideComponent,
-        BienvenueComponent,
-        Sujet1Component,
-        Sujet2Component,
-        Sujet3Component,
-        Sujet4Component,
-        Sujet5Component,
-        Sujet6Component,
+        WelcomeComponent,
+        Subject1Component,
+        Subject2Component,
+        Subject3Component,
+        Subject4Component,
+        Subject5Component,
+        Subject6Component,
       ],
     }).compileComponents();
   }));
