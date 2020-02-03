@@ -5,25 +5,30 @@
     </button>
     <div class="toolbar-section-divider"></div>
     <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Pencil}"
-            (click)="selectTool(tools.Pencil)">
+      (click)="selectTool(tools.Pencil)">
       <mat-icon>edit</mat-icon>
     </button>
     <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Brush}"
-            (click)="selectTool(tools.Brush)">
+      (click)="selectTool(tools.Brush)">
       <mat-icon>brush</mat-icon>
     </button>
     <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Rectangle}"
-            (click)="selectTool(tools.Rectangle)">
+      (click)="selectTool(tools.Rectangle)">
       <mat-icon>crop_square</mat-icon>
     </button>
-    <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Line}"
-            (click)="selectTool(tools.Line)">
+    <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.Line}" (click)="selectTool(tools.Line)">
       <mat-icon>show_chart</mat-icon>
     </button>
     <button mat-icon-button [ngClass]="{'selected-tool': selectedTool === tools.ColorPicker}"
-            (click)="selectTool(tools.ColorPicker)">
+      (click)="selectTool(tools.ColorPicker)">
       <mat-icon>colorize</mat-icon>
     </button>
+  </div>
+  <div id="toolbar-middle-buttons">
+    <div id="toolbar-primary-color" [style.background-color]="selectedPrimaryColor" (dblclick)="selectColor(false)">
+    </div>
+    <div id="toolbar-secondary-color" [style.background-color]="selectedSecondaryColor" (dblclick)="selectColor(true)">
+    </div>
   </div>
   <div id="toolbar-bottom-buttons">
     <button mat-icon-button>
@@ -43,7 +48,7 @@
           <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessPencil">
         </mat-form-field>
         <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
-                    [(ngModel)]="thicknessPencil">
+          [(ngModel)]="thicknessPencil">
         </mat-slider>
       </div>
       <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
@@ -52,7 +57,7 @@
           <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
         </mat-form-field>
         <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
-                    [(ngModel)]="thicknessBrush">
+          [(ngModel)]="thicknessBrush">
         </mat-slider>
       </div>
       <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
@@ -61,7 +66,7 @@
           <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
         </mat-form-field>
         <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
-                    [(ngModel)]="thicknessBrush">
+          [(ngModel)]="thicknessBrush">
         </mat-slider>
       </div>
       <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
@@ -70,11 +75,15 @@
           <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
         </mat-form-field>
         <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
-                    [(ngModel)]="thicknessBrush">
+          [(ngModel)]="thicknessBrush">
         </mat-slider>
       </div>
-      <div *ngSwitchCase="tools.ColorPicker" class="toolbar-tool-section">
+      <div *ngSwitchCase="tools.ColorPicker" [ngSwitch]="selectedColor" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>
+
+        <label *ngSwitchCase="false">Couleur primaire</label>
+        <label *ngSwitchCase="true">Couleur secondaire</label>
+        <app-color-picker #colorPicker></app-color-picker>
       </div>
     </mat-drawer-content>
   </mat-drawer>
