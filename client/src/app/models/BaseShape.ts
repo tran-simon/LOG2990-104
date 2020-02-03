@@ -1,7 +1,7 @@
 import { Coordinate } from './Coordinate';
 import { ShapeProperties } from './ShapeProperties';
 
-export class BaseShape {
+export abstract class BaseShape {
     properties: ShapeProperties;
     origin: Coordinate;
     startCoord: Coordinate;
