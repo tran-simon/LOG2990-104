@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import "../../../../../assets/globalTheme";
+
+#toolbar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    position: fixed;
+    width: 60px;
+    height: calc(100vh - 0px);
+
+    background-color: $primary;
+}
+
+#toolbar-top-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#toolbar-bottom-buttons{
+    padding-bottom: 20px;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $secondary;
+}
+
+button {
+    width: 50px;
+    height: 50px;
+    color: $accent;
+}
+
+#back-button {
+    width: 60px;
+    height: 60px;
+}
+
+.toolbar-section-divider {
+    padding: 10px 0px;
+    width: 100%;
+}
+
+mat-drawer-container {
+    position: fixed;
+    margin-left: 60px;
+    width: 100%;
+    height: calc(100vh - 0px);
+
+    background-color: transparent;
+}
+
+mat-drawer {
+    box-shadow: $elevationShadow;
+    background-color: $primaryDark;
+}
+
+mat-drawer-content {
+    margin: 0 !important;
+}
+
+mat-slider, mat-form-field{
+    width: 100%;
+    color: $accent;
+}
+
+::ng-deep .mat-accent .mat-slider-thumb {
+    background-color: $accent;
+} 
+::ng-deep .mat-accent .mat-slider-thumb-label {
+    background-color: $accent;
+} 
+::ng-deep .mat-accent .mat-slider-thumb-label-text {
+    color: $secondary;
+} 
+::ng-deep .mat-accent .mat-slider-track-fill {
+    background-color: $accent;
+}
+
+
+.toolbar-tool-section {
+    display: flex;
+    padding: 25px;
+    width: 300px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toolbar-option-section {
+    display: flex;
+    align-self: flex-start;
+    color: $accent;
+}
+
+.selected-tool {
+    background-color: $secondary;
+}

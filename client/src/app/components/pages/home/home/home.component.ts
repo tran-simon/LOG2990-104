@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-modal.component';
+import { Router } from '@angular/router';
+import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
 
 @Component({
     selector: 'app-home',
@@ -8,9 +9,14 @@ import { AbstractModalComponent } from '../../../shared/abstract-modal/abstract-
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-    constructor(private dialog: MatDialog) {}
+    previousDrawings = false;
+    constructor(private router: Router, private dialog: MatDialog) {}
 
     openCreateModal(): void {
-        this.dialog.open(AbstractModalComponent, {});
+        this.dialog.open(CreateDrawingModalComponent, {});
+    }
+
+    openPage(nextLink: string): void {
+        this.router.navigate([nextLink]);
     }
 }
