@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {CustomInputComponent} from '../custom-input/custom-input.component';
+import { Component, OnInit } from '@angular/core';
+import { CustomInputComponent } from '../custom-input/custom-input.component';
 
 @Component({
   selector: 'app-number-input',
@@ -20,7 +20,7 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
     if (allowDecimals) {
       regexString += '\.)?[0-9]*$';
     } else {
-      regexString += ')$'
+      regexString += ')$';
     }
     return regexString;
   }

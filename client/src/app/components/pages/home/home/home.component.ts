@@ -4,19 +4,21 @@ import { Router } from '@angular/router';
 import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-    previousDrawings = false;
-    constructor(private router: Router, private dialog: MatDialog) {}
+  previousDrawings = false;
 
-    openCreateModal(): void {
-        this.dialog.open(CreateDrawingModalComponent, {});
-    }
+  constructor(private router: Router, private dialog: MatDialog) {
+  }
 
-    openPage(nextLink: string): void {
-        this.router.navigate([nextLink]);
-    }
+  openCreateModal(): void {
+    this.dialog.open(CreateDrawingModalComponent, {});
+  }
+
+  openPage(nextLink: string): void {
+    this.router.navigate([nextLink]);
+  }
 }
