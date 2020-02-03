@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, NgIterable, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, NgIterable, OnChanges, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {defaultErrorMessages, Dictionary} from './error-messages';
 
@@ -7,12 +7,18 @@ import {defaultErrorMessages, Dictionary} from './error-messages';
   templateUrl: './custom-input.component.html',
   styleUrls: ['./custom-input.component.scss']
 })
-export class CustomInputComponent implements OnInit {
+export class CustomInputComponent implements OnInit, OnChanges {
   static id = 0;
   @Input() id = `custom-input-${CustomInputComponent.id++}`;
   @Input() formGroup = new FormGroup({});
   @Input() stringToMatch: string;
+  @Input() required = true;
   @Input() messages: string;
+  @Input() length: number;
+  @Input() minLength: number;
+  @Input() maxLength: number;
+  @Input() prefix: string;
+  @Input() suffix: string;
 
   formControl: FormControl;
   validValue = '';
@@ -28,6 +34,7 @@ export class CustomInputComponent implements OnInit {
       this.formControl = new FormControl(this.value, this.makeValidators());
     }
     this.formGroup.addControl(this.id, this.formControl);
+    this.value = this.format(this.value);
     this.validValue = this.value;
   }
 
@@ -36,8 +43,12 @@ export class CustomInputComponent implements OnInit {
       this.value = this.format(this.formControl.valid ? value : this.validValue);
       this.formControl.setValue(this.value);
       this.valueChange.emit(this.value);
-      this.validValue = this.value;
     }
+  }
+
+  ngOnChanges(): void {
+    this.value = this.format(this.value);
+    this.validValue = this.value;
   }
 
   getErrorMessage(errorName: string): string {
@@ -46,8 +57,21 @@ export class CustomInputComponent implements OnInit {
 
   makeValidators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
+    if (!this.minLength && !this.maxLength) {
+      this.minLength = this.length;
+      this.maxLength = this.length;
+    }
+    if (this.required) {
+      validators.push(Validators.required);
+    }
     if (this.stringToMatch) {
       validators.push(Validators.pattern(this.stringToMatch));
+    }
+    if (this.maxLength) {
+      validators.push(Validators.maxLength(this.maxLength))
+    }
+    if (this.minLength) {
+      validators.push(Validators.minLength(this.minLength))
     }
     return validators;
   }

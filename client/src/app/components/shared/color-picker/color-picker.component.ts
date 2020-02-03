@@ -7,7 +7,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {Dictionary} from 'src/app/components/shared/inputs/custom-input/error-messages';
+import {defaultErrorMessages, Dictionary} from 'src/app/components/shared/inputs/custom-input/error-messages';
 import {Color, Color255} from 'src/app/utils/color/color';
 
 @Component({
@@ -21,7 +21,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private mouseIsDown = false;
   private renderingContext: CanvasRenderingContext2D;
-  hexInputErrorMessages: Dictionary<string> = {pattern: 'Doit être une couleur valide'};
+  hexInputErrorMessages: Dictionary<string> = defaultErrorMessages({pattern: 'Doit être une couleur valide'});
 
   size = 300;
 
@@ -64,13 +64,13 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
     let {red, green, blue}: Color255 = this.color.color255;
     switch (component) {
       case 'r':
-        red = +value;
+        red = parseInt(value, 16);
         break;
       case 'g':
-        green = +value;
+        green = parseInt(value, 16);
         break;
       case 'b':
-        blue = +value;
+        blue = parseInt(value, 16);
         break
     }
     this.color = Color.color255(red, green, blue);

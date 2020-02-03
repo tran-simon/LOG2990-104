@@ -24,12 +24,4 @@ export class MathUtil {
     );
   }
 
-  /**
-   * Returns hex string of minimum size 2. If value is smaller than 16, result will be '0X'
-   */
-  static toHex(value: number): string {
-    const stringValue = value.toString(16);
-    return stringValue.length !== 1 ? stringValue : '0' + stringValue;
-  }
-
 }

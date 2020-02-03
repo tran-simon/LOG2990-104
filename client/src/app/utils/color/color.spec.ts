@@ -42,8 +42,8 @@ describe('Color', () => {
   });
 
   it('can get hex value', () => {
-    expect(Color.GREEN.hex).toEqual('#00ff00');
-    expect(Color.GREEN.hexNoSharpSign).toEqual('00ff00');
+    expect(Color.GREEN.hex).toEqual('00ff00');
+    expect(Color.GREEN.hexString).toEqual('#00ff00');
   });
 
   it('can create color from hex', () => {
@@ -52,12 +52,4 @@ describe('Color', () => {
     expect(green).toBeCloseTo(0.6, 5);
     expect(blue).toBeCloseTo(0.2, 5);
   });
-
-  it('can create color from hex string with no sharp sign', () => {
-    const {red, green, blue} = Color.hexNoSharpSign(colorFromHSL.hex);
-    expect(red).toBeCloseTo(0.2, 5);
-    expect(green).toBeCloseTo(0.6, 5);
-    expect(blue).toBeCloseTo(0.2, 5);
-  })
-
 });

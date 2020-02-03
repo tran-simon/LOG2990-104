@@ -2,7 +2,10 @@
   <label for="{{id}}">
     <ng-content select="label"></ng-content>
   </label>
-  <input #input matInput (blur)="onBlur(input.value)" [value]='value' [formControl]="formControl" id="{{id}}" >
+
+  <span *ngIf="prefix" matPrefix>{{prefix}}</span>
+  <input #input matInput (blur)="onBlur(input.value)" [value]='value' [formControl]="formControl" id="{{id}}">
+  <span *ngIf="suffix" matSuffix>{{suffix}}</span>
 
   <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
        class="alert alert-danger">

@@ -1,9 +1,9 @@
 <app-abstract-modal>
   <div content>
     <form [formGroup]="formGroup">
-      <app-number-input [(value)]='width' [formGroup]="formGroup">Largeur: </app-number-input>
-      <app-number-input [(value)]='height' [formGroup]="formGroup">Hauteur: </app-number-input>
-      <app-color-picker #colorpicker  [formGroup]="formGroup"></app-color-picker>
+      <app-number-input suffix="px" [(value)]='width' [formGroup]="formGroup">Largeur:</app-number-input>
+      <app-number-input suffix="px" [(value)]='height' [formGroup]="formGroup">Hauteur:</app-number-input>
+      <app-color-picker #colorpicker [formGroup]="formGroup"></app-color-picker>
     </form>
   </div>
   <div actions>

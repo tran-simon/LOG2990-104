@@ -8,9 +8,4 @@ describe('MathUtil', () => {
     expect(MathUtil.fit(3, 3, 7)).toEqual(3);
     expect(MathUtil.fit(-3, 3, 7)).toEqual(3);
   });
-
-  it('can get hex value', () => {
-    expect(MathUtil.toHex(5)).toEqual('05');
-    }
-  )
 });

@@ -22,7 +22,7 @@ export class EditorComponent implements OnInit {
     this.router.params.subscribe((params) => {
       this.params.surfaceWidth = params.width ? +params.width : 500;
       this.params.surfaceHeight = params.height ? +params.height : 300;
-      this.params.surfaceColor = params.color ? Color.hexNoSharpSign(params.color) : Color.WHITE;
+      this.params.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
     });
   }
 }

@@ -23,7 +23,7 @@ export class CreateDrawingModalComponent extends AbstractModalComponent {
 
     onCreateClick() {
         this.router.navigate(['edit',
-          {width: this.width, height: this.height, color: this.colorPicker.color.hexNoSharpSign}
+          {width: this.width, height: this.height, color: this.colorPicker.color.hex}
           ]).then(() => this.dialogRef.close());
     }
 }

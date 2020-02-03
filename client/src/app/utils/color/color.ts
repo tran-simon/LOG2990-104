@@ -28,17 +28,10 @@ export class Color {
    * Creates a color from hex string
    */
   static hex(hexString: string): Color {
-    const r = parseInt(hexString.substr(1, 2), 16);
-    const g = parseInt(hexString.substr(3, 2), 16);
-    const b = parseInt(hexString.substr(5, 2), 16);
-    return Color.color255(r, g, b)
-  }
-
-  /**
-   * Creates a color from a hex string with no sharp sign (i.e. "FFA012")
-   */
-  static hexNoSharpSign(hexString: string): Color {
-    return Color.hex('#' + hexString);
+    const r = parseInt(hexString.substr(0, 2), 16);
+    const g = parseInt(hexString.substr(2, 2), 16);
+    const b = parseInt(hexString.substr(4, 2), 16);
+    return Color.color255(r, g, b);
   }
 
   /**
@@ -69,7 +62,7 @@ export class Color {
    * Gets hue value from RGB color
    * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma
    */
-  get hue(): number | undefined {
+  get hue(): number {
     const M = Math.max(this._red, this._green, this._blue);
     const m = Math.min(this._red, this._green, this._blue);
     const C = M - m;
@@ -86,7 +79,7 @@ export class Color {
         h = (this._red - this._green) / C + 4;
         break;
     }
-    return h ? 60 * h : undefined;
+    return h ? 60 * h : 0;
   }
 
   /**
@@ -126,15 +119,18 @@ export class Color {
     return `hsl(${h},${s * 100}%,${l * 100}%)`;
   }
 
-  get hex(): string {
-    const r = MathUtil.toHex(this.r255);
-    const g = MathUtil.toHex(this.g255);
-    const b = MathUtil.toHex(this.b255);
-    return `#${r}${g}${b}`;
+  /**
+   * Get hex string `#FFFFFF`
+   */
+  get hexString(): string {
+    return '#' + this.hex;
   }
 
-  get hexNoSharpSign(): string {
-    return this.hex.substring(1);
+  get hex(): string {
+    const r = this.r255.toString(16).padStart(2, '0');
+    const g = this.g255.toString(16).padStart(2, '0');
+    const b = this.b255.toString(16).padStart(2, '0');
+    return `${r}${g}${b}`;
   }
 
   get color255(): Color255 {

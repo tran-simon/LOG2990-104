@@ -1,4 +1,4 @@
-<div id="color-picker" [style.background-color]="color.hex">
+<div id="color-picker" [style.background-color]="color.hexString">
   <canvas #canvas id="color-square"
     width="{{size}}"
     height="{{size}}"
@@ -12,9 +12,22 @@
     width="50" height="{{size}}"></app-color-lightness>
 
   <form [formGroup]="formGroup">
-    <app-number-input #redinput [value]="color.r255.toString()" (valueChange)="colorChange(redinput.value, 'r')" [formGroup]="formGroup">Rouge: </app-number-input>
-    <app-number-input #greeninput [value]="color.g255.toString()" (valueChange)="colorChange(greeninput.value, 'g')" [formGroup]="formGroup">Rouge: </app-number-input>
-    <app-number-input #blueinput [value]="color.b255.toString()" (valueChange)="colorChange(blueinput.value, 'b')" [formGroup]="formGroup">Rouge: </app-number-input>
-    <app-custom-input #hexinput [errorMessages]="hexInputErrorMessages" stringToMatch="^\#[0-9a-fA-F]{6}$" [value]="color.hex" (valueChange)="hexChange(hexinput.value)" [formGroup]="formGroup">Hex: </app-custom-input>
+    <app-hex-input  #redinput [maxLength]=2 [value]="color.r255.toString(16)" (valueChange)="colorChange(redinput.value, 'r')" [formGroup]="formGroup">
+      Rouge:
+    </app-hex-input>
+    <app-hex-input #greeninput [maxLength]=2 [value]="color.g255.toString(16)" (valueChange)="colorChange(greeninput.value, 'g')" [formGroup]="formGroup">
+      Rouge:
+    </app-hex-input>
+    <app-hex-input #blueinput [maxLength]=2 [value]="color.b255.toString(16)" (valueChange)="colorChange(blueinput.value, 'b')" [formGroup]="formGroup">
+      Rouge:
+    </app-hex-input>
+    <app-hex-input #hexinput
+      [length]=6
+      prefix="#"
+      [errorMessages]="hexInputErrorMessages"
+      [value]="color.hex"
+      (valueChange)="hexChange(hexinput.value)"
+      [formGroup]="formGroup">Hex:
+    </app-hex-input>
   </form>
 </div>
