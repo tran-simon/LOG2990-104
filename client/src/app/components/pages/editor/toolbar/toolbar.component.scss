@@ -11,6 +11,8 @@
   height: calc(100vh - 0px);
 
   background-color: $primary;
+
+  z-index: 1000;
 }
 
 #toolbar-top-buttons {
@@ -51,10 +53,8 @@ button {
 mat-drawer-container {
   position: fixed;
   margin-left: 60px;
-  width: 100%;
   height: calc(100vh - 0px);
-
-  background-color: transparent;
+  overflow: visible;
 }
 
 mat-drawer {
