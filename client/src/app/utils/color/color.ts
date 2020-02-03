@@ -2,7 +2,7 @@
  * Represents a color.
  * Values must be between 0 and 1
  */
-import {MathUtil} from '../math/math-util';
+import { MathUtil } from '../math/math-util';
 
 export class Color {
   static RED = new Color(1);
