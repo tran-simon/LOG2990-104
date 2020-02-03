@@ -1,21 +1,21 @@
 <h1>Guide d'utilisation</h1>
 <div class="container">
-    <mat-sidenav-container>
-        <mat-sidenav mode="side" [(opened)]="opened">
-            Bienvenue
-        </mat-sidenav>
-        <mat-sidenav-content>
-            <div *ngIf="opened; else elseBlock">
-                <button (click) = "opened=!opened">close</button>
-            </div>
-            <ng-template #elseBlock>
-                <div>
-                    <button (click)= "opened=!opened">open</button>
-                </div>
-            </ng-template>
-            <button mat-button style="text-align: left;" (click) = "previous()">precedent</button>
-            <button mat-button style="text-align: right;" (click) = "next()">suivant</button>
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" [(opened)]="opened">
+      Bienvenue
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div *ngIf="opened; else elseBlock">
+        <button (click)="opened=!opened">close</button>
+      </div>
+      <ng-template #elseBlock>
+        <div>
+          <button (click)="opened=!opened">open</button>
+        </div>
+      </ng-template>
+      <button mat-button style="text-align: left;" (click)="previous()">precedent</button>
+      <button mat-button style="text-align: right;" (click)="next()">suivant</button>
 
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
