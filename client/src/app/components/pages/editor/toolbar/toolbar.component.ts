@@ -48,4 +48,10 @@ export class ToolbarComponent {
     goHome() {
         this.router.navigate(['']);
     }
+
+    // TODO Recheck the number input field validation for the custom module
+    validateNumber(event: KeyboardEvent) {
+        const reg = RegExp('^[0-9]$');
+        return reg.test(event.key);
+    }
 }
