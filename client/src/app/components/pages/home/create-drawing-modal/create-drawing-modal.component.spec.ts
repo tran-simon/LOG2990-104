@@ -13,7 +13,7 @@ describe('CreateDrawingModalComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule],
       declarations: [CreateDrawingModalComponent],
-      providers: [{provide: MatDialogRef, useValue: {}}],
+      providers: [{ provide: MatDialogRef, useValue: {} }],
     }).compileComponents();
   }));
 

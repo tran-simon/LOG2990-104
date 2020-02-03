@@ -9,12 +9,12 @@ import { Color, Color255 } from 'src/app/utils/color/color';
   styleUrls: ['./color-picker.component.scss'],
 })
 export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() _color = Color.GREEN;
 
   private mouseIsDown = false;
   private renderingContext: CanvasRenderingContext2D;
-  hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({pattern: 'Doit être une couleur valide'});
+  hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
 
   size = 300;
 
@@ -54,7 +54,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   colorChange(value: string, component: string): void {
-    let {red, green, blue}: Color255 = this.color.color255;
+    let { red, green, blue }: Color255 = this.color.color255;
     switch (component) {
       case 'r':
         red = parseInt(value, 16);

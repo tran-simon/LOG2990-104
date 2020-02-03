@@ -7,8 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./abstract-modal.component.scss'],
 })
 export class AbstractModalComponent {
-  constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
-  }
+  constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {}
 
   onCloseClick() {
     this.dialogRef.close();

@@ -32,7 +32,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     ColorLightnessComponent,
     NumberInputComponent,
     CustomInputComponent,
-    HexInputComponent
+    HexInputComponent,
   ],
 
   entryComponents: [AbstractModalComponent],
@@ -51,8 +51,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     ColorPickerComponent,
     NumberInputComponent,
     CustomInputComponent,
-    HexInputComponent
+    HexInputComponent,
   ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

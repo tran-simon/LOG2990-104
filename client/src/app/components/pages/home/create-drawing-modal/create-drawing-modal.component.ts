@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { EditorParams } from 'src/app/components/pages/editor/editor/editor.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 
@@ -11,7 +12,7 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
   styleUrls: ['./create-drawing-modal.component.scss'],
 })
 export class CreateDrawingModalComponent extends AbstractModalComponent {
-  @ViewChild('colorpicker', {static: true}) colorPicker: ColorPickerComponent;
+  @ViewChild('colorpicker', { static: true }) colorPicker: ColorPickerComponent;
 
   formGroup = new FormGroup({});
   width = '500';
@@ -22,8 +23,7 @@ export class CreateDrawingModalComponent extends AbstractModalComponent {
   }
 
   onCreateClick() {
-    this.router.navigate(['edit',
-      {width: this.width, height: this.height, color: this.colorPicker.color.hex}
-    ]).then(() => this.dialogRef.close());
+    const params: EditorParams = { width: this.width, height: this.height, color: this.colorPicker.color.hex };
+    this.router.navigate(['edit', params]).then(() => this.dialogRef.close());
   }
 }

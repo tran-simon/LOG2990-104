@@ -16,7 +16,7 @@ enum Tool {
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  @ViewChild('drawer', {static: false})
+  @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
   tools = Tool;
@@ -28,8 +28,7 @@ export class ToolbarComponent {
   stepthickness = 0.1;
   selectedTool: Tool;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   selectTool(selection: Tool) {
     if (this.selectedTool === selection) {

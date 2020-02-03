@@ -6,5 +6,4 @@ import { UserGuideComponent } from './user-guide/user-guide.component';
   imports: [SharedModule],
   declarations: [UserGuideComponent],
 })
-export class UserGuideModule {
-}
+export class UserGuideModule {}
