@@ -10,6 +10,7 @@ import { CreateDrawingModalComponent } from '../create-drawing-modal/create-draw
 })
 export class HomeComponent {
   previousDrawings = false;
+
   constructor(private router: Router, private dialog: MatDialog) {}
 
   openCreateModal(): void {
