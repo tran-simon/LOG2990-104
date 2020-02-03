@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Color } from 'src/app/utils/color/color';
 
 export interface EditorParams {
-  surfaceWidth: number;
-  surfaceHeight: number;
-  surfaceColor: Color;
+  width: string;
+  height: string;
+  color: string;
 }
 
 @Component({
@@ -14,15 +14,17 @@ export interface EditorParams {
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit {
-  params: EditorParams = { surfaceColor: Color.WHITE, surfaceHeight: 0, surfaceWidth: 0 };
+  surfaceWidth = 0;
+  surfaceHeight = 0;
+  surfaceColor = Color.WHITE;
 
   constructor(private router: ActivatedRoute) {}
 
   ngOnInit() {
     this.router.params.subscribe((params) => {
-      this.params.surfaceWidth = params.width ? +params.width : 500;
-      this.params.surfaceHeight = params.height ? +params.height : 300;
-      this.params.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
+      this.surfaceWidth = params.width ? +params.width : 500;
+      this.surfaceHeight = params.height ? +params.height : 300;
+      this.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
     });
   }
 }
