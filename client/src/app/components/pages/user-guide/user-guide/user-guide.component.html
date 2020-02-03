@@ -1,93 +1,90 @@
-<h1>Guide d'utilisation</h1>
-<div class="container">
-    <mat-sidenav-container>
-        <mat-sidenav #sidenav mode="side" style="text-align: center;">
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" style="text-align: center;">
 
-          <div id="mat-sidenav-cat">
-            <button mat-flat-button (click)="selectSubject(subjects.Bienvenue)">Bienvenue</button>
+      <div id="mat-sidenav-cat">
+        <button mat-flat-button (click)="selectSubject(subjects.Bienvenue)">Bienvenue</button>
 
-            <mat-accordion>
-              <mat-expansion-panel [expanded]="panelOpenState1" (closed)="panelOpenState1=false">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    cat1
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    S1-S2
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p><button mat-flat-button (click)="selectSubject(subjects.Sujet1)">Sujet1</button></p>
-                <p><button mat-flat-button (click)="selectSubject(subjects.Sujet2)">Sujet2</button></p>
-              </mat-expansion-panel>
-            </mat-accordion>
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="panelOpenState1" (closed)="panelOpenState1=false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                cat1
+              </mat-panel-title>
+              <mat-panel-description>
+                S1-S2
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p><button mat-flat-button (click)="selectSubject(subjects.Sujet1)">Sujet1</button></p>
+            <p><button mat-flat-button (click)="selectSubject(subjects.Sujet2)">Sujet2</button></p>
+          </mat-expansion-panel>
+        </mat-accordion>
 
-            <mat-accordion>
-              <mat-expansion-panel [expanded]="panelOpenState2" (closed)="panelOpenState2=false">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    cat2
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    S3-S4
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p><button mat-flat-button (click)="selectSubject(subjects.Sujet3)">Sujet3</button></p>
-                <p><button mat-flat-button (click)="selectSubject(subjects.Sujet4)">Sujet4</button></p>
-              </mat-expansion-panel>
-            </mat-accordion>
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="panelOpenState2" (closed)="panelOpenState2=false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                cat2
+              </mat-panel-title>
+              <mat-panel-description>
+                S3-S4
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p><button mat-flat-button (click)="selectSubject(subjects.Sujet3)">Sujet3</button></p>
+            <p><button mat-flat-button (click)="selectSubject(subjects.Sujet4)">Sujet4</button></p>
+          </mat-expansion-panel>
+        </mat-accordion>
 
-            <mat-accordion>
-              <mat-expansion-panel [expanded]="panelOpenState3" (closed)="panelOpenState3=false">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    cat3
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    S5-S6
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p><button mat-flat-button (click)="selectSubject(subjects.Sujet5)">Sujet5</button></p>
-                <p><button mat-flat-button (click)="selectSubject(subjects.Sujet6)">Sujet6</button></p>
-              </mat-expansion-panel>
-            </mat-accordion>
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="panelOpenState3" (closed)="panelOpenState3=false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                cat3
+              </mat-panel-title>
+              <mat-panel-description>
+                S5-S6
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p><button mat-flat-button (click)="selectSubject(subjects.Sujet5)">Sujet5</button></p>
+            <p><button mat-flat-button (click)="selectSubject(subjects.Sujet6)">Sujet6</button></p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div *ngIf="sidenav.opened; else elseBlock">
+            <button (click) = "sidenav.toggle()">close</button>
+        </div>
+        <ng-template #elseBlock>
+            <div>
+                <button (click)= "sidenav.toggle()">open</button>
+            </div>
+        </ng-template>
+        <div [ngSwitch]="selectedSubject" id="main_content">
+          <div *ngSwitchCase="subjects.Bienvenue"><app-bienvenue></app-bienvenue></div>
+          <div *ngSwitchCase="subjects.Sujet1"><app-sujet1></app-sujet1></div>
+          <div *ngSwitchCase="subjects.Sujet2"><app-sujet2></app-sujet2></div>
+          <div *ngSwitchCase="subjects.Sujet3"><app-sujet3></app-sujet3></div>
+          <div *ngSwitchCase="subjects.Sujet4"><app-sujet4></app-sujet4></div>
+          <div *ngSwitchCase="subjects.Sujet5"><app-sujet5></app-sujet5></div>
+          <div *ngSwitchCase="subjects.Sujet6"><app-sujet6></app-sujet6></div>
+        </div>
+
+        <div [ngSwitch]="selectedSubject">
+          <div *ngSwitchCase="subjects.Bienvenue">
+            <button mat-button class="prevButton" disabled>precedent</button>
+            <button mat-button class = "nextButton" (click)="selectSubject(selectedSubject+1); openCategories()">suivant</button>
           </div>
+          <div *ngSwitchDefault>
+            <button mat-button class="prevButton" (click)="selectSubject(selectedSubject-1); openCategories()">precedent</button>
+            <button mat-button class = "nextButton" (click)="selectSubject(selectedSubject+1); openCategories()">suivant</button>
+          </div>
+          <div *ngSwitchCase="subjects.Sujet6">
+            <button mat-button class="prevButton" (click)="selectSubject(selectedSubject-1); openCategories()">precedent</button>
+            <button mat-button class = "nextButton" disabled>suivant</button>
+          </div>
+        </div>
 
-        </mat-sidenav>
-
-        <mat-sidenav-content>
-            <div *ngIf="sidenav.opened; else elseBlock">
-                <button (click) = "sidenav.toggle()">close</button>
-            </div>
-            <ng-template #elseBlock>
-                <div>
-                    <button (click)= "sidenav.toggle()">open</button>
-                </div>
-            </ng-template>
-            <div [ngSwitch]="selectedSubject">
-              <div *ngSwitchCase="subjects.Bienvenue"><app-bienvenue></app-bienvenue></div>
-              <div *ngSwitchCase="subjects.Sujet1"><app-sujet1></app-sujet1></div>
-              <div *ngSwitchCase="subjects.Sujet2"><app-sujet2></app-sujet2></div>
-              <div *ngSwitchCase="subjects.Sujet3"><app-sujet3></app-sujet3></div>
-              <div *ngSwitchCase="subjects.Sujet4"><app-sujet4></app-sujet4></div>
-              <div *ngSwitchCase="subjects.Sujet5"><app-sujet5></app-sujet5></div>
-              <div *ngSwitchCase="subjects.Sujet6"><app-sujet6></app-sujet6></div>
-            </div>
-
-            <div [ngSwitch]="selectedSubject">
-              <div *ngSwitchCase="subjects.Bienvenue">
-                <button mat-button class="prevButton" disabled>precedent</button>
-                <button mat-button class = "nextButton" (click)="selectSubject(selectedSubject+1); openCategories()">suivant</button>
-              </div>
-              <div *ngSwitchDefault>
-                <button mat-button class="prevButton" (click)="selectSubject(selectedSubject-1); openCategories()">precedent</button>
-                <button mat-button class = "nextButton" (click)="selectSubject(selectedSubject+1); openCategories()">suivant</button>
-              </div>
-              <div *ngSwitchCase="subjects.Sujet6">
-                <button mat-button class="prevButton" (click)="selectSubject(selectedSubject-1); openCategories()">precedent</button>
-                <button mat-button class = "nextButton" disabled>suivant</button>
-              </div>
-            </div>
-
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-</div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,12 +1,8 @@
-h1 {
-    background-color: cornflowerblue;
-    color: white;
-    margin: 0px;
-    top: 0;
-    left: 0;
-}
+
+
 mat-sidenav-container {
-    height: 1000px;
+    min-height: 100%;
+
 }
 mat-sidenav, mat-sidenav-content {
     padding: 16px;
@@ -15,14 +11,18 @@ mat-sidenav {
     scroll-behavior: auto;
     background-color: cornflowerblue;
     width: 200px;
+    position: fixed;
+}
+#main_content {
+  margin-bottom: 75px;
 }
 .prevButton {
-  position: absolute;
+  float: left;
   left: 10px;
   bottom: 50px;
 }
 .nextButton {
-  position: absolute;
+  float: right;
   right: 10px;
   bottom: 50px;
 }
