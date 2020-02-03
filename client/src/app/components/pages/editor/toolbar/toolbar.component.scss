@@ -97,8 +97,40 @@ mat-slider, mat-form-field{
     display: flex;
     align-self: flex-start;
     color: $accent;
+    margin-bottom: 25px;
 }
 
 .selected-tool {
+    background-color: $secondary;
+}
+
+label {
+    align-self: flex-start;
+    color: $accent;
+}
+
+mat-radio-group {
+    display: flex;
+    width: 100%;
+    margin: 10px 0px;
+    justify-content: space-between;
+    flex-direction: column;
+    color: $accent;
+}
+
+mat-radio-group > mat-radio-button {
+    margin: 5px 0px;
+}
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+    border-color: $accent; 
+}
+  
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle{
+    color: $accent;
+    background-color: $accent;
+}
+  
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
     background-color: $secondary;
 }

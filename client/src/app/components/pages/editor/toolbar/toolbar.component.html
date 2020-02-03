@@ -66,12 +66,26 @@
             </div>
             <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
                 <h3 class="toolbar-option-section">Options de la ligne</h3>
+                <label>Épaisseur de la ligne</label>
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
+                    <input matInput type="number" [(ngModel)]="thicknessLine">
                 </mat-form-field>
                 <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
-                    [(ngModel)]="thicknessBrush">
+                    [(ngModel)]="thicknessLine">
                 </mat-slider>
+                <label>Épaisseur des points de jonction</label>
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="thicknessLinePoints">
+                </mat-form-field>
+                <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+                    [(ngModel)]="thicknessLinePoints">
+                </mat-slider>
+                <label>Style des points de jonction</label>
+                <mat-radio-group [(ngModel)]='junctionLine'>
+                    <mat-radio-button *ngFor='let junctionType of junctionLineTypes' [value]='junctionType'>
+                        {{junctionType}}
+                    </mat-radio-button>
+                </mat-radio-group>
             </div>
             <div *ngSwitchCase="tools.ColorPicker" class="toolbar-tool-section">
                 <h3 class="toolbar-option-section">Options du color picker</h3>

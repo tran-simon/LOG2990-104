@@ -19,9 +19,15 @@ export class ToolbarComponent {
     @ViewChild('drawer', { static: false })
     drawer: MatDrawer;
 
+    junctionLineTypes: string[] = ['Avec points', 'Sans points'];
     tools = Tool;
 
     thicknessPencil = 50;
+
+    thicknessLine = 50;
+    junctionLine = this.junctionLineTypes[0];
+
+    thicknessLinePoints = 50;
     thicknessBrush = 50;
     minthickness = 1;
     maxthickness = 100;
