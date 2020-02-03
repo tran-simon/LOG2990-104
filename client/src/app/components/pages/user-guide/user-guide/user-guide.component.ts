@@ -7,9 +7,11 @@ import { Component } from '@angular/core';
 })
 export class UserGuideComponent {
   opened: boolean;
+
   previous() {
     console.log('previous');
   }
+
   next() {
     console.log('next');
   }
