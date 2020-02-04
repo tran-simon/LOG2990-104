@@ -1,4 +1,16 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/custom-input/error-messages';
 import { Color, ColorComponents } from 'src/app/utils/color/color';
@@ -11,6 +23,7 @@ import { Color, ColorComponents } from 'src/app/utils/color/color';
 export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() color = Color.GREEN;
+  @Output() colorChanged = new EventEmitter<Color>();
   @Input() indicatorLineWidth = 3;
   @Input() indicatorSize = 20;
 
@@ -47,6 +60,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
       }
       this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
     }
+    this.colorChanged.emit(this.color);
   }
 
   drawIndicator(x: number, y: number) {

@@ -11,14 +11,29 @@
     width="50" height="{{size}}"></app-color-lightness>
 
   <form [formGroup]="formGroup">
-    <app-hex-input  #redinput [maxLength]=2 [value]="color.r255.toString(16)" (valueChange)="colorChange(redinput.value, 'r')" [formGroup]="formGroup">
-      Rouge:
+    <app-hex-input  #redinput
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.r255.toString(16)"
+      (valueChange)="colorChange(redinput.value, 'r')"
+      [formGroup]="formGroup">
+      R:
     </app-hex-input>
-    <app-hex-input #greeninput [maxLength]=2 [value]="color.g255.toString(16)" (valueChange)="colorChange(greeninput.value, 'g')" [formGroup]="formGroup">
-      Rouge:
+    <app-hex-input #greeninput
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.g255.toString(16)"
+      (valueChange)="colorChange(greeninput.value, 'g')"
+      [formGroup]="formGroup">
+      V:
     </app-hex-input>
-    <app-hex-input #blueinput [maxLength]=2 [value]="color.b255.toString(16)" (valueChange)="colorChange(blueinput.value, 'b')" [formGroup]="formGroup">
-      Rouge:
+    <app-hex-input #blueinput
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.b255.toString(16)"
+      (valueChange)="colorChange(blueinput.value, 'b')"
+      [formGroup]="formGroup">
+      B:
     </app-hex-input>
     <app-hex-input #hexinput
       [length]=6

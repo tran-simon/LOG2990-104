@@ -1,8 +1,9 @@
-<mat-form-field [formGroup]="formGroup">
-  <label for="{{id}}">
-    <ng-content select="label"></ng-content>
-  </label>
-
+<mat-form-field appearance="fill" [formGroup]="formGroup">
+  <mat-label>
+    <label for="{{id}}">
+      <ng-content></ng-content>
+    </label>
+  </mat-label>
   <span *ngIf="prefix" matPrefix>{{prefix}}</span>
   <input #input matInput (blur)="onBlur(input.value)" [value]='value' [formControl]="formControl" id="{{id}}">
   <span *ngIf="suffix" matSuffix>{{suffix}}</span>
