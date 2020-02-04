@@ -1,7 +1,7 @@
 import { Color, ColorComponents } from './color';
 
 describe('Color', () => {
-  let colorFromRGB = Color.rgb255(51, 153, 51);
+  const colorFromRGB = Color.rgb255(51, 153, 51);
 
   it('can create red color from HSL', () => {
     const color = Color.hsl(0, 1, 0.5);

@@ -12,6 +12,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Color } from 'src/app/utils/color/color';
+import { MathUtil } from 'src/app/utils/math/math-util';
 
 @Component({
   selector: 'app-color-lightness',
@@ -68,14 +69,14 @@ export class ColorLightnessComponent implements OnInit, OnChanges, AfterViewInit
   onMouseDown(event: MouseEvent) {
     this.mouseIsDown = true;
     this.mouseHeight = event.offsetY;
-    const lightness = this.mouseHeight / this.height;
+    const lightness = MathUtil.fit(this.mouseHeight / this.height, 0, 1);
     this.lightnessChanged.emit(lightness);
   }
 
   onMouseMove(event: MouseEvent) {
     if (this.mouseIsDown) {
       this.mouseHeight = event.offsetY;
-      const lightness = this.mouseHeight / this.height;
+      const lightness = MathUtil.fit(this.mouseHeight / this.height, 0, 1);
       this.lightnessChanged.emit(lightness);
     }
   }

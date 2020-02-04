@@ -12,7 +12,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() color = Color.GREEN;
   @Input() indicatorLineWidth = 3;
-  @Input() indicatorSize = 5;
+  @Input() indicatorSize = 20;
 
   private mouseIsDown = false;
   private renderingContext: CanvasRenderingContext2D;
@@ -54,7 +54,6 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
     this.renderingContext.strokeStyle = this.color.negative.hexString;
     this.renderingContext.lineWidth = this.indicatorLineWidth;
     this.renderingContext.fillRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
-
     this.renderingContext.strokeRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
   }
 
@@ -78,13 +77,17 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
         b = parseInt(value, 16);
         break;
     }
-    this.color = Color.rgb255(r, g, b);
-    this.draw();
+    if (!(this.color.r255 === r && this.color.g255 === g && this.color.b255 === b)) {
+      this.color = Color.rgb255(r, g, b);
+      this.draw();
+    }
   }
 
   hexChange(value: string): void {
-    this.color = Color.hex(value);
-    this.draw();
+    if (this.color.hex !== value.toLowerCase()) {
+      this.color = Color.hex(value);
+      this.draw();
+    }
   }
 
   onMouseDown(event: MouseEvent): void {
@@ -92,7 +95,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
     const h = (event.offsetX / this.size) * 360;
     const s = event.offsetY / this.size;
     this.color = Color.hsl(h, s, this.color.l);
-    this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
+    this.draw();
   }
 
   onMouseMove(event: MouseEvent): void {
@@ -100,7 +103,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
       const h = (event.offsetX / this.size) * 360;
       const s = event.offsetY / this.size;
       this.color = Color.hsl(h, s, this.color.l);
-      this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
+      this.draw();
     }
   }
 

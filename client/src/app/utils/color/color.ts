@@ -2,6 +2,10 @@
  * Represents a color.
  * RGB values must be between 0 and 1
  * HSL values must be between 0-360 (for hue) and 0-1 for saturation and lightness
+ * Values will be made to fit the bounds
+ *
+ * Hue value will be made to keep the same angle if the value is out of bounds (ie: 400 will give a hue of 40)
+ *
  */
 import { MathUtil } from '../math/math-util';
 
@@ -46,13 +50,14 @@ export class Color implements ColorComponents {
    * Constructor for a color from hsl or rgb values.
    * If HSL values are given, they will be prioritized over RGB values
    *
-   * Method for calculating rgb components from HSL is an implementation of: https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB
+   * Method for calculating rgb components from HSL is an implementation of:
+   * https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB
    *
    */
   private constructor(components: ColorComponents) {
     const { h, s, l, r, g, b } = components;
     if (!(h === undefined || s === undefined || l === undefined)) {
-      this.h = MathUtil.fit(h, 0, 360);
+      this.h = MathUtil.fitAngle(h);
       this.s = MathUtil.fit(s, 0, 1);
       this.l = MathUtil.fit(l, 0, 1);
 
@@ -210,7 +215,7 @@ export class Color implements ColorComponents {
     return Color.getHslString(this.h, this.s, this.l);
   }
 
-  /* Getters & Setters for RGB in 0..255 format */
+  /* Getters */
 
   get color255(): ColorComponents {
     return { ...this, r: this.r255, g: this.g255, b: this.b255 };
