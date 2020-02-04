@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/custom-input/error-messages';
-import { Color, Color255 } from 'src/app/utils/color/color';
+import { Color, ColorComponents } from 'src/app/utils/color/color';
 
 @Component({
   selector: 'app-color-picker',
@@ -11,6 +11,8 @@ import { Color, Color255 } from 'src/app/utils/color/color';
 export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() color = Color.GREEN;
+  @Input() indicatorLineWidth = 3;
+  @Input() indicatorSize = 5;
 
   private mouseIsDown = false;
   private renderingContext: CanvasRenderingContext2D;
@@ -32,7 +34,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
     this.draw();
   }
 
-  draw(size = this.size, lightness = this.color.lightness) {
+  draw(size = this.size, lightness = this.color.l) {
     if (this.renderingContext) {
       for (let i = 0; i < size; i++) {
         const h = (i / size) * 360;
@@ -43,30 +45,40 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
         this.renderingContext.fillStyle = gradient;
         this.renderingContext.fillRect(i, 0, 1, size);
       }
+      this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
     }
   }
 
+  drawIndicator(x: number, y: number) {
+    this.renderingContext.fillStyle = this.color.hexString;
+    this.renderingContext.strokeStyle = this.color.negative.hexString;
+    this.renderingContext.lineWidth = this.indicatorLineWidth;
+    this.renderingContext.fillRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
+
+    this.renderingContext.strokeRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
+  }
+
   lightnessChanged(lightness: number): void {
-    const h = this.color.hue;
-    const s = this.color.saturation;
+    const h = this.color.h;
+    const s = this.color.s;
     this.color = Color.hsl(h ? h : 0, s, lightness);
     this.draw();
   }
 
   colorChange(value: string, component: string): void {
-    let { red, green, blue }: Color255 = this.color.color255;
+    let { r, g, b }: ColorComponents = this.color.color255;
     switch (component) {
       case 'r':
-        red = parseInt(value, 16);
+        r = parseInt(value, 16);
         break;
       case 'g':
-        green = parseInt(value, 16);
+        g = parseInt(value, 16);
         break;
       case 'b':
-        blue = parseInt(value, 16);
+        b = parseInt(value, 16);
         break;
     }
-    this.color = Color.color255(red, green, blue);
+    this.color = Color.rgb255(r, g, b);
     this.draw();
   }
 
@@ -79,14 +91,16 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
     this.mouseIsDown = true;
     const h = (event.offsetX / this.size) * 360;
     const s = event.offsetY / this.size;
-    this.color = Color.hsl(h, s, this.color.lightness);
+    this.color = Color.hsl(h, s, this.color.l);
+    this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
   }
 
   onMouseMove(event: MouseEvent): void {
     if (this.mouseIsDown) {
       const h = (event.offsetX / this.size) * 360;
       const s = event.offsetY / this.size;
-      this.color = Color.hsl(h, s, this.color.lightness);
+      this.color = Color.hsl(h, s, this.color.l);
+      this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
     }
   }
 
