@@ -9,6 +9,7 @@ export class Color {
   static GREEN = new Color(0, 1, 0);
   static BLUE = new Color(0, 0, 1);
   static WHITE = new Color(1, 1, 1);
+  static BLACK = new Color();
 
   private readonly _red: number;
   private readonly _green: number;
@@ -131,6 +132,10 @@ export class Color {
     const g = this.g255.toString(16).padStart(2, '0');
     const b = this.b255.toString(16).padStart(2, '0');
     return `${r}${g}${b}`;
+  }
+
+  get negative(): Color {
+    return new Color(1 - this.red, 1 - this.green, 1 - this.blue);
   }
 
   get color255(): Color255 {

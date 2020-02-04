@@ -10,7 +10,7 @@ import { Color, Color255 } from 'src/app/utils/color/color';
 })
 export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() _color = Color.GREEN;
+  @Input() color = Color.GREEN;
 
   private mouseIsDown = false;
   private renderingContext: CanvasRenderingContext2D;
@@ -93,13 +93,5 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostListener('window:mouseup')
   onMouseUp(): void {
     this.mouseIsDown = false;
-  }
-
-  get color(): Color {
-    return this._color;
-  }
-
-  set color(value: Color) {
-    this._color = value;
   }
 }

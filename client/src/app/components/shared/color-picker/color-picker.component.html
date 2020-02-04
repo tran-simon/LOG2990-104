@@ -6,8 +6,7 @@
     (mousedown)="onMouseDown($event)">
   </canvas>
 
-  <app-color-lightness [hue]="this.color.hue"
-    [saturation]="this.color.saturation"
+  <app-color-lightness [color]="color"
     (lightnessChanged)="lightnessChanged($event)"
     width="50" height="{{size}}"></app-color-lightness>
 

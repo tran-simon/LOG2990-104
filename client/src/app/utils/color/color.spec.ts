@@ -52,4 +52,9 @@ describe('Color', () => {
     expect(green).toBeCloseTo(0.6, 5);
     expect(blue).toBeCloseTo(0.2, 5);
   });
+
+  it('can get negative color', () => {
+    expect(Color.WHITE.negative).toEqual(Color.BLACK);
+    expect(Color.RED.negative).toEqual(new Color(0, 1, 1));
+  });
 });
