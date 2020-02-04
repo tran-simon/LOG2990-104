@@ -23,7 +23,7 @@ export class ColorLightnessComponent implements OnInit, OnChanges, AfterViewInit
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() width = 50;
   @Input() height = 300;
-  @Input() color: Color;
+  @Input() color: Color = Color.WHITE;
   @Input() indicatorLineWidth = 3;
   @Input() indicatorHeight = 10;
 
