@@ -12,6 +12,7 @@
 
   <form [formGroup]="formGroup">
     <app-hex-input  #redinput
+      required=true
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
       [value]="color.r255.toString(16)"
@@ -20,6 +21,7 @@
       R:
     </app-hex-input>
     <app-hex-input #greeninput
+      required=true
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
       [value]="color.g255.toString(16)"
@@ -28,6 +30,7 @@
       V:
     </app-hex-input>
     <app-hex-input #blueinput
+      required=true
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
       [value]="color.b255.toString(16)"
@@ -36,6 +39,7 @@
       B:
     </app-hex-input>
     <app-hex-input #hexinput
+      required=true
       [length]=6
       prefix="#"
       [errorMessages]="hexInputErrorMessages"
