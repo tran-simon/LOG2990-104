@@ -1,4 +1,4 @@
-import { KeyboardEventHandler } from 'src/app/utils/events/KeyboardEventHandler';
+import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 
 export class KeyboardListener {
   constructor(private handler: KeyboardEventHandler) {}

@@ -1,8 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
-import { KeyboardEventHandler } from 'src/app/utils/events/KeyboardEventHandler';
-import { KeyboardListener } from 'src/app/utils/events/KeyboardListener';
+import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
 
 @Component({
