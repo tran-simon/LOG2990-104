@@ -1,8 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
-import { KeyboardEventHandler } from 'src/app/utils/events/KeyboardEventHandler';
-import { KeyboardListener } from 'src/app/utils/events/KeyboardListener';
+import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
 
 @Component({
@@ -10,12 +10,28 @@ import { CreateDrawingModalComponent } from '../create-drawing-modal/create-draw
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements KeyboardEventHandler {
+export class HomeComponent {
+  private keyboardEventHandler: KeyboardEventHandler;
   previousDrawings = false;
-  keyboardListener: KeyboardListener = new KeyboardListener(this);
   modalIsOpened = false;
 
-  constructor(private router: Router, private dialog: MatDialog) {}
+  constructor(private router: Router, private dialog: MatDialog) {
+    this.keyboardEventHandler = {
+      ctrl_o: () => {
+        this.openCreateModal();
+        return true;
+      },
+      ctrl_e: () => {
+        return true;
+      },
+      ctrl_g: () => {
+        return true;
+      },
+      ctrl_s: () => {
+        return true;
+      },
+    } as KeyboardEventHandler;
+  }
 
   openCreateModal(): void {
     if (!this.modalIsOpened) {
@@ -35,23 +51,6 @@ export class HomeComponent implements KeyboardEventHandler {
 
   @HostListener('window:keydown', ['$event'])
   keyDown(event: KeyboardEvent): void {
-    this.keyboardListener.keyDown(event);
-  }
-
-  ctrlO(event: KeyboardEvent): boolean {
-    this.openCreateModal();
-    return true;
-  }
-
-  ctrlE(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlG(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlS(event: KeyboardEvent): boolean {
-    return true;
+    KeyboardListener.keyDown(event, this.keyboardEventHandler);
   }
 }
