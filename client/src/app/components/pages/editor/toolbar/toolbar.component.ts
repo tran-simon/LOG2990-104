@@ -16,6 +16,8 @@ enum Tool {
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
+  static readonly TOOLBAR_WIDTH = 60;
+
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
