@@ -3,16 +3,14 @@ import { ShapeProperties } from './ShapeProperties';
 
 export abstract class BaseShape {
   private _properties: ShapeProperties;
-  _origin: Coordinate;
+  protected _origin: Coordinate;
   protected _svgNode: SVGElement;
 
   get properties(): ShapeProperties {
-    console.log('get');
     return this._properties;
   }
 
   set properties(p: ShapeProperties) {
-    console.log('set');
     this._properties = p;
   }
 
