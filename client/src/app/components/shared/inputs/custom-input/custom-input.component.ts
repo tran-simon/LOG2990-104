@@ -21,6 +21,9 @@ export class CustomInputComponent implements OnInit, OnChanges {
   @Input() suffix: string;
 
   formControl: FormControl;
+
+  private _focused = false;
+  editingValue = '';
   validValue = '';
 
   @Input() value = '';
@@ -38,17 +41,37 @@ export class CustomInputComponent implements OnInit, OnChanges {
     this.validValue = this.value;
   }
 
+  onFocus(): void {
+    this._focused = true;
+  }
+
   onBlur(value = '') {
+    this._focused = false;
     if (this.formControl) {
       this.value = this.format(this.formControl.valid ? value : this.validValue);
-      this.formControl.setValue(this.value);
+      this.validValue = this.value;
+      this.editingValue = this.value;
       this.valueChange.emit(this.value);
     }
   }
 
+  onChange(value = '') {
+    if (this.formControl) {
+      if (this.formControl.valid) {
+        this.value = value;
+        this.editingValue = this.value;
+        this.valueChange.emit(this.value);
+      }
+    }
+  }
+
   ngOnChanges(): void {
-    this.value = this.format(this.value);
-    this.validValue = this.value;
+    if (!this.focused) {
+      this.value = this.format(this.value);
+      this.validValue = this.value;
+    } else {
+      this.value = this.editingValue;
+    }
   }
 
   getErrorMessage(errorName: string): string {
@@ -79,5 +102,9 @@ export class CustomInputComponent implements OnInit, OnChanges {
   get errors(): NgIterable<string> {
     const errors: ValidationErrors | null = this.formControl.errors;
     return errors ? Object.keys(errors) : [];
+  }
+
+  get focused(): boolean {
+    return this._focused;
   }
 }

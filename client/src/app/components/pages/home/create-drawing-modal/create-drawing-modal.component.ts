@@ -18,8 +18,8 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
   formGroup = new FormGroup({});
   private windowWidth = 500;
   private windowHeight = 500;
-  width = this.windowWidth.toString();
-  height = this.windowHeight.toString();
+  width = '500'; // this.windowWidth.toString();
+  height = '500'; // this.windowHeight.toString();
 
   constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
@@ -35,8 +35,8 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
     if (this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString()) {
       this.windowWidth = window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH;
       this.windowHeight = window.innerHeight;
-      this.width = this.windowWidth.toString();
-      this.height = this.windowHeight.toString();
+      // this.width = this.windowWidth.toString(); // todo
+      // this.height = this.windowHeight.toString();
     }
   }
 
