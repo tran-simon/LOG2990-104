@@ -1,8 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -15,7 +17,21 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let dialogOpenSpy: Spy;
-  let routerSpy = createSpyObj('Router', ['navigate']);
+  const routerSpy = createSpyObj('Router', ['navigate']);
+
+  let afterClosedFunc: () => void;
+  const matDialogRefMock = {
+    close: () => {
+      afterClosedFunc();
+    },
+    afterClosed: () => {
+      return {
+        subscribe: (func: () => void) => {
+          afterClosedFunc = func;
+        },
+      };
+    },
+  } as MatDialogRef<AbstractModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,7 +51,8 @@ describe('HomeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
-    dialogOpenSpy = spyOn(component.dialog, 'open').and.callThrough();
+
+    dialogOpenSpy = spyOn(component.dialog, 'open').and.returnValue(matDialogRefMock);
 
     fixture.detectChanges();
   });
@@ -61,6 +78,17 @@ describe('HomeComponent', () => {
     expect(dialogOpenSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('should open second modal after first one is closed', () => {
+    component.openCreateModal();
+    expect(component.modalIsOpened).toEqual(true);
+
+    component.dialogRef.close();
+    expect(component.modalIsOpened).toEqual(false);
+
+    component.openCreateModal();
+    expect(dialogOpenSpy).toHaveBeenCalledTimes(2);
+  });
+
   it('should call openPage on guide button clicked', () => {
     const openPageSpy = spyOn(component, 'openPage');
     fixture.debugElement.nativeElement.querySelector('#btn-guide').click();
@@ -68,7 +96,7 @@ describe('HomeComponent', () => {
   });
 
   it('should call openGallery on gallery button clicked', () => {
-    const openGallerySpy = spyOn(component, 'openGallery');
+    const openGallerySpy = spyOn(component, 'openGallery').and.callThrough();
     fixture.debugElement.nativeElement.querySelector('#btn-gallery').click();
     expect(openGallerySpy).toHaveBeenCalled();
   });
