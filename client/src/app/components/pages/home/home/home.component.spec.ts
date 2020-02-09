@@ -109,7 +109,7 @@ describe('HomeComponent', () => {
   /* keyboard shortcuts */
 
   it('should handle keyboard event', () => {
-    const keyDownSpy = spyOn(KeyboardListener, 'keyDown');
+    const keyDownSpy = spyOn(KeyboardListener, 'keyEvent');
 
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
 

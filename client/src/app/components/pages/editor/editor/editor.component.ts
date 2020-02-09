@@ -31,14 +31,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
   currentTool: CreatorTool = new LineTool(this.drawingSurface);
 
   constructor(private router: ActivatedRoute) {
-    this.keyboardEventHandler = {} as KeyboardEventHandler;
+    this.keyboardEventHandler = {
+      l: () => {
+        this.selectLineTool();
+        return true;
+      },
+      1: () => {
+        this.selectRectangleTool();
+        return false; // todo - enable default behavior when typing in text field
+      },
+      def: (e) => {
+        return this.currentTool.handleKeyboardEvent(e);
+      },
+    } as KeyboardEventHandler;
   }
-
-  tools = {
-    // todo - move to afterInit where drawing surface is defined
-    line: new LineTool(this.drawingSurface),
-    rectangle: new RectangleTool(this.drawingSurface),
-  };
 
   ngOnInit() {
     this.router.params.subscribe((params) => {
@@ -65,7 +71,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('window:keydown', ['$event'])
-  keyDown(event: KeyboardEvent): void {
-    KeyboardListener.keyDown(event, this.keyboardEventHandler);
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent): void {
+    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
   }
 }

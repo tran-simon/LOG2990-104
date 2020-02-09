@@ -50,7 +50,7 @@ export class HomeComponent {
   }
 
   @HostListener('window:keydown', ['$event'])
-  keyDown(event: KeyboardEvent): void {
-    KeyboardListener.keyDown(event, this.keyboardEventHandler);
+  keyEvent(event: KeyboardEvent): void {
+    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
   }
 }

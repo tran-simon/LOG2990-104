@@ -9,6 +9,10 @@ export class ShapeProperties {
   fillOpacity: number;
   visible: boolean;
 
+  get visibility(): string {
+    return this.visible ? 'visible' : 'hidden';
+  }
+
   constructor() {
     this.strokeWidth = 1;
     this.strokeOpacity = 1.0;

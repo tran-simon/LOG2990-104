@@ -2,33 +2,38 @@ import { BaseShape } from './BaseShape';
 import { Coordinate } from './Coordinate';
 
 export class Ellipse extends BaseShape {
-  private radiusX: number;
+  private _radiusX: number;
 
-  get RadiusX(): number {
-    return this.radiusX;
+  get radiusX(): number {
+    return this._radiusX;
   }
 
-  set RadiusX(rx: number) {
-    this.radiusX = !rx ? 0 : Math.abs(rx);
+  set radiusX(rx: number) {
+    this._radiusX = !rx ? 0 : Math.abs(rx);
+    this.svgNode.setAttribute('rx', this._radiusX.toString());
   }
 
-  private radiusY: number;
-
-  get RadiusY(): number {
-    return this.radiusY;
+  set origin(c: Coordinate) {
+    this._origin = c;
+    this.svgNode.setAttribute('cx', this._origin.x.toString());
+    this.svgNode.setAttribute('cy', this._origin.y.toString());
   }
 
-  set RadiusY(ry: number) {
-    this.radiusY = !ry ? 0 : Math.abs(ry);
+  private _radiusY: number;
+
+  get radiusY(): number {
+    return this._radiusY;
   }
 
-  constructor(rx: number = 0, ry: number = 0) {
-    super();
-    this.RadiusX = rx;
-    this.RadiusY = ry;
+  set radiusY(ry: number) {
+    this._radiusY = !ry ? 0 : Math.abs(ry);
+    this.svgNode.setAttribute('ry', this._radiusY.toString());
   }
 
-  get center(): Coordinate {
-    return new Coordinate(this.origin.x + this.RadiusX, this.origin.y + this.RadiusY);
+  constructor(origin = new Coordinate(), rx: number = 0, ry: number = rx) {
+    super('ellipse');
+    this.origin = origin;
+    this.radiusX = rx;
+    this.radiusY = ry;
   }
 }
