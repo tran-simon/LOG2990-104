@@ -12,7 +12,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   @Input() id = `custom-input-${CustomInputComponent.id++}`;
   @Input() formGroup = new FormGroup({});
   @Input() stringToMatch: string;
-  @Input() required = true;
+  @Input() required = false;
   @Input() messages: string;
   @Input() length: number;
   @Input() minLength: number;
