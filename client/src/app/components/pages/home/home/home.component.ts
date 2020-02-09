@@ -11,23 +11,18 @@ import { CreateDrawingModalComponent } from '../create-drawing-modal/create-draw
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  private keyboardEventHandler: KeyboardEventHandler;
+  keyboardEventHandler: KeyboardEventHandler;
   previousDrawings = false;
   modalIsOpened = false;
 
-  constructor(private router: Router, private dialog: MatDialog) {
+  constructor(private router: Router, public dialog: MatDialog) {
     this.keyboardEventHandler = {
       ctrl_o: () => {
         this.openCreateModal();
         return true;
       },
-      ctrl_e: () => {
-        return true;
-      },
       ctrl_g: () => {
-        return true;
-      },
-      ctrl_s: () => {
+        this.openGallery();
         return true;
       },
     } as KeyboardEventHandler;
@@ -47,6 +42,10 @@ export class HomeComponent {
 
   openPage(nextLink: string): void {
     this.router.navigate([nextLink]);
+  }
+
+  openGallery(): void {
+    return;
   }
 
   @HostListener('window:keydown', ['$event'])
