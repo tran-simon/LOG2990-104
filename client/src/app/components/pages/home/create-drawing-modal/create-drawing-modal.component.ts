@@ -24,6 +24,7 @@ export class CreateDrawingModalComponent extends AbstractModalComponent {
 
   onCreateClick() {
     const params: EditorParams = { width: this.width, height: this.height, color: this.colorPicker.color.hex };
-    this.router.navigate(['edit', params]).then(() => this.dialogRef.close());
+    this.router.navigate(['edit', params]);
+    this.dialogRef.close();
   }
 }

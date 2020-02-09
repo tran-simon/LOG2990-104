@@ -1,11 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
 
 import { CreateDrawingModalComponent } from './create-drawing-modal.component';
+import createSpyObj = jasmine.createSpyObj;
+import createSpy = jasmine.createSpy;
 
 describe('CreateDrawingModalComponent', () => {
+  const dialogRefCloseSpy = createSpy('close');
+  const routerSpy = createSpyObj('Router', ['navigate']);
   let component: CreateDrawingModalComponent;
   let fixture: ComponentFixture<CreateDrawingModalComponent>;
 
@@ -13,7 +19,10 @@ describe('CreateDrawingModalComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule],
       declarations: [CreateDrawingModalComponent],
-      providers: [{ provide: MatDialogRef, useValue: {} }],
+      providers: [
+        { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
+        { provide: Router, useValue: routerSpy },
+      ],
     }).compileComponents();
   }));
 
@@ -25,5 +34,29 @@ describe('CreateDrawingModalComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call onCreateClick when create button clicked', () => {
+    const onCreateClickSpy = spyOn(component, 'onCreateClick');
+    fixture.debugElement.nativeElement.querySelector('#btn-create').click();
+    expect(onCreateClickSpy).toHaveBeenCalled();
+  });
+
+  it('should route correctly when calling onCreateClick', () => {
+    component.width = '2';
+    component.height = '3';
+    component.colorPicker.color = Color.RED;
+    component.onCreateClick();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith([
+      'edit',
+      {
+        width: '2',
+        height: '3',
+        color: 'ff0000',
+      },
+    ]);
+
+    expect(dialogRefCloseSpy).toHaveBeenCalled();
   });
 });
