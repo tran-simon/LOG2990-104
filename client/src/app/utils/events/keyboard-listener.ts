@@ -1,7 +1,7 @@
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 
 export class KeyboardListener {
-  static keyDown(event: KeyboardEvent, handler: KeyboardEventHandler): boolean {
+  static keyEvent(event: KeyboardEvent, handler: KeyboardEventHandler): boolean {
     let success: boolean;
     let prefix = event.ctrlKey ? 'ctrl_' : '';
     prefix += event.shiftKey ? 'shift_' : '';

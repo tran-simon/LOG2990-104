@@ -5,9 +5,9 @@ import { Coordinate } from './Coordinate';
 import { CreatorTool } from './CreatorTool';
 
 export class LineTool extends CreatorTool {
-  readonly MAX_HORIZONTAL_LOCK_ANGLE = Math.PI / 6;
-  readonly MAX_DIAGONAL_LOCK_ANGLE = Math.PI / 3;
-  readonly MAX_VERTICAL_LOCK_ANGLE = Math.PI / 2;
+  static readonly MAX_HORIZONTAL_LOCK_ANGLE = Math.PI / 6;
+  static readonly MAX_DIAGONAL_LOCK_ANGLE = Math.PI / 3;
+  static readonly MAX_VERTICAL_LOCK_ANGLE = Math.PI / 2;
 
   private line: CompositeLine;
   private lockMethod: (c: Coordinate) => Coordinate;
@@ -69,9 +69,9 @@ export class LineTool extends CreatorTool {
     if (this.isActive) {
       const angle = Math.abs(this.line.currentLine.startCoord.angle(this.line.currentLine.endCoord));
       console.log(angle);
-      if (angle <= this.MAX_HORIZONTAL_LOCK_ANGLE) {
+      if (angle <= LineTool.MAX_HORIZONTAL_LOCK_ANGLE) {
         return this.calculateHorizontalLock;
-      } else if (angle <= this.MAX_DIAGONAL_LOCK_ANGLE) {
+      } else if (angle <= LineTool.MAX_DIAGONAL_LOCK_ANGLE) {
         const deltaX = this.line.currentLine.endCoord.x - this.line.currentLine.startCoord.x;
         const deltaY = this.line.currentLine.endCoord.y - this.line.currentLine.startCoord.y;
 
@@ -80,7 +80,7 @@ export class LineTool extends CreatorTool {
         } else {
           return this.calculateNegativeDiagonalLock;
         }
-      } else if (angle <= this.MAX_VERTICAL_LOCK_ANGLE) {
+      } else if (angle <= LineTool.MAX_VERTICAL_LOCK_ANGLE) {
         return this.calculateVerticalLock;
       }
     }

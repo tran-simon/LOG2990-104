@@ -13,6 +13,6 @@ export abstract class Tool {
   abstract handleMouseEvent(e: MouseEvent): void;
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {
-    return KeyboardListener.keyDown(e, this.keyboardEventHandler);
+    return KeyboardListener.keyEvent(e, this.keyboardEventHandler);
   }
 }
