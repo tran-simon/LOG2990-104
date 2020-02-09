@@ -16,8 +16,10 @@ import { Color } from 'src/app/utils/color/color';
 export class CreateDrawingModalComponent extends AbstractModalComponent implements AfterViewInit {
   @ViewChild('colorpicker', { static: true }) colorPicker: ColorPickerComponent;
   formGroup = new FormGroup({});
-  width = '500';
-  height = '500';
+  private windowWidth = 500;
+  private windowHeight = 500;
+  width = this.windowWidth.toString();
+  height = this.windowHeight.toString();
 
   constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
@@ -25,15 +27,17 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
 
   ngAfterViewInit(): void {
     this.colorPicker.color = Color.WHITE;
-    this.width = (window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH).toString();
-    this.height = window.innerHeight.toString();
+    this.onResize();
   }
 
   @HostListener('window:resize')
   onResize(): void {
-    // todo: dont update if user changed value. Remove duplicate code
-    this.width = (window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH).toString();
-    this.height = window.innerHeight.toString();
+    if (this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString()) {
+      this.windowWidth = window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH;
+      this.windowHeight = window.innerHeight;
+      this.width = this.windowWidth.toString();
+      this.height = this.windowHeight.toString();
+    }
   }
 
   onCreateClick() {
