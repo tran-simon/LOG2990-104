@@ -19,18 +19,20 @@ export interface EditorParams {
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
 })
-export class EditorComponent implements OnInit, AfterViewInit, KeyboardEventHandler {
+export class EditorComponent implements OnInit, AfterViewInit {
+  private keyboardEventHandler: KeyboardEventHandler;
   surfaceWidth = 0;
   surfaceHeight = 0;
   surfaceColor = Color.WHITE;
-  keyboardListener: KeyboardListener = new KeyboardListener(this);
 
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
   currentTool: CreatorTool = new LineTool(this.drawingSurface);
 
-  constructor(private router: ActivatedRoute) {}
+  constructor(private router: ActivatedRoute) {
+    this.keyboardEventHandler = {} as KeyboardEventHandler;
+  }
 
   tools = {
     // todo - move to afterInit where drawing surface is defined
@@ -62,36 +64,8 @@ export class EditorComponent implements OnInit, AfterViewInit, KeyboardEventHand
     this.currentTool = new RectangleTool(this.drawingSurface);
   }
 
-  ctrlA(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlC(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlD(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlShiftZ(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlV(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlX(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlZ(event: KeyboardEvent): boolean {
-    return true;
-  }
-
   @HostListener('window:keydown', ['$event'])
   keyDown(event: KeyboardEvent): void {
-    this.keyboardListener.keyDown(event);
+    KeyboardListener.keyDown(event, this.keyboardEventHandler);
   }
 }
