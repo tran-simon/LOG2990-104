@@ -1,17 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/custom-input/error-messages';
 import { Color, ColorComponents } from 'src/app/utils/color/color';
 
@@ -20,43 +9,30 @@ import { Color, ColorComponents } from 'src/app/utils/color/color';
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss'],
 })
-export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
+export class ColorPickerComponent extends AbstractCanvasDrawer {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() color = Color.GREEN;
   @Output() colorChanged = new EventEmitter<Color>();
   @Input() indicatorLineWidth = 3;
   @Input() indicatorSize = 20;
 
-  private mouseIsDown = false;
-  private renderingContext: CanvasRenderingContext2D;
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
 
   size = 300;
 
   formGroup: FormGroup = new FormGroup({});
 
-  ngOnInit(): void {
-    this.renderingContext = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
-  }
-
-  ngAfterViewInit(): void {
-    this.draw();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.draw();
-  }
-
-  draw(size = this.size, lightness = this.color.l) {
+  draw() {
     if (this.renderingContext) {
-      for (let i = 0; i < size; i++) {
-        const h = (i / size) * 360;
-        const gradient = this.renderingContext.createLinearGradient(0, 0, 0, size);
+      const lightness = this.color.l;
+      for (let i = 0; i < this.size; i++) {
+        const h = (i / this.size) * 360;
+        const gradient = this.renderingContext.createLinearGradient(0, 0, 0, this.size);
         gradient.addColorStop(0, Color.getHslString(h, 0, lightness));
         gradient.addColorStop(1, Color.getHslString(h, 1, lightness));
 
         this.renderingContext.fillStyle = gradient;
-        this.renderingContext.fillRect(i, 0, 1, size);
+        this.renderingContext.fillRect(i, 0, 1, this.size);
       }
       this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
     }
@@ -105,7 +81,7 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onMouseDown(event: MouseEvent): void {
-    this.mouseIsDown = true;
+    super.onMouseDown(event);
     const h = (event.offsetX / this.size) * 360;
     const s = event.offsetY / this.size;
     this.color = Color.hsl(h, s, this.color.l);
@@ -123,6 +99,6 @@ export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
 
   @HostListener('window:mouseup')
   onMouseUp(): void {
-    this.mouseIsDown = false;
+    super.onMouseUp();
   }
 }
