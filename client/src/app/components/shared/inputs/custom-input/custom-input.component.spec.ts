@@ -17,9 +17,9 @@ describe('CustomInputComponent', () => {
   }));
 
   beforeEach(() => {
+    CustomInputComponent.id = 0;
     fixture = TestBed.createComponent(CustomInputComponent);
     component = fixture.componentInstance;
-    CustomInputComponent.id = 0;
     fixture.detectChanges();
   });
 

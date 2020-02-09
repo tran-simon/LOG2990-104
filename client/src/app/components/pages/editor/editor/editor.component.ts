@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CreatorTool } from 'src/app/models/CreatorTool';
+import { LineTool } from 'src/app/models/LineTool';
+import { RectangleTool } from 'src/app/models/RectangleTool';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventHandler } from 'src/app/utils/events/KeyboardEventHandler';
-import { KeyboardListener } from 'src/app/utils/events/KeyboardListener';
-import { LineTool } from '../../../../models/LineTool';
-import { RectangleTool } from '../../../../models/RectangleTool';
+import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 export interface EditorParams {
@@ -19,18 +19,20 @@ export interface EditorParams {
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
 })
-export class EditorComponent implements OnInit, AfterViewInit, KeyboardEventHandler {
+export class EditorComponent implements OnInit, AfterViewInit {
+  private keyboardEventHandler: KeyboardEventHandler;
   surfaceWidth = 0;
   surfaceHeight = 0;
   surfaceColor = Color.WHITE;
-  keyboardListener: KeyboardListener = new KeyboardListener(this);
 
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
   currentTool: CreatorTool = new LineTool(this.drawingSurface);
 
-  constructor(private router: ActivatedRoute) {}
+  constructor(private router: ActivatedRoute) {
+    this.keyboardEventHandler = {} as KeyboardEventHandler;
+  }
 
   ngOnInit() {
     this.router.params.subscribe((params) => {
@@ -56,36 +58,8 @@ export class EditorComponent implements OnInit, AfterViewInit, KeyboardEventHand
     this.currentTool = new RectangleTool(this.drawingSurface);
   }
 
-  ctrlA(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlC(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlD(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlShiftZ(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlV(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlX(event: KeyboardEvent): boolean {
-    return true;
-  }
-
-  ctrlZ(event: KeyboardEvent): boolean {
-    return true;
-  }
-
   @HostListener('window:keydown', ['$event'])
   keyDown(event: KeyboardEvent): void {
-    this.keyboardListener.keyDown(event);
+    KeyboardListener.keyDown(event, this.keyboardEventHandler);
   }
 }

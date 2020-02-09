@@ -16,7 +16,6 @@ describe('Polygon', () => {
     polygon = new Polygon(-1);
     expect(polygon.NbEdge).toBe(MIN_POLY_EDGE);
   });
-  it('Should have MIN_POLY_EDGE');
   it('should create', () => {
     expect(polygon).toBeTruthy();
   });
