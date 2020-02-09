@@ -29,12 +29,6 @@ export class EditorComponent implements AfterViewInit, OnInit {
 
   constructor(private router: ActivatedRoute) {}
 
-  tools = {
-    // todo - move to afterInit where drawing surface is defined
-    line: new LineTool(this.drawingSurface),
-    rectangle: new RectangleTool(this.drawingSurface),
-  };
-
   ngOnInit() {
     this.router.params.subscribe((params) => {
       this.surfaceWidth = params.width ? +params.width : 500;

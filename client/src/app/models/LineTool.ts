@@ -1,12 +1,12 @@
 import { DrawingSurfaceComponent } from '../components/pages/editor/drawing-surface/drawing-surface.component';
+import { CompositeLine } from './CompositeLine';
 import { Coordinate } from './Coordinate';
 import { CreatorTool } from './CreatorTool';
 import { Line } from './Line';
 
 export class LineTool extends CreatorTool {
-  private line: Line;
-  private linePreview: Line;
-  private isNewLine = true;
+  private line: CompositeLine;
+  private activeLine = false;
 
   buildShape(): Line {
     throw new Error('Method not implemented.');
@@ -18,28 +18,20 @@ export class LineTool extends CreatorTool {
 
   handleMouseEvent(e: MouseEvent): void {
     // todo - make a proper mouse manager
-
-    if (!this.isNewLine) {
-      if (e.type === 'click') {
-        this.drawShape();
-        this.isNewLine = true;
+    if (this.activeLine) {
+      if (e.type === 'dblclick') {
+        this.activeLine = false;
       } else if (e.type === 'mousemove') {
-        this.line.endCoord = new Coordinate(e.offsetX, e.offsetY);
-        this.linePreview.endCoord = new Coordinate(e.offsetX, e.offsetY);
-        this.refreshPreview();
+        this.line.updateCurrentCoord(new Coordinate(e.offsetX, e.offsetY));
+      } else if (e.type === 'mousedown') {
+        this.line.addPoint(new Coordinate(e.offsetX, e.offsetY));
       }
-    } else if (e.type === 'click') {
-      this.isNewLine = false;
+    } else if (e.type === 'mousedown') {
+      this.activeLine = true;
+      this.line = new CompositeLine(new Coordinate(e.offsetX, e.offsetY));
+      this.line.addPoint(new Coordinate(e.offsetX, e.offsetY));
 
-      this.line = new Line();
-      this.line.startCoord = new Coordinate(e.offsetX, e.offsetY);
-      this.line.endCoord = new Coordinate(e.offsetX, e.offsetY);
-
-      this.linePreview = new Line();
-      this.linePreview.startCoord = new Coordinate(e.offsetX, e.offsetY);
-      this.linePreview.endCoord = new Coordinate(e.offsetX, e.offsetY);
-
-      this.drawPreview();
+      this.drawShape();
     }
   }
 
@@ -47,16 +39,7 @@ export class LineTool extends CreatorTool {
     throw new Error('Method not implemented.');
   }
 
-  refreshPreview() {
-    this.drawingSurface.svg.nativeElement.removeChild(this.linePreview.svgNode);
-    this.drawPreview();
-  }
-
-  drawPreview() {
-    this.drawingSurface.svg.nativeElement.appendChild(this.linePreview.svg());
-  }
-
   drawShape() {
-    this.drawingSurface.svg.nativeElement.appendChild(this.line.svg());
+    this.drawingSurface.svg.nativeElement.appendChild(this.line.svgNode);
   }
 }
