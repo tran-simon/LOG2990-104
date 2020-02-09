@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
@@ -11,23 +12,19 @@ import { CreateDrawingModalComponent } from '../create-drawing-modal/create-draw
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  private keyboardEventHandler: KeyboardEventHandler;
+  keyboardEventHandler: KeyboardEventHandler;
   previousDrawings = false;
   modalIsOpened = false;
+  dialogRef: MatDialogRef<AbstractModalComponent>;
 
-  constructor(private router: Router, private dialog: MatDialog) {
+  constructor(private router: Router, public dialog: MatDialog) {
     this.keyboardEventHandler = {
       ctrl_o: () => {
         this.openCreateModal();
         return true;
       },
-      ctrl_e: () => {
-        return true;
-      },
       ctrl_g: () => {
-        return true;
-      },
-      ctrl_s: () => {
+        this.openGallery();
         return true;
       },
     } as KeyboardEventHandler;
@@ -35,18 +32,21 @@ export class HomeComponent {
 
   openCreateModal(): void {
     if (!this.modalIsOpened) {
-      this.dialog
-        .open(CreateDrawingModalComponent, {})
-        .afterClosed()
-        .subscribe(() => {
-          this.modalIsOpened = false;
-        });
+      this.dialogRef = this.dialog.open(CreateDrawingModalComponent, {});
+
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.modalIsOpened = false;
+      });
       this.modalIsOpened = true;
     }
   }
 
   openPage(nextLink: string): void {
     this.router.navigate([nextLink]);
+  }
+
+  openGallery(): void {
+    return;
   }
 
   @HostListener('window:keydown', ['$event'])

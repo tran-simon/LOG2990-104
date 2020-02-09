@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
-import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/custom-input/error-messages';
+import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
 import { Color, ColorComponents } from 'src/app/utils/color/color';
 
 @Component({
