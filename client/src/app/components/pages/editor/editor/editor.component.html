@@ -1,8 +1,9 @@
 <div id="editor-container">
   <app-toolbar></app-toolbar>
-  <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight" 
-    (dblclick)="handleMouseEvent($event)"  
+  <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
+    (dblclick)="handleMouseEvent($event)"
     (mousedown)="handleMouseEvent($event)"
     (mousemove)="handleMouseEvent($event)"
+    (mouseup)="handleMouseEvent($event)"
   ></app-drawing-surface>
 </div>
