@@ -21,9 +21,18 @@ export class ToolbarComponent {
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
+  lineJunctionTypes: string[] = ['Avec points', 'Sans points'];
+  rectangleContourTypes: string[] = ['Contour', 'Plein', 'Plein avec contour'];
   tools = Tool;
 
   thicknessPencil = 50;
+
+  lineThickness = 50;
+  lineJunction = this.lineJunctionTypes[0];
+
+  rectangleContour = this.rectangleContourTypes[0];
+
+  thicknessLinePoints = 50;
   thicknessBrush = 50;
   minthickness = 1;
   maxthickness = 100;
@@ -43,5 +52,11 @@ export class ToolbarComponent {
 
   goHome() {
     this.router.navigate(['']);
+  }
+
+  // TODO Recheck the number input field validation for the custom module
+  validateNumber(event: KeyboardEvent) {
+    const reg = RegExp('^[0-9]$');
+    return reg.test(event.key);
   }
 }
