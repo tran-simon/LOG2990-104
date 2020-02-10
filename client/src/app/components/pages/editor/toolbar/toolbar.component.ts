@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewChildren } from '@angular/core';
 import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
@@ -21,7 +21,7 @@ export class ToolbarComponent {
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
-  @ViewChild('colorPicker', { static: false })
+  @ViewChildren('colorPicker')
   colorPicker: ColorPickerComponent;
 
   tools = Tool;
@@ -34,10 +34,21 @@ export class ToolbarComponent {
 
   selectedTool: Tool;
   selectedColor = false;
-  selectedPrimaryColor = new Color(255, 255, 255);
-  selectedSecondaryColor = new Color(0, 0, 0);
+
+  selectedPrimaryColor = 'white';
+  primaryColorZ = 1000;
+  selectedSecondaryColor = 'black';
+  secondaryColorZ = 500;
 
   constructor(private router: Router) {}
+
+  handleColorChanged(eventColor: Color) {
+    if (this.selectedColor === false) {
+      this.selectedPrimaryColor = eventColor.hexString;
+    } else {
+      this.selectedSecondaryColor = eventColor.hexString;
+    }
+  }
 
   selectTool(selection: Tool) {
     if (this.selectedTool === selection) {
@@ -49,14 +60,22 @@ export class ToolbarComponent {
   }
 
   selectColor(selection: boolean) {
-    this.selectedColor = selection;
-    this.selectedTool = this.tools.ColorPicker;
-    if (selection === true) {
-      this.colorPicker.color = this.selectedSecondaryColor;
+    if (this.colorPicker != null) {
+      this.selectedColor = selection;
+      this.selectedTool = this.tools.ColorPicker;
+      if (selection === true) {
+        this.secondaryColorZ = 1000;
+        this.primaryColorZ = 500;
+        this.colorPicker.color = Color.hex(this.selectedSecondaryColor);
+      } else {
+        this.secondaryColorZ = 500;
+        this.primaryColorZ = 1000;
+        this.colorPicker.color = Color.hex(this.selectedPrimaryColor);
+      }
+      this.drawer.open();
     } else {
-      this.colorPicker.color = this.selectedPrimaryColor;
+      this.selectedTool = this.tools.ColorPicker;
     }
-    this.drawer.open();
   }
 
   changePrimaryColor() {

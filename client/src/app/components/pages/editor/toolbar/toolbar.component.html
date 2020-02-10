@@ -25,9 +25,11 @@
     </button>
   </div>
   <div id="toolbar-middle-buttons">
-    <div id="toolbar-primary-color" [style.background-color]="selectedPrimaryColor" (dblclick)="selectColor(false)">
+    <div id="toolbar-primary-color" [style.background-color]="selectedPrimaryColor" (dblclick)="selectColor(false)"
+      [style.background-color]="primaryColorZ">
     </div>
-    <div id="toolbar-secondary-color" [style.background-color]="selectedSecondaryColor" (dblclick)="selectColor(true)">
+    <div id="toolbar-secondary-color" [style.background-color]="selectedSecondaryColor" (dblclick)="selectColor(true)"
+      [style.z-index]="secondaryColorZ">
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
@@ -83,7 +85,7 @@
 
         <label *ngSwitchCase="false">Couleur primaire</label>
         <label *ngSwitchCase="true">Couleur secondaire</label>
-        <app-color-picker #colorPicker></app-color-picker>
+        <app-color-picker #colorPicker (colorChanged)="handleColorChanged($event)"></app-color-picker>
       </div>
     </mat-drawer-content>
   </mat-drawer>
