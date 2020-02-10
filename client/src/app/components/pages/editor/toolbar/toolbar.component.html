@@ -1,6 +1,6 @@
 <div id="toolbar-container">
   <div id="toolbar-top-buttons">
-    <button mat-icon-button id="back-button" (click)="goHome()">
+    <button mat-icon-button id="back-button" (click)="navigate('')">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <div class="toolbar-section-divider"></div>
@@ -34,6 +34,9 @@
   </div>
   <div id="toolbar-bottom-buttons">
     <button mat-icon-button>
+      <mat-icon (click)="navigate('help')">help</mat-icon>
+    </button>
+    <button mat-icon-button>
       <mat-icon>save</mat-icon>
     </button>
     <button mat-icon-button>
@@ -46,6 +49,7 @@
     <mat-drawer-content [ngSwitch]="selectedTool">
       <div *ngSwitchCase="tools.Pencil" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du crayon</h3>
+        <label>Épaisseur du trait</label>
         <mat-form-field>
           <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessPencil">
         </mat-form-field>
@@ -84,10 +88,10 @@
         <h3 class="toolbar-option-section">Options de la ligne</h3>
         <label>Épaisseur de la ligne</label>
         <mat-form-field>
-          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="lineThickness">
+          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessLine">
         </mat-form-field>
         <mat-slider [min]="MIN_THICKNESS" [max]="MAX_THICKNESS" [step]="STEP_THICKNESS" thumbLabel="true"
-          [(ngModel)]="thicknessBrush">
+          [(ngModel)]="thicknessLine">
         </mat-slider>
         <label>Épaisseur des points de jonction</label>
         <mat-form-field>

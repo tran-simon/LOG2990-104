@@ -22,33 +22,35 @@ export class ToolbarComponent {
   MAX_THICKNESS = 100;
   STEP_THICKNESS = 0.1;
 
+  lineJunctionTypes: string[] = ['Avec points', 'Sans points'];
+  rectangleContourTypes: string[] = ['Contour', 'Plein', 'Plein avec contour'];
+  tools = Tool;
+
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
-  lineJunctionTypes: string[] = ['Avec points', 'Sans points'];
-  rectangleContourTypes: string[] = ['Contour', 'Plein', 'Plein avec contour'];
-  tools = Tool;
-
-  thicknessPencil = 50;
-
-  lineThickness = 50;
   lineJunction = this.lineJunctionTypes[0];
-
   rectangleContour = this.rectangleContourTypes[0];
 
-  thicknessLinePoints = 50;
+  thicknessPencil = 50;
   thicknessBrush = 50;
+  thicknessLine = 50;
+  thicknessLinePoints = 50;
 
+  selectedColor: boolean;
   selectedTool: Tool;
-  selectedColor = false;
+  selectedPrimaryColor: string;
+  selectedSecondaryColor: string;
 
-  selectedPrimaryColor = 'white';
-  selectedSecondaryColor = 'black';
-
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.selectedColor = false;
+    this.selectedTool = this.tools.Pencil;
+    this.selectedPrimaryColor = 'white';
+    this.selectedSecondaryColor = 'black';
+  }
 
   handleColorChanged(eventColor: Color) {
     if (this.selectedColor === false) {
@@ -68,7 +70,7 @@ export class ToolbarComponent {
   }
 
   selectColor(selection: boolean) {
-    if (this.colorPicker != null) {
+    if (this.colorPicker) {
       this.selectedColor = selection;
       this.selectedTool = this.tools.ColorPicker;
       if (selection === true) {
@@ -82,8 +84,8 @@ export class ToolbarComponent {
     }
   }
 
-  goHome() {
-    this.router.navigate(['']);
+  navigate(path: string): void {
+    this.router.navigate([path]);
   }
 
   // TODO Recheck the number input field validation for the custom module

@@ -38,7 +38,7 @@
   width: 35px;
   z-index: 1000;
   position: absolute;
-  bottom: 160px;
+  bottom: 210px;
   right: 15px;
 }
 
@@ -48,7 +48,7 @@
   width: 35px;
   z-index: 500;
   position: absolute;
-  bottom: 150px;
+  bottom: 200px;
   left: 15px;
 }
 
@@ -153,4 +153,8 @@ mat-radio-group > mat-radio-button {
   
 ::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
   background-color: $secondary;
+}
+
+#color-square {
+  width: 150px;
 }
