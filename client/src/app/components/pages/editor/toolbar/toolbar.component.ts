@@ -18,9 +18,9 @@ enum Tool {
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  static MIN_THICKNESS = 1;
-  static MAX_THICKNESS = 100;
-  static STEP_THICKNESS = 0.1;
+  MIN_THICKNESS = 1;
+  MAX_THICKNESS = 100;
+  STEP_THICKNESS = 0.1;
 
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
