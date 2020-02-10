@@ -1,6 +1,6 @@
 <div id="toolbar-container">
   <div id="toolbar-top-buttons">
-    <button mat-icon-button id="back-button" (click)="goHome()">
+    <button mat-icon-button id="back-button" (click)="navigate('')">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <div class="toolbar-section-divider"></div>
@@ -24,7 +24,18 @@
       <mat-icon>colorize</mat-icon>
     </button>
   </div>
+  <div id="toolbar-middle-buttons">
+    <div id="toolbar-primary-color" [style.background-color]="selectedPrimaryColor.hexString"
+      (dblclick)="selectColor(false)" [ngStyle]="{'z-index':selectedColor ? 999 : 1000 }">
+    </div>
+    <div id="toolbar-secondary-color" [style.background-color]="selectedSecondaryColor.hexString"
+      (dblclick)="selectColor(true)" [ngStyle]="{'z-index':selectedColor ? 1000 : 999 }">
+    </div>
+  </div>
   <div id="toolbar-bottom-buttons">
+    <button mat-icon-button>
+      <mat-icon (click)="navigate('help')">help</mat-icon>
+    </button>
     <button mat-icon-button>
       <mat-icon>save</mat-icon>
     </button>
@@ -38,10 +49,11 @@
     <mat-drawer-content [ngSwitch]="selectedTool">
       <div *ngSwitchCase="tools.Pencil" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du crayon</h3>
+        <label>Épaisseur du trait</label>
         <mat-form-field>
           <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessPencil">
         </mat-form-field>
-        <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+        <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessPencil">
         </mat-slider>
       </div>
@@ -51,7 +63,7 @@
         <mat-form-field>
           <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessBrush">
         </mat-form-field>
-        <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+        <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessBrush">
         </mat-slider>
         <label>Texture du trait</label>
@@ -62,7 +74,7 @@
         <mat-form-field>
           <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessBrush">
         </mat-form-field>
-        <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+        <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessBrush">
         </mat-slider>
         <label>Type de tracé</label>
@@ -76,16 +88,16 @@
         <h3 class="toolbar-option-section">Options de la ligne</h3>
         <label>Épaisseur de la ligne</label>
         <mat-form-field>
-          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="lineThickness">
+          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessLine">
         </mat-form-field>
-        <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
-          [(ngModel)]="lineThickness">
+        <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
+          [(ngModel)]="thicknessLine">
         </mat-slider>
         <label>Épaisseur des points de jonction</label>
         <mat-form-field>
           <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessLinePoints">
         </mat-form-field>
-        <mat-slider [min]="minthickness" [max]="maxthickness" [step]="stepthickness" thumbLabel="true"
+        <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessLinePoints">
         </mat-slider>
         <label>Style des points de jonction</label>
@@ -95,8 +107,12 @@
           </mat-radio-button>
         </mat-radio-group>
       </div>
-      <div *ngSwitchCase="tools.ColorPicker" class="toolbar-tool-section">
+      <div *ngSwitchCase="tools.ColorPicker" [ngSwitch]="selectedColor" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>
+
+        <label *ngSwitchCase="false">Couleur primaire</label>
+        <label *ngSwitchCase="true">Couleur secondaire</label>
+        <app-color-picker #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"></app-color-picker>
       </div>
     </mat-drawer-content>
   </mat-drawer>

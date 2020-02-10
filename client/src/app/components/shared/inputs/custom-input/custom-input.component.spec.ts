@@ -60,6 +60,23 @@ describe('CustomInputComponent', () => {
     input.blur();
   });
 
+  it('should ignore external inputs if field is focused', () => {
+    component.onChange('2');
+
+    component.onFocus();
+    component.value = '3';
+    component.ngOnChanges();
+
+    expect(component.value).toEqual('2');
+  });
+  it('should accept external input if field is not focused', () => {
+    component.onBlur('4');
+    component.value = '3';
+    component.ngOnChanges();
+
+    expect(component.value).toEqual('3');
+  });
+
   it('can format value', () => {
     component.format = (v) => v.toUpperCase();
     component.value = 'test';

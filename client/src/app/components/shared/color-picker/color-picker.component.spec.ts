@@ -87,7 +87,7 @@ describe('ColorPickerComponent', () => {
   it('should update on hex color input change', () => {
     const hexColorInputComponent: HexInputComponent = fixture.debugElement.query(By.css('#hex-color-input')).componentInstance;
     const hexChangeSpy = spyOn(component, 'hexChange').and.callThrough();
-    const colorHex = 'ffffff';
+    const colorHex = 'ff22ff';
 
     hexColorInputComponent.onBlur(colorHex);
     fixture.detectChanges();
