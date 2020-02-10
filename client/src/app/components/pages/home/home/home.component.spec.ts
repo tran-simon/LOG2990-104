@@ -62,30 +62,30 @@ describe('HomeComponent', () => {
   });
 
   it('should call openCreateModal on create button clicked', () => {
-    const openCreateModalSpy = spyOn(component, 'openCreateModal');
+    const openCreateModalSpy = spyOn(component, 'openModal');
     fixture.debugElement.nativeElement.querySelector('#btn-create').click();
     expect(openCreateModalSpy).toHaveBeenCalled();
   });
 
   it('should open modal when openCreateModal is called', () => {
-    component.openCreateModal();
+    component.openModal();
     expect(dialogOpenSpy).toHaveBeenCalled();
   });
 
   it('should not open modal if already opened', () => {
-    component.openCreateModal();
-    component.openCreateModal();
+    component.openModal();
+    component.openModal();
     expect(dialogOpenSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should open second modal after first one is closed', () => {
-    component.openCreateModal();
+    component.openModal();
     expect(component.modalIsOpened).toEqual(true);
 
     component.dialogRef.close();
     expect(component.modalIsOpened).toEqual(false);
 
-    component.openCreateModal();
+    component.openModal();
     expect(dialogOpenSpy).toHaveBeenCalledTimes(2);
   });
 
@@ -117,7 +117,7 @@ describe('HomeComponent', () => {
   });
 
   it('can open modal with keyboard shortcut', () => {
-    const openCreateModalSpy = spyOn(component, 'openCreateModal');
+    const openCreateModalSpy = spyOn(component, 'openModal');
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'o', ctrlKey: true }));
     expect(openCreateModalSpy).toHaveBeenCalled();
   });

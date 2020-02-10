@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatDialogRef, MatSidenav } from '@angular/material';
 import { Router } from '@angular/router';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 
 enum Subject {
   Bienvenue,
@@ -17,7 +18,8 @@ enum Subject {
   templateUrl: './user-guide.component.html',
   styleUrls: ['./user-guide.component.scss'],
 })
-export class UserGuideComponent implements OnInit {
+// todo rename to modal
+export class UserGuideComponent extends AbstractModalComponent implements OnInit {
   @ViewChild('sidenav', { static: false })
   sidenav: MatSidenav;
   subjects = Subject;
@@ -26,7 +28,9 @@ export class UserGuideComponent implements OnInit {
   panelOpenState1 = false;
   panelOpenState2 = false;
   panelOpenState3 = false;
-  constructor(private router: Router) {}
+  constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
+    super(dialogRef);
+  }
 
   ngOnInit() {
     this.selectedSubject = this.subjects.Bienvenue;
