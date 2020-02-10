@@ -18,9 +18,9 @@ enum Tool {
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  MIN_THICKNESS = 1;
-  MAX_THICKNESS = 100;
-  STEP_THICKNESS = 0.1;
+  static readonly MIN_THICKNESS = 1;
+  static readonly MAX_THICKNESS = 100;
+  static readonly STEP_THICKNESS = 0.1;
 
   lineJunctionTypes: string[] = ['Avec points', 'Sans points'];
   rectangleContourTypes: string[] = ['Contour', 'Plein', 'Plein avec contour'];
