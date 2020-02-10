@@ -47,7 +47,7 @@
       <div *ngSwitchCase="tools.Pencil" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du crayon</h3>
         <mat-form-field>
-          <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessPencil">
+          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessPencil">
         </mat-form-field>
         <mat-slider [min]="MIN_THICKNESS" [max]="MAX_THICKNESS" [step]="STEP_THICKNESS" thumbLabel="true"
           [(ngModel)]="thicknessPencil">
@@ -55,30 +55,53 @@
       </div>
       <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du pinceau</h3>
+        <label>Épaisseur du trait</label>
         <mat-form-field>
-          <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
+          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessBrush">
         </mat-form-field>
         <mat-slider [min]="MIN_THICKNESS" [max]="MAX_THICKNESS" [step]="STEP_THICKNESS" thumbLabel="true"
           [(ngModel)]="thicknessBrush">
         </mat-slider>
+        <label>Texture du trait</label>
       </div>
       <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du rectangle</h3>
+        <label>Épaisseur du trait de contour</label>
         <mat-form-field>
-          <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
+          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessBrush">
         </mat-form-field>
         <mat-slider [min]="MIN_THICKNESS" [max]="MAX_THICKNESS" [step]="STEP_THICKNESS" thumbLabel="true"
           [(ngModel)]="thicknessBrush">
         </mat-slider>
+        <label>Type de tracé</label>
+        <mat-radio-group [(ngModel)]='rectangleContour'>
+          <mat-radio-button *ngFor='let contourType of rectangleContourTypes' [value]='contourType'>
+            {{contourType}}
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
       <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options de la ligne</h3>
+        <label>Épaisseur de la ligne</label>
         <mat-form-field>
-          <input matInput type="number" placeholder="Épaisseur" [(ngModel)]="thicknessBrush">
+          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="lineThickness">
         </mat-form-field>
         <mat-slider [min]="MIN_THICKNESS" [max]="MAX_THICKNESS" [step]="STEP_THICKNESS" thumbLabel="true"
           [(ngModel)]="thicknessBrush">
         </mat-slider>
+        <label>Épaisseur des points de jonction</label>
+        <mat-form-field>
+          <input matInput type="number" (keypress)='validateNumber($event)' [(ngModel)]="thicknessLinePoints">
+        </mat-form-field>
+        <mat-slider [min]="MIN_THICKNESS" [max]="MAX_THICKNESS" [step]="STEP_THICKNESS" thumbLabel="true"
+          [(ngModel)]="thicknessLinePoints">
+        </mat-slider>
+        <label>Style des points de jonction</label>
+        <mat-radio-group [(ngModel)]='lineJunction'>
+          <mat-radio-button *ngFor='let junctionType of lineJunctionTypes' [value]='junctionType'>
+            {{junctionType}}
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
       <div *ngSwitchCase="tools.ColorPicker" [ngSwitch]="selectedColor" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>
