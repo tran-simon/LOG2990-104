@@ -32,7 +32,7 @@ describe('ToolbarComponent', () => {
   it('should go home', () => {
     const spy = spyOn(router, 'navigate');
 
-    component.goHome();
+    component.navigate('');
 
     expect(spy).toHaveBeenCalledWith(['']);
   });
