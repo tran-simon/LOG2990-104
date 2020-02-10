@@ -18,6 +18,7 @@ enum Tool {
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
+  static readonly TOOLBAR_WIDTH = 60;
   static readonly MIN_THICKNESS = 1;
   static readonly MAX_THICKNESS = 100;
   static readonly STEP_THICKNESS = 0.1;

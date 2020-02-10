@@ -11,7 +11,7 @@ import { Color, ColorComponents } from 'src/app/utils/color/color';
 })
 export class ColorPickerComponent extends AbstractCanvasDrawer {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() color = Color.GREEN;
+  @Input() color = Color.WHITE;
   @Output() colorChanged = new EventEmitter<Color>();
   @Input() indicatorLineWidth = 3;
   @Input() indicatorSize = 20;
