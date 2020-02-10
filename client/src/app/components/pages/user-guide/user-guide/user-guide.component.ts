@@ -42,6 +42,20 @@ export class UserGuideComponent implements OnInit {
     this.panelOpenState3 = true;
   }
 
+  previousSubject() {
+    if (this.selectedSubject !== this.subjects.Bienvenue) {
+      this.selectSubject(this.selectedSubject - 1);
+      this.openCategories();
+    }
+  }
+
+  nextSubject() {
+    if (this.selectedSubject !== this.subjects.Sujet6) {
+      this.selectSubject(this.selectedSubject + 1);
+      this.openCategories();
+    }
+  }
+
   closeCategorie() {
     this.panelOpenState1 = false;
     this.panelOpenState2 = false;

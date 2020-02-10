@@ -78,20 +78,9 @@
         <mat-divider></mat-divider>
       </div>
 
-
-      <div [ngSwitch]="selectedSubject">
-        <div *ngSwitchCase="subjects.Bienvenue">
-          <button mat-button class="prevButton" disabled>precedent</button>
-          <button mat-button class = "nextButton" (click)="selectSubject(selectedSubject+1); openCategories()">suivant</button>
-        </div>
-        <div *ngSwitchDefault>
-          <button mat-button class="prevButton" (click)="selectSubject(selectedSubject-1); openCategories()">precedent</button>
-          <button mat-button class = "nextButton" (click)="selectSubject(selectedSubject+1); openCategories()">suivant</button>
-        </div>
-        <div *ngSwitchCase="subjects.Sujet6">
-          <button mat-button class="prevButton" (click)="selectSubject(selectedSubject-1); openCategories()">precedent</button>
-          <button mat-button class = "nextButton" disabled>suivant</button>
-        </div>
+      <div>
+        <button mat-button id="prevButton" (click)="previousSubject()">precedent</button>
+        <button mat-button id = "nextButton" (click)="nextSubject()">suivant</button>
       </div>
 
   </mat-sidenav-content>
