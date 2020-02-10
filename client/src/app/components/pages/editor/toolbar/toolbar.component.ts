@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
@@ -21,6 +21,10 @@ export class ToolbarComponent {
   static readonly MIN_THICKNESS = 1;
   static readonly MAX_THICKNESS = 100;
   static readonly STEP_THICKNESS = 0.1;
+
+  @Input() minThickness = ToolbarComponent.MIN_THICKNESS;
+  @Input() maxThickness = ToolbarComponent.MAX_THICKNESS;
+  @Input() stepThickness = ToolbarComponent.STEP_THICKNESS;
 
   lineJunctionTypes: string[] = ['Avec points', 'Sans points'];
   rectangleContourTypes: string[] = ['Contour', 'Plein', 'Plein avec contour'];
