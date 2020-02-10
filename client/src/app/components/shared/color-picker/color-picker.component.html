@@ -1,16 +1,19 @@
-<div id="color-picker" [style.background-color]="color.hexString">
-  <canvas #canvas id="color-square"
-    width="{{size}}"
-    height="{{size}}"
-    (mousemove)="onMouseMove($event)"
-    (mousedown)="onMouseDown($event)">
-  </canvas>
+<div id="color-picker" [style.background-color]="color.hexString" >
+  <div>
+    <canvas #canvas id="color-square"
+      width="{{size}}"
+      height="{{size}}"
+      (mousemove)="onMouseMove($event)"
+      (mousedown)="onMouseDown($event)">
+    </canvas>
 
-  <app-color-lightness [color]="color"
-    (lightnessChanged)="lightnessChanged($event)"
-    width="50" height="{{size}}"></app-color-lightness>
+    <app-color-lightness [color]="color"
+      (lightnessChanged)="lightnessChanged($event)"
+      [isVertical]="isVertical"
+    ></app-color-lightness>
+  </div>
 
-  <form [formGroup]="formGroup">
+  <form [formGroup]="formGroup" >
     <app-hex-input  #redinput
       required=true
       id="red-color-input"

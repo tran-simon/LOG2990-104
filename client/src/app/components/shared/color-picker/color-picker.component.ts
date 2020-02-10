@@ -15,21 +15,19 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
   @Output() colorChanged = new EventEmitter<Color>();
   @Input() indicatorLineWidth = 3;
   @Input() indicatorSize = 20;
+  @Input() isVertical = false;
+  @Input() size = 300;
 
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
-
-  size = 300;
-
   formGroup: FormGroup = new FormGroup({});
 
-  draw() {
+  draw(): void {
     if (this.renderingContext) {
-      const lightness = this.color.l;
       for (let i = 0; i < this.size; i++) {
         const h = (i / this.size) * 360;
         const gradient = this.renderingContext.createLinearGradient(0, 0, 0, this.size);
-        gradient.addColorStop(0, Color.getHslString(h, 0, lightness));
-        gradient.addColorStop(1, Color.getHslString(h, 1, lightness));
+        gradient.addColorStop(0, Color.getHslString(h, 0, 0.5));
+        gradient.addColorStop(1, Color.getHslString(h, 1, 0.5));
 
         this.renderingContext.fillStyle = gradient;
         this.renderingContext.fillRect(i, 0, 1, this.size);
@@ -39,9 +37,10 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     this.colorChanged.emit(this.color);
   }
 
-  drawIndicator(x: number, y: number) {
-    this.renderingContext.fillStyle = this.color.hexString;
-    this.renderingContext.strokeStyle = this.color.negative.hexString;
+  drawIndicator(x: number, y: number): void {
+    const color = Color.hsl(this.color.h, this.color.s, 0.5);
+    this.renderingContext.fillStyle = color.hexString;
+    this.renderingContext.strokeStyle = color.negative.hexString;
     this.renderingContext.lineWidth = this.indicatorLineWidth;
     this.renderingContext.fillRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
     this.renderingContext.strokeRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
@@ -51,7 +50,6 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     const h = this.color.h;
     const s = this.color.s;
     this.color = Color.hsl(h ? h : 0, s, lightness);
-    this.draw();
   }
 
   colorChange(value: string, component: string): void {

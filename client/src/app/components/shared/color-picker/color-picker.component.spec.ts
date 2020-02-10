@@ -59,7 +59,6 @@ describe('ColorPickerComponent', () => {
 
     expect(lightnessChangedSpy).toHaveBeenCalledWith(l);
     expect(component.color.l).toBe(l);
-    expect(drawSpy).toHaveBeenCalled();
   });
 
   it('should update on RGB inputs change', () => {
