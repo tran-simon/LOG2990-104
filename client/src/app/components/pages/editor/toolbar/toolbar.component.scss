@@ -11,8 +11,6 @@
   height: calc(100vh - 0px);
 
   background-color: $primary;
-
-  z-index: 1000;
 }
 
 #toolbar-top-buttons {
@@ -23,7 +21,7 @@
   justify-content: space-between;
 }
 
-#toolbar-bottom-buttons {
+#toolbar-bottom-buttons{
   padding-bottom: 20px;
   padding-top: 15px;
   display: flex;
@@ -46,15 +44,17 @@ button {
 }
 
 .toolbar-section-divider {
-  padding: 10px 0;
+  padding: 10px 0px;
   width: 100%;
 }
 
 mat-drawer-container {
   position: fixed;
   margin-left: 60px;
+  width: 100%;
   height: calc(100vh - 0px);
-  overflow: visible;
+
+  background-color: transparent;
 }
 
 mat-drawer {
@@ -66,23 +66,20 @@ mat-drawer-content {
   margin: 0 !important;
 }
 
-mat-slider, mat-form-field {
+mat-slider, mat-form-field{
   width: 100%;
   color: $accent;
 }
 
 ::ng-deep .mat-accent .mat-slider-thumb {
   background-color: $accent;
-}
-
+} 
 ::ng-deep .mat-accent .mat-slider-thumb-label {
   background-color: $accent;
-}
-
+} 
 ::ng-deep .mat-accent .mat-slider-thumb-label-text {
   color: $secondary;
-}
-
+} 
 ::ng-deep .mat-accent .mat-slider-track-fill {
   background-color: $accent;
 }
@@ -100,8 +97,40 @@ mat-slider, mat-form-field {
   display: flex;
   align-self: flex-start;
   color: $accent;
+  margin-bottom: 25px;
 }
 
 .selected-tool {
+  background-color: $secondary;
+}
+
+label {
+  align-self: flex-start;
+  color: $accent;
+}
+
+mat-radio-group {
+  display: flex;
+  width: 100%;
+  margin: 10px 0px;
+  justify-content: space-between;
+  flex-direction: column;
+  color: $accent;
+}
+
+mat-radio-group > mat-radio-button {
+  margin: 5px 0px;
+}
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+  border-color: $accent; 
+}
+  
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle{
+  color: $accent;
+  background-color: $accent;
+}
+  
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
   background-color: $secondary;
 }
