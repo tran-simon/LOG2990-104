@@ -50,14 +50,14 @@
     <mat-drawer-content [ngSwitch]="selectedTool">
       <div *ngSwitchCase="tools.Pencil" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du crayon</h3>
-        <app-number-input [(value)]="thicknessPencil">Épaisseur du trait</app-number-input>
+        <app-number-input allowDecimals="true" [(value)]="thicknessPencil">Épaisseur du trait</app-number-input>
         <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessPencil">
         </mat-slider>
       </div>
       <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du pinceau</h3>
-        <app-number-input [(value)]="thicknessBrush">Épaisseur du trait</app-number-input>
+        <app-number-input allowDecimals="true" [(value)]="thicknessBrush">Épaisseur du trait</app-number-input>
         <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessBrush">
         </mat-slider>
@@ -65,7 +65,8 @@
       </div>
       <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du rectangle</h3>
-        <app-number-input [(value)]="thicknessRectangle">Épaisseur du trait de contour</app-number-input>
+        <app-number-input allowDecimals="true" [(value)]="thicknessRectangle">Épaisseur du trait de contour
+        </app-number-input>
         <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessRectangle">
         </mat-slider>
@@ -78,11 +79,12 @@
       </div>
       <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options de la ligne</h3>
-        <app-number-input [(value)]="thicknessLine">Épaisseur de la ligne</app-number-input>
+        <app-number-input allowDecimals="true" [(value)]="thicknessLine">Épaisseur de la ligne</app-number-input>
         <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessLine">
         </mat-slider>
-        <app-number-input [(value)]="thicknessLinePoints">Épaisseur des points de jonction</app-number-input>
+        <app-number-input allowDecimals="true" [(value)]="thicknessLinePoints">Épaisseur des points de jonction
+        </app-number-input>
         <mat-slider [min]="minThickness" [max]="maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="thicknessLinePoints">
         </mat-slider>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CustomInputComponent } from '../custom-input/custom-input.component';
 
 @Component({
@@ -7,8 +7,8 @@ import { CustomInputComponent } from '../custom-input/custom-input.component';
   styleUrls: ['../custom-input/custom-input.component.scss'],
 })
 export class NumberInputComponent extends CustomInputComponent implements OnInit {
-  allowDecimals = false;
-  allowNegatives = false;
+  @Input() allowDecimals = false;
+  @Input() allowNegatives = false;
 
   static makeRegexString(allowNegatives = false, allowDecimals = false): string {
     let regexString = '^';
