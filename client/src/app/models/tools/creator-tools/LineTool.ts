@@ -1,7 +1,7 @@
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { DrawingSurfaceComponent } from '../components/pages/editor/drawing-surface/drawing-surface.component';
-import { CompositeLine } from './CompositeLine';
-import { Coordinate } from './Coordinate';
+import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { CompositeLine } from '../../CompositeLine';
+import { Coordinate } from '../../Coordinate';
 import { CreatorTool } from './CreatorTool';
 
 export class LineTool extends CreatorTool {
@@ -45,7 +45,7 @@ export class LineTool extends CreatorTool {
     } as KeyboardEventHandler;
   }
 
-  handleMouseEvent(e: MouseEvent): void {
+  handleMouseEvent(e: MouseEvent) {
     // todo - make a proper mouse manager
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 

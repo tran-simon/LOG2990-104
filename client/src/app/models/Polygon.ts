@@ -1,4 +1,5 @@
 import { BaseShape } from './BaseShape';
+import { Coordinate } from './Coordinate';
 
 export const MIN_POLY_EDGE = 3;
 export const MAX_POLY_EDGE = 12;
@@ -18,6 +19,14 @@ export class Polygon extends BaseShape {
     } else {
       this.nbEdge = nbEdge;
     }
+  }
+
+  get origin(): Coordinate {
+    return this._origin;
+  }
+
+  set origin(c: Coordinate) {
+    this._origin = c;
   }
 
   constructor(nbEdge: number = MIN_POLY_EDGE) {

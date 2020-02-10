@@ -14,6 +14,15 @@ export class CompositeLine extends BaseShape {
     return this.lineArray[this.lineArray.length - 1];
   }
 
+  get origin(): Coordinate {
+    return this.lineArray[0].startCoord;
+  }
+
+  set origin(c: Coordinate) {
+    this._origin = c;
+    this.lineArray[0].startCoord = c;
+  }
+
   constructor(initCoord: Coordinate = new Coordinate()) {
     super('g');
     this.addPoint(initCoord);
