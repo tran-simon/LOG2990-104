@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MatSidenav } from '@angular/material';
-import { Router } from '@angular/router';
+
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 
 enum Subject {
@@ -28,7 +28,7 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
   panelOpenState1 = false;
   panelOpenState2 = false;
   panelOpenState3 = false;
-  constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
+  constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
   }
 
@@ -58,12 +58,5 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
       this.selectSubject(this.selectedSubject + 1);
       this.openCategories();
     }
-  }
-
-  goBack() {
-    window.history.back();
-  }
-  openPage(nextLink: string): void {
-    this.router.navigate([nextLink]);
   }
 }

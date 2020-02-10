@@ -110,21 +110,4 @@ describe('UserGuideComponent', () => {
     expect(component.panelOpenState2).toEqual(true);
     expect(component.panelOpenState3).toEqual(true);
   });
-
-  it('Retour button should call goBack', () => {
-    const goBackSpy = spyOn(component, 'goBack').and.callThrough();
-    fixture.debugElement.nativeElement.querySelector('#buttonBack').click();
-    expect(goBackSpy).toHaveBeenCalled();
-  });
-
-  it('Button Page daccueil should call openPage with home', () => {
-    const openPageSpy = spyOn(component, 'openPage');
-    fixture.debugElement.nativeElement.querySelector('#buttonHome').click();
-    expect(openPageSpy).toHaveBeenCalledWith('');
-  });
-
-  it('should route', () => {
-    component.openPage('test');
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['test']);
-  });
 });
