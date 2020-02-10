@@ -1,11 +1,7 @@
-import { Color } from './color';
+import { Color, ColorComponents } from './color';
 
 describe('Color', () => {
-  let colorFromHSL: Color;
-
-  beforeEach(() => {
-    colorFromHSL = Color.hsl(120, 0.5, 0.4);
-  });
+  const colorFromRGB = Color.rgb255(51, 153, 51);
 
   it('can create red color from HSL', () => {
     const color = Color.hsl(0, 1, 0.5);
@@ -21,9 +17,30 @@ describe('Color', () => {
     expect(color).toEqual(Color.BLUE);
   });
 
+  it('can create color from RGB', () => {
+    const color = Color.rgb(1, 0, 0);
+    expect(color).toEqual(Color.hsl(0, 1, 0.5));
+  });
+
   it('can generate Hsl string', () => {
-    const hslString = Color.getHslString(120, 0.5, 0.75);
-    expect(hslString).toEqual('hsl(120,50%,75%)');
+    const hslString = Color.hsl(120, 0.5, 0.4).hslString;
+    expect(hslString).toEqual('hsl(120,50%,40%)');
+  });
+
+  it('can create color from rgb components between 0 to 255', () => {
+    expect(Color.rgb255(270, 0, -5)).toEqual(Color.rgb(1, 0, 0));
+  });
+
+  it('can get color with rgb components between 0 and 255', () => {
+    const color: ColorComponents = {
+      r: 0,
+      g: 0,
+      b: 255,
+      h: 240,
+      s: 1,
+      l: 0.5,
+    };
+    expect(Color.BLUE.color255).toEqual(color);
   });
 
   it('can get rgbString', () => {
@@ -32,13 +49,13 @@ describe('Color', () => {
   });
 
   it('can calculate hue', () => {
-    expect(colorFromHSL.hue).toBeCloseTo(120, 5);
+    expect(colorFromRGB.h).toBeCloseTo(120, 5);
   });
   it('can calculate saturation', () => {
-    expect(colorFromHSL.saturation).toBeCloseTo(0.5, 5);
+    expect(colorFromRGB.s).toBeCloseTo(0.5, 5);
   });
   it('can calculate lightness', () => {
-    expect(colorFromHSL.lightness).toBeCloseTo(0.4, 5);
+    expect(colorFromRGB.l).toBeCloseTo(0.4, 5);
   });
 
   it('can get hex value', () => {
@@ -47,9 +64,14 @@ describe('Color', () => {
   });
 
   it('can create color from hex', () => {
-    const { red, green, blue } = Color.hex(colorFromHSL.hex);
-    expect(red).toBeCloseTo(0.2, 5);
-    expect(green).toBeCloseTo(0.6, 5);
-    expect(blue).toBeCloseTo(0.2, 5);
+    const { r, g, b } = Color.hex(colorFromRGB.hex);
+    expect(r).toBeCloseTo(0.2, 5);
+    expect(g).toBeCloseTo(0.6, 5);
+    expect(b).toBeCloseTo(0.2, 5);
+  });
+
+  it('can get negative color', () => {
+    expect(Color.WHITE.negative).toEqual(Color.BLACK);
+    expect(Color.RED.negative).toEqual(Color.rgb(0, 1, 1));
   });
 });
