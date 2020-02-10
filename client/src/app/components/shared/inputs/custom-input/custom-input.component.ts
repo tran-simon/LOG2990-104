@@ -10,6 +10,7 @@ import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/i
 export class CustomInputComponent implements OnInit, OnChanges {
   static id = 0;
   @Input() id = `custom-input-${CustomInputComponent.id++}`;
+  @Input() autofocus = true;
   @Input() formGroup = new FormGroup({});
   @Input() stringToMatch: string;
   @Input() required = false;
@@ -19,6 +20,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   @Input() maxLength: number;
   @Input() prefix: string;
   @Input() suffix: string;
+  @Input() allowExternalUpdatesWhenFocused = false;
 
   formControl: FormControl;
 
@@ -66,7 +68,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (!this.focused) {
+    if (this.allowExternalUpdatesWhenFocused || !this.focused) {
       this.value = this.format(this.value);
       this.validValue = this.value;
     } else {

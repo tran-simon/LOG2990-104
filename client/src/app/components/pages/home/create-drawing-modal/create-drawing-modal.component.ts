@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
@@ -18,10 +18,14 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
   formGroup = new FormGroup({});
   private windowWidth = 500;
   private windowHeight = 500;
-  width = '500'; // this.windowWidth.toString();
-  height = '500'; // this.windowHeight.toString();
+  width = this.windowWidth.toString();
+  height = this.windowHeight.toString();
 
-  constructor(private router: Router, public dialogRef: MatDialogRef<AbstractModalComponent>) {
+  constructor(
+    private router: Router,
+    public dialogRef: MatDialogRef<AbstractModalComponent>,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
     super(dialogRef);
   }
 
@@ -35,8 +39,10 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
     if (this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString()) {
       this.windowWidth = window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH;
       this.windowHeight = window.innerHeight;
-      // this.width = this.windowWidth.toString(); // todo
-      // this.height = this.windowHeight.toString();
+
+      this.width = this.windowWidth.toString();
+      this.height = this.windowHeight.toString();
+      this.changeDetectorRef.detectChanges();
     }
   }
 
