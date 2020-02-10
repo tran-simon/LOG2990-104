@@ -56,12 +56,7 @@ export class UserGuideComponent implements OnInit {
     }
   }
 
-  closeCategorie() {
-    this.panelOpenState1 = false;
-    this.panelOpenState2 = false;
-    this.panelOpenState3 = false;
-  }
-  goHome() {
+  goBack() {
     window.history.back();
   }
   openPage(nextLink: string): void {

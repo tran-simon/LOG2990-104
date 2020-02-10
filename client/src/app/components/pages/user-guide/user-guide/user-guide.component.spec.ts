@@ -78,6 +78,23 @@ describe('UserGuideComponent', () => {
     expect(openCategoriesSpy).not.toHaveBeenCalled();
   });
 
+  it('previousSubject should not call selectSubject and openCategories because default subject is Bienvenue', () => {
+    const selectSubjectSpy = spyOn(component, 'selectSubject');
+    const openCategoriesSpy = spyOn(component, 'openCategories');
+    component.previousSubject();
+    expect(selectSubjectSpy).not.toHaveBeenCalled();
+    expect(openCategoriesSpy).not.toHaveBeenCalled();
+  });
+  it('previousSubject should call selectSubject and openCategories because the subject is not Bienvenue', () => {
+    const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
+    const openCategoriesSpy = spyOn(component, 'openCategories').and.callThrough();
+    component.selectedSubject = component.subjects.Sujet3;
+    component.previousSubject();
+    fixture.detectChanges();
+    expect(selectSubjectSpy).toHaveBeenCalled();
+    expect(openCategoriesSpy).toHaveBeenCalled();
+  });
+
   it('selectSubject should change the subject', () => {
     component.selectSubject(component.subjects.Bienvenue);
     expect(component.selectedSubject).toEqual(component.subjects.Bienvenue);
@@ -92,5 +109,22 @@ describe('UserGuideComponent', () => {
     expect(component.panelOpenState1).toEqual(true);
     expect(component.panelOpenState2).toEqual(true);
     expect(component.panelOpenState3).toEqual(true);
+  });
+
+  it('Retour button should call goBack', () => {
+    const goBackSpy = spyOn(component, 'goBack').and.callThrough();
+    fixture.debugElement.nativeElement.querySelector('#buttonBack').click();
+    expect(goBackSpy).toHaveBeenCalled();
+  });
+
+  it('Button Page daccueil should call openPage with home', () => {
+    const openPageSpy = spyOn(component, 'openPage');
+    fixture.debugElement.nativeElement.querySelector('#buttonHome').click();
+    expect(openPageSpy).toHaveBeenCalledWith('');
+  });
+
+  it('should route', () => {
+    component.openPage('test');
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['test']);
   });
 });
