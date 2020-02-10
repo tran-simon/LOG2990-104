@@ -30,6 +30,7 @@ describe('ColorLightnessComponent', () => {
     fixture = TestBed.createComponent(ColorLightnessComponent);
     component = fixture.componentInstance;
 
+    component.isVertical = true;
     colorLightnessElement = fixture.debugElement.query(By.css('#color-square-lightness'));
     drawSpy = spyOn(component, 'draw').and.callThrough();
     lightnessChangedSpy = spyOn(component.lightnessChanged, 'emit').and.callThrough();
@@ -100,5 +101,10 @@ describe('ColorLightnessComponent', () => {
 
     expect(lightnessChangedSpy).toHaveBeenCalledTimes(1);
     expect(lightnessChangedSpy).toHaveBeenCalledWith(100 / 300);
+  });
+
+  it('should have width bigger than height if horizontal', () => {
+    component.isVertical = false;
+    expect(component.width).toBeGreaterThan(component.height);
   });
 });
