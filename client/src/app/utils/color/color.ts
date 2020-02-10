@@ -155,7 +155,7 @@ export class Color implements ColorComponents {
         h = (r - g) / C + 4;
         break;
     }
-    return h ? 60 * h : 0;
+    return MathUtil.fitAngle(h ? 60 * h : 0);
   }
 
   /**
