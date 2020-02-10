@@ -86,7 +86,7 @@ mat-drawer-content {
   margin: 0 !important;
 }
 
-mat-slider, mat-form-field{
+mat-slider{
   width: 100%;
   color: $accent;
 }
@@ -104,6 +104,9 @@ mat-slider, mat-form-field{
   background-color: $accent;
 }
 
+app-number-input {
+  width: 100%;
+}
 
 .toolbar-tool-section {
   display: flex;

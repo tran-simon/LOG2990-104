@@ -44,8 +44,9 @@ export class ToolbarComponent {
   thicknessBrush = 50;
   thicknessLine = 50;
   thicknessLinePoints = 50;
+  thicknessRectangle = 50;
 
-  selectedColor = false;
+  isPrimarySelected = true;
   selectedTool = this.tools.Pencil;
   selectedPrimaryColor = Color.WHITE;
   selectedSecondaryColor = Color.BLACK;
@@ -53,7 +54,7 @@ export class ToolbarComponent {
   constructor(private router: Router) {}
 
   handleColorChanged(eventColor: Color) {
-    if (!this.selectedColor) {
+    if (this.isPrimarySelected) {
       this.selectedPrimaryColor = eventColor;
     } else {
       this.selectedSecondaryColor = eventColor;
@@ -61,6 +62,10 @@ export class ToolbarComponent {
   }
 
   selectTool(selection: Tool) {
+    this.selectedTool = selection;
+  }
+
+  openPanel(selection: Tool) {
     if (this.selectedTool === selection) {
       this.drawer.toggle();
     } else {
@@ -70,27 +75,21 @@ export class ToolbarComponent {
   }
 
   selectColor(selection: boolean) {
-    if (this.colorPicker) {
-      this.selectedColor = selection;
-      this.selectedTool = this.tools.ColorPicker;
-      this.colorPicker.color = selection ? this.selectedSecondaryColor : this.selectedPrimaryColor;
-      this.drawer.open();
-    } else {
+    if (!this.colorPicker) {
       this.selectedTool = this.tools.ColorPicker;
     }
+
+    this.isPrimarySelected = selection;
+    this.selectedTool = this.tools.ColorPicker;
+    this.colorPicker.color = selection ? this.selectedPrimaryColor : this.selectedSecondaryColor;
+    this.drawer.open();
   }
 
   navigate(path: string): void {
     this.router.navigate([path]);
   }
 
-  // TODO Recheck the number input field validation for the custom module
-  validateNumber(event: KeyboardEvent) {
-    const reg = RegExp('^[0-9]$');
-    return reg.test(event.key);
-  }
-
   get color(): Color {
-    return this.selectedColor ? this.selectedSecondaryColor : this.selectedPrimaryColor;
+    return this.isPrimarySelected ? this.selectedPrimaryColor : this.selectedSecondaryColor;
   }
 }

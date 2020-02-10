@@ -1,4 +1,4 @@
-<mat-form-field appearance="fill" [formGroup]="formGroup">
+<mat-form-field [formGroup]="formGroup">
   <mat-label>
     <label for="{{id}}">
       <ng-content></ng-content>
@@ -9,7 +9,7 @@
   <span *ngIf="suffix" matSuffix>{{suffix}}</span>
 
   <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
-       class="alert alert-danger">
+    class="alert alert-danger">
     <mat-error *ngFor="let error of errors">
       {{getErrorMessage(error)}}
     </mat-error>

@@ -1,3 +1,9 @@
+@import "../../../../../assets/globalTheme";
+
+.mat-input-element, label {
+  color: $accent;
+}
+
 mat-form-field {
-  background-color: white
+  width: 100%;
 }
