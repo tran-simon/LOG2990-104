@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSidenavModule } from '@angular/material';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-lightness/color-lightness.component';
@@ -25,6 +27,9 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     MatIconModule,
     MatInputModule,
     MatSidenavModule,
+    MatExpansionModule,
+    MatDividerModule,
+    MatListModule,
   ],
   declarations: [
     AbstractModalComponent,
@@ -52,6 +57,9 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
+    MatExpansionModule,
+    MatDividerModule,
+    MatListModule,
   ],
 })
 export class SharedModule {}

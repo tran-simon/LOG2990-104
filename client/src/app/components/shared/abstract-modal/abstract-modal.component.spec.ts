@@ -13,7 +13,14 @@ describe('AbstractModalComponent', () => {
       declarations: [AbstractModalComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} },
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {
+              return;
+            },
+          },
+        },
       ],
     }).compileComponents();
   }));
@@ -26,5 +33,14 @@ describe('AbstractModalComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should close on close button click', () => {
+    const dialogSpy = spyOn(component.dialogRef, 'close');
+    const closeButton: HTMLButtonElement = fixture.nativeElement.querySelector('#btn-close');
+
+    expect(dialogSpy).not.toHaveBeenCalled();
+    closeButton.click();
+    expect(dialogSpy).toHaveBeenCalled();
   });
 });

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, NgIterable, OnChanges, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { defaultErrorMessages, ErrorMessages } from './error-messages';
+import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
 
 @Component({
   selector: 'app-custom-input',
@@ -12,7 +12,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   @Input() id = `custom-input-${CustomInputComponent.id++}`;
   @Input() formGroup = new FormGroup({});
   @Input() stringToMatch: string;
-  @Input() required = true;
+  @Input() required = false;
   @Input() messages: string;
   @Input() length: number;
   @Input() minLength: number;

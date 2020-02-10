@@ -1,21 +1,48 @@
-h1 {
-  background-color: cornflowerblue;
-  color: white;
-  margin: 0;
-  top: 0;
-  left: 0;
-}
-
 mat-sidenav-container {
-  height: 1000px;
-}
+  min-height: 100%;
 
+}
 mat-sidenav, mat-sidenav-content {
   padding: 16px;
 }
-
 mat-sidenav {
   scroll-behavior: auto;
-  background-color: lightskyblue;
+  background-color: cornflowerblue;
   width: 200px;
+  position: fixed;
+}
+#main_content {
+  margin-bottom: 75px;
+}
+.prevButton {
+  float: left;
+  left: 10px;
+  bottom: 50px;
+}
+.nextButton {
+  float: right;
+  right: 10px;
+  bottom: 50px;
+}
+#mat-sidenav-cat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 300px;
+}
+
+#mat-sidenav-cat > button {
+  width: 100%;
+  background-color: cornflowerblue;
+}
+mat-expansion-panel-header {
+  background-color: cornflowerblue;
+}
+mat-expansion-panel {
+  background-color: cornflowerblue;
+}
+#buttoncat {
+  width: 100%;
+  background-color: cornflowerblue;
 }
