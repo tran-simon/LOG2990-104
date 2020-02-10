@@ -1,6 +1,7 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { Coordinate } from 'src/app/models/Coordinate';
 import { Rectangle } from 'src/app/models/Rectangle';
+import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { CreatorTool } from '../CreatorTool';
 
 export abstract class ShapeTool extends CreatorTool {
@@ -16,20 +17,20 @@ export abstract class ShapeTool extends CreatorTool {
 
     this.keyboardEventHandler = {
       shift_shift: () => {
-        this.forceEqualDimensions = true;
+        this.toggleEqualDimensions(true);
         return false;
       },
       shift_up: () => {
-        this.forceEqualDimensions = false;
+        this.toggleEqualDimensions(false);
         return false;
       },
-    };
+    } as KeyboardEventHandler;
   }
 
   abstract initShape(c: Coordinate): void;
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
-  handleMouseEvent(e: MouseEvent) {
+  handleToolMouseEvent(e: MouseEvent): void {
     // todo - make a proper mouse manager
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 
@@ -49,25 +50,42 @@ export abstract class ShapeTool extends CreatorTool {
     }
   }
 
-  drawPreviewArea() {
+  toggleEqualDimensions(value: boolean): void {
+    this.forceEqualDimensions = value;
+    if (this.isActive) {
+      this.updateCurrentCoord(this.mousePosition);
+    }
+  }
+
+  drawPreviewArea(): void {
     this.drawingSurface.svg.nativeElement.appendChild(this.previewArea.svgNode);
   }
 
-  removePreviewArea() {
+  removePreviewArea(): void {
     this.drawingSurface.svg.nativeElement.removeChild(this.previewArea.svgNode);
   }
 
-  updateCurrentCoord(c: Coordinate) {
+  updateCurrentCoord(c: Coordinate): void {
     const origin = Coordinate.minXYCoord(c, this.initialMouseCoord);
-    const dimensions = Coordinate.substract(c, this.initialMouseCoord);
+    const delta = Coordinate.substract(c, this.initialMouseCoord);
+    const previewDimensions = Coordinate.abs(delta);
+    const dimensions = { ...previewDimensions } as Coordinate;
 
     this.previewArea.origin = origin;
-    this.previewArea.width = dimensions.x;
-    this.previewArea.height = dimensions.y;
+    this.previewArea.width = previewDimensions.x;
+    this.previewArea.height = previewDimensions.y;
 
     if (this.forceEqualDimensions) {
-      dimensions.x = c.minXYDistance(this.initialMouseCoord);
+      dimensions.x = Math.min(dimensions.x, dimensions.y);
       dimensions.y = dimensions.x;
+    }
+
+    if (delta.y < 0) {
+      origin.y += previewDimensions.y - dimensions.y;
+    }
+
+    if (delta.x < 0) {
+      origin.x += previewDimensions.x - dimensions.x;
     }
 
     this.resizeShape(origin, dimensions);

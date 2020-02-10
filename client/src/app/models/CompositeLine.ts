@@ -56,7 +56,7 @@ export class CompositeLine extends BaseShape {
     this.removeLastPoint(); // todo - add double click timeout to avoid deleting shapes
     this.removeLastPoint();
 
-    if (c.maxXYDistance(this.lineArray[0].startCoord) < this.MAX_FINAL_SNAP_DISTANCE) {
+    if (Coordinate.maxXYDistance(c, this.lineArray[0].startCoord) < this.MAX_FINAL_SNAP_DISTANCE) {
       this.updateCurrentCoord(this.lineArray[0].startCoord);
     } else {
       this.addJunction(this.currentLine.endCoord);
