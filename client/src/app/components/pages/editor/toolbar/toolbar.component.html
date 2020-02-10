@@ -25,10 +25,10 @@
     </button>
   </div>
   <div id="toolbar-middle-buttons">
-    <div id="toolbar-primary-color" [style.background-color]="selectedPrimaryColor" (dblclick)="selectColor(false)"
+    <div id="toolbar-primary-color" [style.background-color]="selectedPrimaryColor.hexString" (dblclick)="selectColor(false)"
       [ngStyle]="{'z-index':selectedColor ? 999 : 1000 }">
     </div>
-    <div id="toolbar-secondary-color" [style.background-color]="selectedSecondaryColor" (dblclick)="selectColor(true)"
+    <div id="toolbar-secondary-color" [style.background-color]="selectedSecondaryColor.hexString" (dblclick)="selectColor(true)"
       [ngStyle]="{'z-index':selectedColor ? 1000 : 999 }">
     </div>
   </div>
@@ -112,7 +112,7 @@
 
         <label *ngSwitchCase="false">Couleur primaire</label>
         <label *ngSwitchCase="true">Couleur secondaire</label>
-        <app-color-picker #colorPicker (colorChanged)="handleColorChanged($event)"></app-color-picker>
+        <app-color-picker #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"></app-color-picker>
       </div>
     </mat-drawer-content>
   </mat-drawer>

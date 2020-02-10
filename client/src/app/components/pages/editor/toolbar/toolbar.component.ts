@@ -40,23 +40,18 @@ export class ToolbarComponent {
   thicknessLine = 50;
   thicknessLinePoints = 50;
 
-  selectedColor: boolean;
-  selectedTool: Tool;
-  selectedPrimaryColor: string;
-  selectedSecondaryColor: string;
+  selectedColor = false;
+  selectedTool = this.tools.Pencil;
+  selectedPrimaryColor = Color.WHITE;
+  selectedSecondaryColor = Color.BLACK;
 
-  constructor(private router: Router) {
-    this.selectedColor = false;
-    this.selectedTool = this.tools.Pencil;
-    this.selectedPrimaryColor = 'white';
-    this.selectedSecondaryColor = 'black';
-  }
+  constructor(private router: Router) {}
 
   handleColorChanged(eventColor: Color) {
-    if (this.selectedColor === false) {
-      this.selectedPrimaryColor = eventColor.hexString;
+    if (!this.selectedColor) {
+      this.selectedPrimaryColor = eventColor;
     } else {
-      this.selectedSecondaryColor = eventColor.hexString;
+      this.selectedSecondaryColor = eventColor;
     }
   }
 
@@ -73,11 +68,7 @@ export class ToolbarComponent {
     if (this.colorPicker) {
       this.selectedColor = selection;
       this.selectedTool = this.tools.ColorPicker;
-      if (selection === true) {
-        this.colorPicker.color = Color.hex(this.selectedSecondaryColor);
-      } else {
-        this.colorPicker.color = Color.hex(this.selectedPrimaryColor);
-      }
+      this.colorPicker.color = selection ? this.selectedSecondaryColor : this.selectedPrimaryColor;
       this.drawer.open();
     } else {
       this.selectedTool = this.tools.ColorPicker;
@@ -92,5 +83,9 @@ export class ToolbarComponent {
   validateNumber(event: KeyboardEvent) {
     const reg = RegExp('^[0-9]$');
     return reg.test(event.key);
+  }
+
+  get color(): Color {
+    return this.selectedColor ? this.selectedSecondaryColor : this.selectedPrimaryColor;
   }
 }
