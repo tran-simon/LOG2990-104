@@ -2,135 +2,135 @@
 @import "../../../../../assets/globalTheme";
 
 #toolbar-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-    position: fixed;
-    width: 60px;
-    height: calc(100vh - 0px);
+  position: fixed;
+  width: 60px;
+  height: calc(100vh - 0px);
 
-    background-color: $primary;
+  background-color: $primary;
 }
 
 #toolbar-top-buttons {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #toolbar-bottom-buttons{
-    padding-bottom: 20px;
-    padding-top: 15px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    background-color: $secondary;
+  padding-bottom: 20px;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $secondary;
 }
 
 button {
-    width: 50px;
-    height: 50px;
-    color: $accent;
+  width: 50px;
+  height: 50px;
+  color: $accent;
 }
 
 #back-button {
-    width: 60px;
-    height: 60px;
+  width: 60px;
+  height: 60px;
 }
 
 .toolbar-section-divider {
-    padding: 10px 0px;
-    width: 100%;
+  padding: 10px 0px;
+  width: 100%;
 }
 
 mat-drawer-container {
-    position: fixed;
-    margin-left: 60px;
-    width: 100%;
-    height: calc(100vh - 0px);
+  position: fixed;
+  margin-left: 60px;
+  width: 100%;
+  height: calc(100vh - 0px);
 
-    background-color: transparent;
+  background-color: transparent;
 }
 
 mat-drawer {
-    box-shadow: $elevationShadow;
-    background-color: $primaryDark;
+  box-shadow: $elevationShadow;
+  background-color: $primaryDark;
 }
 
 mat-drawer-content {
-    margin: 0 !important;
+  margin: 0 !important;
 }
 
 mat-slider, mat-form-field{
-    width: 100%;
-    color: $accent;
+  width: 100%;
+  color: $accent;
 }
 
 ::ng-deep .mat-accent .mat-slider-thumb {
-    background-color: $accent;
+  background-color: $accent;
 } 
 ::ng-deep .mat-accent .mat-slider-thumb-label {
-    background-color: $accent;
+  background-color: $accent;
 } 
 ::ng-deep .mat-accent .mat-slider-thumb-label-text {
-    color: $secondary;
+  color: $secondary;
 } 
 ::ng-deep .mat-accent .mat-slider-track-fill {
-    background-color: $accent;
+  background-color: $accent;
 }
 
 
 .toolbar-tool-section {
-    display: flex;
-    padding: 25px;
-    width: 300px;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  padding: 25px;
+  width: 300px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .toolbar-option-section {
-    display: flex;
-    align-self: flex-start;
-    color: $accent;
-    margin-bottom: 25px;
+  display: flex;
+  align-self: flex-start;
+  color: $accent;
+  margin-bottom: 25px;
 }
 
 .selected-tool {
-    background-color: $secondary;
+  background-color: $secondary;
 }
 
 label {
-    align-self: flex-start;
-    color: $accent;
+  align-self: flex-start;
+  color: $accent;
 }
 
 mat-radio-group {
-    display: flex;
-    width: 100%;
-    margin: 10px 0px;
-    justify-content: space-between;
-    flex-direction: column;
-    color: $accent;
+  display: flex;
+  width: 100%;
+  margin: 10px 0px;
+  justify-content: space-between;
+  flex-direction: column;
+  color: $accent;
 }
 
 mat-radio-group > mat-radio-button {
-    margin: 5px 0px;
+  margin: 5px 0px;
 }
 
 ::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
-    border-color: $accent; 
+  border-color: $accent; 
 }
   
 ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle{
-    color: $accent;
-    background-color: $accent;
+  color: $accent;
+  background-color: $accent;
 }
   
 ::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
-    background-color: $secondary;
+  background-color: $secondary;
 }
