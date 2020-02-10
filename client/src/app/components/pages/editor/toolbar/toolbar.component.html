@@ -26,10 +26,10 @@
   </div>
   <div id="toolbar-middle-buttons">
     <div id="toolbar-primary-color" [style.background-color]="selectedPrimaryColor" (dblclick)="selectColor(false)"
-      [style.background-color]="primaryColorZ">
+      [ngStyle]="{'z-index':selectedColor ? 999 : 1000 }">
     </div>
     <div id="toolbar-secondary-color" [style.background-color]="selectedSecondaryColor" (dblclick)="selectColor(true)"
-      [style.z-index]="secondaryColorZ">
+      [ngStyle]="{'z-index':selectedColor ? 1000 : 999 }">
     </div>
   </div>
   <div id="toolbar-bottom-buttons">

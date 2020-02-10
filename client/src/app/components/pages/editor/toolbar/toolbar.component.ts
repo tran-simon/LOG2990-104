@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
@@ -18,27 +18,26 @@ enum Tool {
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
+  static MIN_THICKNESS = 1;
+  static MAX_THICKNESS = 100;
+  static STEP_THICKNESS = 0.1;
+
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
-  @ViewChildren('colorPicker')
+  @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
   tools = Tool;
 
   thicknessPencil = 50;
   thicknessBrush = 50;
-  minthickness = 1;
-  maxthickness = 100;
-  stepthickness = 0.1;
 
   selectedTool: Tool;
   selectedColor = false;
 
   selectedPrimaryColor = 'white';
-  primaryColorZ = 1000;
   selectedSecondaryColor = 'black';
-  secondaryColorZ = 500;
 
   constructor(private router: Router) {}
 
@@ -64,26 +63,14 @@ export class ToolbarComponent {
       this.selectedColor = selection;
       this.selectedTool = this.tools.ColorPicker;
       if (selection === true) {
-        this.secondaryColorZ = 1000;
-        this.primaryColorZ = 500;
         this.colorPicker.color = Color.hex(this.selectedSecondaryColor);
       } else {
-        this.secondaryColorZ = 500;
-        this.primaryColorZ = 1000;
         this.colorPicker.color = Color.hex(this.selectedPrimaryColor);
       }
       this.drawer.open();
     } else {
       this.selectedTool = this.tools.ColorPicker;
     }
-  }
-
-  changePrimaryColor() {
-    return true;
-  }
-
-  changeSecondaryColor() {
-    return true;
   }
 
   goHome() {
