@@ -1,6 +1,10 @@
-import { AfterViewInit, ElementRef, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Color } from 'src/app/utils/color/color';
 
 export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterViewInit {
+  @Input() color: Color = Color.WHITE;
+  @Input() indicatorSize = 20;
+  @Input() indicatorLineWidth = 3;
   canvas: ElementRef<HTMLCanvasElement>;
   renderingContext: CanvasRenderingContext2D;
   mouseIsDown = false;
@@ -25,6 +29,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
     this.mouseIsDown = true;
   }
 
+  @HostListener('window:mouseup')
   onMouseUp() {
     this.mouseIsDown = false;
   }

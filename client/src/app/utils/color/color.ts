@@ -47,6 +47,11 @@ export class Color implements ColorComponents {
   readonly l: number;
 
   /**
+   * transparency component 0..1
+   */
+  readonly a: number;
+
+  /**
    * Constructor for a color from hsl or rgb values.
    * If HSL values are given, they will be prioritized over RGB values
    *
@@ -55,29 +60,30 @@ export class Color implements ColorComponents {
    *
    */
   private constructor(components: ColorComponents) {
-    const { h, s, l, r, g, b } = components;
+    const { h, s, l, r, g, b, a } = components;
     if (!(h === undefined || s === undefined || l === undefined)) {
       this.h = MathUtil.fitAngle(h);
-      this.s = MathUtil.fit(s, 0, 1);
-      this.l = MathUtil.fit(l, 0, 1);
+      this.s = MathUtil.fit(s);
+      this.l = MathUtil.fit(l);
 
       const f = (n: number) => {
         const k = (n + h / 30) % 12;
-        const a = s * Math.min(l, 1 - l);
-        return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        const A = s * Math.min(l, 1 - l);
+        return l - A * Math.max(Math.min(k - 3, 9 - k, 1), -1);
       };
       this.r = f(0);
       this.g = f(8);
       this.b = f(4);
     } else if (!(r === undefined || g === undefined || b === undefined)) {
-      this.r = MathUtil.fit(r, 0, 1);
-      this.g = MathUtil.fit(g, 0, 1);
-      this.b = MathUtil.fit(b, 0, 1);
+      this.r = MathUtil.fit(r);
+      this.g = MathUtil.fit(g);
+      this.b = MathUtil.fit(b);
 
       this.h = Color.calculateHue(this.r, this.g, this.b);
       this.s = Color.calculateSaturation(this.r, this.g, this.b);
       this.l = Color.calculateLightness(this.r, this.g, this.b);
     }
+    this.a = MathUtil.fit(a || 1);
   }
 
   /* Color creator static methods */
@@ -87,16 +93,17 @@ export class Color implements ColorComponents {
    * @param r red from 0 to 1
    * @param g green from 0 to 1
    * @param b blue from 0 to 1
+   * @param a alpha from 0 to 1
    */
-  static rgb(r = 0, g = 0, b = 0): Color {
-    return new Color({ r, g, b });
+  static rgb(r = 0, g = 0, b = 0, a = 1): Color {
+    return new Color({ r, g, b, a });
   }
 
   /**
    * Creates a color from values between 0 and 255
    */
-  static rgb255(r255 = 0, g255 = 0, b255 = 0): Color {
-    return Color.rgb(r255 / 255, g255 / 255, b255 / 255);
+  static rgb255(r255 = 0, g255 = 0, b255 = 0, a = 1): Color {
+    return Color.rgb(r255 / 255, g255 / 255, b255 / 255, a);
   }
 
   /**
@@ -104,19 +111,20 @@ export class Color implements ColorComponents {
    * @param h hue between 0 and 360
    * @param s saturation between 0 and 1
    * @param l lightness between 0 and 1
+   * @param a alpha between 0 and 1
    */
-  static hsl(h = 0, s = 0, l = 0) {
-    return new Color({ h, s, l });
+  static hsl(h = 0, s = 0, l = 0, a = 1) {
+    return new Color({ h, s, l, a });
   }
 
   /**
    * Creates a color from hex string
    */
-  static hex(hexString: string): Color {
+  static hex(hexString: string, a = 1): Color {
     const r = parseInt(hexString.substr(0, 2), 16);
     const g = parseInt(hexString.substr(2, 2), 16);
     const b = parseInt(hexString.substr(4, 2), 16);
-    return Color.rgb255(r, g, b);
+    return Color.rgb255(r, g, b, a);
   }
 
   /* Utility methods */
@@ -242,4 +250,6 @@ export interface ColorComponents {
   readonly h?: number;
   readonly s?: number;
   readonly l?: number;
+
+  readonly a?: number;
 }

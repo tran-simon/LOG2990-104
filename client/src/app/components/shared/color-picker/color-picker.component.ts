@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
@@ -11,10 +11,7 @@ import { Color, ColorComponents } from 'src/app/utils/color/color';
 })
 export class ColorPickerComponent extends AbstractCanvasDrawer {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() color = Color.WHITE;
   @Output() colorChanged = new EventEmitter<Color>();
-  @Input() indicatorLineWidth = 3;
-  @Input() indicatorSize = 20;
   @Input() isVertical = false;
   @Input() size = 300;
 
@@ -47,9 +44,15 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
   }
 
   lightnessChanged(lightness: number): void {
-    const h = this.color.h;
-    const s = this.color.s;
-    this.color = Color.hsl(h ? h : 0, s, lightness);
+    const { h, s, a }: ColorComponents = this.color;
+    this.color = Color.hsl(h ? h : 0, s, lightness, a);
+    this.colorChanged.emit(this.color);
+  }
+
+  alphaChanged(alpha: number): void {
+    const { h, s, l }: ColorComponents = this.color;
+    this.color = Color.hsl(h, s, l, alpha);
+    this.colorChanged.emit(this.color);
   }
 
   colorChange(value: string, component: string): void {
@@ -66,14 +69,14 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
         break;
     }
     if (!(this.color.r255 === r && this.color.g255 === g && this.color.b255 === b)) {
-      this.color = Color.rgb255(r, g, b);
+      this.color = Color.rgb255(r, g, b, this.color.a);
       this.draw();
     }
   }
 
   hexChange(value: string): void {
     if (this.color.hex !== value.toLowerCase()) {
-      this.color = Color.hex(value);
+      this.color = Color.hex(value, this.color.a);
       this.draw();
     }
   }
@@ -82,7 +85,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     super.onMouseDown(event);
     const h = (event.offsetX / this.size) * 360;
     const s = event.offsetY / this.size;
-    this.color = Color.hsl(h, s, this.color.l);
+    this.color = Color.hsl(h, s, this.color.l, this.color.a);
     this.draw();
   }
 
@@ -90,13 +93,8 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     if (this.mouseIsDown) {
       const h = (event.offsetX / this.size) * 360;
       const s = event.offsetY / this.size;
-      this.color = Color.hsl(h, s, this.color.l);
+      this.color = Color.hsl(h, s, this.color.l, this.color.a);
       this.draw();
     }
-  }
-
-  @HostListener('window:mouseup')
-  onMouseUp(): void {
-    super.onMouseUp();
   }
 }

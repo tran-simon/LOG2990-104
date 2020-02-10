@@ -4,7 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-lightness/color-lightness.component';
+import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
+import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-strip/color-lightness/color-lightness.component';
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
@@ -21,7 +22,14 @@ describe('ColorPickerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
-      declarations: [ColorPickerComponent, ColorLightnessComponent, NumberInputComponent, CustomInputComponent, HexInputComponent],
+      declarations: [
+        ColorPickerComponent,
+        ColorLightnessComponent,
+        AlphaComponent,
+        NumberInputComponent,
+        CustomInputComponent,
+        HexInputComponent,
+      ],
     }).compileComponents();
   }));
 
@@ -54,7 +62,7 @@ describe('ColorPickerComponent', () => {
     const lightnessChangedSpy = spyOn(component, 'lightnessChanged').and.callThrough();
     const l = 0.4;
 
-    colorLightnessComponent.lightnessChanged.emit(l);
+    colorLightnessComponent.valueChanged.emit(l);
     fixture.detectChanges();
 
     expect(lightnessChangedSpy).toHaveBeenCalledWith(l);

@@ -8,9 +8,13 @@
     </canvas>
 
     <app-color-lightness [color]="color"
-      (lightnessChanged)="lightnessChanged($event)"
+      (valueChanged)="lightnessChanged($event)"
       [isVertical]="isVertical"
     ></app-color-lightness>
+    <app-alpha [color]="color"
+      (valueChanged)="alphaChanged($event)"
+      [isVertical]="isVertical"
+    ></app-alpha>
   </div>
 
   <form [formGroup]="formGroup" >
