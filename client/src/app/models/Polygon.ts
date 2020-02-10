@@ -21,7 +21,7 @@ export class Polygon extends BaseShape {
   }
 
   constructor(nbEdge: number = MIN_POLY_EDGE) {
-    super();
+    super('polygon');
     this.NbEdge = nbEdge;
   }
 }

@@ -6,22 +6,44 @@
     (mousedown)="onMouseDown($event)">
   </canvas>
 
-  <app-color-lightness [hue]="this.color.hue"
-    [saturation]="this.color.saturation"
+  <app-color-lightness [color]="color"
     (lightnessChanged)="lightnessChanged($event)"
     width="50" height="{{size}}"></app-color-lightness>
 
   <form [formGroup]="formGroup">
-    <app-hex-input  #redinput [maxLength]=2 [value]="color.r255.toString(16)" (valueChange)="colorChange(redinput.value, 'r')" [formGroup]="formGroup">
-      Rouge:
+    <app-hex-input  #redinput
+      required=true
+      id="red-color-input"
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.r255.toString(16)"
+      (valueChange)="colorChange(redinput.value, 'r')"
+      [formGroup]="formGroup">
+      R:
     </app-hex-input>
-    <app-hex-input #greeninput [maxLength]=2 [value]="color.g255.toString(16)" (valueChange)="colorChange(greeninput.value, 'g')" [formGroup]="formGroup">
-      Rouge:
+    <app-hex-input #greeninput
+      required=true
+      id="green-color-input"
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.g255.toString(16)"
+      (valueChange)="colorChange(greeninput.value, 'g')"
+      [formGroup]="formGroup">
+      V:
     </app-hex-input>
-    <app-hex-input #blueinput [maxLength]=2 [value]="color.b255.toString(16)" (valueChange)="colorChange(blueinput.value, 'b')" [formGroup]="formGroup">
-      Rouge:
+    <app-hex-input #blueinput
+      required=true
+      id="blue-color-input"
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.b255.toString(16)"
+      (valueChange)="colorChange(blueinput.value, 'b')"
+      [formGroup]="formGroup">
+      B:
     </app-hex-input>
     <app-hex-input #hexinput
+      id="hex-color-input"
+      required=true
       [length]=6
       prefix="#"
       [errorMessages]="hexInputErrorMessages"

@@ -4,9 +4,9 @@
   </div>
 
   <div id="main-container-buttons">
-    <button mat-raised-button (click)="openCreateModal()">Nouveau dessin</button>
-    <button mat-raised-button>Gallerie</button>
-    <button mat-raised-button (click)="openPage('help')">Guide utilisateur</button>
+    <button id="btn-create" mat-raised-button (click)="openCreateModal()">Nouveau dessin</button>
+    <button id="btn-gallery" mat-raised-button (click)="openGallery()">Galerie</button>
+    <button id="btn-guide" mat-raised-button (click)="openPage('help')">Guide utilisateur</button>
 
     <button mat-raised-button *ngIf="previousDrawings; else noPreviousDrawings">
       Continuer mon dessin
