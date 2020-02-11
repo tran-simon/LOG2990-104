@@ -9,6 +9,7 @@ import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
+import { Color } from 'src/app/utils/color/color';
 
 import { ColorPickerComponent } from './color-picker.component';
 import Spy = jasmine.Spy;
@@ -57,23 +58,35 @@ describe('ColorPickerComponent', () => {
     expect(drawIndicatorSpy).toHaveBeenCalled();
   });
 
-  it('should update on lightness changed', () => {
+  it('should update color on colorChange with lightness component', () => {
     const colorLightnessComponent = fixture.debugElement.query(By.directive(ColorLightnessComponent)).componentInstance;
-    const lightnessChangedSpy = spyOn(component, 'lightnessChanged').and.callThrough();
+    const colorChangeSpy = spyOn(component, 'colorChange').and.callThrough();
     const l = 0.4;
 
-    colorLightnessComponent.valueChanged.emit(l);
+    colorLightnessComponent.colorChanged.emit(Color.hsl(0, 0, l));
     fixture.detectChanges();
 
-    expect(lightnessChangedSpy).toHaveBeenCalledWith(l);
+    expect(colorChangeSpy).toHaveBeenCalledWith(Color.hsl(0, 0, l));
     expect(component.color.l).toBe(l);
+  });
+
+  it('should update color on colorChange with alpha component', () => {
+    const alphaComponent = fixture.debugElement.query(By.directive(AlphaComponent)).componentInstance;
+    const alphaChangedSpy = spyOn(component, 'colorChange').and.callThrough();
+    const a = 0.4;
+
+    alphaComponent.colorChanged.emit(Color.alpha(Color.RED, a));
+    fixture.detectChanges();
+
+    expect(alphaChangedSpy).toHaveBeenCalledWith(Color.alpha(Color.RED, a));
+    expect(component.color.a).toBe(a);
   });
 
   it('should update on RGB inputs change', () => {
     const redColorInputComponent: HexInputComponent = fixture.debugElement.query(By.css('#red-color-input')).componentInstance;
     const greenColorInputComponent: HexInputComponent = fixture.debugElement.query(By.css('#green-color-input')).componentInstance;
     const blueColorInputComponent: HexInputComponent = fixture.debugElement.query(By.css('#blue-color-input')).componentInstance;
-    const colorChangeSpy = spyOn(component, 'colorChange').and.callThrough();
+    const colorChangeSpy = spyOn(component, 'rgbChange').and.callThrough();
 
     redColorInputComponent.onBlur('11');
     fixture.detectChanges();

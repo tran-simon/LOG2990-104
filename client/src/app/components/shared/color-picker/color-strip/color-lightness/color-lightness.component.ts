@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AbstractColorStripComponent } from 'src/app/components/shared/color-picker/color-strip/abstract-color-strip.component';
-import { Color } from 'src/app/utils/color/color';
+import { Color, ColorComponents } from 'src/app/utils/color/color';
 
 @Component({
   selector: 'app-color-lightness',
@@ -18,15 +18,16 @@ export class ColorLightnessComponent extends AbstractColorStripComponent {
     return gradient;
   }
 
+  calculateNewColor(value: number): Color {
+    const { h, s, a }: ColorComponents = this.color;
+    return Color.hsl(h, s, value, a);
+  }
+
+  shouldRedraw(color: Color): boolean {
+    return color.hslString !== this.color.hslString;
+  }
+
   get value(): number {
     return this.color.l;
-  }
-
-  getIndicatorFillStyle(): string | CanvasGradient | CanvasPattern {
-    return this.color.hexString;
-  }
-
-  getIndicatorStrokeStyle(): string | CanvasGradient | CanvasPattern {
-    return this.color.negative.hexString;
   }
 }

@@ -54,14 +54,23 @@ export class Color implements ColorComponents {
   /**
    * Constructor for a color from hsl or rgb values.
    * If HSL values are given, they will be prioritized over RGB values
+   * If both HSL values and RGB values are given, RGB will be recalculated.
    *
    * Method for calculating rgb components from HSL is an implementation of:
    * https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB
    *
    */
-  private constructor(components: ColorComponents) {
+  private constructor(components: ColorComponents, doNotCompute = false) {
     const { h, s, l, r, g, b, a } = components;
-    if (!(h === undefined || s === undefined || l === undefined)) {
+    if (doNotCompute) {
+      this.h = MathUtil.fitAngle(h || 0);
+      this.s = MathUtil.fit(s || 0);
+      this.l = MathUtil.fit(l || 0);
+
+      this.r = MathUtil.fit(r || 0);
+      this.g = MathUtil.fit(g || 0);
+      this.b = MathUtil.fit(b || 0);
+    } else if (!(h === undefined || s === undefined || l === undefined)) {
       this.h = MathUtil.fitAngle(h);
       this.s = MathUtil.fit(s);
       this.l = MathUtil.fit(l);
@@ -88,6 +97,10 @@ export class Color implements ColorComponents {
 
   /* Color creator static methods */
 
+  static alpha(color: Color, a = 1): Color {
+    return new Color({ ...color, a }, true);
+  }
+
   /**
    * Creates a color from RGB values
    * @param r red from 0 to 1
@@ -113,7 +126,7 @@ export class Color implements ColorComponents {
    * @param l lightness between 0 and 1
    * @param a alpha between 0 and 1
    */
-  static hsl(h = 0, s = 0, l = 0, a = 1) {
+  static hsl(h = 0, s = 0, l = 0, a = 1): Color {
     return new Color({ h, s, l, a });
   }
 

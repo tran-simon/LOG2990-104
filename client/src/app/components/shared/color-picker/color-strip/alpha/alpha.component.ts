@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AbstractColorStripComponent } from 'src/app/components/shared/color-picker/color-strip/abstract-color-strip.component';
+import { Color } from 'src/app/utils/color/color';
 
 @Component({
   selector: 'app-alpha',
@@ -14,6 +15,14 @@ export class AlphaComponent extends AbstractColorStripComponent {
     gradient.addColorStop(0, 'white');
     gradient.addColorStop(1, 'black');
     return gradient;
+  }
+
+  calculateNewColor(value: number): Color {
+    return Color.alpha(this.color, value);
+  }
+
+  shouldRedraw(color: Color): boolean {
+    return color.a !== this.color.a;
   }
 
   get value(): number {

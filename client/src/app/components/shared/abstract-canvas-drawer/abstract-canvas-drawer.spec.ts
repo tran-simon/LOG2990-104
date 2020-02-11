@@ -1,17 +1,24 @@
-import { SimpleChanges } from '@angular/core';
+import { SimpleChange, SimpleChanges } from '@angular/core';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
+import { Color } from 'src/app/utils/color/color';
 import Spy = jasmine.Spy;
 
 describe('AbstractCanvasDrawer', () => {
   class AbstractCanvasDrawerImpl extends AbstractCanvasDrawer {
+    calculateColorFromMouseEvent(event: MouseEvent): Color {
+      return Color.RED;
+    }
+
     draw(): void {
       return;
     }
+
     drawIndicator(x: number, y: number): void {
       return;
     }
-    onMouseMove(event: MouseEvent): void {
-      return;
+
+    shouldRedraw(color: Color): boolean {
+      return color === Color.RED;
     }
   }
 
@@ -27,9 +34,18 @@ describe('AbstractCanvasDrawer', () => {
     expect(drawSpy).toHaveBeenCalled();
   });
 
-  it('should draw on change', () => {
-    component.ngOnChanges({} as SimpleChanges);
+  it('should draw on color change', () => {
+    component.ngOnChanges({
+      color: {
+        currentValue: Color.RED,
+      } as SimpleChange,
+    } as SimpleChanges);
     expect(drawSpy).toHaveBeenCalled();
+  });
+
+  it('should not redraw if shouldRedraw returns false', () => {
+    component.updateColor(Color.BLUE);
+    expect(drawSpy).not.toHaveBeenCalled();
   });
 
   it('sets mouseIsDown to true when mouse is down', () => {

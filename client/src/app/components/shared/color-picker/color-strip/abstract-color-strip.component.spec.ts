@@ -1,4 +1,5 @@
 import { AbstractColorStripComponent } from 'src/app/components/shared/color-picker/color-strip/abstract-color-strip.component';
+import { Color } from 'src/app/utils/color/color';
 
 describe('AbstractColorStripComponent', () => {
   class AbstractColorStripComponentImpl extends AbstractColorStripComponent {
@@ -6,16 +7,16 @@ describe('AbstractColorStripComponent', () => {
       return 'white';
     }
 
-    getIndicatorFillStyle(): string | CanvasGradient | CanvasPattern {
-      return 'black';
-    }
-
-    getIndicatorStrokeStyle(): string | CanvasGradient | CanvasPattern {
-      return 'blue';
-    }
-
     get value(): number {
       return 0;
+    }
+
+    calculateNewColor(value: number): Color {
+      return Color.RED;
+    }
+
+    shouldRedraw(color: Color): boolean {
+      return false;
     }
   }
 

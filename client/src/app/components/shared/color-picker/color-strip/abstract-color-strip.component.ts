@@ -1,26 +1,25 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import { Input } from '@angular/core';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
+import { Color } from 'src/app/utils/color/color';
 import { MathUtil } from 'src/app/utils/math/math-util';
 
 export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
-  abstract get value(): number;
-
-  get width(): number {
-    return this.isVertical ? this.thickness : this.length;
-  }
-  get height(): number {
-    return !this.isVertical ? this.thickness : this.length;
-  }
   @Input() isVertical = false;
   @Input() length = 300;
   @Input() thickness = 50;
+
   indicatorSize = 10;
 
-  @Output() valueChanged = new EventEmitter<number>();
-
+  abstract get value(): number;
   abstract getFillStyle(width: number, height: number): string | CanvasGradient | CanvasPattern;
-  abstract getIndicatorFillStyle(): string | CanvasGradient | CanvasPattern;
-  abstract getIndicatorStrokeStyle(): string | CanvasGradient | CanvasPattern;
+  abstract calculateNewColor(value: number): Color;
+
+  getIndicatorFillStyle(): string | CanvasGradient | CanvasPattern {
+    return this.color.hexString;
+  }
+  getIndicatorStrokeStyle(): string | CanvasGradient | CanvasPattern {
+    return this.color.negative.hexString;
+  }
 
   draw(): void {
     if (this.renderingContext) {
@@ -54,15 +53,15 @@ export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
   calculateMouseEventValue(event: MouseEvent): number {
     return MathUtil.fit(this.isVertical ? event.offsetY / this.height : event.offsetX / this.width);
   }
-
-  onMouseMove(event: MouseEvent): void {
-    if (this.mouseIsDown) {
-      this.valueChanged.emit(this.calculateMouseEventValue(event));
-    }
+  calculateColorFromMouseEvent(event: MouseEvent): Color {
+    return this.calculateNewColor(this.calculateMouseEventValue(event));
   }
 
-  onMouseDown(event: MouseEvent): void {
-    super.onMouseDown(event);
-    this.valueChanged.emit(this.calculateMouseEventValue(event));
+  get width(): number {
+    return this.isVertical ? this.thickness : this.length;
+  }
+
+  get height(): number {
+    return !this.isVertical ? this.thickness : this.length;
   }
 }

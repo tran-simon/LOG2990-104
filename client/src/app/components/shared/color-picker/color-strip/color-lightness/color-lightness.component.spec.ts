@@ -16,6 +16,7 @@ describe('ColorLightnessComponent', () => {
   let fixture: ComponentFixture<ColorLightnessComponent>;
   let drawSpy: Spy;
   let lightnessChangedSpy: Spy;
+  let calculateNewColorSpy: Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -37,7 +38,8 @@ describe('ColorLightnessComponent', () => {
 
     component.isVertical = true;
     drawSpy = spyOn(component, 'draw').and.callThrough();
-    lightnessChangedSpy = spyOn(component.valueChanged, 'emit').and.callThrough();
+    lightnessChangedSpy = spyOn(component.colorChanged, 'emit').and.callThrough();
+    calculateNewColorSpy = spyOn(component, 'calculateNewColor').and.callThrough();
 
     component.ngOnInit();
     fixture.detectChanges();
@@ -59,7 +61,7 @@ describe('ColorLightnessComponent', () => {
 
     fixture.detectChanges();
 
-    expect(lightnessChangedSpy).toHaveBeenCalledWith(40 / 300);
+    expect(calculateNewColorSpy).toHaveBeenCalledWith(40 / 300);
   });
 
   it('emits lightnessChanged on mouse move if mouse is down', () => {
@@ -68,7 +70,7 @@ describe('ColorLightnessComponent', () => {
 
     fixture.detectChanges();
 
-    expect(lightnessChangedSpy).toHaveBeenCalledWith(40 / 300);
+    expect(calculateNewColorSpy).toHaveBeenCalledWith(40 / 300);
   });
 
   it('does not emit lightnessChanged on mouse move if mouse is not down', () => {
@@ -90,7 +92,7 @@ describe('ColorLightnessComponent', () => {
     component.onMouseMove({ offsetY: 40 } as MouseEvent);
 
     expect(lightnessChangedSpy).toHaveBeenCalledTimes(1);
-    expect(lightnessChangedSpy).toHaveBeenCalledWith(100 / 300);
+    expect(calculateNewColorSpy).toHaveBeenCalledWith(100 / 300);
   });
 
   it('should have width bigger than height if horizontal', () => {
