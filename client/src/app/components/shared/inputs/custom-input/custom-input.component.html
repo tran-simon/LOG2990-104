@@ -5,7 +5,7 @@
     </label>
   </mat-label>
   <span *ngIf="prefix" matPrefix>{{prefix}}</span>
-  <input #input matInput (blur)="onBlur(input.value)" [value]='value' [formControl]="formControl" id="{{id}}">
+  <input #input matInput (focus)='onFocus()' (keyup)="onChange(input.value)" (blur)='onBlur(input.value)' [value]='value' [formControl]="formControl" id="{{id}}">
   <span *ngIf="suffix" matSuffix>{{suffix}}</span>
 
   <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
