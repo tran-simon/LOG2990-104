@@ -1,4 +1,5 @@
 import { BaseShape } from './BaseShape';
+import { Coordinate } from './Coordinate';
 
 export class Path extends BaseShape {
   private _trace: string;
@@ -8,12 +9,17 @@ export class Path extends BaseShape {
   }
 
   set trace(node: string) {
-    this._trace += node;
+    this._trace = node;
+    this.svgNode.setAttribute('d', this.trace);
   }
 
-  constructor(posX: number, posY: number) {
+  constructor(c: Coordinate) {
     super('path');
-    this._trace = 'M ' + posX + ' ' + posY;
+    this._trace = 'M ' + c.x + ' ' + c.y;
+  }
+
+  addPoint(c: Coordinate) {
+    this.trace += ' L ' + c.x + ' ' + c.y;
   }
 
   updateProperties() {

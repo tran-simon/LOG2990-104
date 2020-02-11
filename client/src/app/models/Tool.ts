@@ -8,6 +8,7 @@ export abstract class Tool {
 
   constructor(drawingSurface: DrawingSurfaceComponent) {
     this.drawingSurface = drawingSurface;
+    this.keyboardEventHandler = {} as KeyboardEventHandler;
   }
 
   abstract handleMouseEvent(e: MouseEvent): void;

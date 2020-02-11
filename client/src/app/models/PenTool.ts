@@ -1,4 +1,5 @@
 import { DrawingSurfaceComponent } from '../components/pages/editor/drawing-surface/drawing-surface.component';
+import { Coordinate } from './Coordinate';
 import { CreatorTool } from './CreatorTool';
 import { Path } from './Path';
 
@@ -14,17 +15,16 @@ export class PenTool extends CreatorTool {
   }
 
   handleMouseEvent(e: MouseEvent): void {
+    const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
     if (this.isActive) {
       if (e.type === 'mouseup') {
         this.isActive = false;
       } else if (e.type === 'mousemove') {
-        this.shape.trace = ' L ' + e.offsetX + ' ' + e.offsetY;
-        this.shape.svgNode.setAttribute('d', this.shape.trace);
+        this.shape.addPoint(mouseCoord);
       }
-      this.drawShape();
     } else if (e.type === 'mousedown') {
       this.isActive = true;
-      this.path = new Path(e.offsetX, e.offsetY);
+      this.path = new Path(mouseCoord);
       this.drawShape();
     }
   }
