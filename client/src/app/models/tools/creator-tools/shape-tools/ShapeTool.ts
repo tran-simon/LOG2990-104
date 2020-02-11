@@ -17,11 +17,11 @@ export abstract class ShapeTool extends CreatorTool {
 
     this.keyboardEventHandler = {
       shift_shift: () => {
-        this.toggleEqualDimensions(true);
+        this.setEqualDimensions(true);
         return false;
       },
       shift_up: () => {
-        this.toggleEqualDimensions(false);
+        this.setEqualDimensions(false);
         return false;
       },
     } as KeyboardEventHandler;
@@ -50,7 +50,7 @@ export abstract class ShapeTool extends CreatorTool {
     }
   }
 
-  toggleEqualDimensions(value: boolean): void {
+  setEqualDimensions(value: boolean): void {
     this.forceEqualDimensions = value;
     if (this.isActive) {
       this.updateCurrentCoord(this.mousePosition);
@@ -66,26 +66,26 @@ export abstract class ShapeTool extends CreatorTool {
   }
 
   updateCurrentCoord(c: Coordinate): void {
-    const origin = Coordinate.minXYCoord(c, this.initialMouseCoord);
     const delta = Coordinate.substract(c, this.initialMouseCoord);
     const previewDimensions = Coordinate.abs(delta);
-    const dimensions = { ...previewDimensions } as Coordinate;
+    let origin = Coordinate.minXYCoord(c, this.initialMouseCoord);
+    let dimensions = { ...previewDimensions } as Coordinate;
 
     this.previewArea.origin = origin;
     this.previewArea.width = previewDimensions.x;
     this.previewArea.height = previewDimensions.y;
 
     if (this.forceEqualDimensions) {
-      dimensions.x = Math.min(dimensions.x, dimensions.y);
-      dimensions.y = dimensions.x;
+      const minDimension = Math.min(dimensions.x, dimensions.y);
+      dimensions = new Coordinate(minDimension, minDimension);
     }
 
     if (delta.y < 0) {
-      origin.y += previewDimensions.y - dimensions.y;
+      origin = new Coordinate(origin.x, origin.y + previewDimensions.y - dimensions.y);
     }
 
     if (delta.x < 0) {
-      origin.x += previewDimensions.x - dimensions.x;
+      origin = new Coordinate(origin.x + previewDimensions.x - dimensions.x, origin.y);
     }
 
     this.resizeShape(origin, dimensions);

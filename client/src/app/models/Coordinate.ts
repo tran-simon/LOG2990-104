@@ -1,6 +1,6 @@
 export class Coordinate {
-  x: number;
-  y: number;
+  readonly x: number;
+  readonly y: number;
 
   constructor(x: number = 0.0, y: number = 0.0) {
     this.x = x;
@@ -24,15 +24,11 @@ export class Coordinate {
   }
 
   static maxXYDistance(c1: Coordinate, c2: Coordinate): number {
-    const xDistance = Math.abs(c1.x - c2.x);
-    const yDistance = Math.abs(c1.y - c2.y);
-    return xDistance > yDistance ? xDistance : yDistance;
+    return Math.max(Math.abs(c1.x - c2.x), Math.abs(c1.y - c2.y));
   }
 
   static minXYDistance(c1: Coordinate, c2: Coordinate): number {
-    const xDistance = Math.abs(c1.x - c2.x);
-    const yDistance = Math.abs(c1.y - c2.y);
-    return xDistance < yDistance ? xDistance : yDistance;
+    return Math.min(Math.abs(c1.x - c2.x), Math.abs(c1.y - c2.y));
   }
 
   static angle(c1: Coordinate, c2: Coordinate): number {

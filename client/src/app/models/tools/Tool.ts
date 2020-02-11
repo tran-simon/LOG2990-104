@@ -20,8 +20,7 @@ export abstract class Tool {
   abstract handleToolMouseEvent(e: MouseEvent): void;
 
   handleMouseEvent(e: MouseEvent): void {
-    this._mousePosition.x = e.offsetX;
-    this._mousePosition.y = e.offsetY;
+    this._mousePosition = new Coordinate(e.offsetX, e.offsetY);
     this.handleToolMouseEvent(e);
   }
 
