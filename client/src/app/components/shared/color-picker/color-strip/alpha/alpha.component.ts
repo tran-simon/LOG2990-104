@@ -21,8 +21,8 @@ export class AlphaComponent extends AbstractColorStripComponent {
     return Color.alpha(this.color, value);
   }
 
-  shouldRedraw(color: Color): boolean {
-    return color.a !== this.color.a;
+  shouldRedraw(color: Color, previousColor: Color): boolean {
+    return color.a !== previousColor.a;
   }
 
   get value(): number {

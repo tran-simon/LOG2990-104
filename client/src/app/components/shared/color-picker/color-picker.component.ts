@@ -52,8 +52,8 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     return Color.hsl(h, s, this.color.l, this.color.a);
   }
 
-  shouldRedraw(color: Color): boolean {
-    return this.color.h !== color.h || this.color.s !== color.s;
+  shouldRedraw(color: Color, previousColor: Color): boolean {
+    return previousColor.h !== color.h || previousColor.s !== color.s;
   }
 
   colorChange(color: Color): void {

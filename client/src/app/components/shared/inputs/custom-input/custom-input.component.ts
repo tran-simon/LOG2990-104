@@ -51,6 +51,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
     this._focused = false;
     if (this.formControl) {
       this.value = this.format(this.formControl.valid ? value : this.validValue);
+      this.formControl.setValue(this.value);
       this.validValue = this.value;
       this.editingValue = this.value;
       this.valueChange.emit(this.value);
@@ -58,12 +59,11 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   onChange(value = '') {
-    if (this.formControl) {
-      if (this.formControl.valid) {
-        this.value = value;
-        this.editingValue = this.value;
-        this.valueChange.emit(this.value);
-      }
+    if (this.formControl && this.formControl.valid) {
+      this.value = value;
+      this.editingValue = this.value;
+      this.validValue = this.value;
+      this.valueChange.emit(this.value);
     }
   }
 

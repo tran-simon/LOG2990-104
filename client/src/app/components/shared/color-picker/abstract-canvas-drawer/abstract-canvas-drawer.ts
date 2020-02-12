@@ -26,7 +26,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
   abstract calculateIndicatorPosition(): Coordinate;
   abstract draw(): void;
   abstract drawIndicator(position: Coordinate): void;
-  abstract shouldRedraw(color: Color): boolean;
+  abstract shouldRedraw(color: Color, previousColor: Color): boolean;
   abstract calculateColorFromMouseEvent(event: MouseEvent): Color;
 
   ngOnInit(): void {
@@ -50,14 +50,15 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
 
     if (change) {
       const color: Color = change.currentValue;
-      if (change && change.currentValue instanceof Color && this.shouldRedraw(color)) {
+      const previousColor: Color = change.previousValue;
+      if (!previousColor || (color && this.shouldRedraw(color, previousColor))) {
         this.drawAll();
       }
     }
   }
 
   updateColor(color: Color): void {
-    const shouldRedraw = this.shouldRedraw(color);
+    const shouldRedraw = this.shouldRedraw(color, this.color);
     this.color = color;
     if (shouldRedraw) {
       this.drawAll();

@@ -23,8 +23,8 @@ export class ColorLightnessComponent extends AbstractColorStripComponent {
     return Color.hsl(h, s, value, a);
   }
 
-  shouldRedraw(color: Color): boolean {
-    return color.hslString !== this.color.hslString;
+  shouldRedraw(color: Color, previousColor: Color): boolean {
+    return color.hslString !== previousColor.hslString;
   }
 
   get value(): number {
