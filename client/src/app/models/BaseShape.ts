@@ -11,9 +11,8 @@ export abstract class BaseShape {
     return this._svgNode;
   }
 
-  get origin(): Coordinate {
-    return this._origin;
-  }
+  abstract get origin(): Coordinate;
+  abstract set origin(c: Coordinate);
 
   constructor(type: string) {
     this._svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);

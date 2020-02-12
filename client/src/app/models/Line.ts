@@ -25,6 +25,14 @@ export class Line extends BaseShape {
     this.svgNode.setAttribute('y2', this._endCoord.y.toString());
   }
 
+  get origin(): Coordinate {
+    return this.startCoord;
+  }
+
+  set origin(c: Coordinate) {
+    this.startCoord = c;
+  }
+
   get center(): Coordinate {
     if (!this._startCoord || !this._endCoord) {
       return this.origin;
