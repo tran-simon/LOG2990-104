@@ -229,7 +229,7 @@ export class Color implements ColorComponents {
    * Get RGB string `rgb(255,255,255)`
    */
   get rgbString(): string {
-    return `rgb(${this.r * 255},${this.g * 255},${this.b * 255})`;
+    return `rgb(${this.r * 255}, ${this.g * 255}, ${this.b * 255})`;
   }
 
   get hslString(): string {

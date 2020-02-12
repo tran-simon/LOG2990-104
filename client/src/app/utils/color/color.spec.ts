@@ -46,7 +46,7 @@ describe('Color', () => {
 
   it('can get rgbString', () => {
     const rgbString = Color.RED.rgbString;
-    expect(rgbString).toEqual('rgb(255,0,0)');
+    expect(rgbString).toEqual('rgb(255, 0, 0)');
   });
 
   it('can calculate hue', () => {
