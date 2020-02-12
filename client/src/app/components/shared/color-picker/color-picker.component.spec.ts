@@ -70,6 +70,18 @@ describe('ColorPickerComponent', () => {
     expect(position.y).toEqual(0.5 * 200);
   });
 
+  it('redraws only if hue or saturation is changed', () => {
+    const color1 = Color.hsl(120, 0.5, 0.5, 0.5);
+    const color2 = Color.hsl(120, 0.5, 0, 0);
+    const color3 = Color.hsl(10, 0.5, 0.5, 0.5);
+    const color4 = Color.hsl(120, 0, 0.5, 0.5);
+
+    expect(component.shouldRedraw(color1, color1)).toEqual(false);
+    expect(component.shouldRedraw(color2, color1)).toEqual(false);
+    expect(component.shouldRedraw(color3, color1)).toEqual(true);
+    expect(component.shouldRedraw(color4, color1)).toEqual(true);
+  });
+
   it('should update color on colorChange with lightness component', () => {
     const colorLightnessComponent = fixture.debugElement.query(By.directive(ColorLightnessComponent)).componentInstance;
     const colorChangeSpy = spyOn(component, 'colorChange').and.callThrough();

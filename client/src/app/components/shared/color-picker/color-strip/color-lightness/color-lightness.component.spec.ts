@@ -70,9 +70,9 @@ describe('ColorLightnessComponent', () => {
   });
 
   it('redraws if color changed (ignores alpha)', () => {
-    component.color = Color.hsl(120, 0.5, 0.5, 0.3);
-    expect(component.shouldRedraw(Color.alpha(component.color, 1))).toEqual(false);
-    expect(component.shouldRedraw(Color.hsl(0, 0.5, 0.5, 0.3))).toEqual(true);
+    const color = Color.hsl(120, 0.5, 0.5, 0.3);
+    expect(component.shouldRedraw(Color.alpha(color, 1), color)).toEqual(false);
+    expect(component.shouldRedraw(Color.hsl(0, 0.5, 0.5, 0.3), color)).toEqual(true);
   });
 
   it('should return lightness on get value', () => {

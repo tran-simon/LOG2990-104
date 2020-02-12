@@ -60,6 +60,31 @@ describe('CustomInputComponent', () => {
     input.blur();
   });
 
+  it('should set formControl value with formatting onBlur', () => {
+    component.format = (v) => v.toUpperCase();
+    component.onBlur('a');
+    expect(component.formControl.value).toEqual('A');
+  });
+
+  it('should restore last valid value if current value is invalid', () => {
+    component.validValue = 'validValue';
+    spyOnProperty(component.formControl, 'valid').and.returnValue(false);
+    component.onBlur('invalidValue');
+    expect(component.value).toEqual('validValue');
+    component.onChange('invalidValue');
+    expect(component.value).toEqual('validValue');
+  });
+  it('should update last valid value if current value is valid', () => {
+    component.validValue = 'validValue';
+    spyOnProperty(component.formControl, 'valid').and.returnValue(true);
+    component.onBlur('newValue');
+    expect(component.value).toEqual('newValue');
+    expect(component.validValue).toEqual('newValue');
+    component.onChange('newerValue');
+    expect(component.value).toEqual('newerValue');
+    expect(component.validValue).toEqual('newerValue');
+  });
+
   it('should ignore external inputs if field is focused', () => {
     component.onChange('2');
 

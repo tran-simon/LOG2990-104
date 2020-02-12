@@ -51,9 +51,7 @@ describe('AlphaComponent', () => {
     const color1 = Color.rgb(0.1, 0.2, 0.3, 0.4);
     const color2 = Color.rgb(0.11, 0.22, 0.33, 0.44);
 
-    component.color = color1;
-
-    expect(component.shouldRedraw(Color.rgb(color2.r, color2.g, color2.b, color1.a))).toBe(false);
-    expect(component.shouldRedraw(Color.rgb(color1.r, color1.g, color1.b, color2.a))).toBe(true);
+    expect(component.shouldRedraw(Color.rgb(color2.r, color2.g, color2.b, color1.a), color1)).toBe(false);
+    expect(component.shouldRedraw(Color.rgb(color1.r, color1.g, color1.b, color2.a), color1)).toBe(true);
   });
 });
