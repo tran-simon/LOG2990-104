@@ -51,28 +51,28 @@ describe('UserGuideComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call nextSubject on create button clicked', () => {
+  it('should call nextSubject on Suivant button clicked', () => {
     const nextSubjectSpy = spyOn(component, 'nextSubject');
     fixture.debugElement.nativeElement.querySelector('#nextButton').click();
     expect(nextSubjectSpy).toHaveBeenCalled();
   });
-  it('Precedent should call previousSubject on create button clicked', () => {
+  it('should call previousSubject on Precedent button clicked', () => {
     const previousSubjectSpy = spyOn(component, 'previousSubject');
     fixture.debugElement.nativeElement.querySelector('#prevButton').click();
     expect(previousSubjectSpy).toHaveBeenCalled();
   });
 
   it('nextSubject should call selectSubject and openCategories', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject');
-    const openCategoriesSpy = spyOn(component, 'openCategories');
+    const selectSubjectSpy = spyOn<any>(component, 'selectSubject');
+    const openCategoriesSpy = spyOn<any>(component, 'openCategories');
     component.nextSubject();
     expect(selectSubjectSpy).toHaveBeenCalled();
     expect(openCategoriesSpy).toHaveBeenCalled();
   });
   it('nextSubject should not call selectSubject and openCategories when on Subject 6', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
-    const openCategoriesSpy = spyOn(component, 'openCategories').and.callThrough();
-    component.selectedSubject = component.subjects.Sujet6;
+    const selectSubjectSpy = spyOn<any>(component, 'selectSubject').and.callThrough();
+    const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
+    component._selectedSubject = component.subjects.Sujet6;
     component.nextSubject();
     fixture.detectChanges();
     expect(selectSubjectSpy).not.toHaveBeenCalled();
@@ -80,16 +80,16 @@ describe('UserGuideComponent', () => {
   });
 
   it('previousSubject should not call selectSubject and openCategories because default subject is Bienvenue', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject');
-    const openCategoriesSpy = spyOn(component, 'openCategories');
+    const selectSubjectSpy = spyOn<any>(component, 'selectSubject');
+    const openCategoriesSpy = spyOn<any>(component, 'openCategories');
     component.previousSubject();
     expect(selectSubjectSpy).not.toHaveBeenCalled();
     expect(openCategoriesSpy).not.toHaveBeenCalled();
   });
   it('previousSubject should call selectSubject and openCategories because the subject is not Bienvenue', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
-    const openCategoriesSpy = spyOn(component, 'openCategories').and.callThrough();
-    component.selectedSubject = component.subjects.Sujet3;
+    const selectSubjectSpy = spyOn<any>(component, 'selectSubject').and.callThrough();
+    const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
+    component._selectedSubject = component.subjects.Sujet3;
     component.previousSubject();
     fixture.detectChanges();
     expect(selectSubjectSpy).toHaveBeenCalled();
@@ -98,11 +98,11 @@ describe('UserGuideComponent', () => {
 
   it('selectSubject should change the subject', () => {
     component.selectSubject(component.subjects.Bienvenue);
-    expect(component.selectedSubject).toEqual(component.subjects.Bienvenue);
+    expect(component._selectedSubject).toEqual(component.subjects.Bienvenue);
   });
   it('Next subject should be subject plus 1', () => {
     component.selectSubject(component.subjects.Bienvenue + 1);
-    expect(component.selectedSubject).toEqual(component.subjects.Sujet1);
+    expect(component._selectedSubject).toEqual(component.subjects.Sujet1);
   });
 
   it('All categories should be opened', () => {
