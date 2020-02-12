@@ -102,18 +102,19 @@ describe('UserGuideComponent', () => {
     expect(component.selectedSubject).toEqual(component.subjects.Sujet4);
   });
   it('Next subject should be subject plus 1', () => {
-    let liveSubject = component.selectedSubject;
+    const liveSubject = component.selectedSubject;
     component.nextSubject();
     expect(component.selectedSubject).toEqual(liveSubject + 1);
   });
   it('Next subject should be subject plus 1', () => {
     component.selectedSubject = component.subjects.Sujet3;
-    let liveSubject = component.selectedSubject;
+    const liveSubject = component.selectedSubject;
     component.nextSubject();
     expect(component.selectedSubject).toEqual(liveSubject + 1);
   });
 
   it('All categories should be opened', () => {
+    /* tslint:disable-next-line */
     component['openCategories']();
     expect(component.panelOpenState1).toEqual(true);
     expect(component.panelOpenState2).toEqual(true);
