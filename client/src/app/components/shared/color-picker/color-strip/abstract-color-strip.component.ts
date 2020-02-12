@@ -1,4 +1,4 @@
-import { Input } from '@angular/core';
+import { EventEmitter, Input, Output } from '@angular/core';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
 import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
@@ -10,6 +10,8 @@ export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
   @Input() thickness = 50;
 
   indicatorSize = 10;
+
+  @Output() colorChanged = new EventEmitter<Color>();
 
   abstract get value(): number;
 
@@ -29,6 +31,11 @@ export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
     const indicatorX = this.isVertical ? 0 : this.value * this.width;
     const indicatorY = !this.isVertical ? 0 : this.value * this.height;
     return new Coordinate(indicatorX, indicatorY);
+  }
+
+  updateColor(color: Color) {
+    super.updateColor(color);
+    this.colorChanged.emit(this.color);
   }
 
   draw(): void {

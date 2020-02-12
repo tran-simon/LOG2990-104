@@ -1,4 +1,5 @@
 <div id="color-picker" [style.background-color]="color.hexString" >
+  <app-color-history></app-color-history>
   <div>
     <canvas #canvas id="color-square"
       width="{{size}}"
@@ -59,4 +60,8 @@
       [formGroup]="formGroup">Hex:
     </app-hex-input>
   </form>
+  <div *ngIf=confirmBtn>
+    <button (click)='cancel()'>Annuler</button>
+    <button (click)='confirm()'>Confirmer</button>
+  </div>
 </div>

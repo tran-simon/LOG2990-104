@@ -53,11 +53,8 @@ export class ToolbarComponent {
   constructor(private router: Router) {}
 
   handleColorChanged(eventColor: Color) {
-    if (!this.selectedColor) {
-      this.selectedPrimaryColor = eventColor;
-    } else {
-      this.selectedSecondaryColor = eventColor;
-    }
+    this.drawer.close();
+    this.color = eventColor;
   }
 
   selectTool(selection: Tool) {
@@ -73,7 +70,7 @@ export class ToolbarComponent {
     if (this.colorPicker) {
       this.selectedColor = selection;
       this.selectedTool = this.tools.ColorPicker;
-      this.colorPicker.color = selection ? this.selectedSecondaryColor : this.selectedPrimaryColor;
+      this.colorPicker.updateColor(this.color);
       this.drawer.open();
     } else {
       this.selectedTool = this.tools.ColorPicker;
@@ -92,5 +89,12 @@ export class ToolbarComponent {
 
   get color(): Color {
     return this.selectedColor ? this.selectedSecondaryColor : this.selectedPrimaryColor;
+  }
+  set color(color: Color) {
+    if (!this.selectedColor) {
+      this.selectedPrimaryColor = color;
+    } else {
+      this.selectedSecondaryColor = color;
+    }
   }
 }
