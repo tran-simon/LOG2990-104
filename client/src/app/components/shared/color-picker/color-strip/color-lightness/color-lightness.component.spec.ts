@@ -1,28 +1,35 @@
-import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
-import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
+import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
 
-import { ColorLightnessComponent } from './color-lightness.component';
+import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-strip/color-lightness/color-lightness.component';
+import { Color } from 'src/app/utils/color/color';
 import Spy = jasmine.Spy;
 
 describe('ColorLightnessComponent', () => {
   let component: ColorLightnessComponent;
   let fixture: ComponentFixture<ColorLightnessComponent>;
-  let drawSpy: Spy;
+  let drawAllSpy: Spy;
   let lightnessChangedSpy: Spy;
-  let colorLightnessElement: DebugElement;
+  let calculateNewColorSpy: Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
-      declarations: [ColorPickerComponent, ColorLightnessComponent, NumberInputComponent, CustomInputComponent, HexInputComponent],
+      declarations: [
+        ColorPickerComponent,
+        AlphaComponent,
+        ColorLightnessComponent,
+        NumberInputComponent,
+        CustomInputComponent,
+        HexInputComponent,
+      ],
     }).compileComponents();
   }));
 
@@ -31,13 +38,13 @@ describe('ColorLightnessComponent', () => {
     component = fixture.componentInstance;
 
     component.isVertical = true;
-    colorLightnessElement = fixture.debugElement.query(By.css('#color-square-lightness'));
-    drawSpy = spyOn(component, 'draw').and.callThrough();
-    lightnessChangedSpy = spyOn(component.lightnessChanged, 'emit').and.callThrough();
+    drawAllSpy = spyOn(component, 'drawAll').and.callThrough();
+    lightnessChangedSpy = spyOn(component.colorChanged, 'emit').and.callThrough();
+    calculateNewColorSpy = spyOn(component, 'calculateNewColor').and.callThrough();
 
     component.ngOnInit();
     fixture.detectChanges();
-    drawSpy.calls.reset();
+    drawAllSpy.calls.reset();
   });
 
   it('should create', () => {
@@ -46,15 +53,31 @@ describe('ColorLightnessComponent', () => {
 
   it('should draw indicator on draw', () => {
     const drawIndicatorSpy = spyOn(component, 'drawIndicator');
-    component.draw();
+    component.drawAll();
     expect(drawIndicatorSpy).toHaveBeenCalled();
   });
 
-  it('calls onMouseDown when mouse is down', () => {
-    const mouseDownSpy = spyOn(component, 'onMouseDown').and.callThrough();
-    colorLightnessElement.triggerEventHandler('mousedown', { offsetX: 0, offsetY: 40 });
+  it('can calculate new color', () => {
+    component.color = Color.BLACK;
 
-    expect(mouseDownSpy).toHaveBeenCalled();
+    const { h, s, l, a } = component.calculateNewColor(0.3);
+
+    expect(h).toEqual(component.color.h);
+    expect(s).toEqual(component.color.s);
+    expect(a).toEqual(component.color.a);
+
+    expect(l).toEqual(0.3);
+  });
+
+  it('redraws if color changed (ignores alpha)', () => {
+    component.color = Color.hsl(120, 0.5, 0.5, 0.3);
+    expect(component.shouldRedraw(Color.alpha(component.color, 1))).toEqual(false);
+    expect(component.shouldRedraw(Color.hsl(0, 0.5, 0.5, 0.3))).toEqual(true);
+  });
+
+  it('should return lightness on get value', () => {
+    component.color = Color.hsl(120, 0.1, 0.3, 0.4);
+    expect(component.value).toEqual(0.3);
   });
 
   it('emits lightnessChanged on mouse down', () => {
@@ -62,14 +85,7 @@ describe('ColorLightnessComponent', () => {
 
     fixture.detectChanges();
 
-    expect(lightnessChangedSpy).toHaveBeenCalledWith(40 / 300);
-  });
-
-  it('calls onMouseMove when mouse is moved', () => {
-    const mouseMoveSpy = spyOn(component, 'onMouseMove').and.callThrough();
-    colorLightnessElement.triggerEventHandler('mousemove', { offsetX: 50, offsetY: 40 });
-
-    expect(mouseMoveSpy).toHaveBeenCalled();
+    expect(calculateNewColorSpy).toHaveBeenCalledWith(40 / 300);
   });
 
   it('emits lightnessChanged on mouse move if mouse is down', () => {
@@ -78,7 +94,7 @@ describe('ColorLightnessComponent', () => {
 
     fixture.detectChanges();
 
-    expect(lightnessChangedSpy).toHaveBeenCalledWith(40 / 300);
+    expect(calculateNewColorSpy).toHaveBeenCalledWith(40 / 300);
   });
 
   it('does not emit lightnessChanged on mouse move if mouse is not down', () => {
@@ -100,7 +116,7 @@ describe('ColorLightnessComponent', () => {
     component.onMouseMove({ offsetY: 40 } as MouseEvent);
 
     expect(lightnessChangedSpy).toHaveBeenCalledTimes(1);
-    expect(lightnessChangedSpy).toHaveBeenCalledWith(100 / 300);
+    expect(calculateNewColorSpy).toHaveBeenCalledWith(100 / 300);
   });
 
   it('should have width bigger than height if horizontal', () => {

@@ -1,0 +1,107 @@
+import { SimpleChange, SimpleChanges } from '@angular/core';
+import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
+import { Coordinate } from 'src/app/models/Coordinate';
+import { Color } from 'src/app/utils/color/color';
+import Spy = jasmine.Spy;
+import createSpyObj = jasmine.createSpyObj;
+
+describe('AbstractCanvasDrawer', () => {
+  class AbstractCanvasDrawerImpl extends AbstractCanvasDrawer {
+    calculateColorFromMouseEvent(event: MouseEvent): Color {
+      return Color.RED;
+    }
+
+    draw(): void {
+      return;
+    }
+
+    calculateIndicatorPosition(): Coordinate {
+      return new Coordinate(0, 0);
+    }
+
+    drawIndicator(position: Coordinate): void {
+      return;
+    }
+
+    shouldRedraw(color: Color): boolean {
+      return color === Color.RED;
+    }
+  }
+
+  const component: AbstractCanvasDrawer = new AbstractCanvasDrawerImpl();
+  let drawAllSpy: Spy;
+  let updateColorSpy: Spy;
+  let colorChangedSpy: Spy;
+
+  beforeEach(() => {
+    drawAllSpy = spyOn(component, 'drawAll').and.callThrough();
+    updateColorSpy = spyOn(component, 'updateColor').and.callThrough();
+    colorChangedSpy = spyOn(component.colorChanged, 'emit');
+    component.renderingContext = createSpyObj('renderingContext', ['']);
+  });
+
+  it('should draw after view init', () => {
+    component.ngAfterViewInit();
+    expect(drawAllSpy).toHaveBeenCalled();
+  });
+
+  it('should draw on color change', () => {
+    component.ngOnChanges({
+      color: {
+        currentValue: Color.RED,
+      } as SimpleChange,
+    } as SimpleChanges);
+    expect(drawAllSpy).toHaveBeenCalled();
+  });
+
+  it('should redraw on updateColor if shouldRedraw returns true', () => {
+    component.updateColor(Color.RED);
+    expect(drawAllSpy).toHaveBeenCalled();
+    expect(colorChangedSpy).toHaveBeenCalledWith(Color.RED);
+  });
+
+  it('should draw component and indicator on drawAll', () => {
+    const drawSpy = spyOn(component, 'draw');
+    const drawIndicatorSpy = spyOn(component, 'drawIndicator');
+    component.drawAll();
+    expect(drawSpy).toHaveBeenCalled();
+    expect(drawIndicatorSpy).toHaveBeenCalled();
+  });
+
+  it('should not redraw if shouldRedraw returns false', () => {
+    component.updateColor(Color.BLUE);
+    expect(drawAllSpy).not.toHaveBeenCalled();
+    expect(colorChangedSpy).toHaveBeenCalledWith(Color.BLUE);
+  });
+
+  it('sets mouseIsDown to true when mouse is down', () => {
+    component.onMouseDown({} as MouseEvent);
+    expect(component.mouseIsDown).toEqual(true);
+  });
+
+  it('updates color on mouse down', () => {
+    component.onMouseDown({} as MouseEvent);
+
+    expect(updateColorSpy).toHaveBeenCalledWith(Color.RED);
+  });
+
+  it('updates color on mouse move if mouse is down', () => {
+    component.onMouseDown({} as MouseEvent);
+    component.onMouseMove({} as MouseEvent);
+
+    expect(updateColorSpy).toHaveBeenCalledWith(Color.RED);
+  });
+
+  it('does not update color on mouse move if mouse is not down', () => {
+    component.onMouseDown({} as MouseEvent);
+    component.onMouseUp();
+    component.onMouseMove({} as MouseEvent);
+
+    expect(updateColorSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('sets mouseIsDown to false when mouse is up', () => {
+    component.onMouseUp();
+    expect(component.mouseIsDown).toEqual(false);
+  });
+});
