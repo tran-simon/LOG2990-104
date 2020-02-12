@@ -1,6 +1,6 @@
-import { DrawingSurfaceComponent } from '../components/pages/editor/drawing-surface/drawing-surface.component';
-import { BaseShape } from './BaseShape';
-import { Tool } from './Tool';
+import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { BaseShape } from '../../BaseShape';
+import { Tool } from '../Tool';
 
 export abstract class CreatorTool extends Tool {
   protected isActive: boolean;

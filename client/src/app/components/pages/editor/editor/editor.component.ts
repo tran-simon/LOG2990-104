@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CreatorTool } from 'src/app/models/CreatorTool';
-import { LineTool } from 'src/app/models/LineTool';
-import { RectangleTool } from 'src/app/models/RectangleTool';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/CreatorTool';
+import { LineTool } from 'src/app/models/tools/creator-tools/LineTool';
+import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/RectangleTool';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { PenTool } from '../../../../models/tools/creator-tools/PenTool';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 export interface EditorParams {
@@ -36,6 +37,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
         this.selectLineTool();
         return true;
       },
+      c: () => {
+        this.selectPenTool();
+        return false;
+      },
       1: () => {
         this.selectRectangleTool();
         return false; // todo - enable default behavior when typing in text field
@@ -64,6 +69,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   selectLineTool() {
     this.currentTool = new LineTool(this.drawingSurface);
+  }
+
+  selectPenTool() {
+    this.currentTool = new PenTool(this.drawingSurface);
   }
 
   selectRectangleTool() {
