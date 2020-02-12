@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 
 enum Subject {
   Bienvenue,
@@ -16,7 +18,8 @@ enum Subject {
   templateUrl: './user-guide.component.html',
   styleUrls: ['./user-guide.component.scss'],
 })
-export class UserGuideComponent implements OnInit {
+// todo rename to modal
+export class UserGuideComponent extends AbstractModalComponent implements OnInit {
   @ViewChild('sidenav', { static: false })
   sidenav: MatSidenav;
   subjects = Subject;
@@ -26,23 +29,35 @@ export class UserGuideComponent implements OnInit {
   panelOpenState2 = false;
   panelOpenState3 = false;
 
-  ngOnInit() {
+  constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
+    super(dialogRef);
+  }
+
+  ngOnInit(): void {
     this.selectedSubject = this.subjects.Bienvenue;
   }
 
-  selectSubject(selection: Subject) {
+  selectSubject(selection: Subject): void {
     this.selectedSubject = selection;
   }
 
-  openCategories() {
+  private openCategories(): void {
     this.panelOpenState1 = true;
     this.panelOpenState2 = true;
     this.panelOpenState3 = true;
   }
 
-  closeCategorie() {
-    this.panelOpenState1 = false;
-    this.panelOpenState2 = false;
-    this.panelOpenState3 = false;
+  previousSubject(): void {
+    if (this.selectedSubject !== this.subjects.Bienvenue) {
+      this.selectSubject(this.selectedSubject - 1);
+      this.openCategories();
+    }
+  }
+
+  nextSubject(): void {
+    if (this.selectedSubject !== this.subjects.Sujet6) {
+      this.selectSubject(this.selectedSubject + 1);
+      this.openCategories();
+    }
   }
 }
