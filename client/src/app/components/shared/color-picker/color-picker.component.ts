@@ -1,7 +1,8 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
+import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
+import { Coordinate } from 'src/app/models/Coordinate';
 import { Color, ColorComponents } from 'src/app/utils/color/color';
 
 @Component({
@@ -17,6 +18,10 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
   formGroup: FormGroup = new FormGroup({});
 
+  calculateIndicatorPosition(): Coordinate {
+    return new Coordinate((this.color.h / 360) * this.size, this.color.s * this.size);
+  }
+
   draw(): void {
     if (this.renderingContext) {
       for (let i = 0; i < this.size; i++) {
@@ -28,11 +33,11 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
         this.renderingContext.fillStyle = gradient;
         this.renderingContext.fillRect(i, 0, 1, this.size);
       }
-      this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
     }
   }
 
-  drawIndicator(x: number, y: number): void {
+  drawIndicator(position: Coordinate): void {
+    const { x, y } = position;
     const color = Color.hsl(this.color.h, this.color.s, 0.5);
     this.renderingContext.fillStyle = color.hexString;
     this.renderingContext.strokeStyle = color.negative.hexString;

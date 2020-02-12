@@ -1,7 +1,9 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
-import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
+import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
+import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
 import Spy = jasmine.Spy;
+import createSpyObj = jasmine.createSpyObj;
 
 describe('AbstractCanvasDrawer', () => {
   class AbstractCanvasDrawerImpl extends AbstractCanvasDrawer {
@@ -13,7 +15,11 @@ describe('AbstractCanvasDrawer', () => {
       return;
     }
 
-    drawIndicator(x: number, y: number): void {
+    calculateIndicatorPosition(): Coordinate {
+      return new Coordinate(0, 0);
+    }
+
+    drawIndicator(position: Coordinate): void {
       return;
     }
 
@@ -23,19 +29,20 @@ describe('AbstractCanvasDrawer', () => {
   }
 
   const component: AbstractCanvasDrawer = new AbstractCanvasDrawerImpl();
-  let drawSpy: Spy;
+  let drawAllSpy: Spy;
   let updateColorSpy: Spy;
   let colorChangedSpy: Spy;
 
   beforeEach(() => {
-    drawSpy = spyOn(component, 'draw');
+    drawAllSpy = spyOn(component, 'drawAll').and.callThrough();
     updateColorSpy = spyOn(component, 'updateColor').and.callThrough();
     colorChangedSpy = spyOn(component.colorChanged, 'emit');
+    component.renderingContext = createSpyObj('renderingContext', ['']);
   });
 
   it('should draw after view init', () => {
     component.ngAfterViewInit();
-    expect(drawSpy).toHaveBeenCalled();
+    expect(drawAllSpy).toHaveBeenCalled();
   });
 
   it('should draw on color change', () => {
@@ -44,18 +51,26 @@ describe('AbstractCanvasDrawer', () => {
         currentValue: Color.RED,
       } as SimpleChange,
     } as SimpleChanges);
-    expect(drawSpy).toHaveBeenCalled();
+    expect(drawAllSpy).toHaveBeenCalled();
   });
 
   it('should redraw on updateColor if shouldRedraw returns true', () => {
     component.updateColor(Color.RED);
-    expect(drawSpy).toHaveBeenCalled();
+    expect(drawAllSpy).toHaveBeenCalled();
     expect(colorChangedSpy).toHaveBeenCalledWith(Color.RED);
+  });
+
+  it('should draw component and indicator on drawAll', () => {
+    const drawSpy = spyOn(component, 'draw');
+    const drawIndicatorSpy = spyOn(component, 'drawIndicator');
+    component.drawAll();
+    expect(drawSpy).toHaveBeenCalled();
+    expect(drawIndicatorSpy).toHaveBeenCalled();
   });
 
   it('should not redraw if shouldRedraw returns false', () => {
     component.updateColor(Color.BLUE);
-    expect(drawSpy).not.toHaveBeenCalled();
+    expect(drawAllSpy).not.toHaveBeenCalled();
     expect(colorChangedSpy).toHaveBeenCalledWith(Color.BLUE);
   });
 

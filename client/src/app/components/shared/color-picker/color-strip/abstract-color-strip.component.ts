@@ -1,5 +1,6 @@
 import { Input } from '@angular/core';
-import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
+import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
+import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
 import { MathUtil } from 'src/app/utils/math/math-util';
 
@@ -11,31 +12,34 @@ export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
   indicatorSize = 10;
 
   abstract get value(): number;
+
   abstract getFillStyle(width: number, height: number): string | CanvasGradient | CanvasPattern;
+
   abstract calculateNewColor(value: number): Color;
 
   getIndicatorFillStyle(): string | CanvasGradient | CanvasPattern {
     return this.color.hexString;
   }
+
   getIndicatorStrokeStyle(): string | CanvasGradient | CanvasPattern {
     return this.color.negative.hexString;
   }
 
-  draw(): void {
-    if (this.renderingContext) {
-      const gradientWidth = this.isVertical ? 0 : this.width;
-      const gradientHeight = !this.isVertical ? 0 : this.height;
-      this.renderingContext.fillStyle = this.getFillStyle(gradientWidth, gradientHeight);
-      this.renderingContext.fillRect(0, 0, this.width, this.height);
-
-      const indicatorX = this.isVertical ? 0 : this.value * this.width;
-      const indicatorY = !this.isVertical ? 0 : this.value * this.height;
-      this.drawIndicator(indicatorX, indicatorY);
-    }
+  calculateIndicatorPosition(): Coordinate {
+    const indicatorX = this.isVertical ? 0 : this.value * this.width;
+    const indicatorY = !this.isVertical ? 0 : this.value * this.height;
+    return new Coordinate(indicatorX, indicatorY);
   }
 
-  drawIndicator(x: number, y: number): void {
-    const offset = this.isVertical ? y : x;
+  draw(): void {
+    const gradientWidth = this.isVertical ? 0 : this.width;
+    const gradientHeight = !this.isVertical ? 0 : this.height;
+    this.renderingContext.fillStyle = this.getFillStyle(gradientWidth, gradientHeight);
+    this.renderingContext.fillRect(0, 0, this.width, this.height);
+  }
+
+  drawIndicator(position: Coordinate): void {
+    const offset = this.isVertical ? position.y : position.x;
     this.renderingContext.fillStyle = this.getIndicatorFillStyle();
     this.renderingContext.strokeStyle = this.getIndicatorStrokeStyle();
     this.renderingContext.lineWidth = this.indicatorLineWidth;
@@ -53,6 +57,7 @@ export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
   calculateMouseEventValue(event: MouseEvent): number {
     return MathUtil.fit(this.isVertical ? event.offsetY / this.height : event.offsetX / this.width);
   }
+
   calculateColorFromMouseEvent(event: MouseEvent): Color {
     return this.calculateNewColor(this.calculateMouseEventValue(event));
   }

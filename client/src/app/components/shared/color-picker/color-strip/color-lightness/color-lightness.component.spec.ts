@@ -9,12 +9,13 @@ import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/he
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
 
 import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-strip/color-lightness/color-lightness.component';
+import { Color } from 'src/app/utils/color/color';
 import Spy = jasmine.Spy;
 
 describe('ColorLightnessComponent', () => {
   let component: ColorLightnessComponent;
   let fixture: ComponentFixture<ColorLightnessComponent>;
-  let drawSpy: Spy;
+  let drawAllSpy: Spy;
   let lightnessChangedSpy: Spy;
   let calculateNewColorSpy: Spy;
 
@@ -37,13 +38,13 @@ describe('ColorLightnessComponent', () => {
     component = fixture.componentInstance;
 
     component.isVertical = true;
-    drawSpy = spyOn(component, 'draw').and.callThrough();
+    drawAllSpy = spyOn(component, 'drawAll').and.callThrough();
     lightnessChangedSpy = spyOn(component.colorChanged, 'emit').and.callThrough();
     calculateNewColorSpy = spyOn(component, 'calculateNewColor').and.callThrough();
 
     component.ngOnInit();
     fixture.detectChanges();
-    drawSpy.calls.reset();
+    drawAllSpy.calls.reset();
   });
 
   it('should create', () => {
@@ -52,8 +53,31 @@ describe('ColorLightnessComponent', () => {
 
   it('should draw indicator on draw', () => {
     const drawIndicatorSpy = spyOn(component, 'drawIndicator');
-    component.draw();
+    component.drawAll();
     expect(drawIndicatorSpy).toHaveBeenCalled();
+  });
+
+  it('can calculate new color', () => {
+    component.color = Color.BLACK;
+
+    const { h, s, l, a } = component.calculateNewColor(0.3);
+
+    expect(h).toEqual(component.color.h);
+    expect(s).toEqual(component.color.s);
+    expect(a).toEqual(component.color.a);
+
+    expect(l).toEqual(0.3);
+  });
+
+  it('redraws if color changed (ignores alpha)', () => {
+    component.color = Color.hsl(120, 0.5, 0.5, 0.3);
+    expect(component.shouldRedraw(Color.alpha(component.color, 1))).toEqual(false);
+    expect(component.shouldRedraw(Color.hsl(0, 0.5, 0.5, 0.3))).toEqual(true);
+  });
+
+  it('should return lightness on get value', () => {
+    component.color = Color.hsl(120, 0.1, 0.3, 0.4);
+    expect(component.value).toEqual(0.3);
   });
 
   it('emits lightnessChanged on mouse down', () => {

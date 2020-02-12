@@ -10,6 +10,7 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
+import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
 
 export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterViewInit {
@@ -22,8 +23,9 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
   renderingContext: CanvasRenderingContext2D;
   mouseIsDown = false;
 
+  abstract calculateIndicatorPosition(): Coordinate;
   abstract draw(): void;
-  abstract drawIndicator(x: number, y: number): void;
+  abstract drawIndicator(position: Coordinate): void;
   abstract shouldRedraw(color: Color): boolean;
   abstract calculateColorFromMouseEvent(event: MouseEvent): Color;
 
@@ -32,7 +34,14 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.draw();
+    this.drawAll();
+  }
+
+  drawAll(): void {
+    if (this.renderingContext) {
+      this.draw();
+      this.drawIndicator(this.calculateIndicatorPosition());
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -42,7 +51,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
     if (change) {
       const color: Color = change.currentValue;
       if (change && change.currentValue instanceof Color && this.shouldRedraw(color)) {
-        this.draw();
+        this.drawAll();
       }
     }
   }
@@ -51,7 +60,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
     const shouldRedraw = this.shouldRedraw(color);
     this.color = color;
     if (shouldRedraw) {
-      this.draw();
+      this.drawAll();
     }
     this.colorChanged.emit(this.color);
   }

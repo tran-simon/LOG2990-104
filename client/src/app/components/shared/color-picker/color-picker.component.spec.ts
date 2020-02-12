@@ -17,7 +17,7 @@ import Spy = jasmine.Spy;
 describe('ColorPickerComponent', () => {
   let component: ColorPickerComponent;
   let fixture: ComponentFixture<ColorPickerComponent>;
-  let drawSpy: Spy;
+  let drawAllSpy: Spy;
   let colorSquareElement: DebugElement;
 
   beforeEach(async(() => {
@@ -41,21 +41,33 @@ describe('ColorPickerComponent', () => {
     component.size = 500;
 
     colorSquareElement = fixture.debugElement.query(By.css('#color-square'));
-    drawSpy = spyOn(component, 'draw').and.callThrough();
+    drawAllSpy = spyOn(component, 'drawAll').and.callThrough();
 
     component.ngOnInit();
     fixture.detectChanges();
-    drawSpy.calls.reset();
+    drawAllSpy.calls.reset();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should draw indicator on draw', () => {
+  it('should draw indicator on draw all', () => {
+    const drawSpy = spyOn(component, 'draw');
     const drawIndicatorSpy = spyOn(component, 'drawIndicator');
-    component.draw();
+    component.drawAll();
+    expect(drawSpy).toHaveBeenCalled();
     expect(drawIndicatorSpy).toHaveBeenCalled();
+  });
+
+  it('can calculate indicator position', () => {
+    component.color = Color.hsl(120, 0.5, 1);
+    component.size = 200;
+
+    const position = component.calculateIndicatorPosition();
+
+    expect(position.x).toEqual((120 / 360) * 200);
+    expect(position.y).toEqual(0.5 * 200);
   });
 
   it('should update color on colorChange with lightness component', () => {
@@ -101,7 +113,7 @@ describe('ColorPickerComponent', () => {
     expect(colorChangeSpy).toHaveBeenCalledWith('33', 'b');
 
     expect(component.color.hex).toEqual('112233');
-    expect(drawSpy).toHaveBeenCalledTimes(3);
+    expect(drawAllSpy).toHaveBeenCalledTimes(3);
   });
 
   it('should update on hex color input change', () => {
@@ -114,7 +126,7 @@ describe('ColorPickerComponent', () => {
 
     expect(hexChangeSpy).toHaveBeenCalledWith(colorHex);
     expect(component.color.hex).toEqual(colorHex);
-    expect(drawSpy).toHaveBeenCalled();
+    expect(drawAllSpy).toHaveBeenCalled();
   });
 
   it('calls onMouseDown when mouse is down', () => {
@@ -133,7 +145,7 @@ describe('ColorPickerComponent', () => {
     const s = 40 / 500;
     expect(component.color.h).toEqual(h);
     expect(component.color.s).toEqual(s);
-    expect(drawSpy).toHaveBeenCalled();
+    expect(drawAllSpy).toHaveBeenCalled();
   });
 
   it('calls onMouseMove when mouse is moved', () => {
@@ -153,7 +165,7 @@ describe('ColorPickerComponent', () => {
     const s = 40 / 500;
     expect(component.color.h).toEqual(h);
     expect(component.color.s).toEqual(s);
-    expect(drawSpy).toHaveBeenCalledTimes(2);
+    expect(drawAllSpy).toHaveBeenCalledTimes(2);
   });
 
   it('does not draw on mouse move if mouse is not down', () => {
@@ -161,7 +173,7 @@ describe('ColorPickerComponent', () => {
     component.onMouseMove({ offsetX: 50, offsetY: 40 } as MouseEvent);
     fixture.detectChanges();
 
-    expect(drawSpy).not.toHaveBeenCalled();
+    expect(drawAllSpy).not.toHaveBeenCalled();
     expect(mouseMoveSpy).toHaveBeenCalled();
   });
 
@@ -182,7 +194,7 @@ describe('ColorPickerComponent', () => {
     const s = 100 / 500;
     expect(component.color.h).toEqual(h);
     expect(component.color.s).toEqual(s);
-    expect(drawSpy).toHaveBeenCalledTimes(1);
+    expect(drawAllSpy).toHaveBeenCalledTimes(1);
     expect(mouseMoveSpy).toHaveBeenCalled();
   });
 });
