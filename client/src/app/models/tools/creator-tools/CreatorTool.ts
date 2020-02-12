@@ -1,11 +1,17 @@
 import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from '../../BaseShape';
+import { ToolProperties } from '../../ToolProperties/ToolProperties';
 import { Tool } from '../Tool';
 
 export abstract class CreatorTool extends Tool {
   protected isActive: boolean;
+  protected _toolProperties: ToolProperties;
 
   abstract get shape(): BaseShape;
+
+  set toolProperties(properties: ToolProperties) {
+    this._toolProperties = properties;
+  }
 
   constructor(drawingSurface: DrawingSurfaceComponent) {
     super(drawingSurface);
