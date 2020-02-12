@@ -89,10 +89,10 @@ describe('HomeComponent', () => {
     expect(dialogOpenSpy).toHaveBeenCalledTimes(2);
   });
 
-  it('should call openPage on guide button clicked', () => {
-    const openPageSpy = spyOn(component, 'openPage');
+  it('should call openCreateModal on guide button clicked', () => {
+    const openModalSpy = spyOn(component, 'openModal');
     fixture.debugElement.nativeElement.querySelector('#btn-guide').click();
-    expect(openPageSpy).toHaveBeenCalledWith('help');
+    expect(openModalSpy).toHaveBeenCalledWith('help');
   });
 
   it('should call openGallery on gallery button clicked', () => {

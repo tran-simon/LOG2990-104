@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MatSidenav } from '@angular/material';
-
+import { MatDialogRef } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 
 enum Subject {
@@ -32,7 +32,7 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
     super(dialogRef);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.selectedSubject = this.subjects.Bienvenue;
   }
 

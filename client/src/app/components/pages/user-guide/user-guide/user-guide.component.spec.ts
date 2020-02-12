@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef } from '@angular/material';
 import { Subject1Component } from 'src/app/components/pages/user-guide/subject1/subject1.component';
 import { Subject2Component } from 'src/app/components/pages/user-guide/subject2/subject2.component';
 import { Subject3Component } from 'src/app/components/pages/user-guide/subject3/subject3.component';
@@ -11,11 +12,13 @@ import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/we
 import { SharedModule } from '../../../shared/shared.module';
 import { UserGuideComponent } from './user-guide.component';
 import createSpyObj = jasmine.createSpyObj;
+import createSpy = jasmine.createSpy;
 // import Spy = jasmine.Spy;
 
 describe('UserGuideComponent', () => {
   let component: UserGuideComponent;
   let fixture: ComponentFixture<UserGuideComponent>;
+  const dialogRefCloseSpy = createSpy('close');
   const routerSpy = createSpyObj('Router', ['navigate']);
 
   beforeEach(async(() => {
@@ -32,10 +35,8 @@ describe('UserGuideComponent', () => {
         Subject6Component,
       ],
       providers: [
-        {
-          provide: Router,
-          useValue: routerSpy,
-        },
+        { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
+        { provide: Router, useValue: routerSpy },
       ],
     }).compileComponents();
   }));
@@ -50,7 +51,7 @@ describe('UserGuideComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Suivant should call nextSubject on create button clicked', () => {
+  it('should call nextSubject on create button clicked', () => {
     const nextSubjectSpy = spyOn(component, 'nextSubject');
     fixture.debugElement.nativeElement.querySelector('#nextButton').click();
     expect(nextSubjectSpy).toHaveBeenCalled();
