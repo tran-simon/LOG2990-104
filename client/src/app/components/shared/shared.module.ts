@@ -16,7 +16,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-lightness/color-lightness.component';
+import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
+import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-strip/color-lightness/color-lightness.component';
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
@@ -45,6 +46,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     AbstractModalComponent,
     ColorPickerComponent,
     ColorLightnessComponent,
+    AlphaComponent,
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
