@@ -1,7 +1,7 @@
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { DrawingSurfaceComponent } from '../components/pages/editor/drawing-surface/drawing-surface.component';
-import { CompositeLine } from './CompositeLine';
-import { Coordinate } from './Coordinate';
+import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { CompositeLine } from '../../CompositeLine';
+import { Coordinate } from '../../Coordinate';
 import { CreatorTool } from './CreatorTool';
 
 export class LineTool extends CreatorTool {
@@ -25,27 +25,28 @@ export class LineTool extends CreatorTool {
         if (this.isActive) {
           this.line.removeLastPoint();
         }
-        return true;
+        return false;
       },
       delete: () => {
         if (this.isActive) {
           this.cancelShape();
         }
-        return true;
+        return false;
       },
       shift_shift: () => {
         this.lockMethod = this.determineLockMethod();
-        this.line.updateCurrentCoord(this.lockMethod(this.line.currentLine.endCoord));
+        this.line.updateCurrentCoord(this.lockMethod(this.mousePosition));
         return false;
       },
       shift_up: () => {
-        this.lockMethod = this.calculateNoLock; // todo - update on shift up (before mousemove)
+        this.lockMethod = this.calculateNoLock;
+        this.line.updateCurrentCoord(this.lockMethod(this.mousePosition));
         return false;
       },
     } as KeyboardEventHandler;
   }
 
-  handleMouseEvent(e: MouseEvent): void {
+  handleToolMouseEvent(e: MouseEvent) {
     // todo - make a proper mouse manager
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 
@@ -67,8 +68,7 @@ export class LineTool extends CreatorTool {
 
   determineLockMethod(): (c: Coordinate) => Coordinate {
     if (this.isActive) {
-      const angle = Math.abs(this.line.currentLine.startCoord.angle(this.line.currentLine.endCoord));
-      console.log(angle);
+      const angle = Math.abs(Coordinate.angle(this.line.currentLine.startCoord, this.line.currentLine.endCoord));
       if (angle <= LineTool.MAX_HORIZONTAL_LOCK_ANGLE) {
         return this.calculateHorizontalLock;
       } else if (angle <= LineTool.MAX_DIAGONAL_LOCK_ANGLE) {
@@ -88,28 +88,24 @@ export class LineTool extends CreatorTool {
   }
 
   calculateHorizontalLock(c: Coordinate): Coordinate {
-    c.y = this.line.currentLine.startCoord.y;
-    return c;
+    return new Coordinate(c.x, this.line.currentLine.startCoord.y);
   }
 
   calculateVerticalLock(c: Coordinate): Coordinate {
-    c.x = this.line.currentLine.startCoord.x;
-    return c;
+    return new Coordinate(this.line.currentLine.startCoord.x, c.y);
   }
 
   calculatePositiveDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.line.currentLine.startCoord.x;
-    c.y = this.line.currentLine.startCoord.y + deltaX;
-    return c;
+    return new Coordinate(c.x, this.line.currentLine.startCoord.y + deltaX);
   }
 
   calculateNegativeDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.line.currentLine.startCoord.x;
-    c.y = this.line.currentLine.startCoord.y - deltaX;
-    return c;
+    return new Coordinate(c.x, this.line.currentLine.startCoord.y - deltaX);
   }
 
-  calculateNoLock(c: Coordinate) {
+  calculateNoLock(c: Coordinate): Coordinate {
     return c;
   }
 }

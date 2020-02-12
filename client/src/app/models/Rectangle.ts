@@ -1,34 +1,46 @@
+import { BaseShape } from './BaseShape';
 import { Coordinate } from './Coordinate';
-import { Polygon } from './Polygon';
 
-export class Rectangle extends Polygon {
-  private height: number;
+export class Rectangle extends BaseShape {
+  private _height: number;
+  private _width: number;
 
-  get Height(): number {
-    return this.height;
+  get height(): number {
+    return this._height;
   }
 
-  set Height(height: number) {
-    this.height = !height ? 0 : Math.abs(height);
+  set height(height: number) {
+    this._height = !height ? 0 : Math.abs(height);
+    this.svgNode.setAttribute('height', this.height.toString());
   }
 
-  private width: number;
-
-  get Width(): number {
-    return this.width;
+  get width(): number {
+    return this._width;
   }
 
-  set Width(width: number) {
-    this.width = !width ? 0 : Math.abs(width);
+  set width(width: number) {
+    this._width = !width ? 0 : Math.abs(width);
+    this.svgNode.setAttribute('width', this.width.toString());
   }
 
-  constructor(width: number = 0, height: number = 0) {
-    super(4);
-    this.Width = width;
-    this.Height = height;
+  get origin(): Coordinate {
+    return this._origin;
+  }
+
+  set origin(c: Coordinate) {
+    this._origin = c;
+    this.svgNode.setAttribute('x', this._origin.x.toString());
+    this.svgNode.setAttribute('y', this._origin.y.toString());
   }
 
   get center(): Coordinate {
-    return new Coordinate(this.origin.x + this.Width / 2, this.origin.y + this.Height / 2);
+    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
+  }
+
+  constructor(origin = new Coordinate(), width: number = 0, height: number = width) {
+    super('rect');
+    this.origin = origin;
+    this.width = width;
+    this.height = height;
   }
 }
