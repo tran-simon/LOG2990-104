@@ -9,6 +9,8 @@ import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { PenTool } from '../../../../models/tools/creator-tools/PenTool';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
+import { ToolProperties } from 'src/app/models/ToolProperties/ToolProperties';
+
 export interface EditorParams {
   width: string;
   height: string;
@@ -22,6 +24,7 @@ export interface EditorParams {
 })
 export class EditorComponent implements OnInit, AfterViewInit {
   private keyboardEventHandler: KeyboardEventHandler;
+
   surfaceWidth = 0;
   surfaceHeight = 0;
   surfaceColor = Color.WHITE;
@@ -67,16 +70,36 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.currentTool.handleMouseEvent(e);
   }
 
-  selectLineTool() {
-    this.currentTool = new LineTool(this.drawingSurface);
+  handleToolChanged(toolEvent: ToolProperties) {
+    switch (toolEvent.toolName) {
+      case 'Pen':
+        this.selectPenTool();
+        break;
+      case 'Brush':
+        break;
+      case 'Rectangle':
+        this.selectRectangleTool();
+        break;
+      case 'Line':
+        this.selectLineTool();
+        break;
+    }
   }
 
   selectPenTool() {
     this.currentTool = new PenTool(this.drawingSurface);
   }
 
+  selectBrushTool() {
+    // TODO
+  }
+
   selectRectangleTool() {
     this.currentTool = new RectangleTool(this.drawingSurface);
+  }
+
+  selectLineTool() {
+    this.currentTool = new LineTool(this.drawingSurface);
   }
 
   @HostListener('window:keydown', ['$event'])

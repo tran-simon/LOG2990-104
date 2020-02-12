@@ -51,10 +51,10 @@ describe('ToolbarComponent', () => {
     expect(spy).toHaveBeenCalledWith(['help']);
   });
 
-  it('should select the pencil tool', () => {
-    fixture.debugElement.nativeElement.querySelector('#pencil-button').click();
+  it('should select the pen tool', () => {
+    fixture.debugElement.nativeElement.querySelector('#pen-button').click();
 
-    expect(component.selectedTool).toBe(component.tools.Pencil);
+    expect(component.currentTool).toBe(component.tools.Pen);
   });
 
   it('should open the drawer when double clicking the brush tool button', () => {
@@ -65,11 +65,11 @@ describe('ToolbarComponent', () => {
     expect(component.drawer.opened).toBe(true);
   });
 
-  it('should close the drawer when selecting the pencil tool a second time', () => {
-    const pencilButton = fixture.debugElement.nativeElement.querySelector('#pencil-button');
+  it('should close the drawer when selecting the pen tool a second time', () => {
+    const penButton = fixture.debugElement.nativeElement.querySelector('#pen-button');
     const doubleClickEvent = new Event('dblclick');
-    pencilButton.dispatchEvent(doubleClickEvent);
-    pencilButton.dispatchEvent(doubleClickEvent);
+    penButton.dispatchEvent(doubleClickEvent);
+    penButton.dispatchEvent(doubleClickEvent);
 
     expect(component.drawer.opened).toBe(false);
   });
@@ -85,12 +85,12 @@ describe('ToolbarComponent', () => {
     const secondaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-secondary-color');
     secondaryColorSquare.click();
 
-    expect(component.isPrimarySelected).toEqual(false);
+    expect(component.colorPickerProperties.selectedColor).toEqual(0);
 
     const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
     primaryColorSquare.click();
 
-    expect(component.isPrimarySelected).toEqual(true);
+    expect(component.colorPickerProperties.selectedColor).toEqual(1);
   });
 
   it('should show the correct primary color in the square when a new color is picked', () => {
@@ -102,7 +102,7 @@ describe('ToolbarComponent', () => {
     component.colorPicker.color = Color.BLUE;
     component.colorPicker.colorChanged.emit(component.colorPicker.color);
 
-    expect(component.selectedPrimaryColor.hexString).toEqual(Color.BLUE.hexString);
+    expect(component.colorPickerProperties.primaryColor.hexString).toEqual(Color.BLUE.hexString);
   });
 
   it('should show the correct secondary color in the square when a new color is picked', () => {
@@ -113,6 +113,6 @@ describe('ToolbarComponent', () => {
     component.colorPicker.color = Color.GREEN;
     component.colorPicker.colorChanged.emit(component.colorPicker.color);
 
-    expect(component.selectedSecondaryColor.hexString).toEqual(Color.GREEN.hexString);
+    expect(component.colorPickerProperties.secondaryColor.hexString).toEqual(Color.GREEN.hexString);
   });
 });

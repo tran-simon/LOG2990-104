@@ -1,5 +1,7 @@
 <div id="editor-container">
-  <app-toolbar></app-toolbar>
+  <app-toolbar #toolbar
+  (toolChanged)="handleToolChanged($event)"
+  ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
     (dblclick)="handleMouseEvent($event)"
     (mousedown)="handleMouseEvent($event)"

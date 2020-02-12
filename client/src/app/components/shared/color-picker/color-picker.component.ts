@@ -50,6 +50,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     const h = this.color.h;
     const s = this.color.s;
     this.color = Color.hsl(h ? h : 0, s, lightness);
+    this.colorChanged.emit(this.color);
   }
 
   colorChange(value: string, component: string): void {
