@@ -8,9 +8,13 @@
     </canvas>
 
     <app-color-lightness [color]="color"
-      (lightnessChanged)="lightnessChanged($event)"
+      (colorChanged)="colorChange($event)"
       [isVertical]="isVertical"
     ></app-color-lightness>
+    <app-alpha [color]="color"
+      (colorChanged)="colorChange($event)"
+      [isVertical]="isVertical"
+    ></app-alpha>
   </div>
 
   <form [formGroup]="formGroup" >
@@ -20,7 +24,7 @@
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
       [value]="color.r255.toString(16)"
-      (valueChange)="colorChange(redinput.value, 'r')"
+      (valueChange)="rgbChange(redinput.value, 'r')"
       [formGroup]="formGroup">
       R:
     </app-hex-input>
@@ -30,7 +34,7 @@
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
       [value]="color.g255.toString(16)"
-      (valueChange)="colorChange(greeninput.value, 'g')"
+      (valueChange)="rgbChange(greeninput.value, 'g')"
       [formGroup]="formGroup">
       V:
     </app-hex-input>
@@ -40,7 +44,7 @@
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
       [value]="color.b255.toString(16)"
-      (valueChange)="colorChange(blueinput.value, 'b')"
+      (valueChange)="rgbChange(blueinput.value, 'b')"
       [formGroup]="formGroup">
       B:
     </app-hex-input>

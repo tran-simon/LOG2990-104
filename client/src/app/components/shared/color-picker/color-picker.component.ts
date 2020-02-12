@@ -1,7 +1,8 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AbstractCanvasDrawer } from 'src/app/components/shared/abstract-canvas-drawer/abstract-canvas-drawer';
+import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
+import { Coordinate } from 'src/app/models/Coordinate';
 import { Color, ColorComponents } from 'src/app/utils/color/color';
 
 @Component({
@@ -11,15 +12,15 @@ import { Color, ColorComponents } from 'src/app/utils/color/color';
 })
 export class ColorPickerComponent extends AbstractCanvasDrawer {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() color = Color.WHITE;
-  @Output() colorChanged = new EventEmitter<Color>();
-  @Input() indicatorLineWidth = 3;
-  @Input() indicatorSize = 20;
   @Input() isVertical = false;
   @Input() size = 300;
 
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
   formGroup: FormGroup = new FormGroup({});
+
+  calculateIndicatorPosition(): Coordinate {
+    return new Coordinate((this.color.h / 360) * this.size, this.color.s * this.size);
+  }
 
   draw(): void {
     if (this.renderingContext) {
@@ -32,12 +33,11 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
         this.renderingContext.fillStyle = gradient;
         this.renderingContext.fillRect(i, 0, 1, this.size);
       }
-      this.drawIndicator((this.color.h / 360) * this.size, this.color.s * this.size);
     }
-    this.colorChanged.emit(this.color);
   }
 
-  drawIndicator(x: number, y: number): void {
+  drawIndicator(position: Coordinate): void {
+    const { x, y } = position;
     const color = Color.hsl(this.color.h, this.color.s, 0.5);
     this.renderingContext.fillStyle = color.hexString;
     this.renderingContext.strokeStyle = color.negative.hexString;
@@ -46,13 +46,21 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     this.renderingContext.strokeRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
   }
 
-  lightnessChanged(lightness: number): void {
-    const h = this.color.h;
-    const s = this.color.s;
-    this.color = Color.hsl(h ? h : 0, s, lightness);
+  calculateColorFromMouseEvent(event: MouseEvent): Color {
+    const h = (event.offsetX / this.size) * 360;
+    const s = event.offsetY / this.size;
+    return Color.hsl(h, s, this.color.l, this.color.a);
   }
 
-  colorChange(value: string, component: string): void {
+  shouldRedraw(color: Color, previousColor: Color): boolean {
+    return previousColor.h !== color.h || previousColor.s !== color.s;
+  }
+
+  colorChange(color: Color): void {
+    this.updateColor(color);
+  }
+
+  rgbChange(value: string, component: string): void {
     let { r, g, b }: ColorComponents = this.color.color255;
     switch (component) {
       case 'r':
@@ -66,37 +74,13 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
         break;
     }
     if (!(this.color.r255 === r && this.color.g255 === g && this.color.b255 === b)) {
-      this.color = Color.rgb255(r, g, b);
-      this.draw();
+      this.updateColor(Color.rgb255(r, g, b, this.color.a));
     }
   }
 
   hexChange(value: string): void {
     if (this.color.hex !== value.toLowerCase()) {
-      this.color = Color.hex(value);
-      this.draw();
+      this.updateColor(Color.hex(value, this.color.a));
     }
-  }
-
-  onMouseDown(event: MouseEvent): void {
-    super.onMouseDown(event);
-    const h = (event.offsetX / this.size) * 360;
-    const s = event.offsetY / this.size;
-    this.color = Color.hsl(h, s, this.color.l);
-    this.draw();
-  }
-
-  onMouseMove(event: MouseEvent): void {
-    if (this.mouseIsDown) {
-      const h = (event.offsetX / this.size) * 360;
-      const s = event.offsetY / this.size;
-      this.color = Color.hsl(h, s, this.color.l);
-      this.draw();
-    }
-  }
-
-  @HostListener('window:mouseup')
-  onMouseUp(): void {
-    super.onMouseUp();
   }
 }

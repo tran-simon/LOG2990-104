@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { UserGuideComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -20,7 +21,7 @@ export class HomeComponent {
   constructor(private router: Router, public dialog: MatDialog) {
     this.keyboardEventHandler = {
       ctrl_o: () => {
-        this.openCreateModal();
+        this.openModal('create');
         return true;
       },
       ctrl_g: () => {
@@ -30,9 +31,18 @@ export class HomeComponent {
     } as KeyboardEventHandler;
   }
 
-  openCreateModal(): void {
+  openModal(link = 'create'): void {
     if (!this.modalIsOpened) {
-      this.dialogRef = this.dialog.open(CreateDrawingModalComponent, {});
+      switch (link) {
+        case 'create':
+          this.dialogRef = this.dialog.open(CreateDrawingModalComponent, {});
+          break;
+        case 'help':
+          this.dialogRef = this.dialog.open(UserGuideComponent, {});
+          break;
+        default:
+          return;
+      }
 
       this.dialogRef.afterClosed().subscribe(() => {
         this.modalIsOpened = false;
