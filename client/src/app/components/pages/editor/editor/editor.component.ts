@@ -6,6 +6,7 @@ import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/Re
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { PenTool } from '../../../../models/tools/creator-tools/PenTool';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 export interface EditorParams {
@@ -36,6 +37,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
         this.selectLineTool();
         return true;
       },
+      c: () => {
+        this.selectPenTool();
+        return false;
+      },
       1: () => {
         this.selectRectangleTool();
         return false; // todo - enable default behavior when typing in text field
@@ -64,6 +69,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   selectLineTool() {
     this.currentTool = new LineTool(this.drawingSurface);
+  }
+
+  selectPenTool() {
+    this.currentTool = new PenTool(this.drawingSurface);
   }
 
   selectRectangleTool() {

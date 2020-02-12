@@ -14,6 +14,7 @@ export abstract class Tool {
 
   constructor(drawingSurface: DrawingSurfaceComponent) {
     this.drawingSurface = drawingSurface;
+    this.keyboardEventHandler = {} as KeyboardEventHandler;
     this._mousePosition = new Coordinate();
   }
 
