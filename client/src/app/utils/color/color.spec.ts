@@ -39,6 +39,7 @@ describe('Color', () => {
       h: 240,
       s: 1,
       l: 0.5,
+      a: 1,
     };
     expect(Color.BLUE.color255).toEqual(color);
   });
@@ -73,5 +74,10 @@ describe('Color', () => {
   it('can get negative color', () => {
     expect(Color.WHITE.negative).toEqual(Color.BLACK);
     expect(Color.RED.negative).toEqual(Color.rgb(0, 1, 1));
+  });
+
+  it('can define color with transparency', () => {
+    const color = Color.hsl(120, 0.5, 0.5, 0.4);
+    expect(color.a).toEqual(0.4);
   });
 });
