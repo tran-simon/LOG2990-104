@@ -13,8 +13,17 @@ export class Path extends BaseShape {
     this.svgNode.setAttribute('d', this.trace);
   }
 
+  get origin(): Coordinate {
+    return this._origin;
+  }
+
+  set origin(c: Coordinate) {
+    this._origin = c;
+  }
+
   constructor(c: Coordinate) {
     super('path');
+    this.origin = c;
     this._trace = 'M ' + c.x + ' ' + c.y;
   }
 
