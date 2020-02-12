@@ -23,26 +23,22 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
   @ViewChild('sidenav', { static: false })
   sidenav: MatSidenav;
   subjects = Subject;
-  private _selectedSubject: Subject;
+  selectedSubject: Subject;
   opened = false;
   panelOpenState1 = false;
   panelOpenState2 = false;
   panelOpenState3 = false;
-
-  get selectedSubject(): Subject {
-    return this._selectedSubject;
-  }
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
   }
 
   ngOnInit(): void {
-    this._selectedSubject = this.subjects.Bienvenue;
+    this.selectedSubject = this.subjects.Bienvenue;
   }
 
-  private selectSubject(selection: Subject): void {
-    this._selectedSubject = selection;
+  selectSubject(selection: Subject): void {
+    this.selectedSubject = selection;
   }
 
   private openCategories(): void {

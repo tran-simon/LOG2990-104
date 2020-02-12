@@ -13,7 +13,6 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserGuideComponent } from './user-guide.component';
 import createSpyObj = jasmine.createSpyObj;
 import createSpy = jasmine.createSpy;
-// import Spy = jasmine.Spy;
 
 describe('UserGuideComponent', () => {
   let component: UserGuideComponent;
@@ -63,17 +62,17 @@ describe('UserGuideComponent', () => {
   });
 
   it('nextSubject should call selectSubject and openCategories', () => {
-    const selectSubjectSpy = spyOn<any>(component, 'selectSubject');
+    const selectSubjectSpy = spyOn(component, 'selectSubject');
     const openCategoriesSpy = spyOn<any>(component, 'openCategories');
     component.nextSubject();
     expect(selectSubjectSpy).toHaveBeenCalled();
     expect(openCategoriesSpy).toHaveBeenCalled();
   });
   it('nextSubject should not call selectSubject and openCategories when on Subject 6', () => {
-    const selectSubjectSpy = spyOn<any>(component, 'selectSubject').and.callThrough();
+    const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
     const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
-    /* tslint:disable-next-line */
-    component['_selectedSubject'] = component.subjects.Sujet6;
+
+    component.selectedSubject = component.subjects.Sujet6;
     component.nextSubject();
     fixture.detectChanges();
     expect(selectSubjectSpy).not.toHaveBeenCalled();
@@ -81,17 +80,17 @@ describe('UserGuideComponent', () => {
   });
 
   it('previousSubject should not call selectSubject and openCategories because default subject is Bienvenue', () => {
-    const selectSubjectSpy = spyOn<any>(component, 'selectSubject');
+    const selectSubjectSpy = spyOn(component, 'selectSubject');
     const openCategoriesSpy = spyOn<any>(component, 'openCategories');
     component.previousSubject();
     expect(selectSubjectSpy).not.toHaveBeenCalled();
     expect(openCategoriesSpy).not.toHaveBeenCalled();
   });
   it('previousSubject should call selectSubject and openCategories because the subject is not Bienvenue', () => {
-    const selectSubjectSpy = spyOn<any>(component, 'selectSubject').and.callThrough();
+    const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
     const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
-    /* tslint:disable-next-line */
-    component['_selectedSubject'] = component.subjects.Sujet3;
+
+    component.selectedSubject = component.subjects.Sujet3;
     component.previousSubject();
     fixture.detectChanges();
     expect(selectSubjectSpy).toHaveBeenCalled();
@@ -99,30 +98,22 @@ describe('UserGuideComponent', () => {
   });
 
   it('selectSubject should change the subject', () => {
-    /* tslint:disable-next-line */
-    component['selectSubject'](component.subjects.Sujet4);
-    /* tslint:disable-next-line */
-    expect(component['_selectedSubject']).toEqual(component.subjects.Sujet4);
+    component.selectSubject(component.subjects.Sujet4);
+    expect(component.selectedSubject).toEqual(component.subjects.Sujet4);
   });
   it('Next subject should be subject plus 1', () => {
-    /* tslint:disable-next-line */
-    let liveSubject = component['_selectedSubject'];
+    let liveSubject = component.selectedSubject;
     component.nextSubject();
-    /* tslint:disable-next-line */
-    expect(component['_selectedSubject']).toEqual(liveSubject + 1);
+    expect(component.selectedSubject).toEqual(liveSubject + 1);
   });
   it('Next subject should be subject plus 1', () => {
-    /* tslint:disable-next-line */
-    component['_selectedSubject'] = component.subjects.Sujet3;
-    /* tslint:disable-next-line */
-    let liveSubject = component['_selectedSubject'];
+    component.selectedSubject = component.subjects.Sujet3;
+    let liveSubject = component.selectedSubject;
     component.nextSubject();
-    /* tslint:disable-next-line */
-    expect(component['_selectedSubject']).toEqual(liveSubject + 1);
+    expect(component.selectedSubject).toEqual(liveSubject + 1);
   });
 
   it('All categories should be opened', () => {
-    /* tslint:disable-next-line */
     component['openCategories']();
     expect(component.panelOpenState1).toEqual(true);
     expect(component.panelOpenState2).toEqual(true);
