@@ -50,33 +50,33 @@
     <mat-drawer-content [ngSwitch]="currentTool">
       <div *ngSwitchCase="tools.Pen" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du crayon</h3>
-        <app-number-input (valueChange)="updateTool()" allowDecimals="true" [(value)]="penProperties.thickness">
+        <app-number-input (valueChange)="selectTool(tools.Pen)" allowDecimals="true" [(value)]="penProperties.thickness">
           Épaisseur du trait</app-number-input>
-        <mat-slider (change)="updateTool()" [min]="penProperties.minThickness" [max]="penProperties.maxThickness"
+        <mat-slider (change)="selectTool(tools.Pen)" [min]="penProperties.minThickness" [max]="penProperties.maxThickness"
           [step]="stepThickness" thumbLabel="true" [(ngModel)]="penProperties.thickness">
         </mat-slider>
       </div>
       <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du pinceau</h3>
-        <app-number-input (valueChange)="updateTool()" allowDecimals="true" [(value)]="brushProperties.thickness">
+        <app-number-input (valueChange)="selectTool(tools.Brush)" allowDecimals="true" [(value)]="brushProperties.thickness">
           Épaisseur du trait
         </app-number-input>
-        <mat-slider (change)="updateTool()" [min]="brushProperties.minThickness" [max]="brushProperties.maxThickness"
+        <mat-slider (change)="selectTool(tools.Brush)" [min]="brushProperties.minThickness" [max]="brushProperties.maxThickness"
           [step]="stepThickness" thumbLabel="true" [(ngModel)]="brushProperties.thickness">
         </mat-slider>
         <label>Texture du trait</label>
       </div>
       <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du rectangle</h3>
-        <app-number-input (valueChange)="updateTool()" allowDecimals="true" [(value)]="rectangleProperties.thickness">
+        <app-number-input (valueChange)="selectTool(tools.Rectangle)" allowDecimals="true" [(value)]="rectangleProperties.thickness">
           Épaisseur du trait de contour
         </app-number-input>
-        <mat-slider (change)="updateTool()" [min]="rectangleProperties.minThickness"
+        <mat-slider (change)="selectTool(tools.Rectangle)" [min]="rectangleProperties.minThickness"
           [max]="rectangleProperties.maxThickness" [step]="stepThickness" thumbLabel="true"
           [(ngModel)]="rectangleProperties.thickness">
         </mat-slider>
         <label>Type de tracé</label>
-        <mat-radio-group (change)="updateTool()" [(ngModel)]='rectangleProperties.contourType'>
+        <mat-radio-group (change)="selectTool(tools.Rectangle)" [(ngModel)]='rectangleProperties.contourType'>
           <mat-radio-button *ngFor='let contourType of rectangleContourNames' [value]='contourType'>
             {{contourType}}
           </mat-radio-button>
@@ -84,21 +84,21 @@
       </div>
       <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options de la ligne</h3>
-        <app-number-input (valueChange)="updateTool()" allowDecimals="true" [(value)]="lineProperties.thickness">
+        <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true" [(value)]="lineProperties.thickness">
           Épaisseur de la ligne
         </app-number-input>
-        <mat-slider (change)="updateTool()" [min]="lineProperties.minThickness" [max]="lineProperties.maxThickness"
+        <mat-slider (change)="selectTool(tools.Line)" [min]="lineProperties.minThickness" [max]="lineProperties.maxThickness"
           [step]="stepThickness" thumbLabel="true" [(ngModel)]="lineProperties.thickness">
         </mat-slider>
-        <app-number-input (valueChange)="updateTool()" allowDecimals="true" [(value)]="lineProperties.junctionDiameter">
+        <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true" [(value)]="lineProperties.junctionDiameter">
           Épaisseur des points de
           jonction
         </app-number-input>
-        <mat-slider (change)="updateTool()" [min]="lineProperties.minDiameter" [max]="lineProperties.maxDiameter"
+        <mat-slider (change)="selectTool(tools.Line)" [min]="lineProperties.minDiameter" [max]="lineProperties.maxDiameter"
           [step]="stepThickness" thumbLabel="true" [(ngModel)]="lineProperties.junctionDiameter">
         </mat-slider>
         <label>Style des points de jonction</label>
-        <mat-radio-group (change)="updateTool()" [(ngModel)]='lineProperties.junctionType'>
+        <mat-radio-group (change)="selectTool(tools.Line)" [(ngModel)]='lineProperties.junctionType'>
           <mat-radio-button *ngFor='let junctionType of lineJunctionNames' [value]='junctionType'>
             {{junctionType}}
           </mat-radio-button>

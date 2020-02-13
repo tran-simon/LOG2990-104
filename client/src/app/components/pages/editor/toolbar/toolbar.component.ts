@@ -140,12 +140,4 @@ export class ToolbarComponent {
         return this.colorPickerProperties.secondaryColor;
     }
   }
-
-  set color(color: Color) {
-    if (!this.colorPickerProperties.selectedColor) {
-      this.colorPickerProperties.primaryColor = color;
-    } else {
-      this.colorPickerProperties.secondaryColor = color;
-    }
-  }
 }

@@ -6,8 +6,6 @@ import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
 import { ToolbarComponent } from './toolbar.component';
 
-import { Color } from '../../../../utils/color/color';
-
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
@@ -151,7 +149,7 @@ describe('ToolbarComponent', () => {
 
   it('should emit editBackgroundChanged on update background button clicked', () => {
     const backgroundChangedSpy = spyOn(component.editorBackgroundChanged, 'emit');
-    component.selectColor(true);
+    component.selectColor(1);
     fixture.detectChanges();
     component.colorPicker.color = Color.GREEN;
 
