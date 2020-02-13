@@ -40,6 +40,7 @@ describe('ColorPickerComponent', () => {
     fixture = TestBed.createComponent(ColorPickerComponent);
     component = fixture.componentInstance;
 
+    component.showHistory = true;
     component.size = 500;
 
     colorSquareElement = fixture.debugElement.query(By.css('#color-square'));
@@ -210,5 +211,49 @@ describe('ColorPickerComponent', () => {
     expect(component.color.s).toEqual(s);
     expect(drawAllSpy).toHaveBeenCalledTimes(1);
     expect(mouseMoveSpy).toHaveBeenCalled();
+  });
+
+  it('restores initial color on cancel', () => {
+    component.initialColor = Color.RED;
+    component.color = Color.GREEN;
+    drawAllSpy.calls.reset();
+    fixture.debugElement.nativeElement.querySelector('#btn-cancel').click();
+    expect(component.color).toEqual(Color.RED);
+    expect(drawAllSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('adds to color history on confirm', () => {
+    component.initialColor = Color.RED;
+    component.color = Color.GREEN;
+
+    fixture.debugElement.nativeElement.querySelector('#btn-confirm').click();
+    expect(ColorHistoryComponent.getColorHistory()[9]).toEqual(Color.GREEN);
+  });
+
+  it('emits colorChanged on confirm', () => {
+    const colorChangedSpy = spyOn(component.colorChanged, 'emit');
+    component.initialColor = Color.RED;
+    component.color = Color.GREEN;
+
+    component.confirm();
+
+    expect(colorChangedSpy).toHaveBeenCalledWith(Color.GREEN);
+    expect(component.initialColor).toEqual(Color.GREEN);
+  });
+
+  it('shows ColorHistory if showHistory is true', () => {
+    component.showHistory = false;
+    fixture.detectChanges();
+    let colorHistory = fixture.debugElement.nativeElement.querySelector('app-color-history');
+    expect(colorHistory).toBeNull();
+    expect(fixture.debugElement.nativeElement.querySelector('#btn-confirm')).toBeNull();
+    expect(fixture.debugElement.nativeElement.querySelector('#btn-cancel')).toBeNull();
+
+    component.showHistory = true;
+    fixture.detectChanges();
+    colorHistory = fixture.debugElement.nativeElement.querySelector('app-color-history');
+    expect(fixture.debugElement.nativeElement.querySelector('#btn-confirm')).not.toBeNull();
+    expect(fixture.debugElement.nativeElement.querySelector('#btn-cancel')).not.toBeNull();
+    expect(colorHistory).not.toBeNull();
   });
 });
