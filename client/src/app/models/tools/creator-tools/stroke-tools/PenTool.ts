@@ -1,11 +1,11 @@
-import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { Path } from '../../Path';
-import { CreatorTool } from './CreatorTool';
+import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { Path } from 'src/app/models/Path';
+import { CreatorTool } from '../CreatorTool';
 
 export class PenTool extends CreatorTool {
-  private path: Path;
+  protected path: Path;
 
-  get shape() {
+  get shape(): Path {
     return this.path;
   }
 
