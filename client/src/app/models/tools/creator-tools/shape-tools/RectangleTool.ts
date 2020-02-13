@@ -9,7 +9,7 @@ export class RectangleTool extends ShapeTool {
   protected _toolProperties: RectangleToolProperties;
   private rectangle: Rectangle;
 
-  get shape() {
+  get shape(): Rectangle {
     return this.rectangle;
   }
 
