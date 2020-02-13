@@ -30,6 +30,7 @@ export class ToolbarComponent {
 
   @Input() stepThickness = ToolbarComponent.SLIDER_STEP;
   @Output() toolChanged = new EventEmitter<ToolProperties>();
+  @Output() editorBackgroundChanged = new EventEmitter<Color>();
 
   tools = Tool;
   rectangleContourTypes = RectangleContourType;
@@ -127,12 +128,24 @@ export class ToolbarComponent {
     this.router.navigate([path]);
   }
 
+  updateBackground(color: Color): void {
+    this.editorBackgroundChanged.emit(color);
+  }
+
   get color(): Color {
     switch (this.colorPickerProperties.selectedColor) {
       case this.colorPickerColorTypes.PRIMARY:
         return this.colorPickerProperties.primaryColor;
       case this.colorPickerColorTypes.SECONDARY:
         return this.colorPickerProperties.secondaryColor;
+    }
+  }
+
+  set color(color: Color) {
+    if (!this.colorPickerProperties.selectedColor) {
+      this.colorPickerProperties.primaryColor = color;
+    } else {
+      this.colorPickerProperties.secondaryColor = color;
     }
   }
 }

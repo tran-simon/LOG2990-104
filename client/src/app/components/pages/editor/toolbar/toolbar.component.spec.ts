@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
 import { ToolbarComponent } from './toolbar.component';
 
@@ -146,5 +147,16 @@ describe('ToolbarComponent', () => {
     component.colorPicker.colorChanged.emit(component.colorPicker.color);
 
     expect(component.colorPickerProperties.secondaryColor.hexString).toEqual(Color.GREEN.hexString);
+  });
+
+  it('should emit editBackgroundChanged on update background button clicked', () => {
+    const backgroundChangedSpy = spyOn(component.editorBackgroundChanged, 'emit');
+    component.selectColor(true);
+    fixture.detectChanges();
+    component.colorPicker.color = Color.GREEN;
+
+    fixture.debugElement.nativeElement.querySelector('#btn-update-background').click();
+
+    expect(backgroundChangedSpy).toHaveBeenCalledWith(Color.GREEN);
   });
 });

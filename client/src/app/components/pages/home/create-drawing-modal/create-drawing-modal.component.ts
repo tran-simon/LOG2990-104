@@ -6,7 +6,6 @@ import { EditorParams } from 'src/app/components/pages/editor/editor/editor.comp
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
-import { Color } from 'src/app/utils/color/color';
 
 @Component({
   selector: 'app-create-drawing-modal',
@@ -30,7 +29,6 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
   }
 
   ngAfterViewInit(): void {
-    this.colorPicker.color = Color.WHITE;
     this.onResize();
   }
 
