@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
@@ -26,6 +26,7 @@ export class ToolbarComponent {
   @Input() minThickness = ToolbarComponent.MIN_THICKNESS;
   @Input() maxThickness = ToolbarComponent.MAX_THICKNESS;
   @Input() stepThickness = ToolbarComponent.STEP_THICKNESS;
+  @Output() editorBackgroundChanged = new EventEmitter<Color>();
 
   lineJunctionTypes: string[] = ['Avec points', 'Sans points'];
   rectangleContourTypes: string[] = ['Contour', 'Plein', 'Plein avec contour'];
@@ -53,11 +54,8 @@ export class ToolbarComponent {
   constructor(private router: Router) {}
 
   handleColorChanged(eventColor: Color) {
-    if (!this.selectedColor) {
-      this.selectedPrimaryColor = eventColor;
-    } else {
-      this.selectedSecondaryColor = eventColor;
-    }
+    this.drawer.close();
+    this.color = eventColor;
   }
 
   selectTool(selection: Tool) {
@@ -73,7 +71,7 @@ export class ToolbarComponent {
     if (this.colorPicker) {
       this.selectedColor = selection;
       this.selectedTool = this.tools.ColorPicker;
-      this.colorPicker.color = selection ? this.selectedSecondaryColor : this.selectedPrimaryColor;
+      this.colorPicker.updateColor(this.color);
       this.drawer.open();
     } else {
       this.selectedTool = this.tools.ColorPicker;
@@ -84,6 +82,10 @@ export class ToolbarComponent {
     this.router.navigate([path]);
   }
 
+  updateBackground(color: Color): void {
+    this.editorBackgroundChanged.emit(color);
+  }
+
   // TODO Recheck the number input field validation for the custom module
   validateNumber(event: KeyboardEvent) {
     const reg = RegExp('^[0-9]$');
@@ -92,5 +94,12 @@ export class ToolbarComponent {
 
   get color(): Color {
     return this.selectedColor ? this.selectedSecondaryColor : this.selectedPrimaryColor;
+  }
+  set color(color: Color) {
+    if (!this.selectedColor) {
+      this.selectedPrimaryColor = color;
+    } else {
+      this.selectedSecondaryColor = color;
+    }
   }
 }

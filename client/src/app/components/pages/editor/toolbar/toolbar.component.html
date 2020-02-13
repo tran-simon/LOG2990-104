@@ -112,7 +112,8 @@
 
         <label *ngSwitchCase="false">Couleur primaire</label>
         <label *ngSwitchCase="true">Couleur secondaire</label>
-        <app-color-picker #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"></app-color-picker>
+        <app-color-picker [showHistory]="true" #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"></app-color-picker>
+        <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme couleur de fond</button>
       </div>
     </mat-drawer-content>
   </mat-drawer>
