@@ -2,8 +2,9 @@ import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angu
 import { ActivatedRoute } from '@angular/router';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/CreatorTool';
 import { LineTool } from 'src/app/models/tools/creator-tools/LineTool';
-import { PenTool } from 'src/app/models/tools/creator-tools/PenTool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/RectangleTool';
+import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/BrushTool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/PenTool';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -41,6 +42,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
         this.selectPenTool();
         return false;
       },
+      w: () => {
+        this.selectBrushTool();
+        return false;
+      },
       1: () => {
         this.selectRectangleTool();
         return false; // todo - enable default behavior when typing in text field
@@ -73,6 +78,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   selectPenTool() {
     this.currentTool = new PenTool(this.drawingSurface);
+  }
+
+  selectBrushTool() {
+    this.currentTool = new BrushTool(this.drawingSurface);
   }
 
   selectRectangleTool() {

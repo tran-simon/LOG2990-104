@@ -12,7 +12,7 @@ export class LineTool extends CreatorTool {
   private line: CompositeLine;
   private lockMethod: (c: Coordinate) => Coordinate;
 
-  get shape() {
+  get shape(): CompositeLine {
     return this.line;
   }
 
@@ -47,21 +47,18 @@ export class LineTool extends CreatorTool {
   }
 
   handleToolMouseEvent(e: MouseEvent) {
-    // todo - make a proper mouse manager
-    const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
-
     if (this.isActive) {
       if (e.type === 'dblclick') {
         this.isActive = false;
-        this.line.endLine(mouseCoord);
+        this.line.endLine(this.mousePosition);
       } else if (e.type === 'mousemove') {
-        this.line.updateCurrentCoord(this.lockMethod(mouseCoord));
+        this.line.updateCurrentCoord(this.lockMethod(this.mousePosition));
       } else if (e.type === 'mousedown') {
         this.line.confirmPoint();
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;
-      this.line = new CompositeLine(mouseCoord);
+      this.line = new CompositeLine(this.mousePosition);
       this.drawShape();
     }
   }
