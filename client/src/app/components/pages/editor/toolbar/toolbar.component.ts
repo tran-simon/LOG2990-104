@@ -112,21 +112,24 @@ export class ToolbarComponent {
 
   selectColor(selection: ColorPickerColorType) {
     if (!this.colorPicker) {
+      this.selectTool(this.tools.ColorPicker);
+      setTimeout(() => {
+        this.selectColor(selection);
+      }, 50);
+    } else {
+      this.colorPickerProperties.selectedColor = selection;
       this.currentTool = this.tools.ColorPicker;
-    }
 
-    this.colorPickerProperties.selectedColor = selection;
-    this.currentTool = this.tools.ColorPicker;
-
-    switch (this.colorPickerProperties.selectedColor) {
-      case this.colorPickerColorTypes.PRIMARY:
-        this.colorPicker.color = this.colorPickerProperties.primaryColor;
-        break;
-      case this.colorPickerColorTypes.SECONDARY:
-        this.colorPicker.color = this.colorPickerProperties.secondaryColor;
-        break;
+      switch (this.colorPickerProperties.selectedColor) {
+        case this.colorPickerColorTypes.PRIMARY:
+          this.colorPicker.color = this.colorPickerProperties.primaryColor;
+          break;
+        case this.colorPickerColorTypes.SECONDARY:
+          this.colorPicker.color = this.colorPickerProperties.secondaryColor;
+          break;
+      }
+      this.drawer.open();
     }
-    this.drawer.open();
   }
 
   navigate(path: string): void {

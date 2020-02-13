@@ -1,6 +1,6 @@
 import { Color } from 'src/app/utils/color/color';
 
-export class ToolProperties {
+export abstract class ToolProperties {
   toolName: string;
   primaryColor: Color;
   secondaryColor: Color;

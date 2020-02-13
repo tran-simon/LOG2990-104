@@ -8,7 +8,7 @@ export class BrushToolProperties extends ToolProperties {
   minThickness = BrushToolProperties.MIN_THICKNESS;
   maxThickness = BrushToolProperties.MAX_THICKNESS;
 
-  thickness: number;
+  _thickness: number;
   texture: any;
 
   constructor(primaryColor: Color, secondaryColor: Color, thickness: number = BrushToolProperties.MIN_THICKNESS, texture: any = 'TODO') {
@@ -16,5 +16,19 @@ export class BrushToolProperties extends ToolProperties {
 
     this.thickness = thickness;
     this.texture = texture;
+  }
+
+  get thickness(): number {
+    return this._thickness;
+  }
+
+  set thickness(thickness: number) {
+    if (thickness < this.minThickness) {
+      this._thickness = this.minThickness;
+    } else if (thickness > this.maxThickness) {
+      this._thickness = this.maxThickness;
+    } else {
+      this._thickness = thickness;
+    }
   }
 }
