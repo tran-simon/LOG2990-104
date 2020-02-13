@@ -24,6 +24,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements AfterV
   initialColor: Color = this.color;
 
   ngAfterViewInit() {
+    super.ngAfterViewInit();
     this.afterViewInit.emit();
   }
 
@@ -43,7 +44,6 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements AfterV
         this.renderingContext.fillRect(i, 0, 1, this.size);
       }
     }
-    this.colorChanged.emit(this.color);
   }
 
   drawIndicator(position: Coordinate): void {
