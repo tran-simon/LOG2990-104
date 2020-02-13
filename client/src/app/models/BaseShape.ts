@@ -26,7 +26,7 @@ export abstract class BaseShape {
     this._svgNode.style.strokeWidth = this.properties.strokeWidth.toString();
     this._svgNode.style.strokeOpacity = this.properties.strokeOpacity.toString();
     this._svgNode.style.stroke = this.properties.strokeColor.rgbString;
-    this._svgNode.style.fillOpacity = this.properties.fillOpacity.toString();
+    this._svgNode.style.fillOpacity = this.properties.fillColor.a.toString();
     this._svgNode.style.fill = this.properties.fillColor.rgbString;
     this._svgNode.style.visibility = this.properties.visibility;
   }

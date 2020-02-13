@@ -15,6 +15,7 @@ export class Color implements ColorComponents {
   static BLUE = Color.rgb(0, 0, 1);
   static WHITE = Color.rgb(1, 1, 1);
   static BLACK = Color.rgb();
+  static TRANSPARENT = Color.rgb(0, 0, 0, 0);
 
   /**
    * red component 0..1
@@ -92,7 +93,7 @@ export class Color implements ColorComponents {
       this.s = Color.calculateSaturation(this.r, this.g, this.b);
       this.l = Color.calculateLightness(this.r, this.g, this.b);
     }
-    this.a = MathUtil.fit(a || 1);
+    this.a = MathUtil.fit(a || 0);
   }
 
   /* Color creator static methods */
@@ -102,7 +103,7 @@ export class Color implements ColorComponents {
   }
 
   /**
-   * Creates a color from RGB values
+   * Creates a color from RGBA values
    * @param r red from 0 to 1
    * @param g green from 0 to 1
    * @param b blue from 0 to 1

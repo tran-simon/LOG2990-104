@@ -1,3 +1,4 @@
+import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from './ToolProperties';
 
 export enum RectangleContourType {
@@ -13,15 +14,21 @@ export class RectangleToolProperties extends ToolProperties {
   minThickness = RectangleToolProperties.MIN_THICKNESS;
   maxThickness = RectangleToolProperties.MAX_THICKNESS;
 
+  primaryColor: Color;
+  secondaryColor: Color;
   thickness: number;
-  contourType: any;
+  contourType: RectangleContourType;
 
   constructor(
+    primaryColor: Color,
+    secondaryColor: Color,
     thickness: number = RectangleToolProperties.MIN_THICKNESS,
     contourType: RectangleContourType = RectangleContourType.FILLEDCONTOUR,
   ) {
     super('Rectangle');
 
+    this.primaryColor = primaryColor;
+    this.secondaryColor = secondaryColor;
     this.thickness = thickness;
     this.contourType = contourType;
   }

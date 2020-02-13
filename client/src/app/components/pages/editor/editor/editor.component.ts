@@ -28,6 +28,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   surfaceWidth = 0;
   surfaceHeight = 0;
+
   surfaceColor = Color.WHITE;
 
   @ViewChild('toolbar', { static: false })

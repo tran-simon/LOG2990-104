@@ -44,11 +44,11 @@ export class ToolbarComponent {
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
+  colorPickerProperties = new ColorPickerToolProperties();
   penProperties = new PenToolProperties();
   brushProperties = new BrushToolProperties();
-  rectangleProperties = new RectangleToolProperties();
+  rectangleProperties = new RectangleToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
   lineProperties = new LineToolProperties();
-  colorPickerProperties = new ColorPickerToolProperties();
 
   currentTool = this.tools.Pen;
 
@@ -57,8 +57,10 @@ export class ToolbarComponent {
   handleColorChanged(eventColor: Color) {
     if (this.colorPickerProperties.selectedColor === this.colorPickerColorTypes.PRIMARY) {
       this.colorPickerProperties.primaryColor = eventColor;
+      this.rectangleProperties.primaryColor = this.colorPickerProperties.primaryColor;
     } else {
       this.colorPickerProperties.secondaryColor = eventColor;
+      this.rectangleProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
     }
   }
 
@@ -110,7 +112,6 @@ export class ToolbarComponent {
         this.colorPicker.color = this.colorPickerProperties.secondaryColor;
         break;
     }
-    // this.colorPicker.color = selection ? this.colorPickerProperties.primaryColor : this.colorPickerProperties.secondaryColor;
     this.drawer.open();
   }
 
