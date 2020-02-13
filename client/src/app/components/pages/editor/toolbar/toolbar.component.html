@@ -109,7 +109,8 @@
         <h3 class="toolbar-option-section">Options du color picker</h3>
         <label *ngSwitchCase="colorPickerColorTypes.PRIMARY">Couleur primaire</label>
         <label *ngSwitchCase="colorPickerColorTypes.SECONDARY">Couleur secondaire</label>
-        <app-color-picker #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"></app-color-picker>
+        <app-color-picker (afterViewInit)="handleColorPickerLoaded()" #colorPicker [color]="color"
+          (colorChanged)="handleColorChanged($event)"></app-color-picker>
       </div>
     </mat-drawer-content>
   </mat-drawer>

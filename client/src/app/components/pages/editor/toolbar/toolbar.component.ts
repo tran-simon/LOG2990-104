@@ -50,58 +50,51 @@ export class ToolbarComponent {
   rectangleProperties = new RectangleToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
   lineProperties = new LineToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
 
+  lastSelectedColor: ColorPickerColorType;
   currentTool = this.tools.Pen;
 
   constructor(private router: Router) {}
 
-  handleColorChanged(eventColor: Color) {
+  handleColorPickerLoaded(): void {
+    this.selectColor(this.colorPickerProperties.selectedColor);
+  }
+
+  handleColorChanged(eventColor: Color): void {
     if (this.colorPickerProperties.selectedColor === this.colorPickerColorTypes.PRIMARY) {
       this.colorPickerProperties.primaryColor = eventColor;
     } else {
       this.colorPickerProperties.secondaryColor = eventColor;
     }
-
-    this.updateColorProperties();
   }
 
-  selectTool(selection: Tool) {
+  selectTool(selection: Tool): void {
     this.currentTool = selection;
 
     switch (this.currentTool) {
       case this.tools.Pen:
+        this.penProperties.primaryColor = this.colorPickerProperties.primaryColor;
+        this.penProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.penProperties);
         break;
       case this.tools.Brush:
+        this.brushProperties.primaryColor = this.colorPickerProperties.primaryColor;
+        this.brushProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.brushProperties);
         break;
       case this.tools.Rectangle:
+        this.rectangleProperties.primaryColor = this.colorPickerProperties.primaryColor;
+        this.rectangleProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.rectangleProperties);
         break;
       case this.tools.Line:
+        this.lineProperties.primaryColor = this.colorPickerProperties.primaryColor;
+        this.lineProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.lineProperties);
         break;
     }
   }
 
-  updateTool() {
-    this.selectTool(this.currentTool);
-  }
-
-  updateColorProperties() {
-    this.penProperties.primaryColor = this.colorPickerProperties.primaryColor;
-    this.penProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
-
-    this.brushProperties.primaryColor = this.colorPickerProperties.primaryColor;
-    this.brushProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
-
-    this.rectangleProperties.primaryColor = this.colorPickerProperties.primaryColor;
-    this.rectangleProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
-
-    this.lineProperties.primaryColor = this.colorPickerProperties.primaryColor;
-    this.lineProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
-  }
-
-  openPanel(selection: Tool) {
+  openPanel(selection: Tool): void {
     if (this.currentTool === selection) {
       this.drawer.toggle();
     } else {
@@ -110,14 +103,12 @@ export class ToolbarComponent {
     }
   }
 
-  selectColor(selection: ColorPickerColorType) {
+  selectColor(selection: ColorPickerColorType): void {
+    this.colorPickerProperties.selectedColor = selection;
+
     if (!this.colorPicker) {
       this.selectTool(this.tools.ColorPicker);
-      setTimeout(() => {
-        this.selectColor(selection);
-      }, 50);
     } else {
-      this.colorPickerProperties.selectedColor = selection;
       this.currentTool = this.tools.ColorPicker;
 
       switch (this.colorPickerProperties.selectedColor) {

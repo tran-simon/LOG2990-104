@@ -53,6 +53,7 @@ describe('ToolbarComponent', () => {
 
   it('should select the pen tool', () => {
     fixture.debugElement.nativeElement.querySelector('#pen-button').click();
+    fixture.detectChanges();
 
     expect(component.currentTool).toBe(component.tools.Pen);
   });
@@ -61,17 +62,45 @@ describe('ToolbarComponent', () => {
     const brushButton = fixture.debugElement.nativeElement.querySelector('#brush-button');
     const doubleClickEvent = new Event('dblclick');
     brushButton.dispatchEvent(doubleClickEvent);
+    fixture.detectChanges();
 
     expect(component.drawer.opened).toBe(true);
   });
 
-  it('should close the drawer when selecting the pen tool a second time', () => {
-    const penButton = fixture.debugElement.nativeElement.querySelector('#pen-button');
+  it('should close the drawer when selecting the rectangle tool a second time', () => {
+    const rectangleButton = fixture.debugElement.nativeElement.querySelector('#rectangle-button');
     const doubleClickEvent = new Event('dblclick');
-    penButton.dispatchEvent(doubleClickEvent);
-    penButton.dispatchEvent(doubleClickEvent);
+    rectangleButton.dispatchEvent(doubleClickEvent);
+    fixture.detectChanges();
+
+    rectangleButton.dispatchEvent(doubleClickEvent);
+    fixture.detectChanges();
 
     expect(component.drawer.opened).toBe(false);
+  });
+
+  it('should select the rectangle tool', () => {
+    const rectangleButton = fixture.debugElement.nativeElement.querySelector('#rectangle-button');
+    rectangleButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentTool).toBe(component.tools.Rectangle);
+  });
+
+  it('should select the line tool', () => {
+    const lineButton = fixture.debugElement.nativeElement.querySelector('#line-button');
+    lineButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentTool).toBe(component.tools.Line);
+  });
+
+  it('should select the brush tool', () => {
+    const brushButton = fixture.debugElement.nativeElement.querySelector('#brush-button');
+    brushButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentTool).toBe(component.tools.Brush);
   });
 
   it('should create the color picker when selecting a color', () => {
@@ -82,12 +111,16 @@ describe('ToolbarComponent', () => {
   });
 
   it('should select the primary color and the secondary color when clicking associated squares', () => {
+    component.selectTool(component.tools.ColorPicker);
+    fixture.detectChanges();
+
+    const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
     const secondaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-secondary-color');
+
     secondaryColorSquare.click();
 
     expect(component.colorPickerProperties.selectedColor).toEqual(0);
 
-    const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
     primaryColorSquare.click();
 
     expect(component.colorPickerProperties.selectedColor).toEqual(1);
@@ -96,7 +129,6 @@ describe('ToolbarComponent', () => {
   it('should show the correct primary color in the square when a new color is picked', () => {
     const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
     primaryColorSquare.click();
-    fixture.detectChanges();
     fixture.detectChanges();
 
     component.colorPicker.color = Color.BLUE;
