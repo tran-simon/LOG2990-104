@@ -31,12 +31,10 @@ describe('AbstractCanvasDrawer', () => {
   const component: AbstractCanvasDrawer = new AbstractCanvasDrawerImpl();
   let drawAllSpy: Spy;
   let updateColorSpy: Spy;
-  let colorChangedSpy: Spy;
 
   beforeEach(() => {
     drawAllSpy = spyOn(component, 'drawAll').and.callThrough();
     updateColorSpy = spyOn(component, 'updateColor').and.callThrough();
-    colorChangedSpy = spyOn(component.colorChanged, 'emit');
     component.renderingContext = createSpyObj('renderingContext', ['']);
   });
 
@@ -57,7 +55,6 @@ describe('AbstractCanvasDrawer', () => {
   it('should redraw on updateColor if shouldRedraw returns true', () => {
     component.updateColor(Color.RED);
     expect(drawAllSpy).toHaveBeenCalled();
-    expect(colorChangedSpy).toHaveBeenCalledWith(Color.RED);
   });
 
   it('should draw component and indicator on drawAll', () => {
@@ -71,7 +68,6 @@ describe('AbstractCanvasDrawer', () => {
   it('should not redraw if shouldRedraw returns false', () => {
     component.updateColor(Color.BLUE);
     expect(drawAllSpy).not.toHaveBeenCalled();
-    expect(colorChangedSpy).toHaveBeenCalledWith(Color.BLUE);
   });
 
   it('sets mouseIsDown to true when mouse is down', () => {

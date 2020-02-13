@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
 import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
 import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-strip/color-lightness/color-lightness.component';
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
@@ -26,6 +27,7 @@ describe('ColorPickerComponent', () => {
       declarations: [
         ColorPickerComponent,
         ColorLightnessComponent,
+        ColorHistoryComponent,
         AlphaComponent,
         NumberInputComponent,
         CustomInputComponent,

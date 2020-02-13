@@ -10,6 +10,8 @@ export class ColorHistoryComponent {
   static readonly MAX_HISTORY_LENGTH = 10;
   private static COLOR_HISTORY: Color[] = new Array<Color>(ColorHistoryComponent.MAX_HISTORY_LENGTH).fill(Color.WHITE);
 
+  @Output() colorSelected = new EventEmitter<Color>();
+
   static push(color: Color): Color | undefined {
     return this.COLOR_HISTORY.push(color) > this.MAX_HISTORY_LENGTH ? this.COLOR_HISTORY.shift() : undefined;
   }
@@ -21,9 +23,7 @@ export class ColorHistoryComponent {
     return ColorHistoryComponent.getColorHistory();
   }
 
-  @Output() colorSelected = new EventEmitter<Color>();
-
-  onClick(index: number, color: Color) {
+  onClick(color: Color) {
     this.colorSelected.emit(color);
   }
 }
