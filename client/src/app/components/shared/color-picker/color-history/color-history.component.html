@@ -1,1 +1,4 @@
-<p>color-history works!</p>
+<div id='color-history' *ngFor='let color of colorHistory; let i = index'>
+  <button id='color-history-button' [ngStyle]="{'background-color':color.rgbString}" (click)='onClick(i, color)'>
+  </button>
+</div>

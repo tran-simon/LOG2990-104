@@ -15,7 +15,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() isVertical = false;
   @Input() size = 300;
-  @Input() confirmBtn: boolean = false;
+  @Input() showHistory = false;
   @Output() colorChanged = new EventEmitter<Color>();
 
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
@@ -93,8 +93,10 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
   }
 
   confirm(): void {
+    if (this.initialColor.rgbString !== this.color.rgbString) {
+      ColorHistoryComponent.push(this.color);
+    }
     this.initialColor = this.color;
     this.colorChanged.emit(this.color);
-    ColorHistoryComponent.push(this.color);
   }
 }

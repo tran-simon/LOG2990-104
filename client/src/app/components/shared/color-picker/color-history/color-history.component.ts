@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -6,9 +6,9 @@ import { Color } from 'src/app/utils/color/color';
   templateUrl: './color-history.component.html',
   styleUrls: ['./color-history.component.scss'],
 })
-export class ColorHistoryComponent implements OnInit, OnChanges {
+export class ColorHistoryComponent {
   static readonly MAX_HISTORY_LENGTH = 10;
-  private static COLOR_HISTORY: Color[] = [];
+  private static COLOR_HISTORY: Color[] = new Array<Color>(ColorHistoryComponent.MAX_HISTORY_LENGTH).fill(Color.WHITE);
 
   static push(color: Color): Color | undefined {
     return this.COLOR_HISTORY.push(color) > this.MAX_HISTORY_LENGTH ? this.COLOR_HISTORY.shift() : undefined;
@@ -17,9 +17,13 @@ export class ColorHistoryComponent implements OnInit, OnChanges {
     return this.COLOR_HISTORY;
   }
 
-  constructor() {}
+  get colorHistory(): Color[] {
+    return ColorHistoryComponent.getColorHistory();
+  }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  @Output() colorSelected = new EventEmitter<Color>();
 
-  ngOnInit() {}
+  onClick(index: number, color: Color) {
+    this.colorSelected.emit(color);
+  }
 }

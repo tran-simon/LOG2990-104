@@ -112,7 +112,7 @@
 
         <label *ngSwitchCase="false">Couleur primaire</label>
         <label *ngSwitchCase="true">Couleur secondaire</label>
-        <app-color-picker [confirmBtn]=true #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"></app-color-picker>
+        <app-color-picker [showHistory]="true" #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"></app-color-picker>
       </div>
     </mat-drawer-content>
   </mat-drawer>
