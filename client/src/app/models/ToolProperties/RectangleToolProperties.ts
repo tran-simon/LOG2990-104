@@ -14,8 +14,6 @@ export class RectangleToolProperties extends ToolProperties {
   minThickness = RectangleToolProperties.MIN_THICKNESS;
   maxThickness = RectangleToolProperties.MAX_THICKNESS;
 
-  primaryColor: Color;
-  secondaryColor: Color;
   thickness: number;
   contourType: RectangleContourType;
 
@@ -25,10 +23,8 @@ export class RectangleToolProperties extends ToolProperties {
     thickness: number = RectangleToolProperties.MIN_THICKNESS,
     contourType: RectangleContourType = RectangleContourType.FILLEDCONTOUR,
   ) {
-    super('Rectangle');
+    super('Rectangle', primaryColor, secondaryColor);
 
-    this.primaryColor = primaryColor;
-    this.secondaryColor = secondaryColor;
     this.thickness = thickness;
     this.contourType = contourType;
   }

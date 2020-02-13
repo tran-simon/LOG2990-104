@@ -45,10 +45,10 @@ export class ToolbarComponent {
   colorPicker: ColorPickerComponent;
 
   colorPickerProperties = new ColorPickerToolProperties();
-  penProperties = new PenToolProperties();
-  brushProperties = new BrushToolProperties();
+  penProperties = new PenToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
+  brushProperties = new BrushToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
   rectangleProperties = new RectangleToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
-  lineProperties = new LineToolProperties();
+  lineProperties = new LineToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
 
   currentTool = this.tools.Pen;
 
@@ -57,11 +57,11 @@ export class ToolbarComponent {
   handleColorChanged(eventColor: Color) {
     if (this.colorPickerProperties.selectedColor === this.colorPickerColorTypes.PRIMARY) {
       this.colorPickerProperties.primaryColor = eventColor;
-      this.rectangleProperties.primaryColor = this.colorPickerProperties.primaryColor;
     } else {
       this.colorPickerProperties.secondaryColor = eventColor;
-      this.rectangleProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
     }
+
+    this.updateColorProperties();
   }
 
   selectTool(selection: Tool) {
@@ -85,6 +85,20 @@ export class ToolbarComponent {
 
   updateTool() {
     this.selectTool(this.currentTool);
+  }
+
+  updateColorProperties() {
+    this.penProperties.primaryColor = this.colorPickerProperties.primaryColor;
+    this.penProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
+
+    this.brushProperties.primaryColor = this.colorPickerProperties.primaryColor;
+    this.brushProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
+
+    this.rectangleProperties.primaryColor = this.colorPickerProperties.primaryColor;
+    this.rectangleProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
+
+    this.lineProperties.primaryColor = this.colorPickerProperties.primaryColor;
+    this.lineProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
   }
 
   openPanel(selection: Tool) {

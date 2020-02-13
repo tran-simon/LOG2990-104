@@ -94,10 +94,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   selectPenTool(properties: ToolProperties) {
     this.currentTool = new PenTool(this.drawingSurface);
+    this.currentTool.toolProperties = properties;
   }
 
   selectBrushTool(properties: ToolProperties) {
-    // TODO
+    // this.currentTool = new BrushTool(this.drawingSurface);
+    // this.currentTool.toolProperties = properties;
   }
 
   selectRectangleTool(properties: ToolProperties) {
@@ -107,6 +109,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   selectLineTool(properties: ToolProperties) {
     this.currentTool = new LineTool(this.drawingSurface);
+    this.currentTool.toolProperties = properties;
   }
 
   @HostListener('window:keydown', ['$event'])

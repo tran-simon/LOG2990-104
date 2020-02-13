@@ -11,8 +11,8 @@ export class ColorPickerToolProperties extends ToolProperties {
   primaryColor: Color;
   secondaryColor: Color;
 
-  constructor(selectedColor = ColorPickerColorType.PRIMARY, primaryColor = Color.WHITE, secondaryColor = Color.BLACK) {
-    super('ColorPicker');
+  constructor(primaryColor = Color.WHITE, secondaryColor = Color.BLACK, selectedColor = ColorPickerColorType.PRIMARY) {
+    super('ColorPicker', primaryColor, secondaryColor);
 
     this.selectedColor = selectedColor;
     this.primaryColor = primaryColor;
