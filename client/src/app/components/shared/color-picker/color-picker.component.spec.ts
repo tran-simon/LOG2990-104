@@ -97,18 +97,6 @@ describe('ColorPickerComponent', () => {
     expect(component.color.l).toBe(l);
   });
 
-  it('should update color on colorChange with alpha component', () => {
-    const alphaComponent = fixture.debugElement.query(By.directive(AlphaComponent)).componentInstance;
-    const alphaChangedSpy = spyOn(component, 'colorChange').and.callThrough();
-    const a = 0.4;
-
-    alphaComponent.colorChanged.emit(Color.alpha(Color.RED, a));
-    fixture.detectChanges();
-
-    expect(alphaChangedSpy).toHaveBeenCalledWith(Color.alpha(Color.RED, a));
-    expect(component.color.a).toBe(a);
-  });
-
   it('should update on RGB inputs change', () => {
     const redColorInputComponent: HexInputComponent = fixture.debugElement.query(By.css('#red-color-input')).componentInstance;
     const greenColorInputComponent: HexInputComponent = fixture.debugElement.query(By.css('#green-color-input')).componentInstance;
