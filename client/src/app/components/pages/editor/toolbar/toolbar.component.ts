@@ -87,6 +87,7 @@ export class ToolbarComponent {
   openPanel(selection: Tool): void {
     if (this.currentTool === selection) {
       this.drawer.toggle();
+      this.showColorPicker = false;
     } else {
       this.currentTool = selection;
       this.drawer.open();

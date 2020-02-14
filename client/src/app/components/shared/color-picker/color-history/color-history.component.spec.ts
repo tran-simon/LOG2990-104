@@ -39,7 +39,7 @@ describe('ColorHistoryComponent', () => {
   it('emits color selected on button click', () => {
     const colorSelectedSpy = spyOn(component.colorSelectedEvent, 'emit');
 
-    const button: DebugElement = fixture.debugElement.query(By.css('button'));
+    const button: DebugElement = fixture.debugElement.query(By.css('.color-history-button'));
 
     expect(button).not.toBeUndefined();
     button.nativeElement.click();

@@ -102,13 +102,6 @@ describe('ToolbarComponent', () => {
     expect(component.currentTool).toBe(component.tools.Brush);
   });
 
-  it('should create the color picker when selecting a color', () => {
-    fixture.debugElement.nativeElement.querySelector('#colorpicker-button').click();
-    fixture.detectChanges();
-
-    expect(component.colorPicker).not.toBeUndefined();
-  });
-
   it('should select the primary color and the secondary color when clicking associated squares', () => {
     component.selectTool(component.tools.ColorPicker);
     fixture.detectChanges();
