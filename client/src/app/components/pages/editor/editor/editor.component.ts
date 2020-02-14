@@ -26,7 +26,7 @@ export interface EditorParams {
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  private keyboardEventHandler: KeyboardEventHandler;
+  private readonly keyboardEventHandler: KeyboardEventHandler;
 
   surfaceWidth = 0;
   surfaceHeight = 0;
@@ -99,12 +99,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   selectPenTool(properties: ToolProperties) {
-    this.currentTool = new PenTool(this.drawingSurface);
+    this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
     this.currentTool.toolProperties = properties;
   }
 
   selectBrushTool(properties: ToolProperties) {
-    this.currentTool = new BrushTool(this.drawingSurface);
+    this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
     this.currentTool.toolProperties = properties;
   }
 
