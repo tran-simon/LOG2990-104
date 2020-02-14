@@ -1,14 +1,14 @@
+import { Color } from '../utils/color/color';
 import { CompositeLine } from './CompositeLine';
 import { Coordinate } from './Coordinate';
 import { Line } from './Line';
-import { Color } from '../utils/color/color';
 
 describe('CompositeLine', () => {
   let cLine: CompositeLine;
-  let coordZero = new Coordinate(0, 0);
-  let coord1 = new Coordinate(2, 2);
-  let coord2 = new Coordinate(17, 8);
-  let coord3 = new Coordinate(2, 3);
+  const coordZero = new Coordinate(0, 0);
+  const coord1 = new Coordinate(2, 2);
+  const coord2 = new Coordinate(17, 8);
+  const coord3 = new Coordinate(2, 3);
   beforeEach(() => {
     cLine = new CompositeLine();
   });
@@ -71,8 +71,8 @@ describe('CompositeLine', () => {
     cLine.addPoint(coord2);
     const lastLine = cLine.lineArray[cLine.lineArray.length - 1];
     const lastJunction = cLine.junctionArray[cLine.junctionArray.length - 1];
-    let arrayJunctionLength: number = cLine.junctionArray.length;
-    let arrayLineLength: number = cLine.lineArray.length;
+    const arrayJunctionLength: number = cLine.junctionArray.length;
+    const arrayLineLength: number = cLine.lineArray.length;
     cLine.removeLastPoint();
     expect(cLine.lineArray.length).toEqual(arrayLineLength - 1);
     expect(cLine.junctionArray.length).toEqual(arrayJunctionLength - 1);

@@ -23,5 +23,4 @@ describe('Polygon', () => {
     polygon.NbEdge = 0;
     expect(polygon.NbEdge).toEqual(3);
   });
-  it('Should have 12 edges', () => {});
 });

@@ -1,5 +1,5 @@
-import { Rectangle } from './Rectangle';
 import { Coordinate } from './Coordinate';
+import { Rectangle } from './Rectangle';
 
 describe('Rectangle', () => {
   let rectangle: Rectangle;
@@ -48,16 +48,16 @@ describe('Rectangle', () => {
     expect(rectangle.svgNode.getAttribute('width')).toEqual('10');
   });
   it('Should have the given coordinates', () => {
-    let coord: Coordinate = new Coordinate(-50, 10);
+    const coord: Coordinate = new Coordinate(-50, 10);
     rectangle.origin = coord;
     expect(rectangle.origin).toEqual(coord);
     expect(rectangle.svgNode.getAttribute('x')).toEqual('-50');
     expect(rectangle.svgNode.getAttribute('y')).toEqual('10');
   });
   it('Should give you the center', () => {
-    let centerX: number = rectangle.width / 2 + rectangle.origin.x;
-    let centerY: number = rectangle.height / 2 + rectangle.origin.y;
-    let coord: Coordinate = new Coordinate(centerX, centerY);
+    const centerX: number = rectangle.width / 2 + rectangle.origin.x;
+    const centerY: number = rectangle.height / 2 + rectangle.origin.y;
+    const coord: Coordinate = new Coordinate(centerX, centerY);
     expect(rectangle.center).toEqual(coord);
   });
 });

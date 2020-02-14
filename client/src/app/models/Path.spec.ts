@@ -2,10 +2,10 @@ import { Coordinate } from './Coordinate';
 import { Path } from './Path';
 describe('Path', () => {
   let path: Path;
-  ///let coordZero = new Coordinate(0, 0);
-  let coord1 = new Coordinate(2, 2);
-  //let coord2 = new Coordinate(17, 8);
-  let coord3 = new Coordinate(3, 4);
+  /// let coordZero = new Coordinate(0, 0);
+  const coord1 = new Coordinate(2, 2);
+  // let coord2 = new Coordinate(17, 8);
+  const coord3 = new Coordinate(3, 4);
   beforeEach(() => {
     path = new Path(new Coordinate());
   });
