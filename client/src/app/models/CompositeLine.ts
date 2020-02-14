@@ -13,6 +13,9 @@ export class CompositeLine extends BaseShape {
   get currentLine(): Line {
     return this.lineArray[this.lineArray.length - 1];
   }
+  get currentJunction(): Ellipse {
+    return this.junctionArray[this.junctionArray.length - 1];
+  }
 
   get origin(): Coordinate {
     return this.lineArray[0].startCoord;
@@ -80,16 +83,5 @@ export class CompositeLine extends BaseShape {
 
     this.junctionArray.push(junction);
     this.svgNode.appendChild(junction.svgNode);
-  }
-
-  redrawSvg() {
-    // unused, could be useful later on
-    this.svgNode.innerHTML = '';
-    this.lineArray.forEach((line) => {
-      this.svgNode.appendChild(line.svgNode);
-    });
-    this.junctionArray.forEach((junction) => {
-      this.svgNode.appendChild(junction.svgNode);
-    });
   }
 }
