@@ -21,6 +21,7 @@ export class LineTool extends CreatorTool {
 
   constructor(drawingSurface: DrawingSurfaceComponent, private selectedColors: SelectedColorsService) {
     super(drawingSurface);
+    this._toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
     this.keyboardEventHandler = {
