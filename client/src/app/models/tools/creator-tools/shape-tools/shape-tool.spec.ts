@@ -1,10 +1,10 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { Coordinate } from 'src/app/models/Coordinate';
-import { Rectangle } from 'src/app/models/Rectangle';
-import { ToolProperties } from 'src/app/models/ToolProperties/ToolProperties';
-import { ShapeTool } from './ShapeTool';
+import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { Coordinate } from '../../../../utils/math/coordinate';
+import { Rectangle } from '../../../shapes/rectangle';
+import { ToolProperties } from '../../../tool-properties/tool-properties';
+import { ShapeTool } from './shape-tool';
 
 export class MockShapeTool extends ShapeTool {
   _shape: Rectangle;
@@ -23,6 +23,10 @@ export class MockShapeTool extends ShapeTool {
   }
   resizeShape() {
     return;
+  }
+
+  handleMouseEvent(e: MouseEvent): void {
+    super.handleMouseEvent(e);
   }
 }
 

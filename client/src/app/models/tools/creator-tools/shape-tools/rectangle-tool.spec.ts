@@ -1,10 +1,10 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { Coordinate } from 'src/app/models/Coordinate';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/ToolProperties/RectangleToolProperties';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
-import { RectangleTool } from './RectangleTool';
+import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { SelectedColorsService } from '../../../../services/selected-colors.service';
+import { Coordinate } from '../../../../utils/math/coordinate';
+import { RectangleContourType, RectangleToolProperties } from '../../../tool-properties/rectangle-tool-properties';
+import { RectangleTool } from './rectangle-tool';
 
 describe('ShapeTool', () => {
   let rectangleTool: RectangleTool;
@@ -68,7 +68,8 @@ describe('ShapeTool', () => {
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(selectedColorsService.primaryColor.rgbString);
-    expect(style.strokeWidth).toEqual('0');
+    const strokeWidth = style.strokeWidth as string;
+    expect(parseInt(strokeWidth, 10)).toEqual(0);
   });
 
   it('can draw Rectangle contour only', () => {
