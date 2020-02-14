@@ -127,4 +127,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   keyEvent(event: KeyboardEvent): void {
     KeyboardListener.keyEvent(event, this.keyboardEventHandler);
   }
+
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(e: MouseEvent) {
+    e.preventDefault();
+  }
 }

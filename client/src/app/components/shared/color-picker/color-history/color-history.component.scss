@@ -1,8 +1,9 @@
 #color-history {
   float: left;
-  padding-inline: 5px;
-}
-button{
-  width:20px;
-  height:20px;
+  padding: 5px;
+  border-style: solid;
+  .color-history-button{
+    width:10px;
+    height:10px;
+  }
 }

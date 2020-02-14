@@ -39,6 +39,7 @@ export class ToolbarComponent {
   rectangleContourNames = Object.values(this.rectangleContourTypes);
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
+  showColorPicker = false;
 
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
@@ -60,6 +61,7 @@ export class ToolbarComponent {
 
   handleColorChanged(eventColor: Color): void {
     this.selectedColors.setColorByIndex(eventColor, this.selectedColor);
+    this.showColorPicker = false;
     this.drawer.close();
   }
 
@@ -92,13 +94,8 @@ export class ToolbarComponent {
   }
 
   selectColor(index: number): void {
-    if (!this.colorPicker) {
-      this.selectTool(this.tools.ColorPicker);
-    } else {
-      this.currentTool = this.tools.ColorPicker;
-
-      this.drawer.open();
-    }
+    this.showColorPicker = true;
+    this.drawer.open();
     this.selectedColor = index;
   }
 

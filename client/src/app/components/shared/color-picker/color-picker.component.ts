@@ -17,6 +17,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
   @Input() size = 300;
   @Input() showHistory = false;
   @Output() colorChanged = new EventEmitter<Color>();
+  @Output() closed = new EventEmitter();
 
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
   formGroup: FormGroup = new FormGroup({});
@@ -90,6 +91,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
 
   cancel(): void {
     this.color = this.initialColor;
+    this.closed.emit();
   }
 
   confirm(): void {

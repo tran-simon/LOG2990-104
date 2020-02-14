@@ -37,7 +37,7 @@ describe('ColorHistoryComponent', () => {
   });
 
   it('emits color selected on button click', () => {
-    const colorSelectedSpy = spyOn(component.colorSelected, 'emit');
+    const colorSelectedSpy = spyOn(component.colorSelectedEvent, 'emit');
 
     const button: DebugElement = fixture.debugElement.query(By.css('button'));
 
