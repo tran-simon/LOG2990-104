@@ -24,7 +24,7 @@ export class MockShapeTool extends ShapeTool {
   }
 }
 
-fdescribe('ShapeTool', () => {
+describe('ShapeTool', () => {
   let mockShapeTool: MockShapeTool;
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let surface: DrawingSurfaceComponent;
@@ -104,7 +104,7 @@ fdescribe('ShapeTool', () => {
     const resizeShapeSpy = spyOn(mockShapeTool, 'resizeShape');
     mockShapeTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(250, 200)));
-    expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(150, 100));
+    expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(150, 100), new Coordinate(100, 100));
   });
 
   it('can set equal dimensions on shift down', () => {
@@ -133,7 +133,7 @@ fdescribe('ShapeTool', () => {
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
     resizeShapeSpy.calls.reset();
     mockShapeTool.handleKeyboardEvent(keyUp('shift', false));
-    expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(150, 100));
+    expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(150, 100), new Coordinate(100, 100));
   });
 
   it('does not update current coordinate on shift if not active', () => {

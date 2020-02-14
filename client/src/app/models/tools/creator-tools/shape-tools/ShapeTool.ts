@@ -88,6 +88,6 @@ export abstract class ShapeTool extends CreatorTool {
       origin = new Coordinate(origin.x + previewDimensions.x - dimensions.x, origin.y);
     }
 
-    this.resizeShape(origin, dimensions);
+    this.resizeShape(dimensions, origin);
   }
 }
