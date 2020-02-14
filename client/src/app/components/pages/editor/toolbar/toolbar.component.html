@@ -45,7 +45,7 @@
     </button>
   </div>
 </div>
-<mat-drawer-container>
+<mat-drawer-container >
   <mat-drawer #drawer mode="side">
     <mat-drawer-content [ngSwitch]="currentTool">
       <div *ngSwitchCase="tools.Pen" class="toolbar-tool-section">
@@ -109,8 +109,8 @@
         <h3 class="toolbar-option-section">Options du color picker</h3>
         <label *ngSwitchCase="colorPickerColorTypes.PRIMARY">Couleur primaire</label>
         <label *ngSwitchCase="colorPickerColorTypes.SECONDARY">Couleur secondaire</label>
-        <app-color-picker [showHistory]=true (afterViewInit)="handleColorPickerLoaded()" #colorPicker [color]="color"
-          (colorChanged)="handleColorChanged($event)"></app-color-picker>
+        <app-color-picker [showHistory]=true #colorPicker [color]="color"
+                          (colorChanged)="handleColorChanged($event)"></app-color-picker>
           <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme couleur de fond</button>
       </div>
     </mat-drawer-content>

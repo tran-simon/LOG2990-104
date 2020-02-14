@@ -61,11 +61,8 @@ export class ToolbarComponent {
   }
 
   handleColorChanged(eventColor: Color): void {
-    if (this.colorPickerProperties.selectedColor === this.colorPickerColorTypes.PRIMARY) {
-      this.colorPickerProperties.primaryColor = eventColor;
-    } else {
-      this.colorPickerProperties.secondaryColor = eventColor;
-    }
+    this.color = eventColor;
+    this.drawer.close();
   }
 
   selectTool(selection: Tool): void {
@@ -138,6 +135,14 @@ export class ToolbarComponent {
         return this.colorPickerProperties.primaryColor;
       case this.colorPickerColorTypes.SECONDARY:
         return this.colorPickerProperties.secondaryColor;
+    }
+  }
+
+  set color(color: Color) {
+    if (this.colorPickerProperties.selectedColor === this.colorPickerColorTypes.PRIMARY) {
+      this.colorPickerProperties.primaryColor = color;
+    } else {
+      this.colorPickerProperties.secondaryColor = color;
     }
   }
 }

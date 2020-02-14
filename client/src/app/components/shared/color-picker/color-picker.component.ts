@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
 import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
@@ -11,22 +11,16 @@ import { Color, ColorComponents } from 'src/app/utils/color/color';
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss'],
 })
-export class ColorPickerComponent extends AbstractCanvasDrawer implements AfterViewInit {
+export class ColorPickerComponent extends AbstractCanvasDrawer {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() isVertical = false;
   @Input() size = 300;
-  @Output() afterViewInit = new EventEmitter();
   @Input() showHistory = false;
   @Output() colorChanged = new EventEmitter<Color>();
 
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
   formGroup: FormGroup = new FormGroup({});
   initialColor: Color = this.color;
-
-  ngAfterViewInit() {
-    super.ngAfterViewInit();
-    this.afterViewInit.emit();
-  }
 
   calculateIndicatorPosition(): Coordinate {
     return new Coordinate((this.color.h / 360) * this.size, this.color.s * this.size);
@@ -67,7 +61,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements AfterV
   }
 
   colorChange(color: Color): void {
-    this.updateColor(color);
+    this.color = color;
   }
 
   rgbChange(value: string, component: string): void {
@@ -84,18 +78,18 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements AfterV
         break;
     }
     if (!(this.color.r255 === r && this.color.g255 === g && this.color.b255 === b)) {
-      this.updateColor(Color.rgb255(r, g, b, this.color.a));
+      this.color = Color.rgb255(r, g, b, this.color.a);
     }
   }
 
   hexChange(value: string): void {
     if (this.color.hex !== value.toLowerCase()) {
-      this.updateColor(Color.hex(value, this.color.a));
+      this.color = Color.hex(value, this.color.a);
     }
   }
 
   cancel(): void {
-    this.updateColor(this.initialColor);
+    this.color = this.initialColor;
   }
 
   confirm(): void {

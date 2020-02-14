@@ -3,7 +3,7 @@ import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
 
 export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterViewInit {
-  @Input()
+  @Input('color')
   set color(color: Color) {
     if (!color || !this.color) {
       this._color = color;
@@ -23,6 +23,14 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
   canvas: ElementRef<HTMLCanvasElement>;
   renderingContext: CanvasRenderingContext2D;
   mouseIsDown = false;
+
+  private updateColor(color: Color): void {
+    const shouldRedraw = this.shouldRedraw(color, this.color);
+    this._color = color;
+    if (shouldRedraw) {
+      this.drawAll();
+    }
+  }
 
   abstract calculateIndicatorPosition(): Coordinate;
 
@@ -62,23 +70,15 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
     }
   }
 
-  updateColor(color: Color): void {
-    const shouldRedraw = this.shouldRedraw(color, this.color);
-    this._color = color;
-    if (shouldRedraw) {
-      this.drawAll();
-    }
-  }
-
   onMouseMove(event: MouseEvent): void {
     if (this.mouseIsDown) {
-      this.updateColor(this.calculateColorFromMouseEvent(event));
+      this.color = this.calculateColorFromMouseEvent(event);
     }
   }
 
   onMouseDown(event: MouseEvent): void {
     this.mouseIsDown = true;
-    this.updateColor(this.calculateColorFromMouseEvent(event));
+    this.color = this.calculateColorFromMouseEvent(event);
   }
 
   @HostListener('window:mouseup')
