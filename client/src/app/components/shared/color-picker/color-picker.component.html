@@ -1,6 +1,6 @@
 <div id="color-picker" [style.background-color]="color.hexString" >
   <div *ngIf=showHistory>
-    <app-color-history (colorSelected)='updateColor($event)'></app-color-history>
+    <app-color-history (colorSelectedEvent)='closed.emit()'></app-color-history>
   </div>
   <div>
     <canvas #canvas id="color-square"
@@ -14,10 +14,6 @@
       (colorChanged)="colorChange($event)"
       [isVertical]="isVertical"
     ></app-color-lightness>
-    <app-alpha [color]="color"
-      (colorChanged)="colorChange($event)"
-      [isVertical]="isVertical"
-    ></app-alpha>
   </div>
 
   <form [formGroup]="formGroup" >

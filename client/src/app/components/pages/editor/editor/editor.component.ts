@@ -5,6 +5,7 @@ import { LineTool } from 'src/app/models/tools/creator-tools/LineTool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/RectangleTool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/BrushTool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/PenTool';
+import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -25,7 +26,7 @@ export interface EditorParams {
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  private keyboardEventHandler: KeyboardEventHandler;
+  private readonly keyboardEventHandler: KeyboardEventHandler;
 
   surfaceWidth = 0;
   surfaceHeight = 0;
@@ -40,7 +41,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   currentTool: CreatorTool;
 
-  constructor(private router: ActivatedRoute) {
+  constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService) {
     this.keyboardEventHandler = {
       l: () => {
         this.selectLineTool(this.toolbar.lineProperties);
@@ -98,23 +99,39 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   selectPenTool(properties: ToolProperties) {
-    this.currentTool = new PenTool(this.drawingSurface);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Pen) {
+      this.toolbar.currentTool = this.toolbar.tools.Pen;
+    } else {
+      this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectBrushTool(properties: ToolProperties) {
-    this.currentTool = new BrushTool(this.drawingSurface);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Brush) {
+      this.toolbar.currentTool = this.toolbar.tools.Brush;
+    } else {
+      this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectRectangleTool(properties: ToolProperties) {
-    this.currentTool = new RectangleTool(this.drawingSurface);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Rectangle) {
+      this.toolbar.currentTool = this.toolbar.tools.Rectangle;
+    } else {
+      this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectLineTool(properties: ToolProperties) {
-    this.currentTool = new LineTool(this.drawingSurface);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
+      this.toolbar.currentTool = this.toolbar.tools.Line;
+    } else {
+      this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   changeBackground(color: Color): void {
@@ -125,5 +142,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
     KeyboardListener.keyEvent(event, this.keyboardEventHandler);
+  }
+
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(e: MouseEvent) {
+    e.preventDefault();
   }
 }

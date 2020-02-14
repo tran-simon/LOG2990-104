@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
@@ -15,6 +16,7 @@ describe('EditorComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule],
       declarations: [EditorComponent, DrawingSurfaceComponent, ToolbarComponent],
+      providers: [SelectedColorsService],
     }).compileComponents();
   }));
 

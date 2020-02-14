@@ -1,8 +1,9 @@
+import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { CompositeLine } from '../../CompositeLine';
 import { Coordinate } from '../../Coordinate';
-import { LineToolProperties } from '../../ToolProperties/LineToolProperties';
+import { LineJunctionType, LineToolProperties } from '../../ToolProperties/LineToolProperties';
 import { CreatorTool } from './CreatorTool';
 
 export class LineTool extends CreatorTool {
@@ -18,7 +19,7 @@ export class LineTool extends CreatorTool {
     return this.line;
   }
 
-  constructor(drawingSurface: DrawingSurfaceComponent) {
+  constructor(drawingSurface: DrawingSurfaceComponent, private selectedColors: SelectedColorsService) {
     super(drawingSurface);
     this.lockMethod = this.calculateNoLock;
 
@@ -29,7 +30,7 @@ export class LineTool extends CreatorTool {
         }
         return false;
       },
-      delete: () => {
+      escape: () => {
         if (this.isActive) {
           this.cancelShape();
         }
@@ -48,6 +49,23 @@ export class LineTool extends CreatorTool {
     } as KeyboardEventHandler;
   }
 
+  initLine() {
+    this.line = new CompositeLine(this.mousePosition);
+
+    this.line.properties.strokeColor = this.selectedColors.primaryColor;
+    this.line.properties.fillColor = this.selectedColors.secondaryColor;
+    this.line.properties.strokeWidth = this._toolProperties.thickness;
+
+    if (this._toolProperties.junctionType === LineJunctionType.POINTS) {
+      this.line.properties.thickness = this._toolProperties.junctionDiameter;
+    } else {
+      this.line.properties.thickness = 0;
+    }
+
+    this.line.updateProperties();
+    this.drawShape();
+  }
+
   handleToolMouseEvent(e: MouseEvent) {
     if (this.isActive) {
       if (e.type === 'dblclick') {
@@ -60,8 +78,7 @@ export class LineTool extends CreatorTool {
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;
-      this.line = new CompositeLine(this.mousePosition);
-      this.drawShape();
+      this.initLine();
     }
   }
 
@@ -86,25 +103,19 @@ export class LineTool extends CreatorTool {
     return this.calculateNoLock;
   }
 
-  calculateHorizontalLock(c: Coordinate): Coordinate {
-    return new Coordinate(c.x, this.line.currentLine.startCoord.y);
-  }
+  private readonly calculateHorizontalLock = (c: Coordinate): Coordinate => new Coordinate(c.x, this.line.currentLine.startCoord.y);
 
-  calculateVerticalLock(c: Coordinate): Coordinate {
-    return new Coordinate(this.line.currentLine.startCoord.x, c.y);
-  }
+  private readonly calculateVerticalLock = (c: Coordinate): Coordinate => new Coordinate(this.line.currentLine.startCoord.x, c.y);
 
-  calculatePositiveDiagonalLock(c: Coordinate): Coordinate {
+  private readonly calculatePositiveDiagonalLock = (c: Coordinate): Coordinate => {
     const deltaX = c.x - this.line.currentLine.startCoord.x;
     return new Coordinate(c.x, this.line.currentLine.startCoord.y + deltaX);
-  }
+  };
 
-  calculateNegativeDiagonalLock(c: Coordinate): Coordinate {
+  private readonly calculateNegativeDiagonalLock = (c: Coordinate): Coordinate => {
     const deltaX = c.x - this.line.currentLine.startCoord.x;
     return new Coordinate(c.x, this.line.currentLine.startCoord.y - deltaX);
-  }
+  };
 
-  calculateNoLock(c: Coordinate): Coordinate {
-    return c;
-  }
+  private readonly calculateNoLock = (c: Coordinate): Coordinate => c;
 }

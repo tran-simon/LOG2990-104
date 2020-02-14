@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
+import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 import { BrushTextureType, BrushToolProperties } from 'src/app/models/ToolProperties/BrushToolProperties';
-import { ColorPickerColorType, ColorPickerToolProperties } from 'src/app/models/ToolProperties/ColorPickerToolProperties';
 import { LineJunctionType, LineToolProperties } from 'src/app/models/ToolProperties/LineToolProperties';
 import { PenToolProperties } from 'src/app/models/ToolProperties/PenToolProperties';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/ToolProperties/RectangleToolProperties';
@@ -39,7 +39,9 @@ export class ToolbarComponent {
   rectangleContourNames = Object.values(this.rectangleContourTypes);
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
-  colorPickerColorTypes = ColorPickerColorType;
+  showColorPicker = false;
+
+  private _alpha = 1;
 
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
@@ -47,26 +49,28 @@ export class ToolbarComponent {
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
-  colorPickerProperties = new ColorPickerToolProperties();
-  penProperties = new PenToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
-  brushProperties = new BrushToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
-  rectangleProperties = new RectangleToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
-  lineProperties = new LineToolProperties(this.colorPickerProperties.primaryColor, this.colorPickerProperties.secondaryColor);
+  penProperties = new PenToolProperties();
+  brushProperties = new BrushToolProperties();
+  rectangleProperties = new RectangleToolProperties();
+  lineProperties = new LineToolProperties();
+  selectedColor = SelectedColorType.primary;
 
-  lastSelectedColor: ColorPickerColorType;
+  SelectedColorType = SelectedColorType;
+
   currentTool = this.tools.Pen;
 
-  constructor(private router: Router) {}
-
-  handleColorPickerLoaded(): void {
-    this.selectColor(this.colorPickerProperties.selectedColor);
-  }
+  constructor(private router: Router, public selectedColors: SelectedColorsService) {}
 
   handleColorChanged(eventColor: Color): void {
-    if (this.colorPickerProperties.selectedColor === this.colorPickerColorTypes.PRIMARY) {
-      this.colorPickerProperties.primaryColor = eventColor;
-    } else {
-      this.colorPickerProperties.secondaryColor = eventColor;
+    this.color = eventColor;
+    this.showColorPicker = false;
+    this.drawer.close();
+  }
+
+  handleAlphaChanged(color: Color): void {
+    if (color.a !== this.color.a) {
+      this._alpha = color.a;
+      this.color = Color.alpha(this.color, color.a);
     }
   }
 
@@ -75,23 +79,15 @@ export class ToolbarComponent {
 
     switch (this.currentTool) {
       case this.tools.Pen:
-        this.penProperties.primaryColor = this.colorPickerProperties.primaryColor;
-        this.penProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.penProperties);
         break;
       case this.tools.Brush:
-        this.brushProperties.primaryColor = this.colorPickerProperties.primaryColor;
-        this.brushProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.brushProperties);
         break;
       case this.tools.Rectangle:
-        this.rectangleProperties.primaryColor = this.colorPickerProperties.primaryColor;
-        this.rectangleProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.rectangleProperties);
         break;
       case this.tools.Line:
-        this.lineProperties.primaryColor = this.colorPickerProperties.primaryColor;
-        this.lineProperties.secondaryColor = this.colorPickerProperties.secondaryColor;
         this.toolChanged.emit(this.lineProperties);
         break;
     }
@@ -100,30 +96,17 @@ export class ToolbarComponent {
   openPanel(selection: Tool): void {
     if (this.currentTool === selection) {
       this.drawer.toggle();
+      this.showColorPicker = false;
     } else {
       this.currentTool = selection;
       this.drawer.open();
     }
   }
 
-  selectColor(selection: ColorPickerColorType): void {
-    this.colorPickerProperties.selectedColor = selection;
-
-    if (!this.colorPicker) {
-      this.selectTool(this.tools.ColorPicker);
-    } else {
-      this.currentTool = this.tools.ColorPicker;
-
-      switch (this.colorPickerProperties.selectedColor) {
-        case this.colorPickerColorTypes.PRIMARY:
-          this.colorPicker.color = this.colorPickerProperties.primaryColor;
-          break;
-        case this.colorPickerColorTypes.SECONDARY:
-          this.colorPicker.color = this.colorPickerProperties.secondaryColor;
-          break;
-      }
-      this.drawer.open();
-    }
+  selectColor(index: number): void {
+    this.showColorPicker = true;
+    this.drawer.open();
+    this.selectedColor = index;
   }
 
   navigate(path: string): void {
@@ -134,12 +117,23 @@ export class ToolbarComponent {
     this.editorBackgroundChanged.emit(color);
   }
 
+  get primaryColor(): Color {
+    return this.selectedColors.primaryColor;
+  }
+
+  get secondaryColor(): Color {
+    return this.selectedColors.secondaryColor;
+  }
+
+  set color(color: Color) {
+    this.selectedColors.setColorByIndex(color, this.selectedColor);
+  }
+
   get color(): Color {
-    switch (this.colorPickerProperties.selectedColor) {
-      case this.colorPickerColorTypes.PRIMARY:
-        return this.colorPickerProperties.primaryColor;
-      case this.colorPickerColorTypes.SECONDARY:
-        return this.colorPickerProperties.secondaryColor;
-    }
+    return this.selectedColors.colorByIndex(this.selectedColor);
+  }
+
+  get alphaColor(): Color {
+    return Color.alpha(this.color, this._alpha);
   }
 }

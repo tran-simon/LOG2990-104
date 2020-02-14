@@ -102,13 +102,6 @@ describe('ToolbarComponent', () => {
     expect(component.currentTool).toBe(component.tools.Brush);
   });
 
-  it('should create the color picker when selecting a color', () => {
-    fixture.debugElement.nativeElement.querySelector('#colorpicker-button').click();
-    fixture.detectChanges();
-
-    expect(component.colorPicker).not.toBeUndefined();
-  });
-
   it('should select the primary color and the secondary color when clicking associated squares', () => {
     component.selectTool(component.tools.ColorPicker);
     fixture.detectChanges();
@@ -118,11 +111,11 @@ describe('ToolbarComponent', () => {
 
     secondaryColorSquare.click();
 
-    expect(component.colorPickerProperties.selectedColor).toEqual(0);
+    expect(component.selectedColor).toEqual(1);
 
     primaryColorSquare.click();
 
-    expect(component.colorPickerProperties.selectedColor).toEqual(1);
+    expect(component.selectedColor).toEqual(0);
   });
 
   it('should show the correct primary color in the square when a new color is picked', () => {
@@ -133,7 +126,7 @@ describe('ToolbarComponent', () => {
     component.colorPicker.color = Color.BLUE;
     component.colorPicker.colorChanged.emit(component.colorPicker.color);
 
-    expect(component.colorPickerProperties.primaryColor.hexString).toEqual(Color.BLUE.hexString);
+    expect(component.primaryColor.hexString).toEqual(Color.BLUE.hexString);
   });
 
   it('should show the correct secondary color in the square when a new color is picked', () => {
@@ -144,7 +137,7 @@ describe('ToolbarComponent', () => {
     component.colorPicker.color = Color.GREEN;
     component.colorPicker.colorChanged.emit(component.colorPicker.color);
 
-    expect(component.colorPickerProperties.secondaryColor.hexString).toEqual(Color.GREEN.hexString);
+    expect(component.secondaryColor.hexString).toEqual(Color.GREEN.hexString);
   });
 
   it('should emit editBackgroundChanged on update background button clicked', () => {
