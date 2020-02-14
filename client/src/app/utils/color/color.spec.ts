@@ -24,7 +24,7 @@ describe('Color', () => {
 
   it('can generate Hsl string', () => {
     const hslString = Color.hsl(120, 0.5, 0.4).hslString;
-    expect(hslString).toEqual('hsl(120,50%,40%)');
+    expect(hslString).toEqual('hsl(120, 50%, 40%)');
   });
 
   it('can create color from rgb components between 0 to 255', () => {
