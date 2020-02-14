@@ -24,7 +24,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
   renderingContext: CanvasRenderingContext2D;
   mouseIsDown = false;
 
-  private updateColor(color: Color): void {
+  updateColor(color: Color): void {
     const shouldRedraw = this.shouldRedraw(color, this.color);
     this._color = color;
     if (shouldRedraw) {

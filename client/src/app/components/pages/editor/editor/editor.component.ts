@@ -5,6 +5,7 @@ import { LineTool } from 'src/app/models/tools/creator-tools/LineTool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/RectangleTool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/BrushTool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/PenTool';
+import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -40,7 +41,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   currentTool: CreatorTool = new LineTool(this.drawingSurface);
 
-  constructor(private router: ActivatedRoute) {
+  constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService) {
     this.keyboardEventHandler = {
       l: () => {
         this.selectLineTool(this.toolbar.lineProperties);
@@ -108,7 +109,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   selectRectangleTool(properties: ToolProperties) {
-    this.currentTool = new RectangleTool(this.drawingSurface);
+    this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
     this.currentTool.toolProperties = properties;
   }
 

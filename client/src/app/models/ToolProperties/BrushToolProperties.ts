@@ -1,4 +1,3 @@
-import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from './ToolProperties';
 
 export class BrushToolProperties extends ToolProperties {
@@ -11,8 +10,8 @@ export class BrushToolProperties extends ToolProperties {
   _thickness: number;
   texture: any;
 
-  constructor(primaryColor: Color, secondaryColor: Color, thickness: number = BrushToolProperties.MIN_THICKNESS, texture: any = 'TODO') {
-    super('Brush', primaryColor, secondaryColor);
+  constructor(thickness: number = BrushToolProperties.MIN_THICKNESS, texture: any = 'TODO') {
+    super('Brush');
 
     this.thickness = thickness;
     this.texture = texture;

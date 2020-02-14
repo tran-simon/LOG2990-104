@@ -26,11 +26,11 @@
     </button>
   </div>
   <div id="toolbar-middle-buttons">
-    <div id="toolbar-primary-color" [style.background-color]="colorPickerProperties.primaryColor.hexString"
-      (click)="selectColor(1)" [ngStyle]="{'z-index':colorPickerProperties.selectedColor ? 1000 : 999 }">
+    <div id="toolbar-primary-color" [style.background-color]="primaryColor.hexString"
+      (click)="selectColor(SelectedColorType.primary)" [ngStyle]="{'z-index':selectedColor ? 999: 1000}">
     </div>
-    <div id="toolbar-secondary-color" [style.background-color]="colorPickerProperties.secondaryColor.hexString"
-      (click)="selectColor(0)" [ngStyle]="{'z-index':colorPickerProperties.selectedColor ? 999 : 1000 }">
+    <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
+      (click)="selectColor(SelectedColorType.secondary)" [ngStyle]="{'z-index':selectedColor ? 1000 : 999}">
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
@@ -104,11 +104,11 @@
           </mat-radio-button>
         </mat-radio-group>
       </div>
-      <div *ngSwitchCase="tools.ColorPicker" [ngSwitch]="this.colorPickerProperties.selectedColor"
+      <div *ngSwitchCase="tools.ColorPicker" [ngSwitch]="SelectedColorType"
         class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>
-        <label *ngSwitchCase="colorPickerColorTypes.PRIMARY">Couleur primaire</label>
-        <label *ngSwitchCase="colorPickerColorTypes.SECONDARY">Couleur secondaire</label>
+        <label *ngSwitchCase="SelectedColorType.primary">Couleur primaire</label>
+        <label *ngSwitchCase="SelectedColorType.secondary">Couleur secondaire</label>
         <app-color-picker [showHistory]=true #colorPicker [color]="color"
                           (colorChanged)="handleColorChanged($event)"></app-color-picker>
           <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme couleur de fond</button>
