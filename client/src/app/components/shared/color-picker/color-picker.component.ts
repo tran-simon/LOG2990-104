@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
 import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
-import { Coordinate } from 'src/app/models/Coordinate';
 import { Color, ColorComponents } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 @Component({
   selector: 'app-color-picker',
