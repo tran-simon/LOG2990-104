@@ -68,8 +68,8 @@ export abstract class ShapeTool extends CreatorTool {
   updateCurrentCoord(c: Coordinate): void {
     const delta = Coordinate.substract(c, this.initialMouseCoord);
     const previewDimensions = Coordinate.abs(delta);
+    let dimensions = new Coordinate(previewDimensions.x, previewDimensions.y);
     let origin = Coordinate.minXYCoord(c, this.initialMouseCoord);
-    let dimensions = { ...previewDimensions } as Coordinate;
 
     this.previewArea.origin = origin;
     this.previewArea.width = previewDimensions.x;
