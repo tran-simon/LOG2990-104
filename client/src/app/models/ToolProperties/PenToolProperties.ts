@@ -1,4 +1,3 @@
-import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from './ToolProperties';
 
 export class PenToolProperties extends ToolProperties {
@@ -10,8 +9,8 @@ export class PenToolProperties extends ToolProperties {
 
   thickness: number;
 
-  constructor(primaryColor: Color, secondaryColor: Color, thickness: number = PenToolProperties.MIN_THICKNESS) {
-    super('Pen', primaryColor, secondaryColor);
+  constructor(thickness: number = PenToolProperties.MIN_THICKNESS) {
+    super('Pen');
 
     this.thickness = thickness;
   }

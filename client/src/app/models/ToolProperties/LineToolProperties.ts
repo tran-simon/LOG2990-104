@@ -1,4 +1,3 @@
-import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from './ToolProperties';
 
 export enum LineJunctionType {
@@ -22,13 +21,11 @@ export class LineToolProperties extends ToolProperties {
   junctionDiameter: number;
 
   constructor(
-    primaryColor: Color,
-    secondaryColor: Color,
     thickness: number = LineToolProperties.MIN_THICKNESS,
     junctionType: LineJunctionType = LineJunctionType.POINTS,
     junctionDiameter: number = LineToolProperties.MIN_DIAMETER,
   ) {
-    super('Line', primaryColor, secondaryColor);
+    super('Line');
 
     this.thickness = thickness;
     this.junctionType = junctionType;

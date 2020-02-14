@@ -1,4 +1,3 @@
-import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from './ToolProperties';
 
 export enum BrushTextureType {
@@ -19,13 +18,8 @@ export class BrushToolProperties extends ToolProperties {
   _thickness: number;
   texture: BrushTextureType;
 
-  constructor(
-    primaryColor: Color,
-    secondaryColor: Color,
-    thickness: number = BrushToolProperties.MIN_THICKNESS,
-    texture: BrushTextureType = BrushTextureType.TEXTURE_1,
-  ) {
-    super('Brush', primaryColor, secondaryColor);
+  constructor(thickness: number = BrushToolProperties.MIN_THICKNESS, texture: BrushTextureType = BrushTextureType.TEXTURE_1) {
+    super('Brush');
 
     this.thickness = thickness;
     this.texture = texture;
