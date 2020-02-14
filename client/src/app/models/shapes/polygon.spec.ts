@@ -19,4 +19,8 @@ describe('Polygon', () => {
   it('should create', () => {
     expect(polygon).toBeTruthy();
   });
+  it('Should have 3 edges', () => {
+    polygon.NbEdge = 0;
+    expect(polygon.NbEdge).toEqual(3);
+  });
 });

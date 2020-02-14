@@ -99,23 +99,39 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   selectPenTool(properties: ToolProperties) {
-    this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Pen) {
+      this.toolbar.currentTool = this.toolbar.tools.Pen;
+    } else {
+      this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectBrushTool(properties: ToolProperties) {
-    this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Brush) {
+      this.toolbar.currentTool = this.toolbar.tools.Brush;
+    } else {
+      this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectRectangleTool(properties: ToolProperties) {
-    this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Rectangle) {
+      this.toolbar.currentTool = this.toolbar.tools.Rectangle;
+    } else {
+      this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectLineTool(properties: ToolProperties) {
-    this.currentTool = new LineTool(this.drawingSurface);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
+      this.toolbar.currentTool = this.toolbar.tools.Line;
+    } else {
+      this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   changeBackground(color: Color): void {

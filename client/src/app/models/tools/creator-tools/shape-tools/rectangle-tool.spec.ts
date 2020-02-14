@@ -1,12 +1,12 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { SelectedColorsService } from '../../../../services/selected-colors.service';
-import { Coordinate } from '../../../../utils/math/coordinate';
-import { RectangleContourType, RectangleToolProperties } from '../../../tool-properties/rectangle-tool-properties';
-import { RectangleTool } from './rectangle-tool';
 
-describe('ShapeTool', () => {
+describe('RectangleTool', () => {
   let rectangleTool: RectangleTool;
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let surface: DrawingSurfaceComponent;
@@ -58,8 +58,8 @@ describe('ShapeTool', () => {
     rectangleTool.toolProperties = properties;
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
-    expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(selectedColorsService.primaryColor.rgbString);
-    expect(style.stroke ? style.stroke.replace(/ /g, '') : '').toEqual(selectedColorsService.secondaryColor.rgbString);
+    expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
+    expect(style.stroke).toEqual(selectedColorsService.secondaryColor.rgbString);
   });
 
   it('can draw Rectangle fill only', () => {
@@ -78,6 +78,6 @@ describe('ShapeTool', () => {
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fillOpacity).toEqual('0');
-    expect(style.stroke ? style.stroke.replace(/ /g, '') : '').toEqual(selectedColorsService.secondaryColor.rgbString);
+    expect(style.stroke).toEqual(selectedColorsService.secondaryColor.rgbString);
   });
 });

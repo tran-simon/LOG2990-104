@@ -7,11 +7,14 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 export class CompositeLine extends BaseShape {
   readonly MAX_FINAL_SNAP_DISTANCE = 3;
 
-  lineArray: Line[] = [];
-  junctionArray: Ellipse[] = [];
+  lineArray: Line[];
+  junctionArray: Ellipse[];
 
   get currentLine(): Line {
     return this.lineArray[this.lineArray.length - 1];
+  }
+  get currentJunction(): Ellipse {
+    return this.junctionArray[this.junctionArray.length - 1];
   }
 
   get origin(): Coordinate {
@@ -25,12 +28,38 @@ export class CompositeLine extends BaseShape {
 
   constructor(initCoord: Coordinate = new Coordinate()) {
     super('g');
+
+    this.lineArray = [];
+    this.junctionArray = [];
+
     this.addPoint(initCoord);
+  }
+
+  updateProperties() {
+    if (this.lineArray) {
+      this.lineArray.forEach((line) => {
+        line.properties.strokeColor = this.properties.strokeColor;
+        line.properties.strokeOpacity = this.properties.strokeColor.a;
+        line.properties.strokeWidth = this.properties.strokeWidth;
+        line.updateProperties();
+      });
+    }
+    if (this.junctionArray) {
+      this.junctionArray.forEach((junction) => {
+        junction.properties.fillColor = this.properties.fillColor;
+        junction.properties.strokeOpacity = this.properties.fillColor.a;
+        junction.properties.strokeWidth = 0;
+        junction.radiusX = this.properties.thickness;
+        junction.radiusY = this.properties.thickness;
+        junction.updateProperties();
+      });
+    }
   }
 
   addPoint(c: Coordinate) {
     this.addLine(c);
     this.addJunction(c);
+    this.updateProperties();
   }
 
   confirmPoint() {
@@ -60,6 +89,7 @@ export class CompositeLine extends BaseShape {
       this.updateCurrentCoord(this.lineArray[0].startCoord);
     } else {
       this.addJunction(this.currentLine.endCoord);
+      this.updateProperties();
     }
   }
 
@@ -80,16 +110,5 @@ export class CompositeLine extends BaseShape {
 
     this.junctionArray.push(junction);
     this.svgNode.appendChild(junction.svgNode);
-  }
-
-  redrawSvg() {
-    // unused, could be useful later on
-    this.svgNode.innerHTML = '';
-    this.lineArray.forEach((line) => {
-      this.svgNode.appendChild(line.svgNode);
-    });
-    this.junctionArray.forEach((junction) => {
-      this.svgNode.appendChild(junction.svgNode);
-    });
   }
 }
