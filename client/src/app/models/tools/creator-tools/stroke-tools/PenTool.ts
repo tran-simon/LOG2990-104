@@ -15,6 +15,15 @@ export class PenTool extends CreatorTool {
     super(drawingSurface);
   }
 
+  initPath() {
+    this.path = new Path(this.mousePosition);
+
+    this.path.properties.strokeColor = this._toolProperties.primaryColor;
+    this.path.properties.strokeWidth = this._toolProperties.thickness;
+    this.path.updateProperties();
+    this.drawShape();
+  }
+
   handleToolMouseEvent(e: MouseEvent): void {
     if (this.isActive) {
       if (e.type === 'mouseup') {
@@ -23,9 +32,8 @@ export class PenTool extends CreatorTool {
         this.shape.addPoint(this.mousePosition);
       }
     } else if (e.type === 'mousedown') {
+      this.initPath();
       this.isActive = true;
-      this.path = new Path(this.mousePosition);
-      this.drawShape();
     }
   }
 }
