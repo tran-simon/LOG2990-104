@@ -1,7 +1,7 @@
-import { Color } from '../utils/color/color';
-import { CompositeLine } from './CompositeLine';
-import { Coordinate } from './Coordinate';
-import { Line } from './Line';
+import { CompositeLine } from 'src/app/models/shapes/composite-line';
+import { Line } from 'src/app/models/shapes/line';
+import { Color } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 describe('CompositeLine', () => {
   let cLine: CompositeLine;

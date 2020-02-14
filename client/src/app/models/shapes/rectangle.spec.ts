@@ -1,5 +1,5 @@
-import { Coordinate } from './Coordinate';
-import { Rectangle } from './Rectangle';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 describe('Rectangle', () => {
   let rectangle: Rectangle;

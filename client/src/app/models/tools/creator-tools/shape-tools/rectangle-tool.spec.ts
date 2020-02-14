@@ -67,7 +67,7 @@ describe('RectangleTool', () => {
     rectangleTool.toolProperties = properties;
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
-    expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(selectedColorsService.primaryColor.rgbString);
+    expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
     const strokeWidth = style.strokeWidth as string;
     expect(parseInt(strokeWidth, 10)).toEqual(0);
   });

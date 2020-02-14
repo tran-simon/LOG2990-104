@@ -1,5 +1,6 @@
-import { Coordinate } from './Coordinate';
-import { Path } from './Path';
+import { Path } from 'src/app/models/shapes/path';
+import { Coordinate } from 'src/app/utils/math/coordinate';
+
 describe('Path', () => {
   let path: Path;
   /// let coordZero = new Coordinate(0, 0);

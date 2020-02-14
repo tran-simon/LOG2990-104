@@ -14,7 +14,7 @@ export abstract class BaseShape {
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
 
-  protected constructor(type: string) {
+  constructor(type: string) {
     this._svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
     this.properties = new ShapeProperties();
     this._origin = new Coordinate();

@@ -1,8 +1,8 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 

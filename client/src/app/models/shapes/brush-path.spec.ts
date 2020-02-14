@@ -1,6 +1,7 @@
-import { BrushPath } from './BrushPath';
-import { Coordinate } from './Coordinate';
-import { BrushTextureType } from './ToolProperties/BrushToolProperties';
+import { BrushPath } from 'src/app/models/shapes/brush-path';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-tool-properties';
+import { Coordinate } from 'src/app/utils/math/coordinate';
+
 describe('Path', () => {
   let brush: BrushPath;
   beforeEach(() => {
