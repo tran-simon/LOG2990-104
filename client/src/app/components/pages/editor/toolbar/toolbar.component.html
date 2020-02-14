@@ -130,6 +130,10 @@
         <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme
           couleur de fond
         </button>
+        <app-alpha [color]='alphaColor'
+                   (colorChanged)="handleAlphaChanged($event)"
+                   [isVertical]="false"
+        ></app-alpha>
       </div>
     </mat-drawer-content>
   </mat-drawer>

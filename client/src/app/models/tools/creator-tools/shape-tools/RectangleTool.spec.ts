@@ -68,7 +68,7 @@ describe('ShapeTool', () => {
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(selectedColorsService.primaryColor.rgbString);
-    expect(style.strokeWidth).toEqual('0');
+    expect(style.strokeWidth).toEqual('0px');
   });
 
   it('can draw Rectangle contour only', () => {
