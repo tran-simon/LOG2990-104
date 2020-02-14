@@ -24,13 +24,12 @@ describe('BaseShape', () => {
     component.properties.strokeWidth = 8;
     component.properties.strokeOpacity = 17;
     component.properties.strokeColor = Color.GREEN;
-    component.properties.fillOpacity = 13;
     component.properties.fillColor = Color.BLUE;
     component.updateProperties();
     let sK: boolean = component.svgNode.style.strokeWidth === component.properties.strokeWidth.toString();
     let sO: boolean = component.svgNode.style.strokeOpacity === component.properties.strokeOpacity.toString();
     let s: boolean = component.svgNode.style.stroke === component.properties.strokeColor.rgbString;
-    let fO: boolean = component.svgNode.style.fillOpacity === component.properties.fillOpacity.toString();
+    let fO: boolean = component.svgNode.style.fillOpacity === component.properties.fillColor.a.toString();
     let f: boolean = component.svgNode.style.fill === component.properties.fillColor.rgbString;
     let v: boolean = component.svgNode.style.visibility === component.properties.visibility;
     expect(sK).toEqual(true);
