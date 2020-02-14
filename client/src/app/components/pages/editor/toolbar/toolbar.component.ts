@@ -41,6 +41,8 @@ export class ToolbarComponent {
   lineJunctionNames = Object.values(this.lineJunctionTypes);
   showColorPicker = false;
 
+  private _alpha = 1;
+
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
@@ -57,12 +59,19 @@ export class ToolbarComponent {
 
   currentTool = this.tools.Pen;
 
-  constructor(private router: Router, protected selectedColors: SelectedColorsService) {}
+  constructor(private router: Router, public selectedColors: SelectedColorsService) {}
 
   handleColorChanged(eventColor: Color): void {
-    this.selectedColors.setColorByIndex(eventColor, this.selectedColor);
+    this.color = eventColor;
     this.showColorPicker = false;
     this.drawer.close();
+  }
+
+  handleAlphaChanged(color: Color): void {
+    if (color.a !== this.color.a) {
+      this._alpha = color.a;
+      this.color = Color.alpha(this.color, color.a);
+    }
   }
 
   selectTool(selection: Tool): void {
@@ -116,7 +125,15 @@ export class ToolbarComponent {
     return this.selectedColors.secondaryColor;
   }
 
+  set color(color: Color) {
+    this.selectedColors.setColorByIndex(color, this.selectedColor);
+  }
+
   get color(): Color {
     return this.selectedColors.colorByIndex(this.selectedColor);
+  }
+
+  get alphaColor(): Color {
+    return Color.alpha(this.color, this._alpha);
   }
 }

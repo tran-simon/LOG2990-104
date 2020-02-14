@@ -24,7 +24,7 @@ describe('Color', () => {
 
   it('can generate Hsl string', () => {
     const hslString = Color.hsl(120, 0.5, 0.4).hslString;
-    expect(hslString).toEqual('hsl(120,50%,40%)');
+    expect(hslString).toEqual('hsl(120, 50%, 40%)');
   });
 
   it('can create color from rgb components between 0 to 255', () => {
@@ -44,9 +44,16 @@ describe('Color', () => {
     expect(Color.BLUE.color255).toEqual(color);
   });
 
+  it('can get opaque color', () => {
+    const colorWithAlpha = Color.rgb(1, 1, 1, 0.5);
+
+    expect(colorWithAlpha.a).toEqual(0.5);
+    expect(colorWithAlpha.opaqueColor.a).toEqual(1);
+  });
+
   it('can get rgbString', () => {
     const rgbString = Color.RED.rgbString;
-    expect(rgbString).toEqual('rgb(255,0,0)');
+    expect(rgbString).toEqual('rgb(255, 0, 0)');
   });
 
   it('can calculate hue', () => {

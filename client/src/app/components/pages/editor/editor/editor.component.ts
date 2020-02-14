@@ -129,7 +129,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
       this.toolbar.currentTool = this.toolbar.tools.Line;
     } else {
-      this.currentTool = new LineTool(this.drawingSurface);
+      this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
       this.currentTool.toolProperties = properties;
     }
   }
