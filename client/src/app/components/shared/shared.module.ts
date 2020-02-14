@@ -22,6 +22,7 @@ import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-in
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
+import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 
 @NgModule({
@@ -50,6 +51,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
+    ColorHistoryComponent,
   ],
 
   entryComponents: [AbstractModalComponent],
@@ -70,6 +72,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
+    ColorHistoryComponent,
     MatExpansionModule,
     MatDividerModule,
     MatListModule,

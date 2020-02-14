@@ -4,10 +4,10 @@ import { CreatorTool } from 'src/app/models/tools/creator-tools/CreatorTool';
 import { LineTool } from 'src/app/models/tools/creator-tools/LineTool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/RectangleTool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/BrushTool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/PenTool';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
-import { PenTool } from '../../../../models/tools/creator-tools/stroke-tools/PenTool';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 export interface EditorParams {
@@ -86,6 +86,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   selectRectangleTool() {
     this.currentTool = new RectangleTool(this.drawingSurface);
+  }
+
+  changeBackground(color: Color): void {
+    this.drawingSurface.color = color;
   }
 
   @HostListener('window:keydown', ['$event'])
