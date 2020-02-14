@@ -26,19 +26,15 @@ export class Line extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return this.startCoord;
+    return this._origin;
   }
 
   set origin(c: Coordinate) {
-    this.startCoord = c;
+    this._origin = c;
   }
 
   get center(): Coordinate {
-    if (!this._startCoord || !this._endCoord) {
-      return this.origin;
-    } else {
-      return new Coordinate((this._startCoord.x + this._endCoord.x) / 2, (this._startCoord.y + this._endCoord.y) / 2);
-    }
+    return new Coordinate((this._startCoord.x + this._endCoord.x) / 2, (this._startCoord.y + this._endCoord.y) / 2);
   }
 
   constructor(startCoord = new Coordinate(), endCoord = startCoord) {
