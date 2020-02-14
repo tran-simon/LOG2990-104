@@ -239,6 +239,10 @@ export class Color implements ColorComponents {
 
   /* Getters */
 
+  get opaqueColor(): Color {
+    return new Color({ ...this, a: 1 });
+  }
+
   get color255(): ColorComponents {
     return { ...this, r: this.r255, g: this.g255, b: this.b255 };
   }
