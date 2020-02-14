@@ -18,7 +18,7 @@ export class LineToolProperties extends ToolProperties {
   maxDiameter = LineToolProperties.MAX_DIAMETER;
 
   thickness: number;
-  junctionType: any;
+  junctionType: LineJunctionType;
   junctionDiameter: number;
 
   constructor(

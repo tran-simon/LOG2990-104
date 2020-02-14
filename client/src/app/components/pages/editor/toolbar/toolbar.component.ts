@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { Color } from 'src/app/utils/color/color';
 
-import { BrushToolProperties } from 'src/app/models/ToolProperties/BrushToolProperties';
+import { BrushTextureType, BrushToolProperties } from 'src/app/models/ToolProperties/BrushToolProperties';
 import { ColorPickerColorType, ColorPickerToolProperties } from 'src/app/models/ToolProperties/ColorPickerToolProperties';
 import { LineJunctionType, LineToolProperties } from 'src/app/models/ToolProperties/LineToolProperties';
 import { PenToolProperties } from 'src/app/models/ToolProperties/PenToolProperties';
@@ -33,6 +33,8 @@ export class ToolbarComponent {
   @Output() editorBackgroundChanged = new EventEmitter<Color>();
 
   tools = Tool;
+  brushTextureTypes = BrushTextureType;
+  brushTextureNames = Object.values(BrushTextureType);
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
   lineJunctionTypes = LineJunctionType;
