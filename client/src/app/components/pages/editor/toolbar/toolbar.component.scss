@@ -86,7 +86,7 @@ mat-drawer-content {
   margin: 0 !important;
 }
 
-mat-slider, mat-form-field{
+mat-slider{
   width: 100%;
   color: $accent;
 }
@@ -104,6 +104,9 @@ mat-slider, mat-form-field{
   background-color: $accent;
 }
 
+app-number-input > label {
+  color: red;
+}
 
 .toolbar-tool-section {
   display: flex;
@@ -142,10 +145,20 @@ mat-radio-group > mat-radio-button {
   margin: 5px 0px;
 }
 
+app-number-input {
+  width: 100%;
+}
+
+:host ::ng-deep app-number-input {
+  label, .mat-input-element {
+    color: $accent;
+  }
+} 
+
 ::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
   border-color: $accent; 
 }
-  
+
 ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle{
   color: $accent;
   background-color: $accent;

@@ -2,6 +2,7 @@ import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handle
 import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { CompositeLine } from '../../CompositeLine';
 import { Coordinate } from '../../Coordinate';
+import { LineToolProperties } from '../../ToolProperties/LineToolProperties';
 import { CreatorTool } from './CreatorTool';
 
 export class LineTool extends CreatorTool {
@@ -9,6 +10,7 @@ export class LineTool extends CreatorTool {
   static readonly MAX_DIAGONAL_LOCK_ANGLE = Math.PI / 3;
   static readonly MAX_VERTICAL_LOCK_ANGLE = Math.PI / 2;
 
+  protected _toolProperties: LineToolProperties;
   private line: CompositeLine;
   private lockMethod: (c: Coordinate) => Coordinate;
 

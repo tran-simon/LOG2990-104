@@ -10,6 +10,9 @@ import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handle
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
+import { ToolProperties } from 'src/app/models/ToolProperties/ToolProperties';
+import { ToolbarComponent } from '../toolbar/toolbar.component';
+
 export interface EditorParams {
   width: string;
   height: string;
@@ -23,9 +26,14 @@ export interface EditorParams {
 })
 export class EditorComponent implements OnInit, AfterViewInit {
   private keyboardEventHandler: KeyboardEventHandler;
+
   surfaceWidth = 0;
   surfaceHeight = 0;
+
   surfaceColor = Color.WHITE;
+
+  @ViewChild('toolbar', { static: false })
+  toolbar: ToolbarComponent;
 
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
@@ -35,19 +43,19 @@ export class EditorComponent implements OnInit, AfterViewInit {
   constructor(private router: ActivatedRoute) {
     this.keyboardEventHandler = {
       l: () => {
-        this.selectLineTool();
+        this.selectLineTool(this.toolbar.lineProperties);
         return true;
       },
       c: () => {
-        this.selectPenTool();
+        this.selectPenTool(this.toolbar.penProperties);
         return false;
       },
       w: () => {
-        this.selectBrushTool();
+        this.selectBrushTool(this.toolbar.brushProperties);
         return false;
       },
       1: () => {
-        this.selectRectangleTool();
+        this.selectRectangleTool(this.toolbar.rectangleProperties);
         return false; // todo - enable default behavior when typing in text field
       },
       def: (e) => {
@@ -65,27 +73,48 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.selectLineTool();
+    this.selectLineTool(this.toolbar.lineProperties);
   }
 
   handleMouseEvent(e: MouseEvent) {
     this.currentTool.handleMouseEvent(e);
   }
 
-  selectLineTool() {
-    this.currentTool = new LineTool(this.drawingSurface);
+  handleToolChanged(toolEvent: ToolProperties) {
+    switch (toolEvent.toolName) {
+      case 'Pen':
+        this.selectPenTool(toolEvent);
+        break;
+      case 'Brush':
+        this.selectBrushTool(toolEvent);
+        break;
+      case 'Rectangle':
+        this.selectRectangleTool(toolEvent);
+        break;
+      case 'Line':
+        this.selectLineTool(toolEvent);
+        break;
+    }
   }
 
-  selectPenTool() {
+  selectPenTool(properties: ToolProperties) {
     this.currentTool = new PenTool(this.drawingSurface);
+    this.currentTool.toolProperties = properties;
   }
 
-  selectBrushTool() {
+  selectBrushTool(properties: ToolProperties) {
     this.currentTool = new BrushTool(this.drawingSurface);
+    this.currentTool.toolProperties = properties;
   }
 
-  selectRectangleTool() {
+  selectRectangleTool(properties: ToolProperties) {
     this.currentTool = new RectangleTool(this.drawingSurface);
+    this.currentTool.toolProperties = properties;
+  }
+
+  selectLineTool(properties: ToolProperties) {
+    this.currentTool = new LineTool(this.drawingSurface);
+    this.currentTool.toolProperties = properties;
   }
 
   changeBackground(color: Color): void {
