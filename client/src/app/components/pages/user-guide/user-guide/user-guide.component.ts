@@ -5,12 +5,11 @@ import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal
 
 enum Subject {
   Bienvenue,
-  Sujet1,
-  Sujet2,
-  Sujet3,
-  Sujet4,
-  Sujet5,
-  Sujet6,
+  Crayon,
+  Pinceau,
+  Rectangle,
+  Ligne,
+  Couleur,
 }
 
 @Component({
@@ -26,8 +25,6 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
   selectedSubject: Subject;
   opened = false;
   panelOpenState1 = false;
-  panelOpenState2 = false;
-  panelOpenState3 = false;
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
@@ -43,8 +40,6 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
 
   private openCategories(): void {
     this.panelOpenState1 = true;
-    this.panelOpenState2 = true;
-    this.panelOpenState3 = true;
   }
 
   previousSubject(): void {
@@ -55,7 +50,7 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
   }
 
   nextSubject(): void {
-    if (this.selectedSubject !== this.subjects.Sujet6) {
+    if (this.selectedSubject !== this.subjects.Couleur) {
       this.selectSubject(this.selectedSubject + 1);
       this.openCategories();
     }

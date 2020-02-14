@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
-import { Subject1Component } from 'src/app/components/pages/user-guide/subject1/subject1.component';
-import { Subject2Component } from 'src/app/components/pages/user-guide/subject2/subject2.component';
-import { Subject3Component } from 'src/app/components/pages/user-guide/subject3/subject3.component';
-import { Subject4Component } from 'src/app/components/pages/user-guide/subject4/subject4.component';
-import { Subject5Component } from 'src/app/components/pages/user-guide/subject5/subject5.component';
-import { Subject6Component } from 'src/app/components/pages/user-guide/subject6/subject6.component';
+import { CouleurComponent } from 'src/app/components/pages/user-guide/Couleur/couleur.component';
+import { CrayonComponent } from 'src/app/components/pages/user-guide/Crayon/crayon.component';
+import { LigneComponent } from 'src/app/components/pages/user-guide/Ligne/ligne.component';
+import { PinceauComponent } from 'src/app/components/pages/user-guide/Pinceau/pinceau.component';
+import { RectangleComponent } from 'src/app/components/pages/user-guide/Rectangle/rectangle.component';
 
 import { Router } from '@angular/router';
 import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
@@ -26,12 +25,11 @@ describe('UserGuideComponent', () => {
       declarations: [
         UserGuideComponent,
         WelcomeComponent,
-        Subject1Component,
-        Subject2Component,
-        Subject3Component,
-        Subject4Component,
-        Subject5Component,
-        Subject6Component,
+        CrayonComponent,
+        LigneComponent,
+        PinceauComponent,
+        RectangleComponent,
+        CouleurComponent,
       ],
       providers: [
         { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
@@ -68,11 +66,11 @@ describe('UserGuideComponent', () => {
     expect(selectSubjectSpy).toHaveBeenCalled();
     expect(openCategoriesSpy).toHaveBeenCalled();
   });
-  it('nextSubject should not call selectSubject and openCategories when on Subject 6', () => {
+  it('nextSubject should not call selectSubject and openCategories when on last subject', () => {
     const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
     const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
 
-    component.selectedSubject = component.subjects.Sujet6;
+    component.selectedSubject = component.subjects.Couleur;
     component.nextSubject();
     fixture.detectChanges();
     expect(selectSubjectSpy).not.toHaveBeenCalled();
@@ -90,7 +88,7 @@ describe('UserGuideComponent', () => {
     const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
     const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
 
-    component.selectedSubject = component.subjects.Sujet3;
+    component.selectedSubject = component.subjects.Pinceau;
     component.previousSubject();
     fixture.detectChanges();
     expect(selectSubjectSpy).toHaveBeenCalled();
@@ -98,8 +96,8 @@ describe('UserGuideComponent', () => {
   });
 
   it('selectSubject should change the subject', () => {
-    component.selectSubject(component.subjects.Sujet4);
-    expect(component.selectedSubject).toEqual(component.subjects.Sujet4);
+    component.selectSubject(component.subjects.Rectangle);
+    expect(component.selectedSubject).toEqual(component.subjects.Rectangle);
   });
   it('Next subject should be subject plus 1', () => {
     const liveSubject = component.selectedSubject;
@@ -107,7 +105,7 @@ describe('UserGuideComponent', () => {
     expect(component.selectedSubject).toEqual(liveSubject + 1);
   });
   it('Next subject should be subject plus 1', () => {
-    component.selectedSubject = component.subjects.Sujet3;
+    component.selectedSubject = component.subjects.Pinceau;
     const liveSubject = component.selectedSubject;
     component.nextSubject();
     expect(component.selectedSubject).toEqual(liveSubject + 1);
@@ -117,7 +115,5 @@ describe('UserGuideComponent', () => {
     /* tslint:disable-next-line */
     component['openCategories']();
     expect(component.panelOpenState1).toEqual(true);
-    expect(component.panelOpenState2).toEqual(true);
-    expect(component.panelOpenState3).toEqual(true);
   });
 });

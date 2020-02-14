@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Subject2Component } from 'src/app/components/pages/user-guide/subject2/subject2.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { PinceauComponent } from './pinceau.component';
 
-describe('Sujet2Component', () => {
-  let component: Subject2Component;
-  let fixture: ComponentFixture<Subject2Component>;
+describe('PinceauComponent', () => {
+  let component: PinceauComponent;
+  let fixture: ComponentFixture<PinceauComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [Subject2Component],
+      declarations: [PinceauComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Subject2Component);
+    fixture = TestBed.createComponent(PinceauComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Subject4Component } from 'src/app/components/pages/user-guide/subject4/subject4.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { CrayonComponent } from './crayon.component';
 
-describe('Sujet4Component', () => {
-  let component: Subject4Component;
-  let fixture: ComponentFixture<Subject4Component>;
+describe('Sujet1Component', () => {
+  let component: CrayonComponent;
+  let fixture: ComponentFixture<CrayonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [Subject4Component],
+      declarations: [CrayonComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Subject4Component);
+    fixture = TestBed.createComponent(CrayonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

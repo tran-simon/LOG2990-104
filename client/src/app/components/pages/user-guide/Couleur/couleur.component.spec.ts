@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Subject5Component } from 'src/app/components/pages/user-guide/subject5/subject5.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { CouleurComponent } from './couleur.component';
 
-describe('Sujet5Component', () => {
-  let component: Subject5Component;
-  let fixture: ComponentFixture<Subject5Component>;
+describe('CouleurComponent', () => {
+  let component: CouleurComponent;
+  let fixture: ComponentFixture<CouleurComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [Subject5Component],
+      declarations: [CouleurComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Subject5Component);
+    fixture = TestBed.createComponent(CouleurComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
