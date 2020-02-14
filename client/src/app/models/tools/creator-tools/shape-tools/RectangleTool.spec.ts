@@ -1,9 +1,9 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DrawingSurfaceComponent } from '/home/theo/Documents/session_4/LOG2990/log2990/client/src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { SelectedColorsService } from '../../../../services/selected-colors.service';
 import { Coordinate } from '../../../Coordinate';
 import { RectangleContourType, RectangleToolProperties } from '../../../ToolProperties/RectangleToolProperties';
-import { SelectedColorsService } from '../../../../services/selected-colors.service';
 import { RectangleTool } from './RectangleTool';
 
 describe('RectangleTool', () => {

@@ -11,8 +11,10 @@ describe('BaseShape', () => {
       this._origin = c;
     }
   }
-  const component: BaseShape = new BaseShapeImpl('rect');
-  beforeEach(() => {});
+  let component: BaseShape;
+  beforeEach(() => {
+    component = new BaseShapeImpl('rect');
+  });
   it('should update propreties', () => {
     component.properties.strokeWidth = 8;
     component.properties.strokeOpacity = 17;
