@@ -1,7 +1,7 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { BaseShape } from '../../BaseShape';
-import { ToolProperties } from '../../ToolProperties/ToolProperties';
-import { Tool } from '../Tool';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { Tool } from 'src/app/models/tools/tool';
 
 export abstract class CreatorTool extends Tool {
   protected isActive: boolean;
@@ -13,7 +13,7 @@ export abstract class CreatorTool extends Tool {
     this._toolProperties = properties;
   }
 
-  constructor(drawingSurface: DrawingSurfaceComponent) {
+  protected constructor(drawingSurface: DrawingSurfaceComponent) {
     super(drawingSurface);
     this.isActive = false;
   }

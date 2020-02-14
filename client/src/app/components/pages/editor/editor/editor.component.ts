@@ -1,17 +1,17 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/CreatorTool';
-import { LineTool } from 'src/app/models/tools/creator-tools/LineTool';
-import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/RectangleTool';
-import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/BrushTool';
-import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/PenTool';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
+import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
-import { ToolProperties } from 'src/app/models/ToolProperties/ToolProperties';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 
 export interface EditorParams {

@@ -1,5 +1,5 @@
-import { BaseShape } from './BaseShape';
-import { Coordinate } from './Coordinate';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class Path extends BaseShape {
   private _trace: string;

@@ -5,11 +5,11 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
-import { BrushTextureType, BrushToolProperties } from 'src/app/models/ToolProperties/BrushToolProperties';
-import { LineJunctionType, LineToolProperties } from 'src/app/models/ToolProperties/LineToolProperties';
-import { PenToolProperties } from 'src/app/models/ToolProperties/PenToolProperties';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/ToolProperties/RectangleToolProperties';
-import { ToolProperties } from 'src/app/models/ToolProperties/ToolProperties';
+import { BrushTextureType, BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
+import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
+import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 
 enum Tool {
   Pen = 'Pen',

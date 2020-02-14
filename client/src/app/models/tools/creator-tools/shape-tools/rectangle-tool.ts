@@ -1,10 +1,10 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { Coordinate } from 'src/app/models/Coordinate';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/ToolProperties/RectangleToolProperties';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
+import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
-import { Rectangle } from '../../../Rectangle';
-import { ShapeTool } from './ShapeTool';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class RectangleTool extends ShapeTool {
   protected _toolProperties: RectangleToolProperties;

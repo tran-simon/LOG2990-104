@@ -1,4 +1,4 @@
-import { ToolProperties } from './ToolProperties';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 
 export class PenToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;

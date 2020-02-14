@@ -1,7 +1,7 @@
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { Coordinate } from '../Coordinate';
 
 export abstract class Tool {
   protected drawingSurface: DrawingSurfaceComponent;
@@ -12,7 +12,7 @@ export abstract class Tool {
     return this._mousePosition;
   }
 
-  constructor(drawingSurface: DrawingSurfaceComponent) {
+  protected constructor(drawingSurface: DrawingSurfaceComponent) {
     this.drawingSurface = drawingSurface;
     this.keyboardEventHandler = {} as KeyboardEventHandler;
     this._mousePosition = new Coordinate();

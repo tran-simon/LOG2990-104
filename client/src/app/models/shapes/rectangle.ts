@@ -1,5 +1,5 @@
-import { BaseShape } from './BaseShape';
-import { Coordinate } from './Coordinate';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class Rectangle extends BaseShape {
   private _height: number;
@@ -37,10 +37,10 @@ export class Rectangle extends BaseShape {
     return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
-  constructor(origin = new Coordinate(), width: number = 0, height: number = width) {
+  constructor(origin = new Coordinate(), size: number = 0) {
     super('rect');
     this.origin = origin;
-    this.width = width;
-    this.height = height;
+    this.width = size;
+    this.height = size;
   }
 }

@@ -1,4 +1,4 @@
-import { MAX_POLY_EDGE, MIN_POLY_EDGE, Polygon } from './Polygon';
+import { MAX_POLY_EDGE, MIN_POLY_EDGE, Polygon } from 'src/app/models/shapes/polygon';
 
 describe('Polygon', () => {
   let polygon: Polygon;

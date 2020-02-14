@@ -1,4 +1,4 @@
-import { Rectangle } from './Rectangle';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
 
 describe('Rectangle', () => {
   let rectangle: Rectangle;

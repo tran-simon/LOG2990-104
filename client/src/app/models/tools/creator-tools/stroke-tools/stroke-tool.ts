@@ -1,12 +1,10 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { Path } from 'src/app/models/Path';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/CreatorTool';
+import { Path } from 'src/app/models/shapes/path';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 
 export abstract class StrokeTool extends CreatorTool {
   abstract path: Path;
-  abstract initPath(): void;
-
   constructor(drawingSurface: DrawingSurfaceComponent, protected selectedColors: SelectedColorsService) {
     super(drawingSurface);
   }
@@ -26,5 +24,15 @@ export abstract class StrokeTool extends CreatorTool {
       this.initPath();
       this.isActive = true;
     }
+  }
+
+  initPath(): void {
+    this.path = new Path(this.mousePosition);
+
+    this.path.properties.strokeColor = this.selectedColors.primaryColor;
+    this.path.properties.strokeOpacity = this.selectedColors.primaryColor.a;
+
+    this.path.updateProperties();
+    this.drawShape();
   }
 }

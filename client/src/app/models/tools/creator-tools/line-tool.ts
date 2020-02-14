@@ -1,9 +1,9 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { CompositeLine } from 'src/app/models/shapes/composite-line';
+import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { CompositeLine } from '../../CompositeLine';
-import { Coordinate } from '../../Coordinate';
-import { LineToolProperties } from '../../ToolProperties/LineToolProperties';
-import { CreatorTool } from './CreatorTool';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class LineTool extends CreatorTool {
   static readonly MAX_HORIZONTAL_LOCK_ANGLE = Math.PI / 6;

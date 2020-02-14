@@ -1,13 +1,10 @@
-import { Coordinate } from './Coordinate';
-import { Path } from './Path';
-import { BrushTextureType } from './ToolProperties/BrushToolProperties';
+import { Path } from 'src/app/models/shapes/path';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-tool-properties';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class BrushPath extends Path {
-  svgFilters: SVGFilterElement[];
-
-  constructor(c: Coordinate /*, filters: SVGFilterElement[]*/) {
+  constructor(c: Coordinate) {
     super(c);
-    // this.svgFilters = filters;
   }
 
   changeFilter(filter: BrushTextureType) {

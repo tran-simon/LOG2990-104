@@ -1,4 +1,4 @@
-import { ToolProperties } from './ToolProperties';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 
 export enum RectangleContourType {
   FILLEDCONTOUR = 'Plein avec contour',

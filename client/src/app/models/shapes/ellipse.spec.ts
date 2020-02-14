@@ -1,4 +1,4 @@
-import { Ellipse } from './Ellipse';
+import { Ellipse } from 'src/app/models/shapes/ellipse';
 
 describe('Ellipse', () => {
   let ellipse: Ellipse;

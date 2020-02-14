@@ -1,4 +1,4 @@
-import { Line } from './Line';
+import { Line } from 'src/app/models/shapes/line';
 
 describe('Line', () => {
   let line: Line;

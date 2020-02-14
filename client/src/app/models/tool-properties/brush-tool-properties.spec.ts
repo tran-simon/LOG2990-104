@@ -1,4 +1,4 @@
-import { BrushToolProperties } from './BrushToolProperties';
+import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
 
 describe('ToolbarComponent', () => {
   let brushProperties: BrushToolProperties;

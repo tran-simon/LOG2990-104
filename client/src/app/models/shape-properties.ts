@@ -1,7 +1,6 @@
 import { Color } from 'src/app/utils/color/color';
 
 export class ShapeProperties {
-  // Style
   strokeWidth: number;
   strokeColor: Color;
   strokeOpacity: number;

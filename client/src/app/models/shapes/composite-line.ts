@@ -1,8 +1,8 @@
-import { Color } from '../utils/color/color';
-import { BaseShape } from './BaseShape';
-import { Coordinate } from './Coordinate';
-import { Ellipse } from './Ellipse';
-import { Line } from './Line';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { Ellipse } from 'src/app/models/shapes/ellipse';
+import { Line } from 'src/app/models/shapes/line';
+import { Color } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class CompositeLine extends BaseShape {
   readonly MAX_FINAL_SNAP_DISTANCE = 3;

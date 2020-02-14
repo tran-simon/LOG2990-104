@@ -1,4 +1,4 @@
-import { Coordinate } from './Coordinate';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 describe('Coordinate', () => {
   let coordinate: Coordinate;

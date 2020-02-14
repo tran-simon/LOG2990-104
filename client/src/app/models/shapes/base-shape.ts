@@ -1,5 +1,5 @@
-import { Coordinate } from './Coordinate';
-import { ShapeProperties } from './ShapeProperties';
+import { ShapeProperties } from 'src/app/models/shape-properties';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
   protected _origin: Coordinate;
@@ -14,7 +14,7 @@ export abstract class BaseShape {
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
 
-  constructor(type: string) {
+  protected constructor(type: string) {
     this._svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
     this.properties = new ShapeProperties();
     this._origin = new Coordinate();

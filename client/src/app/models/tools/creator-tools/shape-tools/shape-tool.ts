@@ -1,8 +1,8 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { Coordinate } from 'src/app/models/Coordinate';
-import { Rectangle } from 'src/app/models/Rectangle';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { CreatorTool } from '../CreatorTool';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class ShapeTool extends CreatorTool {
   protected previewArea: Rectangle;
