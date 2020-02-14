@@ -62,7 +62,7 @@ describe('CompositeLine', () => {
     cLine.junctionArray.pop();
     expect(cLine.removeLastPoint()).toEqual(false);
   });
-  it('Should return false because there are no elements left after remove', () => {
+  it('Should return false when there are no elements left left after remove', () => {
     expect(cLine.removeLastPoint()).toEqual(false);
   });
   it('Should return true and should give the end coordinates of the removed line to the last line', () => {

@@ -10,6 +10,6 @@ describe('Path', () => {
     let brushTexture: BrushTextureType;
     brushTexture = BrushTextureType.TEXTURE_3;
     brush.changeFilter(brushTexture);
-    expect(brush.svgNode.getAttribute('filter')).toEqual('url(#TEXTURE_1)');
+    expect(brush.svgNode.getAttribute('filter')).toEqual('url(#TEXTURE_3)');
   });
 });

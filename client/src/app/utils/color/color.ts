@@ -216,7 +216,7 @@ export class Color implements ColorComponents {
    * @param l lightness (0 to 1)
    */
   static getHslString(h: number, s: number, l: number): string {
-    return `hsl(${h},${s * 100}%,${l * 100}%)`;
+    return `hsl(${h}, ${s * 100}%, ${l * 100}%)`;
   }
 
   /**
