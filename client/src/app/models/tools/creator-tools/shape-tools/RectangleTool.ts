@@ -42,7 +42,7 @@ export class RectangleTool extends ShapeTool {
     this.drawShape();
   }
 
-  resizeShape(origin: Coordinate, dimensions: Coordinate) {
+  resizeShape(dimensions: Coordinate, origin: Coordinate = this.rectangle.origin) {
     this.rectangle.origin = origin;
     this.rectangle.width = dimensions.x;
     this.rectangle.height = dimensions.y;

@@ -73,6 +73,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     CustomInputComponent,
     HexInputComponent,
     ColorHistoryComponent,
+    AlphaComponent,
     MatExpansionModule,
     MatDividerModule,
     MatListModule,

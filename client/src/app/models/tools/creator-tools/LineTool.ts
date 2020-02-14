@@ -30,7 +30,7 @@ export class LineTool extends CreatorTool {
         }
         return false;
       },
-      delete: () => {
+      escape: () => {
         if (this.isActive) {
           this.cancelShape();
         }
