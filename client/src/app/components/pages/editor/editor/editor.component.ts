@@ -39,7 +39,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
-  currentTool: CreatorTool = new LineTool(this.drawingSurface);
+  currentTool: CreatorTool;
 
   constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService) {
     this.keyboardEventHandler = {
@@ -74,7 +74,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.selectLineTool(this.toolbar.lineProperties);
+    this.selectPenTool(this.toolbar.lineProperties);
   }
 
   handleMouseEvent(e: MouseEvent) {

@@ -5,7 +5,7 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
-import { BrushToolProperties } from 'src/app/models/ToolProperties/BrushToolProperties';
+import { BrushTextureType, BrushToolProperties } from 'src/app/models/ToolProperties/BrushToolProperties';
 import { LineJunctionType, LineToolProperties } from 'src/app/models/ToolProperties/LineToolProperties';
 import { PenToolProperties } from 'src/app/models/ToolProperties/PenToolProperties';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/ToolProperties/RectangleToolProperties';
@@ -33,6 +33,8 @@ export class ToolbarComponent {
   @Output() editorBackgroundChanged = new EventEmitter<Color>();
 
   tools = Tool;
+  brushTextureTypes = BrushTextureType;
+  brushTextureNames = Object.values(BrushTextureType);
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
   lineJunctionTypes = LineJunctionType;
