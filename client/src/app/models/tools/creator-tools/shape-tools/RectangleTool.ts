@@ -7,7 +7,7 @@ import { ShapeTool } from './ShapeTool';
 export class RectangleTool extends ShapeTool {
   private rectangle: Rectangle;
 
-  get shape() {
+  get shape(): Rectangle {
     return this.rectangle;
   }
 

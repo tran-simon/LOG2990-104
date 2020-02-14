@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
@@ -26,6 +27,7 @@ describe('ColorLightnessComponent', () => {
         ColorPickerComponent,
         AlphaComponent,
         ColorLightnessComponent,
+        ColorHistoryComponent,
         NumberInputComponent,
         CustomInputComponent,
         HexInputComponent,

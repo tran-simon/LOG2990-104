@@ -1,1 +1,19 @@
-<svg #svg [style.background-color]="color.hexString" [attr.width]="width" [attr.height]="height"></svg>
+<svg #svg [style.background-color]="color.hexString" [attr.width]="width" [attr.height]="height">
+  <defs>
+    <filter #stroke1 id="filter1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+    </filter>
+    <filter #stroke2 id="filter2" x="-50%" y="-50%" width="200%" height="200%">
+      <feTurbulence type="turbulence" baseFrequency="0.05"
+        numOctaves="2" result="turbulence"/>
+      <feDisplacementMap in2="turbulence" in="SourceGraphic"
+        scale="40" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter #stroke3 id="filter3" x="-50%" y="-50%" width="200%" height="200%">
+      <feTurbulence type="turbulence" baseFrequency="0.05"
+        numOctaves="2" result="turbulence"/>
+      <feDisplacementMap in2="turbulence" in="SourceGraphic"
+        scale="40" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>

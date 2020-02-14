@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
+import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
 import { Coordinate } from 'src/app/models/Coordinate';
 import { Color, ColorComponents } from 'src/app/utils/color/color';
@@ -14,9 +15,12 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() isVertical = false;
   @Input() size = 300;
+  @Input() showHistory = false;
+  @Output() colorChanged = new EventEmitter<Color>();
 
   hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
   formGroup: FormGroup = new FormGroup({});
+  initialColor: Color = this.color;
 
   calculateIndicatorPosition(): Coordinate {
     return new Coordinate((this.color.h / 360) * this.size, this.color.s * this.size);
@@ -82,5 +86,17 @@ export class ColorPickerComponent extends AbstractCanvasDrawer {
     if (this.color.hex !== value.toLowerCase()) {
       this.updateColor(Color.hex(value, this.color.a));
     }
+  }
+
+  cancel(): void {
+    this.updateColor(this.initialColor);
+  }
+
+  confirm(): void {
+    if (this.initialColor.rgbString !== this.color.rgbString) {
+      ColorHistoryComponent.push(this.color);
+    }
+    this.initialColor = this.color;
+    this.colorChanged.emit(this.color);
   }
 }
