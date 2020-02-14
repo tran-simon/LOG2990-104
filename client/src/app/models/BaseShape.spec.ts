@@ -1,10 +1,6 @@
-// import { ShapeProperties } from './ShapeProperties';
 import { Color } from '../utils/color/color';
 import { BaseShape } from './BaseShape';
 import { Coordinate } from './Coordinate';
-
-// import Spy = jasmine.Spy;
-// import createSpyObj = jasmine.createSpyObj;
 
 describe('BaseShape', () => {
   class BaseShapeImpl extends BaseShape {
@@ -16,10 +12,7 @@ describe('BaseShape', () => {
     }
   }
   const component: BaseShape = new BaseShapeImpl('rect');
-  // let updatePropertiesSpy: Spy;
-  beforeEach(() => {
-    // updatePropertiesSpy = spyOn(component, 'updateProperties').and.callThrough();
-  });
+  beforeEach(() => {});
   it('should update propreties', () => {
     component.properties.strokeWidth = 8;
     component.properties.strokeOpacity = 17;
