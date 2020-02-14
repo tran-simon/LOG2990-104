@@ -3,10 +3,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { Coordinate } from 'src/app/models/Coordinate';
 import { Rectangle } from 'src/app/models/Rectangle';
+import { ToolProperties } from 'src/app/models/ToolProperties/ToolProperties';
 import { ShapeTool } from './ShapeTool';
 
 export class MockShapeTool extends ShapeTool {
   _shape: Rectangle;
+  _toolProperties: ToolProperties;
 
   get shape() {
     return this._shape;

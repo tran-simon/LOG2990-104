@@ -3,27 +3,30 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { Coordinate } from 'src/app/models/Coordinate';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/ToolProperties/RectangleToolProperties';
-import { Color } from 'src/app/utils/color/color';
+import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { RectangleTool } from './RectangleTool';
 
 describe('ShapeTool', () => {
   let rectangleTool: RectangleTool;
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let surface: DrawingSurfaceComponent;
-
-  const properties = new RectangleToolProperties(Color.RED, Color.GREEN); // todo - include default in constructor
+  let properties: RectangleToolProperties;
+  let selectedColorsService: SelectedColorsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DrawingSurfaceComponent],
+      providers: [SelectedColorsService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    selectedColorsService = new SelectedColorsService();
     fixture = TestBed.createComponent(DrawingSurfaceComponent);
     fixture.detectChanges();
     surface = fixture.componentInstance;
-    rectangleTool = new RectangleTool(surface);
+    properties = new RectangleToolProperties();
+    rectangleTool = new RectangleTool(surface, selectedColorsService);
   });
 
   it('can initialize new Rectangle', () => {
@@ -55,8 +58,8 @@ describe('ShapeTool', () => {
     rectangleTool.toolProperties = properties;
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
-    expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(properties.primaryColor.rgbString);
-    expect(style.stroke ? style.stroke.replace(/ /g, '') : '').toEqual(properties.secondaryColor.rgbString);
+    expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(selectedColorsService.primaryColor.rgbString);
+    expect(style.stroke ? style.stroke.replace(/ /g, '') : '').toEqual(selectedColorsService.secondaryColor.rgbString);
   });
 
   it('can draw Rectangle fill only', () => {
@@ -64,7 +67,7 @@ describe('ShapeTool', () => {
     rectangleTool.toolProperties = properties;
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
-    expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(properties.primaryColor.rgbString);
+    expect(style.fill ? style.fill.replace(/ /g, '') : '').toEqual(selectedColorsService.primaryColor.rgbString);
     expect(style.strokeWidth).toEqual('0');
   });
 
@@ -74,6 +77,6 @@ describe('ShapeTool', () => {
     rectangleTool.initShape(new Coordinate(100, 100));
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fillOpacity).toEqual('0');
-    expect(style.stroke ? style.stroke.replace(/ /g, '') : '').toEqual(properties.secondaryColor.rgbString);
+    expect(style.stroke ? style.stroke.replace(/ /g, '') : '').toEqual(selectedColorsService.secondaryColor.rgbString);
   });
 });
