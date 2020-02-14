@@ -114,7 +114,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   selectLineTool(properties: ToolProperties) {
-    this.currentTool = new LineTool(this.drawingSurface);
+    this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
     this.currentTool.toolProperties = properties;
   }
 
