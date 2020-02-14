@@ -1,5 +1,12 @@
-import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from './ToolProperties';
+
+export enum BrushTextureType {
+  TEXTURE_1 = 'Texture 1',
+  TEXTURE_2 = 'Texture 2',
+  TEXTURE_3 = 'Texture 3',
+  TEXTURE_4 = 'Texture 4',
+  TEXTURE_5 = 'Texture 5',
+}
 
 export class BrushToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;
@@ -9,10 +16,10 @@ export class BrushToolProperties extends ToolProperties {
   maxThickness = BrushToolProperties.MAX_THICKNESS;
 
   _thickness: number;
-  texture: any;
+  texture: BrushTextureType;
 
-  constructor(primaryColor: Color, secondaryColor: Color, thickness: number = BrushToolProperties.MIN_THICKNESS, texture: any = 'TODO') {
-    super('Brush', primaryColor, secondaryColor);
+  constructor(thickness: number = BrushToolProperties.MIN_THICKNESS, texture: BrushTextureType = BrushTextureType.TEXTURE_1) {
+    super('Brush');
 
     this.thickness = thickness;
     this.texture = texture;

@@ -1,5 +1,5 @@
+import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { DrawingSurfaceComponent } from '../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { CompositeLine } from '../../CompositeLine';
 import { Coordinate } from '../../Coordinate';
 import { LineToolProperties } from '../../ToolProperties/LineToolProperties';
@@ -86,25 +86,19 @@ export class LineTool extends CreatorTool {
     return this.calculateNoLock;
   }
 
-  calculateHorizontalLock(c: Coordinate): Coordinate {
-    return new Coordinate(c.x, this.line.currentLine.startCoord.y);
-  }
+  private readonly calculateHorizontalLock = (c: Coordinate): Coordinate => new Coordinate(c.x, this.line.currentLine.startCoord.y);
 
-  calculateVerticalLock(c: Coordinate): Coordinate {
-    return new Coordinate(this.line.currentLine.startCoord.x, c.y);
-  }
+  private readonly calculateVerticalLock = (c: Coordinate): Coordinate => new Coordinate(this.line.currentLine.startCoord.x, c.y);
 
-  calculatePositiveDiagonalLock(c: Coordinate): Coordinate {
+  private readonly calculatePositiveDiagonalLock = (c: Coordinate): Coordinate => {
     const deltaX = c.x - this.line.currentLine.startCoord.x;
     return new Coordinate(c.x, this.line.currentLine.startCoord.y + deltaX);
-  }
+  };
 
-  calculateNegativeDiagonalLock(c: Coordinate): Coordinate {
+  private readonly calculateNegativeDiagonalLock = (c: Coordinate): Coordinate => {
     const deltaX = c.x - this.line.currentLine.startCoord.x;
     return new Coordinate(c.x, this.line.currentLine.startCoord.y - deltaX);
-  }
+  };
 
-  calculateNoLock(c: Coordinate): Coordinate {
-    return c;
-  }
+  private readonly calculateNoLock = (c: Coordinate): Coordinate => c;
 }

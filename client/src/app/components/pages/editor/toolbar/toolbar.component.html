@@ -5,32 +5,29 @@
     </button>
     <div class="toolbar-section-divider"></div>
     <button id="pen-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Pen}"
-      (click)="selectTool(tools.Pen)" (dblclick)="openPanel(tools.Pen)">
+            (click)="selectTool(tools.Pen)" (dblclick)="openPanel(tools.Pen)">
       <mat-icon>edit</mat-icon>
     </button>
     <button id="brush-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Brush}"
-      (click)="selectTool(tools.Brush)" (dblclick)="openPanel(tools.Brush)">
+            (click)="selectTool(tools.Brush)" (dblclick)="openPanel(tools.Brush)">
       <mat-icon>brush</mat-icon>
     </button>
     <button id="rectangle-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Rectangle}"
-      (click)="selectTool(tools.Rectangle)" (dblclick)="openPanel(tools.Rectangle)">
+            (click)="selectTool(tools.Rectangle)" (dblclick)="openPanel(tools.Rectangle)">
       <mat-icon>crop_square</mat-icon>
     </button>
     <button id="line-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Line}"
-      (click)="selectTool(tools.Line)" (dblclick)="openPanel(tools.Line)">
+            (click)="selectTool(tools.Line)" (dblclick)="openPanel(tools.Line)">
       <mat-icon>show_chart</mat-icon>
-    </button>
-    <button id="colorpicker-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.ColorPicker}"
-      (click)="selectTool(tools.ColorPicker)" (dblclick)="openPanel(tools.ColorPicker)">
-      <mat-icon>colorize</mat-icon>
     </button>
   </div>
   <div id="toolbar-middle-buttons">
-    <div id="toolbar-primary-color" [style.background-color]="colorPickerProperties.primaryColor.hexString"
-      (click)="selectColor(1)" [ngStyle]="{'z-index':colorPickerProperties.selectedColor ? 1000 : 999 }">
+    <div id="toolbar-primary-color" [style.background-color]="primaryColor.hexString"
+         (click)="selectColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 500}">
     </div>
-    <div id="toolbar-secondary-color" [style.background-color]="colorPickerProperties.secondaryColor.hexString"
-      (click)="selectColor(0)" [ngStyle]="{'z-index':colorPickerProperties.selectedColor ? 999 : 1000 }">
+    <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
+         (click)="selectColor(SelectedColorType.secondary)"
+         [ngStyle]="{'z-index':drawer.opened && selectedColor ? 1000 : 0}">
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
@@ -48,70 +45,89 @@
 <mat-drawer-container>
   <mat-drawer #drawer mode="side">
     <mat-drawer-content [ngSwitch]="currentTool">
-      <div *ngSwitchCase="tools.Pen" class="toolbar-tool-section">
-        <h3 class="toolbar-option-section">Options du crayon</h3>
-        <app-number-input (valueChange)="selectTool(tools.Pen)" allowDecimals="true" [(value)]="penProperties.thickness">
-          Épaisseur du trait</app-number-input>
-        <mat-slider (change)="selectTool(tools.Pen)" [min]="penProperties.minThickness" [max]="penProperties.maxThickness"
-          [step]="stepThickness" thumbLabel="true" [(ngModel)]="penProperties.thickness">
-        </mat-slider>
+      <div *ngIf=!showColorPicker>
+        <div *ngSwitchCase="tools.Pen" class="toolbar-tool-section">
+          <h3 class="toolbar-option-section">Options du crayon</h3>
+          <app-number-input (valueChange)="selectTool(tools.Pen)" allowDecimals="true"
+                            [(value)]="penProperties.thickness">
+            Épaisseur du trait
+          </app-number-input>
+          <mat-slider (change)="selectTool(tools.Pen)" [min]="penProperties.minThickness"
+                      [max]="penProperties.maxThickness" [step]="stepThickness" thumbLabel="true"
+                      [(ngModel)]="penProperties.thickness">
+          </mat-slider>
+        </div>
+        <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
+          <h3 class="toolbar-option-section">Options du pinceau</h3>
+          <app-number-input (valueChange)="selectTool(tools.Brush)" allowDecimals="true"
+                            [(value)]="brushProperties.thickness">
+            Épaisseur du trait
+          </app-number-input>
+          <mat-slider (change)="selectTool(tools.Brush)" [min]="brushProperties.minThickness"
+                      [max]="brushProperties.maxThickness" [step]="stepThickness" thumbLabel="true"
+                      [(ngModel)]="brushProperties.thickness">
+          </mat-slider>
+          <label>Texture du trait</label>
+          <mat-radio-group (change)="selectTool(tools.Brush)" [(ngModel)]='brushProperties.texture'>
+            <mat-radio-button *ngFor='let textureType of brushTextureNames' [value]='textureType'>
+              {{textureType}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
+          <h3 class="toolbar-option-section">Options du rectangle</h3>
+          <app-number-input (valueChange)="selectTool(tools.Rectangle)" allowDecimals="true"
+                            [(value)]="rectangleProperties.thickness">
+            Épaisseur du trait de contour
+          </app-number-input>
+          <mat-slider (change)="selectTool(tools.Rectangle)" [min]="rectangleProperties.minThickness"
+                      [max]="rectangleProperties.maxThickness" [step]="stepThickness" thumbLabel="true"
+                      [(ngModel)]="rectangleProperties.thickness">
+          </mat-slider>
+          <label>Type de tracé</label>
+          <mat-radio-group (change)="selectTool(tools.Rectangle)" [(ngModel)]='rectangleProperties.contourType'>
+            <mat-radio-button *ngFor='let contourType of rectangleContourNames' [value]='contourType'>
+              {{contourType}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
+          <h3 class="toolbar-option-section">Options de la ligne</h3>
+          <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true"
+                            [(value)]="lineProperties.thickness">
+            Épaisseur de la ligne
+          </app-number-input>
+          <mat-slider (change)="selectTool(tools.Line)" [min]="lineProperties.minThickness"
+                      [max]="lineProperties.maxThickness" [step]="stepThickness" thumbLabel="true"
+                      [(ngModel)]="lineProperties.thickness">
+          </mat-slider>
+          <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true"
+                            [(value)]="lineProperties.junctionDiameter">
+            Épaisseur des points de
+            jonction
+          </app-number-input>
+          <mat-slider (change)="selectTool(tools.Line)" [min]="lineProperties.minDiameter"
+                      [max]="lineProperties.maxDiameter" [step]="stepThickness" thumbLabel="true"
+                      [(ngModel)]="lineProperties.junctionDiameter">
+          </mat-slider>
+          <label>Style des points de jonction</label>
+          <mat-radio-group (change)="selectTool(tools.Line)" [(ngModel)]='lineProperties.junctionType'>
+            <mat-radio-button *ngFor='let junctionType of lineJunctionNames' [value]='junctionType'>
+              {{junctionType}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
       </div>
-      <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
-        <h3 class="toolbar-option-section">Options du pinceau</h3>
-        <app-number-input (valueChange)="selectTool(tools.Brush)" allowDecimals="true" [(value)]="brushProperties.thickness">
-          Épaisseur du trait
-        </app-number-input>
-        <mat-slider (change)="selectTool(tools.Brush)" [min]="brushProperties.minThickness" [max]="brushProperties.maxThickness"
-          [step]="stepThickness" thumbLabel="true" [(ngModel)]="brushProperties.thickness">
-        </mat-slider>
-        <label>Texture du trait</label>
-      </div>
-      <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
-        <h3 class="toolbar-option-section">Options du rectangle</h3>
-        <app-number-input (valueChange)="selectTool(tools.Rectangle)" allowDecimals="true" [(value)]="rectangleProperties.thickness">
-          Épaisseur du trait de contour
-        </app-number-input>
-        <mat-slider (change)="selectTool(tools.Rectangle)" [min]="rectangleProperties.minThickness"
-          [max]="rectangleProperties.maxThickness" [step]="stepThickness" thumbLabel="true"
-          [(ngModel)]="rectangleProperties.thickness">
-        </mat-slider>
-        <label>Type de tracé</label>
-        <mat-radio-group (change)="selectTool(tools.Rectangle)" [(ngModel)]='rectangleProperties.contourType'>
-          <mat-radio-button *ngFor='let contourType of rectangleContourNames' [value]='contourType'>
-            {{contourType}}
-          </mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
-        <h3 class="toolbar-option-section">Options de la ligne</h3>
-        <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true" [(value)]="lineProperties.thickness">
-          Épaisseur de la ligne
-        </app-number-input>
-        <mat-slider (change)="selectTool(tools.Line)" [min]="lineProperties.minThickness" [max]="lineProperties.maxThickness"
-          [step]="stepThickness" thumbLabel="true" [(ngModel)]="lineProperties.thickness">
-        </mat-slider>
-        <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true" [(value)]="lineProperties.junctionDiameter">
-          Épaisseur des points de
-          jonction
-        </app-number-input>
-        <mat-slider (change)="selectTool(tools.Line)" [min]="lineProperties.minDiameter" [max]="lineProperties.maxDiameter"
-          [step]="stepThickness" thumbLabel="true" [(ngModel)]="lineProperties.junctionDiameter">
-        </mat-slider>
-        <label>Style des points de jonction</label>
-        <mat-radio-group (change)="selectTool(tools.Line)" [(ngModel)]='lineProperties.junctionType'>
-          <mat-radio-button *ngFor='let junctionType of lineJunctionNames' [value]='junctionType'>
-            {{junctionType}}
-          </mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <div *ngSwitchCase="tools.ColorPicker" [ngSwitch]="this.colorPickerProperties.selectedColor"
-        class="toolbar-tool-section">
+      <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType"
+           class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>
-        <label *ngSwitchCase="colorPickerColorTypes.PRIMARY">Couleur primaire</label>
-        <label *ngSwitchCase="colorPickerColorTypes.SECONDARY">Couleur secondaire</label>
-        <app-color-picker [showHistory]=true (afterViewInit)="handleColorPickerLoaded()" #colorPicker [color]="color"
-          (colorChanged)="handleColorChanged($event)"></app-color-picker>
-          <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme couleur de fond</button>
+        <label *ngSwitchCase="SelectedColorType.primary">Couleur primaire</label>
+        <label *ngSwitchCase="SelectedColorType.secondary">Couleur secondaire</label>
+        <app-color-picker [showHistory]=true #colorPicker [color]="color"
+                          (colorChanged)="handleColorChanged($event)" (closed)='drawer.close()'></app-color-picker>
+        <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme
+          couleur de fond
+        </button>
       </div>
     </mat-drawer-content>
   </mat-drawer>

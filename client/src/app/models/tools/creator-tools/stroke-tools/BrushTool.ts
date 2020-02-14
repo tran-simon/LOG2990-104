@@ -1,25 +1,20 @@
 import { BrushPath } from 'src/app/models/BrushPath';
-import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { PenTool } from './PenTool';
+import { BrushToolProperties } from 'src/app/models/ToolProperties/BrushToolProperties';
+import { StrokeTool } from 'src/app/models/tools/creator-tools/stroke-tools/StrokeTool';
 
-export class BrushTool extends PenTool {
-  protected path: BrushPath;
+export class BrushTool extends StrokeTool {
+  path: BrushPath;
+  _toolProperties: BrushToolProperties;
 
-  constructor(drawingSurface: DrawingSurfaceComponent) {
-    super(drawingSurface);
-  }
+  initPath(): void {
+    this.path = new BrushPath(this.mousePosition);
 
-  handleToolMouseEvent(e: MouseEvent): void {
-    if (this.isActive) {
-      if (e.type === 'mouseup') {
-        this.isActive = false;
-      } else if (e.type === 'mousemove') {
-        this.shape.addPoint(this.mousePosition);
-      }
-    } else if (e.type === 'mousedown') {
-      this.isActive = true;
-      this.path = new BrushPath(this.mousePosition);
-      this.drawShape();
-    }
+    this.path.properties.strokeWidth = this._toolProperties.thickness;
+    this.path.properties.strokeColor = this.selectedColors.primaryColor;
+    this.path.properties.strokeOpacity = this.selectedColors.primaryColor.a;
+    this.path.changeFilter(this._toolProperties.texture);
+
+    this.path.updateProperties();
+    this.drawShape();
   }
 }
