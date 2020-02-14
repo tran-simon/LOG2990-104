@@ -59,7 +59,7 @@ export class ToolbarComponent {
 
   currentTool = this.tools.Pen;
 
-  constructor(private router: Router, protected selectedColors: SelectedColorsService) {}
+  constructor(private router: Router, public selectedColors: SelectedColorsService) {}
 
   handleColorChanged(eventColor: Color): void {
     this.color = eventColor;
