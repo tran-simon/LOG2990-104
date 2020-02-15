@@ -2,6 +2,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
+import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
+import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -66,6 +70,14 @@ describe('EditorComponent', () => {
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
+  it('should pass down events when unknown keys are pressed', () => {
+    const spy = spyOn(component.currentTool, 'handleKeyboardEvent');
+
+    KeyboardListener.keyEvent(keyDown('x'), component['keyboardEventHandler']);
+
+    expect(spy).toHaveBeenCalled();
+  });
+
   it('should select the brush tool when typing w', () => {
     const spy = spyOn(component, 'selectBrushTool');
 
@@ -91,5 +103,33 @@ describe('EditorComponent', () => {
     KeyboardListener.keyEvent(keyDown('l'), component['keyboardEventHandler']);
 
     expect(spy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should select the line tool', () => {
+    component.handleToolChanged(new LineToolProperties());
+    component.handleToolChanged(new LineToolProperties());
+
+    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Line);
+  });
+
+  it('should select the rectangle tool', () => {
+    component.handleToolChanged(new RectangleToolProperties());
+    component.handleToolChanged(new RectangleToolProperties());
+
+    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Rectangle);
+  });
+
+  it('should select the brush tool', () => {
+    component.handleToolChanged(new BrushToolProperties());
+    component.handleToolChanged(new BrushToolProperties());
+
+    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Brush);
+  });
+
+  it('should select the pen tool after selecting the brush tool', () => {
+    component.handleToolChanged(new BrushToolProperties());
+    component.handleToolChanged(new PenToolProperties());
+
+    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Pen);
   });
 });
