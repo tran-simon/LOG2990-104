@@ -1,6 +1,6 @@
 import { AfterViewInit, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
-import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterViewInit {
   @Input('color')

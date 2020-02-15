@@ -1,7 +1,7 @@
 import { EventEmitter, Input, Output } from '@angular/core';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
-import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 import { MathUtil } from 'src/app/utils/math/math-util';
 
 export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {

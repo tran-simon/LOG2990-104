@@ -1,17 +1,17 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/CreatorTool';
-import { LineTool } from 'src/app/models/tools/creator-tools/LineTool';
-import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/RectangleTool';
-import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/BrushTool';
-import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/PenTool';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
+import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
-import { ToolProperties } from 'src/app/models/ToolProperties/ToolProperties';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 
 export interface EditorParams {
@@ -99,23 +99,39 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   selectPenTool(properties: ToolProperties) {
-    this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Pen) {
+      this.toolbar.currentTool = this.toolbar.tools.Pen;
+    } else {
+      this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectBrushTool(properties: ToolProperties) {
-    this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Brush) {
+      this.toolbar.currentTool = this.toolbar.tools.Brush;
+    } else {
+      this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectRectangleTool(properties: ToolProperties) {
-    this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Rectangle) {
+      this.toolbar.currentTool = this.toolbar.tools.Rectangle;
+    } else {
+      this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   selectLineTool(properties: ToolProperties) {
-    this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
-    this.currentTool.toolProperties = properties;
+    if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
+      this.toolbar.currentTool = this.toolbar.tools.Line;
+    } else {
+      this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
   }
 
   changeBackground(color: Color): void {

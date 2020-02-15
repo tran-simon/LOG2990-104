@@ -1,6 +1,6 @@
 import { AbstractColorStripComponent } from 'src/app/components/shared/color-picker/color-strip/abstract-color-strip.component';
-import { Coordinate } from 'src/app/models/Coordinate';
 import { Color } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 import createSpyObj = jasmine.createSpyObj;
 
 describe('AbstractColorStripComponent', () => {
