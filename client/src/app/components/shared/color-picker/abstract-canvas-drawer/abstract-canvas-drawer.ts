@@ -16,13 +16,20 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
     return this._color;
   }
 
-  private _color: Color = Color.WHITE;
+  private _color: Color;
 
-  @Input() indicatorSize = 20;
-  @Input() indicatorLineWidth = 3;
+  @Input() indicatorSize: number;
+  @Input() indicatorLineWidth: number;
   canvas: ElementRef<HTMLCanvasElement>;
   renderingContext: CanvasRenderingContext2D;
-  mouseIsDown = false;
+  mouseIsDown: boolean;
+
+  constructor() {
+    this._color = Color.WHITE;
+    this.indicatorSize = 20;
+    this.indicatorLineWidth = 3;
+    this.mouseIsDown = false;
+  }
 
   updateColor(color: Color): void {
     const shouldRedraw = this.shouldRedraw(color, this.color);

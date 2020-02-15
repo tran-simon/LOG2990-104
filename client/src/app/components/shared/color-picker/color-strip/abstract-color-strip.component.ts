@@ -5,13 +5,21 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 import { MathUtil } from 'src/app/utils/math/math-util';
 
 export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
-  @Input() isVertical = false;
-  @Input() length = 300;
-  @Input() thickness = 50;
+  @Input() isVertical: boolean;
+  @Input() length: number;
+  @Input() thickness: number;
+  @Output() colorChanged: EventEmitter<Color>;
 
-  indicatorSize = 10;
+  indicatorSize: number;
 
-  @Output() colorChanged = new EventEmitter<Color>();
+  constructor() {
+    super();
+    this.isVertical = false;
+    this.length = 300;
+    this.thickness = 50;
+    this.indicatorSize = 10;
+    this.colorChanged = new EventEmitter<Color>();
+  }
 
   abstract get value(): number;
 

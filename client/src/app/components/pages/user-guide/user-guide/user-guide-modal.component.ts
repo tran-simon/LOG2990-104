@@ -22,10 +22,11 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   sidenav: MatSidenav;
   subjects = GuideSubject;
   selectedSubject: GuideSubject;
-  panelOpenState1 = false;
+  panelOpenState1: boolean;
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
+    this.panelOpenState1 = false;
   }
 
   ngOnInit(): void {

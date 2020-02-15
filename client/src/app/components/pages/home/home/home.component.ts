@@ -14,11 +14,13 @@ import { CreateDrawingModalComponent } from '../create-drawing-modal/create-draw
 })
 export class HomeComponent {
   keyboardEventHandler: KeyboardEventHandler;
-  previousDrawings = false;
-  modalIsOpened = false;
+  previousDrawings: boolean;
+  modalIsOpened: boolean;
   dialogRef: MatDialogRef<AbstractModalComponent>;
 
   constructor(private router: Router, public dialog: MatDialog) {
+    this.previousDrawings = false;
+    this.modalIsOpened = false;
     this.keyboardEventHandler = {
       ctrl_o: () => {
         this.openModal('create');
