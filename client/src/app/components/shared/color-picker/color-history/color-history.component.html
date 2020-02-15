@@ -1,0 +1,5 @@
+<div id='color-history' *ngFor='let color of colorHistory; let i = index'>
+  <div class='color-history-button' [ngStyle]="{'background-color':color.rgbString}"
+    (contextmenu)='onRightClick(color)' (click)='onClick(color)'>
+  </div>
+</div>

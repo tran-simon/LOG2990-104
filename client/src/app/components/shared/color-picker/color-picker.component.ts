@@ -1,105 +1,109 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/custom-input/error-messages';
-import { Color, Color255 } from 'src/app/utils/color/color';
+import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
+import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
+import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
+import { Color, ColorComponents } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 @Component({
   selector: 'app-color-picker',
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss'],
 })
-export class ColorPickerComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() _color = Color.GREEN;
+export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit {
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
+  @Input() isVertical = false;
+  @Input() size = 300;
+  @Input() showHistory = false;
+  @Output() colorChanged = new EventEmitter<Color>();
+  @Output() closed = new EventEmitter();
 
-  private mouseIsDown = false;
-  private renderingContext: CanvasRenderingContext2D;
-  hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({pattern: 'Doit être une couleur valide'});
-
-  size = 300;
-
+  hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
   formGroup: FormGroup = new FormGroup({});
+  initialColor: Color;
 
   ngOnInit(): void {
-    this.renderingContext = this.canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
+    super.ngOnInit();
+    this.initialColor = this.color;
   }
 
-  ngAfterViewInit(): void {
-    this.draw();
+  calculateIndicatorPosition(): Coordinate {
+    return new Coordinate((this.color.h / 360) * this.size, this.color.s * this.size);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.draw();
-  }
-
-  draw(size = this.size, lightness = this.color.lightness) {
+  draw(): void {
     if (this.renderingContext) {
-      for (let i = 0; i < size; i++) {
-        const h = (i / size) * 360;
-        const gradient = this.renderingContext.createLinearGradient(0, 0, 0, size);
-        gradient.addColorStop(0, Color.getHslString(h, 0, lightness));
-        gradient.addColorStop(1, Color.getHslString(h, 1, lightness));
+      for (let i = 0; i < this.size; i++) {
+        const h = (i / this.size) * 360;
+        const gradient = this.renderingContext.createLinearGradient(0, 0, 0, this.size);
+        gradient.addColorStop(0, Color.getHslString(h, 0, 0.5));
+        gradient.addColorStop(1, Color.getHslString(h, 1, 0.5));
 
         this.renderingContext.fillStyle = gradient;
-        this.renderingContext.fillRect(i, 0, 1, size);
+        this.renderingContext.fillRect(i, 0, 1, this.size);
       }
     }
   }
 
-  lightnessChanged(lightness: number): void {
-    const h = this.color.hue;
-    const s = this.color.saturation;
-    this.color = Color.hsl(h ? h : 0, s, lightness);
-    this.draw();
+  drawIndicator(position: Coordinate): void {
+    const { x, y } = position;
+    const color = Color.hsl(this.color.h, this.color.s, 0.5);
+    this.renderingContext.fillStyle = color.hexString;
+    this.renderingContext.strokeStyle = color.negative.hexString;
+    this.renderingContext.lineWidth = this.indicatorLineWidth;
+    this.renderingContext.fillRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
+    this.renderingContext.strokeRect(x - this.indicatorSize / 2, y - this.indicatorSize / 2, this.indicatorSize, this.indicatorSize);
   }
 
-  colorChange(value: string, component: string): void {
-    let {red, green, blue}: Color255 = this.color.color255;
+  calculateColorFromMouseEvent(event: MouseEvent): Color {
+    const h = (event.offsetX / this.size) * 360;
+    const s = event.offsetY / this.size;
+    return Color.hsl(h, s, this.color.l, this.color.a);
+  }
+
+  shouldRedraw(color: Color, previousColor: Color): boolean {
+    return previousColor.h !== color.h || previousColor.s !== color.s;
+  }
+
+  colorChange(color: Color): void {
+    this.color = color;
+  }
+
+  rgbChange(value: string, component: string): void {
+    let { r, g, b }: ColorComponents = this.color.color255;
     switch (component) {
       case 'r':
-        red = parseInt(value, 16);
+        r = parseInt(value, 16);
         break;
       case 'g':
-        green = parseInt(value, 16);
+        g = parseInt(value, 16);
         break;
       case 'b':
-        blue = parseInt(value, 16);
+        b = parseInt(value, 16);
         break;
     }
-    this.color = Color.color255(red, green, blue);
-    this.draw();
+    if (!(this.color.r255 === r && this.color.g255 === g && this.color.b255 === b)) {
+      this.color = Color.rgb255(r, g, b, this.color.a);
+    }
   }
 
   hexChange(value: string): void {
-    this.color = Color.hex(value);
-    this.draw();
-  }
-
-  onMouseDown(event: MouseEvent): void {
-    this.mouseIsDown = true;
-    const h = (event.offsetX / this.size) * 360;
-    const s = event.offsetY / this.size;
-    this.color = Color.hsl(h, s, this.color.lightness);
-  }
-
-  onMouseMove(event: MouseEvent): void {
-    if (this.mouseIsDown) {
-      const h = (event.offsetX / this.size) * 360;
-      const s = event.offsetY / this.size;
-      this.color = Color.hsl(h, s, this.color.lightness);
+    if (this.color.hex !== value.toLowerCase()) {
+      this.color = Color.hex(value, this.color.a);
     }
   }
 
-  @HostListener('window:mouseup')
-  onMouseUp(): void {
-    this.mouseIsDown = false;
+  cancel(): void {
+    this.color = this.initialColor;
+    this.closed.emit();
   }
 
-  get color(): Color {
-    return this._color;
-  }
-
-  set color(value: Color) {
-    this._color = value;
+  confirm(): void {
+    if (this.initialColor.rgbString !== this.color.rgbString) {
+      ColorHistoryComponent.push(this.color.opaqueColor);
+    }
+    this.initialColor = this.color;
+    this.colorChanged.emit(this.color);
   }
 }

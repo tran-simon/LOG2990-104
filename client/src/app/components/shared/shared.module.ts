@@ -1,15 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSidenavModule } from '@angular/material';
 
+import {
+  MatButtonModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatRadioModule,
+  MatSidenavModule,
+} from '@angular/material';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-lightness/color-lightness.component';
+import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
+import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-strip/color-lightness/color-lightness.component';
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
+import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 
 @NgModule({
@@ -24,15 +37,21 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatRadioModule,
     MatSidenavModule,
+    MatExpansionModule,
+    MatDividerModule,
+    MatListModule,
   ],
   declarations: [
     AbstractModalComponent,
     ColorPickerComponent,
     ColorLightnessComponent,
+    AlphaComponent,
     NumberInputComponent,
     CustomInputComponent,
-    HexInputComponent
+    HexInputComponent,
+    ColorHistoryComponent,
   ],
 
   entryComponents: [AbstractModalComponent],
@@ -47,12 +66,17 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatRadioModule,
     MatSidenavModule,
     ColorPickerComponent,
     NumberInputComponent,
     CustomInputComponent,
-    HexInputComponent
+    HexInputComponent,
+    ColorHistoryComponent,
+    AlphaComponent,
+    MatExpansionModule,
+    MatDividerModule,
+    MatListModule,
   ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

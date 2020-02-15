@@ -14,8 +14,7 @@ describe('NumberInputComponent', () => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
       declarations: [NumberInputComponent, CustomInputComponent],
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -31,7 +30,7 @@ describe('NumberInputComponent', () => {
   it('can make regex string', () => {
     expect(NumberInputComponent.makeRegexString(false, false)).toEqual('^([0-9]*)$');
     expect(NumberInputComponent.makeRegexString(true, false)).toEqual('^-?([0-9]*)$');
-    expect(NumberInputComponent.makeRegexString(false, true)).toEqual('^([0-9]*\.)?[0-9]*$');
-    expect(NumberInputComponent.makeRegexString(true, true)).toEqual('^-?([0-9]*\.)?[0-9]*$');
+    expect(NumberInputComponent.makeRegexString(false, true)).toEqual('^([0-9]*.)?[0-9]*$');
+    expect(NumberInputComponent.makeRegexString(true, true)).toEqual('^-?([0-9]*.)?[0-9]*$');
   });
 });

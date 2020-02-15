@@ -14,8 +14,7 @@ describe('HexInputComponent', () => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
       declarations: [HexInputComponent, CustomInputComponent],
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -29,6 +28,6 @@ describe('HexInputComponent', () => {
   });
 
   it('can format hex string', () => {
-    expect(component.format('0aFb0')).toEqual('0AFB0');
+    expect(component.format('0aFb0')).toEqual('0afb0');
   });
 });

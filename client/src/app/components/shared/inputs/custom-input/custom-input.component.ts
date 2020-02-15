@@ -1,26 +1,31 @@
 import { Component, EventEmitter, Input, NgIterable, OnChanges, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { defaultErrorMessages, ErrorMessages } from './error-messages';
+import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
 
 @Component({
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
-  styleUrls: ['./custom-input.component.scss']
+  styleUrls: ['./custom-input.component.scss'],
 })
 export class CustomInputComponent implements OnInit, OnChanges {
   static id = 0;
   @Input() id = `custom-input-${CustomInputComponent.id++}`;
+  @Input() autofocus = true;
   @Input() formGroup = new FormGroup({});
   @Input() stringToMatch: string;
-  @Input() required = true;
+  @Input() required = false;
   @Input() messages: string;
   @Input() length: number;
   @Input() minLength: number;
   @Input() maxLength: number;
   @Input() prefix: string;
   @Input() suffix: string;
+  @Input() allowExternalUpdatesWhenFocused = false;
 
   formControl: FormControl;
+
+  private _focused = false;
+  editingValue = '';
   validValue = '';
 
   @Input() value = '';
@@ -38,17 +43,37 @@ export class CustomInputComponent implements OnInit, OnChanges {
     this.validValue = this.value;
   }
 
+  onFocus(): void {
+    this._focused = true;
+  }
+
   onBlur(value = '') {
+    this._focused = false;
     if (this.formControl) {
       this.value = this.format(this.formControl.valid ? value : this.validValue);
       this.formControl.setValue(this.value);
+      this.validValue = this.value;
+      this.editingValue = this.value;
+      this.valueChange.emit(this.value);
+    }
+  }
+
+  onChange(value = '') {
+    if (this.formControl && this.formControl.valid) {
+      this.value = value;
+      this.editingValue = this.value;
+      this.validValue = this.value;
       this.valueChange.emit(this.value);
     }
   }
 
   ngOnChanges(): void {
-    this.value = this.format(this.value);
-    this.validValue = this.value;
+    if (this.allowExternalUpdatesWhenFocused || !this.focused) {
+      this.value = this.format(this.value);
+      this.validValue = this.value;
+    } else {
+      this.value = this.editingValue;
+    }
   }
 
   getErrorMessage(errorName: string): string {
@@ -79,5 +104,9 @@ export class CustomInputComponent implements OnInit, OnChanges {
   get errors(): NgIterable<string> {
     const errors: ValidationErrors | null = this.formControl.errors;
     return errors ? Object.keys(errors) : [];
+  }
+
+  get focused(): boolean {
+    return this._focused;
   }
 }

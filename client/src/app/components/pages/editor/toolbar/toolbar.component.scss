@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import "../../../../../assets/globalTheme";
 
 #toolbar-container {
@@ -11,9 +10,11 @@
   height: calc(100vh - 0px);
 
   background-color: $primary;
+
+  z-index: 1000;
 }
 
-#toolbar-top-buttons {
+#toolbar-top-buttons, #toolbar-middle-buttons, #toolbar-bottom-buttons {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -21,15 +22,47 @@
   justify-content: space-between;
 }
 
-#toolbar-bottom-buttons {
+#toolbar-bottom-buttons{
   padding-bottom: 20px;
   padding-top: 15px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
   background-color: $secondary;
+}
+
+#toolbar-middle-buttons {
+  height: 100%;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+#swap-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  bottom: 260px;
+}
+
+#toolbar-primary-color {
+  border: 1px solid $accent;
+  height: 35px;
+  width: 35px;
+  z-index: 1000;
+  position: absolute;
+  bottom: 210px;
+  right: 15px;
+}
+
+#toolbar-secondary-color {
+  border: 1px solid $accent;
+  height: 35px;
+  width: 35px;
+  z-index: 500;
+  position: absolute;
+  bottom: 200px;
+  left: 15px;
 }
 
 button {
@@ -44,17 +77,15 @@ button {
 }
 
 .toolbar-section-divider {
-  padding: 10px 0;
+  padding: 10px 0px;
   width: 100%;
 }
 
 mat-drawer-container {
   position: fixed;
   margin-left: 60px;
-  width: 100%;
   height: calc(100vh - 0px);
-
-  background-color: transparent;
+  overflow: visible;
 }
 
 mat-drawer {
@@ -66,27 +97,27 @@ mat-drawer-content {
   margin: 0 !important;
 }
 
-mat-slider, mat-form-field {
+mat-slider{
   width: 100%;
   color: $accent;
 }
 
 ::ng-deep .mat-accent .mat-slider-thumb {
   background-color: $accent;
-}
-
+} 
 ::ng-deep .mat-accent .mat-slider-thumb-label {
   background-color: $accent;
-}
-
+} 
 ::ng-deep .mat-accent .mat-slider-thumb-label-text {
   color: $secondary;
-}
-
+} 
 ::ng-deep .mat-accent .mat-slider-track-fill {
   background-color: $accent;
 }
 
+app-number-input > label {
+  color: red;
+}
 
 .toolbar-tool-section {
   display: flex;
@@ -100,8 +131,54 @@ mat-slider, mat-form-field {
   display: flex;
   align-self: flex-start;
   color: $accent;
+  margin-bottom: 25px;
 }
 
 .selected-tool {
   background-color: $secondary;
+}
+
+label {
+  align-self: flex-start;
+  color: $accent;
+}
+
+mat-radio-group {
+  display: flex;
+  width: 100%;
+  margin: 10px 0px;
+  justify-content: space-between;
+  flex-direction: column;
+  color: $accent;
+}
+
+mat-radio-group > mat-radio-button {
+  margin: 5px 0px;
+}
+
+app-number-input {
+  width: 100%;
+}
+
+:host ::ng-deep app-number-input {
+  label, .mat-input-element {
+    color: $accent;
+  }
+} 
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+  border-color: $accent; 
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle{
+  color: $accent;
+  background-color: $accent;
+}
+  
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background-color: $secondary;
+}
+
+#color-square {
+  width: 150px;
 }

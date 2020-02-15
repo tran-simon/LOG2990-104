@@ -1,5 +1,4 @@
 export class MathUtil {
-
   /**
    * Returns value greater or equal to min
    */
@@ -18,10 +17,13 @@ export class MathUtil {
    * Returns value lower or equal to max and greater or equal to min
    */
   static fit(value: number, min = 0, max = 1): number {
-    return MathUtil.fitLower(
-      MathUtil.fitUpper(value, max),
-      min
-    );
+    return MathUtil.fitLower(MathUtil.fitUpper(value, max), min);
   }
 
+  static fitAngle(angle: number): number {
+    if (angle < 0) {
+      return 360 - this.fitAngle(-angle);
+    }
+    return angle % 360;
+  }
 }
