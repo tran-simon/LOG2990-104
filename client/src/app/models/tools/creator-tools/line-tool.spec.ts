@@ -28,14 +28,6 @@ describe('LineTool', () => {
     } as MouseEvent;
   };
 
-  /*const mouseUp = (c: Coordinate = new Coordinate()): MouseEvent => {
-    return {
-      type: 'mouseup',
-      offsetX: c.x,
-      offsetY: c.y,
-    } as MouseEvent;
-  };*/
-
   const dblClick = (c: Coordinate = new Coordinate()): MouseEvent => {
     return {
       type: 'dblclick',
@@ -59,13 +51,6 @@ describe('LineTool', () => {
       shiftKey,
     } as KeyboardEvent;
   };
-
-  /*const initBasicLine = () => {
-    lineTool.handleMouseEvent(mouseDown(new Coordinate(50, 50)));
-    lineTool.handleMouseEvent(mouseMove(new Coordinate(150, 150)));
-    lineTool.handleMouseEvent(mouseDown(new Coordinate(150, 150)));
-    lineTool.handleMouseEvent(mouseMove(new Coordinate(15, 15)));
-  }*/
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -144,13 +129,13 @@ describe('LineTool', () => {
   it('can init line with junctions', () => {
     lineTool['_toolProperties'].junctionType = LineJunctionType.POINTS;
     lineTool.initLine();
-    expect((lineTool.shape.properties.thickness = lineTool['_toolProperties'].junctionDiameter));
+    expect(lineTool.shape.properties.thickness).toEqual(lineTool['_toolProperties'].junctionDiameter);
   });
 
   it('can init line without junctions', () => {
     lineTool['_toolProperties'].junctionType = LineJunctionType.EMPTY;
     lineTool.initLine();
-    expect((lineTool.shape.properties.thickness = 0));
+    expect(lineTool.shape.properties.thickness).toEqual(0);
   });
 
   it('should call endLine on double click if isActive', () => {
