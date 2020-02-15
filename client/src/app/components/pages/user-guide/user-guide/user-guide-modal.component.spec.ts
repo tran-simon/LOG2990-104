@@ -7,15 +7,15 @@ import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide
 import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
 
 import { Router } from '@angular/router';
+import { GuideSubject, UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
 import { SharedModule } from '../../../shared/shared.module';
-import { UserGuideComponent } from './user-guide.component';
 import createSpyObj = jasmine.createSpyObj;
 import createSpy = jasmine.createSpy;
 
 describe('UserGuideComponent', () => {
-  let component: UserGuideComponent;
-  let fixture: ComponentFixture<UserGuideComponent>;
+  let component: UserGuideModalComponent;
+  let fixture: ComponentFixture<UserGuideModalComponent>;
   const dialogRefCloseSpy = createSpy('close');
   const routerSpy = createSpyObj('Router', ['navigate']);
 
@@ -23,7 +23,7 @@ describe('UserGuideComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
       declarations: [
-        UserGuideComponent,
+        UserGuideModalComponent,
         WelcomeComponent,
         PenGuideComponent,
         LineGuideComponent,
@@ -39,7 +39,7 @@ describe('UserGuideComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserGuideComponent);
+    fixture = TestBed.createComponent(UserGuideModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -54,6 +54,8 @@ describe('UserGuideComponent', () => {
     expect(nextSubjectSpy).toHaveBeenCalled();
   });
   it('should call previousSubject on Precedent button clicked', () => {
+    component.selectSubject(GuideSubject.Brush);
+    fixture.detectChanges();
     const previousSubjectSpy = spyOn(component, 'previousSubject');
     fixture.debugElement.nativeElement.querySelector('#prevButton').click();
     expect(previousSubjectSpy).toHaveBeenCalled();
@@ -66,29 +68,12 @@ describe('UserGuideComponent', () => {
     expect(selectSubjectSpy).toHaveBeenCalled();
     expect(openCategoriesSpy).toHaveBeenCalled();
   });
-  it('nextSubject should not call selectSubject and openCategories when on last subject', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
-    const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
 
-    component.selectedSubject = component.subjects.Couleur;
-    component.nextSubject();
-    fixture.detectChanges();
-    expect(selectSubjectSpy).not.toHaveBeenCalled();
-    expect(openCategoriesSpy).not.toHaveBeenCalled();
-  });
-
-  it('previousSubject should not call selectSubject and openCategories because default subject is Bienvenue', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject');
-    const openCategoriesSpy = spyOn<any>(component, 'openCategories');
-    component.previousSubject();
-    expect(selectSubjectSpy).not.toHaveBeenCalled();
-    expect(openCategoriesSpy).not.toHaveBeenCalled();
-  });
   it('previousSubject should call selectSubject and openCategories because the subject is not Bienvenue', () => {
     const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
     const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
 
-    component.selectedSubject = component.subjects.Pinceau;
+    component.selectedSubject = component.subjects.Brush;
     component.previousSubject();
     fixture.detectChanges();
     expect(selectSubjectSpy).toHaveBeenCalled();
@@ -105,7 +90,7 @@ describe('UserGuideComponent', () => {
     expect(component.selectedSubject).toEqual(liveSubject + 1);
   });
   it('Next subject should be subject plus 1', () => {
-    component.selectedSubject = component.subjects.Pinceau;
+    component.selectedSubject = component.subjects.Brush;
     const liveSubject = component.selectedSubject;
     component.nextSubject();
     expect(component.selectedSubject).toEqual(liveSubject + 1);

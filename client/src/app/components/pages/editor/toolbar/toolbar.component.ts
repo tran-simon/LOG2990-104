@@ -6,7 +6,7 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
-import { UserGuideComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide.component';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
 import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
@@ -50,8 +50,6 @@ export class ToolbarComponent {
 
   showColorPicker: boolean;
 
-  private _alpha: number;
-
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
@@ -75,7 +73,6 @@ export class ToolbarComponent {
     this.lineJunctionTypes = LineJunctionType;
     this.lineJunctionNames = Object.values(this.lineJunctionTypes);
     this.showColorPicker = false;
-    this._alpha = 1;
     this.penProperties = new PenToolProperties();
     this.brushProperties = new BrushToolProperties();
     this.rectangleProperties = new RectangleToolProperties();
@@ -92,16 +89,9 @@ export class ToolbarComponent {
     this.drawer.close();
   }
 
-  handleAlphaChanged(color: Color): void {
-    if (color.a !== this.color.a) {
-      this._alpha = color.a;
-      this.color = Color.alpha(this.color, color.a);
-    }
-  }
-
   openModal(): void {
     if (!this.modalIsOpened) {
-      this.dialogRef = this.dialog.open(UserGuideComponent, {});
+      this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
 
       this.dialogRef.afterClosed().subscribe(() => {
         this.modalIsOpened = false;
@@ -166,9 +156,5 @@ export class ToolbarComponent {
 
   get color(): Color {
     return this.selectedColors.colorByIndex(this.selectedColor);
-  }
-
-  get alphaColor(): Color {
-    return Color.alpha(this.color, this._alpha);
   }
 }

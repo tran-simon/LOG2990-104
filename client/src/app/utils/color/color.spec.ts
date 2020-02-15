@@ -51,6 +51,13 @@ describe('Color', () => {
     expect(colorWithAlpha.opaqueColor.a).toEqual(1);
   });
 
+  it('can create color from existing with different alpha', () => {
+    const color = Color.rgb(0.1, 0.2, 0.3, 0.4);
+    const colorAlpha = Color.alpha(color, 0.5);
+    expect(colorAlpha.rgbString).toEqual(color.rgbString);
+    expect(colorAlpha.a).not.toEqual(color.a);
+  });
+
   it('can get rgbString', () => {
     const rgbString = Color.RED.rgbString;
     expect(rgbString).toEqual('rgb(255, 0, 0)');
