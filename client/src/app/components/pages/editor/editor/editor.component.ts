@@ -28,11 +28,6 @@ export interface EditorParams {
 export class EditorComponent implements OnInit, AfterViewInit {
   private readonly keyboardEventHandler: KeyboardEventHandler;
 
-  surfaceWidth = 0;
-  surfaceHeight = 0;
-
-  surfaceColor = Color.WHITE;
-
   @ViewChild('toolbar', { static: false })
   toolbar: ToolbarComponent;
 
@@ -40,8 +35,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
   drawingSurface: DrawingSurfaceComponent;
 
   currentTool: CreatorTool;
+  surfaceColor: Color;
+  surfaceWidth: number;
+  surfaceHeight: number;
 
   constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService) {
+    this.surfaceColor = Color.WHITE;
+    this.surfaceWidth = 0;
+    this.surfaceHeight = 0;
     this.keyboardEventHandler = {
       l: () => {
         this.selectLineTool(this.toolbar.lineProperties);
