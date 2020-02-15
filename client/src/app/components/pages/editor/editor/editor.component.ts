@@ -46,7 +46,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.keyboardEventHandler = {
       l: () => {
         this.selectLineTool(this.toolbar.lineProperties);
-        return true;
+        return false;
       },
       c: () => {
         this.selectPenTool(this.toolbar.penProperties);

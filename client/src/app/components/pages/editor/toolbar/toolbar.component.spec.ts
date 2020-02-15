@@ -40,16 +40,6 @@ describe('ToolbarComponent', () => {
     expect(spy).toHaveBeenCalledWith(['']);
   });
 
-  it('should go to the help guide', () => {
-    const spy = spyOn(component, 'openModal');
-
-    const helpButton = fixture.debugElement.nativeElement.querySelector('#help-button');
-
-    helpButton.click();
-
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('should select the pen tool', () => {
     fixture.debugElement.nativeElement.querySelector('#pen-button').click();
     fixture.detectChanges();
@@ -149,5 +139,14 @@ describe('ToolbarComponent', () => {
     fixture.debugElement.nativeElement.querySelector('#btn-update-background').click();
 
     expect(backgroundChangedSpy).toHaveBeenCalledWith(Color.GREEN);
+  });
+
+  it('should open the help modal when clicking the help button', () => {
+    const spy = spyOn(component, 'openModal').and.callThrough();
+
+    const helpButton = fixture.debugElement.nativeElement.querySelector('#help-button');
+    helpButton.click();
+
+    expect(spy).toHaveBeenCalled();
   });
 });

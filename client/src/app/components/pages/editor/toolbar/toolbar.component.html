@@ -29,13 +29,12 @@
       (click)="selectColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 1}">
     </div>
     <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
-      (click)="selectColor(SelectedColorType.secondary)"
-      [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
+      (click)="selectColor(SelectedColorType.secondary)" [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
-    <button mat-icon-button>
-      <mat-icon id="help-button" (click)="openModal()">help</mat-icon>
+    <button id="help-button" mat-icon-button (click)="openModal()">
+      <mat-icon>help</mat-icon>
     </button>
     <button mat-icon-button>
       <mat-icon>save</mat-icon>

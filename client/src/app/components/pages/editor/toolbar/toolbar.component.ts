@@ -99,6 +99,7 @@ export class ToolbarComponent {
       this.modalIsOpened = true;
     }
   }
+
   selectTool(selection: Tool): void {
     this.currentTool = selection;
 
