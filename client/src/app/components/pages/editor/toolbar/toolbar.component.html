@@ -34,8 +34,8 @@
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
-    <button mat-icon-button>
-      <mat-icon id="help-button" (click)="openModal()">help</mat-icon>
+    <button id="help-button" mat-icon-button (click)="openModal()">
+      <mat-icon>help</mat-icon>
     </button>
     <button mat-icon-button>
       <mat-icon>save</mat-icon>
@@ -130,10 +130,8 @@
         <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme
           couleur de fond
         </button>
-        <app-alpha [color]='alphaColor'
-                   (colorChanged)="handleAlphaChanged($event)"
-                   [isVertical]="false"
-        ></app-alpha>
+        <app-alpha #alphaPicker [color]='alphaColor' (colorChanged)="handleAlphaChanged($event)" [isVertical]="false">
+        </app-alpha>
       </div>
     </mat-drawer-content>
   </mat-drawer>

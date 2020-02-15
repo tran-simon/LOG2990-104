@@ -40,16 +40,6 @@ describe('ToolbarComponent', () => {
     expect(spy).toHaveBeenCalledWith(['']);
   });
 
-  it('should go to the help guide', () => {
-    const spy = spyOn(component, 'openModal');
-
-    const helpButton = fixture.debugElement.nativeElement.querySelector('#help-button');
-
-    helpButton.click();
-
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('should select the pen tool', () => {
     fixture.debugElement.nativeElement.querySelector('#pen-button').click();
     fixture.detectChanges();
@@ -140,6 +130,22 @@ describe('ToolbarComponent', () => {
     expect(component.secondaryColor.hexString).toEqual(Color.GREEN.hexString);
   });
 
+  it('should change the selected colors alpha when a new opacity is picked', () => {
+    const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
+    primaryColorSquare.click();
+    fixture.detectChanges();
+
+    component.alphaPicker.color = Color.alpha(component.color, 0.5);
+    component.alphaPicker.colorChanged.emit(component.alphaPicker.color);
+
+    expect(component.selectedColors.primaryColor.a).toBe(0.5);
+
+    component.alphaPicker.color = Color.alpha(component.color, 0.3);
+    component.alphaPicker.colorChanged.emit(component.alphaPicker.color);
+
+    expect(component.selectedColors.primaryColor.a).toBe(0.3);
+  });
+
   it('should emit editBackgroundChanged on update background button clicked', () => {
     const backgroundChangedSpy = spyOn(component.editorBackgroundChanged, 'emit');
     component.selectColor(1);
@@ -149,5 +155,14 @@ describe('ToolbarComponent', () => {
     fixture.debugElement.nativeElement.querySelector('#btn-update-background').click();
 
     expect(backgroundChangedSpy).toHaveBeenCalledWith(Color.GREEN);
+  });
+
+  it('should open the help modal when clicking the help button', () => {
+    const spy = spyOn(component, 'openModal').and.callThrough();
+
+    const helpButton = fixture.debugElement.nativeElement.querySelector('#help-button');
+    helpButton.click();
+
+    expect(spy).toHaveBeenCalled();
   });
 });

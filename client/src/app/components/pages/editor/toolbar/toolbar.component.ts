@@ -7,6 +7,7 @@ import { SelectedColorsService, SelectedColorType } from 'src/app/services/selec
 import { Color } from 'src/app/utils/color/color';
 
 import { UserGuideComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide.component';
+import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
 import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
 import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
@@ -51,6 +52,9 @@ export class ToolbarComponent {
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
+  @ViewChild('alphaPicker', { static: false })
+  alphaPicker: AlphaComponent;
+
   penProperties = new PenToolProperties();
   brushProperties = new BrushToolProperties();
   rectangleProperties = new RectangleToolProperties();
@@ -79,15 +83,9 @@ export class ToolbarComponent {
   }
 
   openModal(): void {
-    if (!this.modalIsOpened) {
-      this.dialogRef = this.dialog.open(UserGuideComponent, {});
-
-      this.dialogRef.afterClosed().subscribe(() => {
-        this.modalIsOpened = false;
-      });
-      this.modalIsOpened = true;
-    }
+    this.dialogRef = this.dialog.open(UserGuideComponent, {});
   }
+
   selectTool(selection: Tool): void {
     this.currentTool = selection;
 
