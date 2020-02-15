@@ -130,22 +130,6 @@ describe('ToolbarComponent', () => {
     expect(component.secondaryColor.hexString).toEqual(Color.GREEN.hexString);
   });
 
-  it('should change the selected colors alpha when a new opacity is picked', () => {
-    const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
-    primaryColorSquare.click();
-    fixture.detectChanges();
-
-    component.alphaPicker.color = Color.alpha(component.color, 0.5);
-    component.alphaPicker.colorChanged.emit(component.alphaPicker.color);
-
-    expect(component.selectedColors.primaryColor.a).toBe(0.5);
-
-    component.alphaPicker.color = Color.alpha(component.color, 0.3);
-    component.alphaPicker.colorChanged.emit(component.alphaPicker.color);
-
-    expect(component.selectedColors.primaryColor.a).toBe(0.3);
-  });
-
   it('should emit editBackgroundChanged on update background button clicked', () => {
     const backgroundChangedSpy = spyOn(component.editorBackgroundChanged, 'emit');
     component.selectColor(1);

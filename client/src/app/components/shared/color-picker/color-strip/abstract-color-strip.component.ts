@@ -33,7 +33,7 @@ export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
     return new Coordinate(indicatorX, indicatorY);
   }
 
-  updateColor(color: Color) {
+  updateColor(color: Color): void {
     super.updateColor(color);
     this.colorChanged.emit(this.color);
   }

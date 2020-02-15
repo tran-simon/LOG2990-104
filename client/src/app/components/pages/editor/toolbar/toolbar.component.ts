@@ -6,8 +6,7 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
-import { UserGuideComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide.component';
-import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
 import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
@@ -36,7 +35,6 @@ export class ToolbarComponent {
   @Output() editorBackgroundChanged = new EventEmitter<Color>();
 
   tools = Tool;
-  brushTextureTypes = BrushTextureType;
   brushTextureNames = Object.values(BrushTextureType);
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
@@ -44,16 +42,11 @@ export class ToolbarComponent {
   lineJunctionNames = Object.values(this.lineJunctionTypes);
   showColorPicker = false;
 
-  private _alpha = 1;
-
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
-
-  @ViewChild('alphaPicker', { static: false })
-  alphaPicker: AlphaComponent;
 
   penProperties = new PenToolProperties();
   brushProperties = new BrushToolProperties();
@@ -75,15 +68,15 @@ export class ToolbarComponent {
     this.drawer.close();
   }
 
-  handleAlphaChanged(color: Color): void {
-    if (color.a !== this.color.a) {
-      this._alpha = color.a;
-      this.color = Color.alpha(this.color, color.a);
-    }
-  }
-
   openModal(): void {
-    this.dialogRef = this.dialog.open(UserGuideComponent, {});
+    if (!this.modalIsOpened) {
+      this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
+
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.modalIsOpened = false;
+      });
+      this.modalIsOpened = true;
+    }
   }
 
   selectTool(selection: Tool): void {
@@ -143,9 +136,5 @@ export class ToolbarComponent {
 
   get color(): Color {
     return this.selectedColors.colorByIndex(this.selectedColor);
-  }
-
-  get alphaColor(): Color {
-    return Color.alpha(this.color, this._alpha);
   }
 }

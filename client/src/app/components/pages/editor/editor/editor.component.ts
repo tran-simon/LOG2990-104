@@ -65,7 +65,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     } as KeyboardEventHandler;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.router.params.subscribe((params) => {
       this.surfaceWidth = params.width ? +params.width : 500;
       this.surfaceHeight = params.height ? +params.height : 300;
@@ -73,15 +73,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.selectPenTool(this.toolbar.lineProperties);
   }
 
-  handleMouseEvent(e: MouseEvent) {
+  handleMouseEvent(e: MouseEvent): void {
     this.currentTool.handleMouseEvent(e);
   }
 
-  handleToolChanged(toolEvent: ToolProperties) {
+  handleToolChanged(toolEvent: ToolProperties): void {
     switch (toolEvent.toolName) {
       case 'Pen':
         this.selectPenTool(toolEvent);
@@ -98,7 +98,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectPenTool(properties: ToolProperties) {
+  selectPenTool(properties: ToolProperties): void {
     if (this.toolbar.currentTool !== this.toolbar.tools.Pen) {
       this.toolbar.currentTool = this.toolbar.tools.Pen;
     } else {
@@ -107,7 +107,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectBrushTool(properties: ToolProperties) {
+  selectBrushTool(properties: ToolProperties): void {
     if (this.toolbar.currentTool !== this.toolbar.tools.Brush) {
       this.toolbar.currentTool = this.toolbar.tools.Brush;
     } else {
@@ -116,7 +116,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectRectangleTool(properties: ToolProperties) {
+  selectRectangleTool(properties: ToolProperties): void {
     if (this.toolbar.currentTool !== this.toolbar.tools.Rectangle) {
       this.toolbar.currentTool = this.toolbar.tools.Rectangle;
     } else {
@@ -125,7 +125,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectLineTool(properties: ToolProperties) {
+  selectLineTool(properties: ToolProperties): void {
     if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
       this.toolbar.currentTool = this.toolbar.tools.Line;
     } else {
@@ -145,7 +145,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('contextmenu', ['$event'])
-  onRightClick(e: MouseEvent) {
+  onRightClick(e: MouseEvent): void {
     e.preventDefault();
   }
 }

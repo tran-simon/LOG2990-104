@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class AbstractModalComponent {
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {}
 
-  onCloseClick() {
+  onCloseClick(): void {
     this.dialogRef.close();
   }
 }

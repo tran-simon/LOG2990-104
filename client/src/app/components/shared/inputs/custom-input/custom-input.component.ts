@@ -34,7 +34,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   @Input() errorMessages: ErrorMessages<string> = defaultErrorMessages();
   @Input() format = (v: string) => v;
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.formControl) {
       this.formControl = new FormControl(this.value, this.makeValidators());
     }
@@ -47,7 +47,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
     this._focused = true;
   }
 
-  onBlur(value = '') {
+  onBlur(value = ''): void {
     this._focused = false;
     if (this.formControl) {
       this.value = this.format(this.formControl.valid ? value : this.validValue);
@@ -58,7 +58,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
     }
   }
 
-  onChange(value = '') {
+  onChange(value = ''): void {
     if (this.formControl && this.formControl.valid) {
       this.value = value;
       this.editingValue = this.value;

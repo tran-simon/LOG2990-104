@@ -7,7 +7,7 @@ export class BrushPath extends Path {
     super(c);
   }
 
-  changeFilter(filter: BrushTextureType) {
+  changeFilter(filter: BrushTextureType): void {
     switch (filter) {
       case BrushTextureType.TEXTURE_1:
         this._svgNode.setAttribute('filter', 'url(#TEXTURE_1)');
