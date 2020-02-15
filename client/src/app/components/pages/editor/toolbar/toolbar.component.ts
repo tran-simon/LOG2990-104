@@ -1,15 +1,17 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
-import { BrushTextureType, BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
-import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
-import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { UserGuideComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide.component';
+import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
+import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
+import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
+import { RectangleContourType, RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
+import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 
 enum Tool {
   Pen = 'Pen',
@@ -58,8 +60,10 @@ export class ToolbarComponent {
   SelectedColorType = SelectedColorType;
 
   currentTool = this.tools.Pen;
+  modalIsOpened = false;
+  dialogRef: MatDialogRef<AbstractModalComponent>;
 
-  constructor(private router: Router, public selectedColors: SelectedColorsService) {}
+  constructor(private router: Router, public selectedColors: SelectedColorsService, public dialog: MatDialog) {}
 
   handleColorChanged(eventColor: Color): void {
     this.color = eventColor;
@@ -74,6 +78,16 @@ export class ToolbarComponent {
     }
   }
 
+  openModal(): void {
+    if (!this.modalIsOpened) {
+      this.dialogRef = this.dialog.open(UserGuideComponent, {});
+
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.modalIsOpened = false;
+      });
+      this.modalIsOpened = true;
+    }
+  }
   selectTool(selection: Tool): void {
     this.currentTool = selection;
 

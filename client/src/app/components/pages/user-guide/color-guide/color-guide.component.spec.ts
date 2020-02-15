@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Subject2Component } from 'src/app/components/pages/user-guide/subject2/subject2.component';
+import { ColorGuideComponent } from 'src/app/components/pages/user-guide/color-guide/color-guide.component';
 import { SharedModule } from '../../../shared/shared.module';
 
-describe('Sujet2Component', () => {
-  let component: Subject2Component;
-  let fixture: ComponentFixture<Subject2Component>;
+describe('ColorGuideComponent', () => {
+  let component: ColorGuideComponent;
+  let fixture: ComponentFixture<ColorGuideComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [Subject2Component],
+      declarations: [ColorGuideComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Subject2Component);
+    fixture = TestBed.createComponent(ColorGuideComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
