@@ -16,7 +16,6 @@ describe('RectangleTool', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DrawingSurfaceComponent],
-      providers: [SelectedColorsService],
     }).compileComponents();
   }));
 
