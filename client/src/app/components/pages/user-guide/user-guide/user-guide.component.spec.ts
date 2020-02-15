@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
-import { CouleurComponent } from 'src/app/components/pages/user-guide/Couleur/couleur.component';
-import { CrayonComponent } from 'src/app/components/pages/user-guide/Crayon/crayon.component';
-import { LigneComponent } from 'src/app/components/pages/user-guide/Ligne/ligne.component';
-import { PinceauComponent } from 'src/app/components/pages/user-guide/Pinceau/pinceau.component';
-import { RectangleComponent } from 'src/app/components/pages/user-guide/Rectangle/rectangle.component';
+import { BrushGuideComponent } from 'src/app/components/pages/user-guide/brush-guide/brush-guide.component';
+import { ColorGuideComponent } from 'src/app/components/pages/user-guide/color-guide/color-guide.component';
+import { LineGuideComponent } from 'src/app/components/pages/user-guide/line-guide/line-guide.component';
+import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide/pen-guide.component';
+import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
 
 import { Router } from '@angular/router';
 import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
@@ -25,11 +25,11 @@ describe('UserGuideComponent', () => {
       declarations: [
         UserGuideComponent,
         WelcomeComponent,
-        CrayonComponent,
-        LigneComponent,
-        PinceauComponent,
-        RectangleComponent,
-        CouleurComponent,
+        PenGuideComponent,
+        LineGuideComponent,
+        BrushGuideComponent,
+        RectangleGuideComponent,
+        ColorGuideComponent,
       ],
       providers: [
         { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },

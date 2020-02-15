@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CouleurComponent } from 'src/app/components/pages/user-guide/Couleur/couleur.component';
-import { CrayonComponent } from 'src/app/components/pages/user-guide/Crayon/crayon.component';
-import { LigneComponent } from 'src/app/components/pages/user-guide/Ligne/ligne.component';
-import { PinceauComponent } from 'src/app/components/pages/user-guide/Pinceau/pinceau.component';
-import { RectangleComponent } from 'src/app/components/pages/user-guide/Rectangle/rectangle.component';
+import { BrushGuideComponent } from 'src/app/components/pages/user-guide/brush-guide/brush-guide.component';
+import { ColorGuideComponent } from 'src/app/components/pages/user-guide/color-guide/color-guide.component';
+import { LineGuideComponent } from 'src/app/components/pages/user-guide/line-guide/line-guide.component';
+import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide/pen-guide.component';
+import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
 import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
 import { SharedModule } from '../../shared/shared.module';
 import { UserGuideComponent } from './user-guide/user-guide.component';
@@ -13,11 +13,11 @@ import { UserGuideComponent } from './user-guide/user-guide.component';
   declarations: [
     UserGuideComponent,
     WelcomeComponent,
-    CrayonComponent,
-    LigneComponent,
-    PinceauComponent,
-    RectangleComponent,
-    CouleurComponent,
+    PenGuideComponent,
+    LineGuideComponent,
+    BrushGuideComponent,
+    RectangleGuideComponent,
+    ColorGuideComponent,
   ],
 })
 export class UserGuideModule {}
