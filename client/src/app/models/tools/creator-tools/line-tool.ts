@@ -21,6 +21,7 @@ export class LineTool extends CreatorTool {
 
   constructor(drawingSurface: DrawingSurfaceComponent, private selectedColors: SelectedColorsService) {
     super(drawingSurface);
+    this._toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
     this.keyboardEventHandler = {
@@ -49,7 +50,7 @@ export class LineTool extends CreatorTool {
     } as KeyboardEventHandler;
   }
 
-  initLine() {
+  initLine(): void {
     this.line = new CompositeLine(this.mousePosition);
 
     this.line.properties.strokeColor = this.selectedColors.primaryColor;
@@ -66,7 +67,7 @@ export class LineTool extends CreatorTool {
     this.drawShape();
   }
 
-  handleToolMouseEvent(e: MouseEvent) {
+  handleToolMouseEvent(e: MouseEvent): void {
     if (this.isActive) {
       if (e.type === 'dblclick') {
         this.isActive = false;

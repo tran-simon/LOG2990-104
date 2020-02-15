@@ -35,7 +35,7 @@ export class CompositeLine extends BaseShape {
     this.addPoint(initCoord);
   }
 
-  updateProperties() {
+  updateProperties(): void {
     if (this.lineArray) {
       this.lineArray.forEach((line) => {
         line.properties.strokeColor = this.properties.strokeColor;
@@ -56,13 +56,13 @@ export class CompositeLine extends BaseShape {
     }
   }
 
-  addPoint(c: Coordinate) {
+  addPoint(c: Coordinate): void {
     this.addLine(c);
     this.addJunction(c);
     this.updateProperties();
   }
 
-  confirmPoint() {
+  confirmPoint(): void {
     this.addPoint(this.currentLine.endCoord);
   }
 
@@ -81,7 +81,7 @@ export class CompositeLine extends BaseShape {
     return false;
   }
 
-  endLine(c: Coordinate) {
+  endLine(c: Coordinate): void {
     this.removeLastPoint(); // todo - add double click timeout to avoid deleting shapes
     this.removeLastPoint();
 
@@ -93,17 +93,17 @@ export class CompositeLine extends BaseShape {
     }
   }
 
-  updateCurrentCoord(c: Coordinate) {
+  updateCurrentCoord(c: Coordinate): void {
     this.currentLine.endCoord = c;
   }
 
-  addLine(c: Coordinate) {
+  addLine(c: Coordinate): void {
     const line = new Line(c);
     this.lineArray.push(line);
     this.svgNode.appendChild(line.svgNode);
   }
 
-  addJunction(c: Coordinate) {
+  addJunction(c: Coordinate): void {
     const junction = new Ellipse(c, 2); // todo - use editor properties
     junction.properties.fillColor = Color.BLACK;
     junction.updateProperties();

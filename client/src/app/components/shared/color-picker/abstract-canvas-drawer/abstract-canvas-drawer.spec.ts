@@ -96,6 +96,18 @@ describe('AbstractCanvasDrawer', () => {
     expect(updateColorSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('updates color on color set', () => {
+    component.color = Color.BLACK;
+    expect(updateColorSpy).toHaveBeenCalledWith(Color.BLACK);
+  });
+
+  it('does not update color if color is undefined', () => {
+    // @ts-ignore
+    component._color = undefined;
+    component.color = Color.BLACK;
+    expect(updateColorSpy).not.toHaveBeenCalled();
+  });
+
   it('sets mouseIsDown to false when mouse is up', () => {
     component.onMouseUp();
     expect(component.mouseIsDown).toEqual(false);

@@ -1,15 +1,17 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
-import { BrushTextureType, BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
-import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
-import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
+import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
+import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
+import { RectangleContourType, RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
+import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 
 enum Tool {
   Pen = 'Pen',
@@ -28,20 +30,25 @@ export class ToolbarComponent {
   static readonly TOOLBAR_WIDTH = 60;
   static readonly SLIDER_STEP = 0.1;
 
-  @Input() stepThickness = ToolbarComponent.SLIDER_STEP;
-  @Output() toolChanged = new EventEmitter<ToolProperties>();
-  @Output() editorBackgroundChanged = new EventEmitter<Color>();
+  @Input() stepThickness: number;
+  @Output() toolChanged: EventEmitter<ToolProperties>;
+  @Output() editorBackgroundChanged: EventEmitter<Color>;
 
   tools = Tool;
-  brushTextureTypes = BrushTextureType;
+  currentTool: Tool;
+
+  selectedColor: SelectedColorType;
+  SelectedColorType = SelectedColorType;
+
   brushTextureNames = Object.values(BrushTextureType);
+
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
+
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
-  showColorPicker = false;
 
-  private _alpha = 1;
+  showColorPicker: boolean;
 
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
@@ -49,17 +56,32 @@ export class ToolbarComponent {
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
-  penProperties = new PenToolProperties();
-  brushProperties = new BrushToolProperties();
-  rectangleProperties = new RectangleToolProperties();
-  lineProperties = new LineToolProperties();
-  selectedColor = SelectedColorType.primary;
+  penProperties: PenToolProperties;
+  brushProperties: BrushToolProperties;
+  rectangleProperties: RectangleToolProperties;
 
-  SelectedColorType = SelectedColorType;
+  lineProperties: LineToolProperties;
+  modalIsOpened: boolean;
+  dialogRef: MatDialogRef<AbstractModalComponent>;
 
-  currentTool = this.tools.Pen;
-
-  constructor(private router: Router, public selectedColors: SelectedColorsService) {}
+  constructor(private router: Router, public selectedColors: SelectedColorsService, public dialog: MatDialog) {
+    this.stepThickness = ToolbarComponent.SLIDER_STEP;
+    this.toolChanged = new EventEmitter<ToolProperties>();
+    this.editorBackgroundChanged = new EventEmitter<Color>();
+    this.rectangleContourTypes = RectangleContourType;
+    this.rectangleContourNames = Object.values(this.rectangleContourTypes);
+    this.lineJunctionTypes = LineJunctionType;
+    this.lineJunctionNames = Object.values(this.lineJunctionTypes);
+    this.showColorPicker = false;
+    this.penProperties = new PenToolProperties();
+    this.brushProperties = new BrushToolProperties();
+    this.rectangleProperties = new RectangleToolProperties();
+    this.lineProperties = new LineToolProperties();
+    this.selectedColor = SelectedColorType.primary;
+    this.SelectedColorType = SelectedColorType;
+    this.currentTool = this.tools.Pen;
+    this.modalIsOpened = false;
+  }
 
   handleColorChanged(eventColor: Color): void {
     this.color = eventColor;
@@ -67,10 +89,14 @@ export class ToolbarComponent {
     this.drawer.close();
   }
 
-  handleAlphaChanged(color: Color): void {
-    if (color.a !== this.color.a) {
-      this._alpha = color.a;
-      this.color = Color.alpha(this.color, color.a);
+  openModal(): void {
+    if (!this.modalIsOpened) {
+      this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
+
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.modalIsOpened = false;
+      });
+      this.modalIsOpened = true;
     }
   }
 
@@ -131,9 +157,5 @@ export class ToolbarComponent {
 
   get color(): Color {
     return this.selectedColors.colorByIndex(this.selectedColor);
-  }
-
-  get alphaColor(): Color {
-    return Color.alpha(this.color, this._alpha);
   }
 }
