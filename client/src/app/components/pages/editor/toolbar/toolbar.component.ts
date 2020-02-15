@@ -33,15 +33,12 @@ export class ToolbarComponent {
   @Output() editorBackgroundChanged = new EventEmitter<Color>();
 
   tools = Tool;
-  brushTextureTypes = BrushTextureType;
   brushTextureNames = Object.values(BrushTextureType);
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
   showColorPicker = false;
-
-  private _alpha = 1;
 
   @ViewChild('drawer', { static: false })
   drawer: MatDrawer;
@@ -65,13 +62,6 @@ export class ToolbarComponent {
     this.color = eventColor;
     this.showColorPicker = false;
     this.drawer.close();
-  }
-
-  handleAlphaChanged(color: Color): void {
-    if (color.a !== this.color.a) {
-      this._alpha = color.a;
-      this.color = Color.alpha(this.color, color.a);
-    }
   }
 
   selectTool(selection: Tool): void {
@@ -131,9 +121,5 @@ export class ToolbarComponent {
 
   get color(): Color {
     return this.selectedColors.colorByIndex(this.selectedColor);
-  }
-
-  get alphaColor(): Color {
-    return Color.alpha(this.color, this._alpha);
   }
 }

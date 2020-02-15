@@ -26,11 +26,11 @@
       <mat-icon>swap_horiz</mat-icon>
     </button>
     <div id="toolbar-primary-color" [style.background-color]="primaryColor.hexString"
-      (click)="selectColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 500}">
+      (click)="selectColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 1}">
     </div>
     <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
       (click)="selectColor(SelectedColorType.secondary)"
-      [ngStyle]="{'z-index':drawer.opened && selectedColor ? 1000 : 0}">
+      [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
@@ -52,7 +52,7 @@
         <div *ngSwitchCase="tools.Pen" class="toolbar-tool-section">
           <h3 class="toolbar-option-section">Options du crayon</h3>
           <app-number-input (valueChange)="selectTool(tools.Pen)" allowDecimals="true"
-            [(value)]="penProperties.thickness">
+            [(numberValue)]="penProperties.thickness">
             Épaisseur du trait
           </app-number-input>
           <mat-slider (change)="selectTool(tools.Pen)" [min]="penProperties.minThickness"
@@ -63,7 +63,7 @@
         <div *ngSwitchCase="tools.Brush" class="toolbar-tool-section">
           <h3 class="toolbar-option-section">Options du pinceau</h3>
           <app-number-input (valueChange)="selectTool(tools.Brush)" allowDecimals="true"
-            [(value)]="brushProperties.thickness">
+            [(numberValue)]="brushProperties.thickness">
             Épaisseur du trait
           </app-number-input>
           <mat-slider (change)="selectTool(tools.Brush)" [min]="brushProperties.minThickness"
@@ -80,7 +80,7 @@
         <div *ngSwitchCase="tools.Rectangle" class="toolbar-tool-section">
           <h3 class="toolbar-option-section">Options du rectangle</h3>
           <app-number-input (valueChange)="selectTool(tools.Rectangle)" allowDecimals="true"
-            [(value)]="rectangleProperties.thickness">
+            [(numberValue)]="rectangleProperties.thickness">
             Épaisseur du trait de contour
           </app-number-input>
           <mat-slider (change)="selectTool(tools.Rectangle)" [min]="rectangleProperties.minThickness"
@@ -97,7 +97,7 @@
         <div *ngSwitchCase="tools.Line" class="toolbar-tool-section">
           <h3 class="toolbar-option-section">Options de la ligne</h3>
           <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true"
-            [(value)]="lineProperties.thickness">
+            [(numberValue)]="lineProperties.thickness">
             Épaisseur de la ligne
           </app-number-input>
           <mat-slider (change)="selectTool(tools.Line)" [min]="lineProperties.minThickness"
@@ -105,7 +105,7 @@
             [(ngModel)]="lineProperties.thickness">
           </mat-slider>
           <app-number-input (valueChange)="selectTool(tools.Line)" allowDecimals="true"
-            [(value)]="lineProperties.junctionDiameter">
+            [(numberValue)]="lineProperties.junctionDiameter">
             Épaisseur des points de
             jonction
           </app-number-input>
@@ -130,10 +130,6 @@
         <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme
           couleur de fond
         </button>
-        <app-alpha [color]='alphaColor'
-                   (colorChanged)="handleAlphaChanged($event)"
-                   [isVertical]="false"
-        ></app-alpha>
       </div>
     </mat-drawer-content>
   </mat-drawer>
