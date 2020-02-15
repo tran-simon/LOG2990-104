@@ -11,42 +11,18 @@
                 Outils
               </mat-panel-title>
               <mat-panel-description>
-                S1-S2
+                Tools
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Sujet1)">Sujet1</button>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Crayon)">Crayon</button>
             <p></p>
-            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Sujet2)">Sujet2</button>
-          </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
-          <mat-expansion-panel [expanded]="panelOpenState2" (closed)="panelOpenState2=false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                cat2
-              </mat-panel-title>
-              <mat-panel-description>
-                S3-S4
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <p><button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Sujet3)">Sujet3</button></p>
-            <p><button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Sujet4)">Sujet4</button></p>
-          </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
-          <mat-expansion-panel [expanded]="panelOpenState3" (closed)="panelOpenState3=false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                cat3
-              </mat-panel-title>
-              <mat-panel-description>
-                S5-S6
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <p><button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Sujet5)">Sujet5</button></p>
-            <p><button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Sujet6)">Sujet6</button></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Pinceau)">Pinceau</button>
+            <p></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Rectangle)">Rectangle</button>
+            <p></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Ligne)">Ligne</button>
+            <p></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Couleur)">Sélecteur de couleurs</button>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
@@ -67,17 +43,16 @@
         </ng-template>
         <div [ngSwitch]="selectedSubject" id="main_content">
           <div *ngSwitchCase="subjects.Bienvenue"><app-welcome></app-welcome></div>
-          <div *ngSwitchCase="subjects.Sujet1"><app-subject1></app-subject1></div>
-          <div *ngSwitchCase="subjects.Sujet2"><app-subject2></app-subject2></div>
-          <div *ngSwitchCase="subjects.Sujet3"><app-subject3></app-subject3></div>
-          <div *ngSwitchCase="subjects.Sujet4"><app-subject4></app-subject4></div>
-          <div *ngSwitchCase="subjects.Sujet5"><app-subject5></app-subject5></div>
-          <div *ngSwitchCase="subjects.Sujet6"><app-subject6></app-subject6></div>
+          <div *ngSwitchCase="subjects.Crayon"><app-crayon></app-crayon></div>
+          <div *ngSwitchCase="subjects.Ligne"><app-ligne></app-ligne></div>
+          <div *ngSwitchCase="subjects.Pinceau"><app-pinceau></app-pinceau></div>
+          <div *ngSwitchCase="subjects.Rectangle"><app-rectangle></app-rectangle></div>
+          <div *ngSwitchCase="subjects.Couleur"><app-couleur></app-couleur></div>
           <mat-divider></mat-divider>
         </div>
 
         <div>
-          <button mat-button id="prevButton" (click)="previousSubject()">precedent</button>
+          <button mat-button id="prevButton" (click)="previousSubject()">précédent</button>
           <button mat-button id = "nextButton" (click)="nextSubject()">suivant</button>
         </div>
 

@@ -41,13 +41,13 @@ describe('ToolbarComponent', () => {
   });
 
   it('should go to the help guide', () => {
-    const spy = spyOn(router, 'navigate');
+    const spy = spyOn(component, 'openModal');
 
     const helpButton = fixture.debugElement.nativeElement.querySelector('#help-button');
 
     helpButton.click();
 
-    expect(spy).toHaveBeenCalledWith(['help']);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should select the pen tool', () => {
