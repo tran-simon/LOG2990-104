@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Subject1Component } from 'src/app/components/pages/user-guide/subject1/subject1.component';
-import { Subject2Component } from 'src/app/components/pages/user-guide/subject2/subject2.component';
-import { Subject3Component } from 'src/app/components/pages/user-guide/subject3/subject3.component';
-import { Subject4Component } from 'src/app/components/pages/user-guide/subject4/subject4.component';
-import { Subject5Component } from 'src/app/components/pages/user-guide/subject5/subject5.component';
-import { Subject6Component } from 'src/app/components/pages/user-guide/subject6/subject6.component';
+import { BrushGuideComponent } from 'src/app/components/pages/user-guide/brush-guide/brush-guide.component';
+import { ColorGuideComponent } from 'src/app/components/pages/user-guide/color-guide/color-guide.component';
+import { LineGuideComponent } from 'src/app/components/pages/user-guide/line-guide/line-guide.component';
+import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide/pen-guide.component';
+import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
 import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
 import { SharedModule } from '../../shared/shared.module';
 import { UserGuideComponent } from './user-guide/user-guide.component';
@@ -14,12 +13,11 @@ import { UserGuideComponent } from './user-guide/user-guide.component';
   declarations: [
     UserGuideComponent,
     WelcomeComponent,
-    Subject1Component,
-    Subject2Component,
-    Subject3Component,
-    Subject4Component,
-    Subject5Component,
-    Subject6Component,
+    PenGuideComponent,
+    LineGuideComponent,
+    BrushGuideComponent,
+    RectangleGuideComponent,
+    ColorGuideComponent,
   ],
 })
 export class UserGuideModule {}
