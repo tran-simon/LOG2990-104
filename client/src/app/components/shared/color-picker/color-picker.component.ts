@@ -70,6 +70,10 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
     this.color = color;
   }
 
+  alphaChange(color: Color): void {
+    this.color = Color.alpha(this.color, color.a);
+  }
+
   rgbChange(value: string, component: string): void {
     let { r, g, b }: ColorComponents = this.color.color255;
     switch (component) {

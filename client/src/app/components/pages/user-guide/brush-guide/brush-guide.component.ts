@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-pinceau',
+  selector: 'app-brush-guide',
   templateUrl: './brush-guide.component.html',
   styleUrls: ['./brush-guide.component.scss'],
 })

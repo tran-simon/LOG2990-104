@@ -27,11 +27,11 @@ export class Path extends BaseShape {
     this._trace = 'M ' + c.x + ' ' + c.y;
   }
 
-  addPoint(c: Coordinate) {
+  addPoint(c: Coordinate): void {
     this.trace += ' L ' + c.x + ' ' + c.y;
   }
 
-  updateProperties() {
+  updateProperties(): void {
     super.updateProperties();
     this._svgNode.style.fill = 'transparent';
     this._svgNode.style.strokeLinecap = 'round';

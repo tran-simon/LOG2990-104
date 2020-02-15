@@ -18,11 +18,11 @@ export abstract class CreatorTool extends Tool {
     this.isActive = false;
   }
 
-  drawShape() {
+  drawShape(): void {
     this.drawingSurface.svg.nativeElement.appendChild(this.shape.svgNode);
   }
 
-  cancelShape() {
+  cancelShape(): void {
     this.drawingSurface.svg.nativeElement.removeChild(this.shape.svgNode);
     this.isActive = false;
   }
