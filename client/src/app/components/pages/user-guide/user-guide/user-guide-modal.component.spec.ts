@@ -7,7 +7,7 @@ import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide
 import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
 
 import { Router } from '@angular/router';
-import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { GuideSubject, UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
 import { SharedModule } from '../../../shared/shared.module';
 import createSpyObj = jasmine.createSpyObj;
@@ -54,6 +54,8 @@ describe('UserGuideComponent', () => {
     expect(nextSubjectSpy).toHaveBeenCalled();
   });
   it('should call previousSubject on Precedent button clicked', () => {
+    component.selectSubject(GuideSubject.Brush);
+    fixture.detectChanges();
     const previousSubjectSpy = spyOn(component, 'previousSubject');
     fixture.debugElement.nativeElement.querySelector('#prevButton').click();
     expect(previousSubjectSpy).toHaveBeenCalled();
@@ -66,24 +68,7 @@ describe('UserGuideComponent', () => {
     expect(selectSubjectSpy).toHaveBeenCalled();
     expect(openCategoriesSpy).toHaveBeenCalled();
   });
-  it('nextSubject should not call selectSubject and openCategories when on last subject', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
-    const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
 
-    component.selectedSubject = component.subjects.Color;
-    component.nextSubject();
-    fixture.detectChanges();
-    expect(selectSubjectSpy).not.toHaveBeenCalled();
-    expect(openCategoriesSpy).not.toHaveBeenCalled();
-  });
-
-  it('previousSubject should not call selectSubject and openCategories because default subject is Bienvenue', () => {
-    const selectSubjectSpy = spyOn(component, 'selectSubject');
-    const openCategoriesSpy = spyOn<any>(component, 'openCategories');
-    component.previousSubject();
-    expect(selectSubjectSpy).not.toHaveBeenCalled();
-    expect(openCategoriesSpy).not.toHaveBeenCalled();
-  });
   it('previousSubject should call selectSubject and openCategories because the subject is not Bienvenue', () => {
     const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
     const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();

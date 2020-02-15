@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 
-enum Subject {
+export enum GuideSubject {
   Welcome,
   Pen,
   Brush,
@@ -20,8 +20,8 @@ enum Subject {
 export class UserGuideModalComponent extends AbstractModalComponent implements OnInit {
   @ViewChild('sidenav', { static: false })
   sidenav: MatSidenav;
-  subjects = Subject;
-  selectedSubject: Subject;
+  subjects = GuideSubject;
+  selectedSubject: GuideSubject;
   panelOpenState1 = false;
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
@@ -32,7 +32,7 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
     this.selectedSubject = this.subjects.Welcome;
   }
 
-  selectSubject(selection: Subject): void {
+  selectSubject(selection: GuideSubject): void {
     this.selectedSubject = selection;
   }
 

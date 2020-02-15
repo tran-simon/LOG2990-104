@@ -67,10 +67,10 @@
 
       <div>
         <button mat-button id="prevButton" (click)="previousSubject()"
-          [disabled]='selectedSubject !== subjects.Color'
+          [disabled]='selectedSubject === subjects.Welcome'
         >précédent</button>
         <button mat-button id="nextButton" (click)="nextSubject()"
-          [disabled]='selectedSubject !== subjects.Welcome'
+          [disabled]='selectedSubject === subjects.Color'
         >suivant</button>
       </div>
 
