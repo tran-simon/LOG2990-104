@@ -24,7 +24,7 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
     return regexString;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.format = (v: string): string => (+v).toString();
     this.stringToMatch = NumberInputComponent.makeRegexString(this.allowNegatives, this.allowDecimals);
     this.errorMessages.pattern = 'Valeur doit être numérique';

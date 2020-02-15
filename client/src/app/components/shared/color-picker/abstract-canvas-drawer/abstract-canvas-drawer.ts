@@ -82,7 +82,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
   }
 
   @HostListener('window:mouseup')
-  onMouseUp() {
+  onMouseUp(): void {
     this.mouseIsDown = false;
   }
 }
