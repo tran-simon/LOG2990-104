@@ -41,16 +41,12 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   }
 
   previousSubject(): void {
-    if (this.selectedSubject !== this.subjects.Welcome) {
-      this.selectSubject(this.selectedSubject - 1);
-      this.openCategories();
-    }
+    this.selectSubject(this.selectedSubject - 1);
+    this.openCategories();
   }
 
   nextSubject(): void {
-    if (this.selectedSubject !== this.subjects.Color) {
-      this.selectSubject(this.selectedSubject + 1);
-      this.openCategories();
-    }
+    this.selectSubject(this.selectedSubject + 1);
+    this.openCategories();
   }
 }

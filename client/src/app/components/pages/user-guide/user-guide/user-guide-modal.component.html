@@ -66,8 +66,12 @@
       </div>
 
       <div>
-        <button mat-button id="prevButton" (click)="previousSubject()">précédent</button>
-        <button mat-button id="nextButton" (click)="nextSubject()">suivant</button>
+        <button mat-button id="prevButton" (click)="previousSubject()"
+          [disabled]='selectedSubject !== subjects.Color'
+        >précédent</button>
+        <button mat-button id="nextButton" (click)="nextSubject()"
+          [disabled]='selectedSubject !== subjects.Welcome'
+        >suivant</button>
       </div>
 
     </mat-sidenav-content>
