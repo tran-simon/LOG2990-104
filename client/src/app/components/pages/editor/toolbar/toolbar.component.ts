@@ -6,7 +6,7 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
-import { UserGuideComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide.component';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
 import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
@@ -70,7 +70,7 @@ export class ToolbarComponent {
 
   openModal(): void {
     if (!this.modalIsOpened) {
-      this.dialogRef = this.dialog.open(UserGuideComponent, {});
+      this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
 
       this.dialogRef.afterClosed().subscribe(() => {
         this.modalIsOpened = false;

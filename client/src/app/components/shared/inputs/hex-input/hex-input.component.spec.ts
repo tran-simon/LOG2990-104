@@ -28,7 +28,6 @@ describe('HexInputComponent', () => {
   });
 
   it('can format hex string', () => {
-    component.format = (v: string) => v.toUpperCase();
     expect(component.format('0aFb0')).toEqual('0afb0');
   });
 });

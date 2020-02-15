@@ -4,26 +4,24 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 
 enum Subject {
-  Bienvenue,
-  Crayon,
-  Pinceau,
+  Welcome,
+  Pen,
+  Brush,
   Rectangle,
-  Ligne,
-  Couleur,
+  Line,
+  Color,
 }
 
 @Component({
-  selector: 'app-user-guide',
-  templateUrl: './user-guide.component.html',
-  styleUrls: ['./user-guide.component.scss'],
+  selector: 'app-user-guide-modal',
+  templateUrl: './user-guide-modal.component.html',
+  styleUrls: ['./user-guide-modal.component.scss'],
 })
-// todo rename to modal
-export class UserGuideComponent extends AbstractModalComponent implements OnInit {
+export class UserGuideModalComponent extends AbstractModalComponent implements OnInit {
   @ViewChild('sidenav', { static: false })
   sidenav: MatSidenav;
   subjects = Subject;
   selectedSubject: Subject;
-  opened = false;
   panelOpenState1 = false;
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
@@ -31,7 +29,7 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
   }
 
   ngOnInit(): void {
-    this.selectedSubject = this.subjects.Bienvenue;
+    this.selectedSubject = this.subjects.Welcome;
   }
 
   selectSubject(selection: Subject): void {
@@ -43,14 +41,14 @@ export class UserGuideComponent extends AbstractModalComponent implements OnInit
   }
 
   previousSubject(): void {
-    if (this.selectedSubject !== this.subjects.Bienvenue) {
+    if (this.selectedSubject !== this.subjects.Welcome) {
       this.selectSubject(this.selectedSubject - 1);
       this.openCategories();
     }
   }
 
   nextSubject(): void {
-    if (this.selectedSubject !== this.subjects.Couleur) {
+    if (this.selectedSubject !== this.subjects.Color) {
       this.selectSubject(this.selectedSubject + 1);
       this.openCategories();
     }

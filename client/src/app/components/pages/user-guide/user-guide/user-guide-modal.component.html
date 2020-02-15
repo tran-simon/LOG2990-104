@@ -1,0 +1,76 @@
+<app-abstract-modal>
+  <mat-sidenav-container content>
+    <mat-sidenav #sidenav mode="side" style="text-align: center;">
+      <div id="mat-sidenav-cat">
+        <button mat-raised-button (click)="selectSubject(subjects.Welcome)">Bienvenue</button>
+
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="panelOpenState1" (closed)="panelOpenState1=false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Outils
+              </mat-panel-title>
+              <mat-panel-description>
+                Tools
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Pen)">Crayon</button>
+            <p></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Brush)">Pinceau</button>
+            <p></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Rectangle)">Rectangle</button>
+            <p></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Line)">Ligne</button>
+            <p></p>
+            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Color)">Sélecteur de couleurs
+            </button>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div *ngIf="sidenav.opened; else elseBlock">
+        <button mat-icon-button id="back-button" (click)="sidenav.toggle()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <ng-template #elseBlock>
+        <div>
+          <button mat-icon-button id="forward-button" (click)="sidenav.toggle()">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </ng-template>
+      <div [ngSwitch]="selectedSubject" id="main_content">
+        <div *ngSwitchCase="subjects.Welcome">
+          <app-welcome></app-welcome
+          >
+        </div>
+        <div *ngSwitchCase="subjects.Pen">
+          <app-pen-guide></app-pen-guide>
+        </div>
+        <div *ngSwitchCase="subjects.Line">
+          <app-line-guide></app-line-guide>
+        </div>
+        <div *ngSwitchCase="subjects.Brush">
+          <app-brush-guide></app-brush-guide>
+        </div>
+        <div *ngSwitchCase="subjects.Rectangle">
+          <app-rectangle-guide></app-rectangle-guide>
+        </div>
+        <div *ngSwitchCase="subjects.Color">
+          <app-color-guide></app-color-guide>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+
+      <div>
+        <button mat-button id="prevButton" (click)="previousSubject()">précédent</button>
+        <button mat-button id="nextButton" (click)="nextSubject()">suivant</button>
+      </div>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</app-abstract-modal>
