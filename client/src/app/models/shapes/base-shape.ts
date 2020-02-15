@@ -22,7 +22,7 @@ export abstract class BaseShape {
     this.updateProperties();
   }
 
-  updateProperties() {
+  updateProperties(): void {
     this._svgNode.style.strokeWidth = this.properties.strokeWidth.toString();
     this._svgNode.style.strokeOpacity = this.properties.strokeOpacity.toString();
     this._svgNode.style.stroke = this.properties.strokeColor.rgbString;

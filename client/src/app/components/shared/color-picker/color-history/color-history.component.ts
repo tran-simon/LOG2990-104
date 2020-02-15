@@ -11,9 +11,11 @@ export class ColorHistoryComponent {
   static readonly MAX_HISTORY_LENGTH = 10;
   private static COLOR_HISTORY: Color[] = new Array<Color>(ColorHistoryComponent.MAX_HISTORY_LENGTH).fill(Color.WHITE);
 
-  @Output() colorSelectedEvent = new EventEmitter<Color>();
+  @Output() colorSelectedEvent: EventEmitter<Color>;
 
-  constructor(private selectedColors: SelectedColorsService) {}
+  constructor(private selectedColors: SelectedColorsService) {
+    this.colorSelectedEvent = new EventEmitter<Color>();
+  }
 
   static push(color: Color): Color | undefined {
     return this.COLOR_HISTORY.push(color) > this.MAX_HISTORY_LENGTH ? this.COLOR_HISTORY.shift() : undefined;

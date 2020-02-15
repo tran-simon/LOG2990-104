@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-couleur',
+  selector: 'app-color-guide',
   templateUrl: './color-guide.component.html',
   styleUrls: ['./color-guide.component.scss'],
 })
