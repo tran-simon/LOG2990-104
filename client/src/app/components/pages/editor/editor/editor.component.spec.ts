@@ -2,10 +2,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/pen-toolbar/pen-toolbar.component';
+import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/rectangle-toolbar/rectangle-toolbar.component';
 import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
 import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { ToolType } from 'src/app/models/tools/tool';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -29,7 +34,15 @@ describe('EditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule],
-      declarations: [EditorComponent, DrawingSurfaceComponent, ToolbarComponent],
+      declarations: [
+        EditorComponent,
+        DrawingSurfaceComponent,
+        ToolbarComponent,
+        PenToolbarComponent,
+        RectangleToolbarComponent,
+        BrushToolbarComponent,
+        LineToolbarComponent,
+      ],
       providers: [SelectedColorsService],
     }).compileComponents();
   }));
@@ -109,27 +122,27 @@ describe('EditorComponent', () => {
     component.handleToolChanged(new LineToolProperties());
     component.handleToolChanged(new LineToolProperties());
 
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Line);
+    expect(component.toolbar.currentTool).toBe(ToolType.Line);
   });
 
   it('should select the rectangle tool', () => {
     component.handleToolChanged(new RectangleToolProperties());
     component.handleToolChanged(new RectangleToolProperties());
 
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Rectangle);
+    expect(component.toolbar.currentTool).toBe(ToolType.Rectangle);
   });
 
   it('should select the brush tool', () => {
     component.handleToolChanged(new BrushToolProperties());
     component.handleToolChanged(new BrushToolProperties());
 
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Brush);
+    expect(component.toolbar.currentTool).toBe(ToolType.Brush);
   });
 
   it('should select the pen tool after selecting the brush tool', () => {
     component.handleToolChanged(new BrushToolProperties());
     component.handleToolChanged(new PenToolProperties());
 
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Pen);
+    expect(component.toolbar.currentTool).toBe(ToolType.Pen);
   });
 });

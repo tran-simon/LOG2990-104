@@ -3,6 +3,13 @@ import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../components/pages/editor/drawing-surface/drawing-surface.component';
 
+export enum ToolType {
+  Pen = 'pen-tool',
+  Brush = 'brush-tool',
+  Rectangle = 'rectangle-tool',
+  Line = 'line-tool',
+  ColorPicker = 'colorpicker-tool',
+}
 export abstract class Tool {
   protected drawingSurface: DrawingSurfaceComponent;
   protected keyboardEventHandler: KeyboardEventHandler;

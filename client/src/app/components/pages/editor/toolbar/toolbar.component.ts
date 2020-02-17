@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
+import { ToolType } from 'src/app/models/tools/tool';
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
@@ -12,14 +13,6 @@ import { LineToolProperties } from '../../../../models/tool-properties/line-tool
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
 import { RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
-
-enum Tool {
-  Pen = 'Pen',
-  Brush = 'Brush',
-  Rectangle = 'Rectangle',
-  Line = 'Line',
-  ColorPicker = 'ColorPicker',
-}
 
 @Component({
   selector: 'app-toolbar',
@@ -34,8 +27,9 @@ export class ToolbarComponent {
   @Output() toolChanged: EventEmitter<ToolProperties>;
   @Output() editorBackgroundChanged: EventEmitter<Color>;
 
-  tools = Tool;
-  currentTool: Tool;
+  ToolType = ToolType;
+  tools = Object.values(ToolType);
+  currentTool: ToolType;
 
   selectedColor: SelectedColorType;
   SelectedColorType = SelectedColorType;
@@ -66,7 +60,7 @@ export class ToolbarComponent {
     this.rectangleProperties = new RectangleToolProperties();
     this.lineProperties = new LineToolProperties();
     this.selectedColor = SelectedColorType.primary;
-    this.currentTool = this.tools.Pen;
+    this.currentTool = ToolType.Pen;
     this.modalIsOpened = false;
   }
 
@@ -87,33 +81,23 @@ export class ToolbarComponent {
     }
   }
 
-  selectTool(selection: Tool): void {
+  selectTool(selection: ToolType): void {
     this.currentTool = selection;
     this.showColorPicker = false;
 
     switch (this.currentTool) {
-      case this.tools.Pen:
+      case ToolType.Pen:
         this.toolChanged.emit(this.penProperties);
         break;
-      case this.tools.Brush:
+      case ToolType.Brush:
         this.toolChanged.emit(this.brushProperties);
         break;
-      case this.tools.Rectangle:
+      case ToolType.Rectangle:
         this.toolChanged.emit(this.rectangleProperties);
         break;
-      case this.tools.Line:
+      case ToolType.Line:
         this.toolChanged.emit(this.lineProperties);
         break;
-    }
-  }
-
-  openPanel(selection: Tool): void {
-    if (this.currentTool === selection) {
-      this.drawer.toggle();
-      this.showColorPicker = false;
-    } else {
-      this.currentTool = selection;
-      this.drawer.open();
     }
   }
 
@@ -129,6 +113,21 @@ export class ToolbarComponent {
 
   updateBackground(color: Color): void {
     this.editorBackgroundChanged.emit(color);
+  }
+
+  getToolbarIcon(tool: ToolType): string {
+    //todo
+    switch (tool) {
+      case ToolType.Pen:
+        return 'edit';
+      case ToolType.Brush:
+        return 'brush';
+      case ToolType.Rectangle:
+        return 'crop_square';
+      case ToolType.Line:
+        return 'show_chart';
+    }
+    return '';
   }
 
   get primaryColor(): Color {

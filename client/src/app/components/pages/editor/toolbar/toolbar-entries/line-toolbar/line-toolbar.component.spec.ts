@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from 'src/app/components/shared/shared.module';
+import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 
 import { LineToolbarComponent } from './line-toolbar.component';
 
@@ -8,6 +10,7 @@ describe('LineToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule],
       declarations: [LineToolbarComponent],
     }).compileComponents();
   }));
@@ -15,6 +18,7 @@ describe('LineToolbarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LineToolbarComponent);
     component = fixture.componentInstance;
+    component.toolProperties = new LineToolProperties();
     fixture.detectChanges();
   });
 
