@@ -5,19 +5,19 @@
     </button>
     <div class="toolbar-section-divider"></div>
     <button id="pen-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Pen}"
-            (click)="selectTool(tools.Pen)" (dblclick)="openPanel(tools.Pen)">
+            (click)="selectTool(tools.Pen)">
       <mat-icon>edit</mat-icon>
     </button>
     <button id="brush-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Brush}"
-            (click)="selectTool(tools.Brush)" (dblclick)="openPanel(tools.Brush)">
+            (click)="selectTool(tools.Brush)" >
       <mat-icon>brush</mat-icon>
     </button>
     <button id="rectangle-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Rectangle}"
-            (click)="selectTool(tools.Rectangle)" (dblclick)="openPanel(tools.Rectangle)">
+            (click)="selectTool(tools.Rectangle)" >
       <mat-icon>crop_square</mat-icon>
     </button>
     <button id="line-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Line}"
-            (click)="selectTool(tools.Line)" (dblclick)="openPanel(tools.Line)">
+            (click)="selectTool(tools.Line)" >
       <mat-icon>show_chart</mat-icon>
     </button>
   </div>

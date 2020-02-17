@@ -89,6 +89,7 @@ export class ToolbarComponent {
 
   selectTool(selection: Tool): void {
     this.currentTool = selection;
+    this.showColorPicker = false;
 
     switch (this.currentTool) {
       case this.tools.Pen:
