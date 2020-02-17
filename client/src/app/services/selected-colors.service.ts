@@ -23,7 +23,7 @@ export class SelectedColorsService {
     return this._colors[MathUtil.fit(index)];
   }
 
-  setColorByIndex(color: Color, index: number) {
+  setColorByIndex(color: Color, index: number): void {
     this._colors[MathUtil.fit(index)] = color;
   }
 

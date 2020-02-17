@@ -33,4 +33,17 @@ describe('NumberInputComponent', () => {
     expect(NumberInputComponent.makeRegexString(false, true)).toEqual('^([0-9]*.)?[0-9]*$');
     expect(NumberInputComponent.makeRegexString(true, true)).toEqual('^-?([0-9]*.)?[0-9]*$');
   });
+
+  it('should emit numberValueChange on valueChange event', () => {
+    const numberValueChangeSpy = spyOn(component.numberValueChange, 'emit');
+
+    component.valueChange.emit('4');
+    fixture.detectChanges();
+    expect(numberValueChangeSpy).toHaveBeenCalledWith(4);
+  });
+
+  it('can get number value', () => {
+    component.value = '-3.2';
+    expect(component.numberValue).toEqual(-3.2);
+  });
 });

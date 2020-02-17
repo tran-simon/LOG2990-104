@@ -4,6 +4,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { SharedModule } from '../../../shared/shared.module';
@@ -70,6 +71,11 @@ describe('HomeComponent', () => {
   it('should open modal when openCreateModal is called', () => {
     component.openModal();
     expect(dialogOpenSpy).toHaveBeenCalled();
+  });
+
+  it('should open guide modal correctly', () => {
+    component.openModal('help');
+    expect(dialogOpenSpy).toHaveBeenCalledWith(UserGuideModalComponent, {});
   });
 
   it('should not open modal if already opened', () => {

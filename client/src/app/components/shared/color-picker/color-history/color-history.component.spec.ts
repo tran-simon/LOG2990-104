@@ -1,6 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 import { ColorHistoryComponent } from './color-history.component';
@@ -8,15 +9,18 @@ import { ColorHistoryComponent } from './color-history.component';
 describe('ColorHistoryComponent', () => {
   let component: ColorHistoryComponent;
   let fixture: ComponentFixture<ColorHistoryComponent>;
+  let selectedColors: SelectedColorsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ColorHistoryComponent],
+      providers: [SelectedColorsService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ColorHistoryComponent);
+    selectedColors = TestBed.get(SelectedColorsService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -36,7 +40,7 @@ describe('ColorHistoryComponent', () => {
     expect(component.colorHistory[9]).toEqual(Color.BLUE);
   });
 
-  it('emits color selected on button click', () => {
+  it('emits color selected on click', () => {
     const colorSelectedSpy = spyOn(component.colorSelectedEvent, 'emit');
 
     const button: DebugElement = fixture.debugElement.query(By.css('.color-history-button'));
@@ -44,5 +48,15 @@ describe('ColorHistoryComponent', () => {
     expect(button).not.toBeUndefined();
     button.nativeElement.click();
     expect(colorSelectedSpy).toHaveBeenCalled();
+  });
+
+  it('sets secondary color on right click', () => {
+    ColorHistoryComponent.getColorHistory().fill(Color.WHITE);
+    selectedColors.secondaryColor = Color.BLACK;
+    fixture.detectChanges();
+    const button: DebugElement = fixture.debugElement.query(By.css('.color-history-button'));
+    expect(selectedColors.secondaryColor).toEqual(Color.BLACK);
+    button.triggerEventHandler('contextmenu', {});
+    expect(selectedColors.secondaryColor).toEqual(Color.WHITE);
   });
 });

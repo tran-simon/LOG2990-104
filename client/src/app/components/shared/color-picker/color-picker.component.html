@@ -58,6 +58,10 @@
       [formGroup]="formGroup">Hex:
     </app-hex-input>
   </form>
+  <app-alpha [color]='color'
+    (colorChanged)="alphaChange($event)"
+    [isVertical]="false"
+  ></app-alpha>
   <div *ngIf=showHistory>
     <button id='btn-cancel' (click)='cancel()'>Annuler</button>
     <button id='btn-confirm' (click)='confirm()'>Confirmer</button>

@@ -18,7 +18,7 @@ export class RectangleTool extends ShapeTool {
     super(drawingSurface);
   }
 
-  initShape(c: Coordinate) {
+  initShape(c: Coordinate): void {
     this.rectangle = new Rectangle(c);
 
     switch (this._toolProperties.contourType) {
@@ -42,7 +42,7 @@ export class RectangleTool extends ShapeTool {
     this.drawShape();
   }
 
-  resizeShape(dimensions: Coordinate, origin: Coordinate = this.rectangle.origin) {
+  resizeShape(dimensions: Coordinate, origin: Coordinate = this.rectangle.origin): void {
     this.rectangle.origin = origin;
     this.rectangle.width = dimensions.x;
     this.rectangle.height = dimensions.y;

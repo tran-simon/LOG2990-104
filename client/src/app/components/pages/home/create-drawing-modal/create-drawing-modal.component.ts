@@ -14,11 +14,11 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
 })
 export class CreateDrawingModalComponent extends AbstractModalComponent implements AfterViewInit {
   @ViewChild('colorpicker', { static: true }) colorPicker: ColorPickerComponent;
-  formGroup = new FormGroup({});
-  private windowWidth = 500;
-  private windowHeight = 500;
-  width = this.windowWidth.toString();
-  height = this.windowHeight.toString();
+  formGroup: FormGroup;
+  private windowWidth: number;
+  private windowHeight: number;
+  width: string;
+  height: string;
 
   constructor(
     private router: Router,
@@ -26,6 +26,11 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
     private changeDetectorRef: ChangeDetectorRef,
   ) {
     super(dialogRef);
+    this.formGroup = new FormGroup({});
+    this.windowHeight = 500;
+    this.windowWidth = 500;
+    this.width = this.windowWidth.toString();
+    this.height = this.windowHeight.toString();
   }
 
   ngAfterViewInit(): void {
@@ -44,7 +49,7 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
     }
   }
 
-  onCreateClick() {
+  onCreateClick(): void {
     const params: EditorParams = { width: this.width, height: this.height, color: this.colorPicker.color.hex };
     this.router.navigate(['edit', params]);
     this.dialogRef.close();
