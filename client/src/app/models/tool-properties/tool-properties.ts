@@ -4,14 +4,11 @@ export abstract class ToolProperties {
   toolName: string;
 
   private _thickness: number;
-  private readonly _minThickness: number;
-  private readonly _maxThickness: number;
+  abstract readonly minThickness: number;
+  abstract readonly maxThickness: number;
 
-  protected constructor(toolName: string, minThickness: number, maxThickness: number) {
+  protected constructor(toolName: string) {
     this.toolName = toolName;
-
-    this._minThickness = minThickness;
-    this._maxThickness = maxThickness;
   }
 
   get thickness(): number {
@@ -19,14 +16,6 @@ export abstract class ToolProperties {
   }
 
   set thickness(thickness: number) {
-    this._thickness = MathUtil.fit(thickness, this._minThickness, this._maxThickness);
-  }
-
-  get maxThickness(): number {
-    return this._maxThickness;
-  }
-
-  get minThickness(): number {
-    return this._minThickness;
+    this._thickness = MathUtil.fit(thickness, this.minThickness, this.maxThickness);
   }
 }

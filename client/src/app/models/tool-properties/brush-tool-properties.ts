@@ -12,10 +12,13 @@ export class BrushToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;
   static readonly MAX_THICKNESS = 50;
 
+  minThickness: number = BrushToolProperties.MIN_THICKNESS;
+  maxThickness: number = BrushToolProperties.MAX_THICKNESS;
+
   texture: BrushTextureType;
 
   constructor(thickness: number = BrushToolProperties.MIN_THICKNESS, texture: BrushTextureType = BrushTextureType.TEXTURE_1) {
-    super('Brush', BrushToolProperties.MIN_THICKNESS, BrushToolProperties.MAX_THICKNESS);
+    super('Brush');
 
     this.thickness = thickness;
     this.texture = texture;

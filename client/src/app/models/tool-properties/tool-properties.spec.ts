@@ -4,8 +4,11 @@ class MockToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;
   static readonly MAX_THICKNESS = 50;
 
-  constructor(thickness: number = 1) {
-    super('MockTool', 1, 50);
+  minThickness: number = MockToolProperties.MIN_THICKNESS;
+  maxThickness: number = MockToolProperties.MAX_THICKNESS;
+
+  constructor(thickness: number = MockToolProperties.MIN_THICKNESS) {
+    super('MockTool');
 
     this.thickness = thickness;
   }
