@@ -101,11 +101,11 @@ describe('ToolbarComponent', () => {
 
     secondaryColorSquare.click();
 
-    expect(component.selectedColor).toEqual(1);
+    expect(component.selectedColorType).toEqual(1);
 
     primaryColorSquare.click();
 
-    expect(component.selectedColor).toEqual(0);
+    expect(component.selectedColorType).toEqual(0);
   });
 
   it('should show the correct primary color in the square when a new color is picked', () => {

@@ -7,10 +7,10 @@ import { SelectedColorsService, SelectedColorType } from 'src/app/services/selec
 import { Color } from 'src/app/utils/color/color';
 
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
-import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
+import { BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
+import { LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
-import { RectangleContourType, RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
+import { RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 
 enum Tool {
@@ -40,14 +40,6 @@ export class ToolbarComponent {
   selectedColor: SelectedColorType;
   SelectedColorType = SelectedColorType;
 
-  brushTextureNames = Object.values(BrushTextureType);
-
-  rectangleContourTypes = RectangleContourType;
-  rectangleContourNames = Object.values(this.rectangleContourTypes);
-
-  lineJunctionTypes = LineJunctionType;
-  lineJunctionNames = Object.values(this.lineJunctionTypes);
-
   showColorPicker: boolean;
 
   @ViewChild('drawer', { static: false })
@@ -68,17 +60,12 @@ export class ToolbarComponent {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
     this.toolChanged = new EventEmitter<ToolProperties>();
     this.editorBackgroundChanged = new EventEmitter<Color>();
-    this.rectangleContourTypes = RectangleContourType;
-    this.rectangleContourNames = Object.values(this.rectangleContourTypes);
-    this.lineJunctionTypes = LineJunctionType;
-    this.lineJunctionNames = Object.values(this.lineJunctionTypes);
     this.showColorPicker = false;
     this.penProperties = new PenToolProperties();
     this.brushProperties = new BrushToolProperties();
     this.rectangleProperties = new RectangleToolProperties();
     this.lineProperties = new LineToolProperties();
     this.selectedColor = SelectedColorType.primary;
-    this.SelectedColorType = SelectedColorType;
     this.currentTool = this.tools.Pen;
     this.modalIsOpened = false;
   }
