@@ -1,4 +1,5 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { MathUtil } from '../../utils/math/math-util';
 
 export enum LineJunctionType {
   POINTS = 'Avec points',
@@ -11,14 +12,13 @@ export class LineToolProperties extends ToolProperties {
   static readonly MIN_DIAMETER = 1;
   static readonly MAX_DIAMETER = 50;
 
-  minThickness = LineToolProperties.MIN_THICKNESS;
-  maxThickness = LineToolProperties.MAX_THICKNESS;
-  minDiameter = LineToolProperties.MIN_DIAMETER;
-  maxDiameter = LineToolProperties.MAX_DIAMETER;
+  minThickness: number = LineToolProperties.MIN_THICKNESS;
+  maxThickness: number = LineToolProperties.MAX_THICKNESS;
+  private readonly _minDiameter = LineToolProperties.MIN_DIAMETER;
+  private readonly _maxDiameter = LineToolProperties.MAX_DIAMETER;
 
-  thickness: number;
   junctionType: LineJunctionType;
-  junctionDiameter: number;
+  private _junctionDiameter: number;
 
   constructor(
     thickness: number = LineToolProperties.MIN_THICKNESS,
@@ -29,6 +29,22 @@ export class LineToolProperties extends ToolProperties {
 
     this.thickness = thickness;
     this.junctionType = junctionType;
-    this.junctionDiameter = junctionDiameter;
+    this._junctionDiameter = junctionDiameter;
+  }
+
+  get junctionDiameter(): number {
+    return this._junctionDiameter;
+  }
+
+  set junctionDiameter(diameter: number) {
+    this._junctionDiameter = MathUtil.fit(diameter, this._minDiameter, this._maxDiameter);
+  }
+
+  get minDiameter(): number {
+    return this._minDiameter;
+  }
+
+  get maxDiameter(): number {
+    return this._maxDiameter;
   }
 }
