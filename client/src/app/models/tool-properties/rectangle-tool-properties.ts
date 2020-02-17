@@ -10,10 +10,9 @@ export class RectangleToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;
   static readonly MAX_THICKNESS = 10;
 
-  minThickness = RectangleToolProperties.MIN_THICKNESS;
-  maxThickness = RectangleToolProperties.MAX_THICKNESS;
+  minThickness: number = RectangleToolProperties.MIN_THICKNESS;
+  maxThickness: number = RectangleToolProperties.MAX_THICKNESS;
 
-  thickness: number;
   contourType: RectangleContourType;
 
   constructor(
