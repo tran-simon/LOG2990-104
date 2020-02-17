@@ -12,12 +12,10 @@ export class PolygonToolProperties extends ToolProperties {
 
   minThickness = PolygonToolProperties.MIN_THICKNESS;
   maxThickness = PolygonToolProperties.MAX_THICKNESS;
-
-  thickness: number;
   contourType: PolygonContourType;
 
   constructor(thickness: number = PolygonToolProperties.MIN_THICKNESS, contourType: PolygonContourType = PolygonContourType.FILLEDCONTOUR) {
-    super('PolygonTool');
+    super('Polygon');
     this.thickness = thickness;
     this.contourType = contourType;
   }

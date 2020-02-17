@@ -4,6 +4,12 @@ import { BaseShape } from './base-shape';
 export class Polygon extends BaseShape {
   private _nEdges: number;
 
+  private _vertices: Coordinate[];
+
+  get vertices(): Coordinate[] {
+    return this._vertices;
+  }
+
   get nEdges(): number {
     return this._nEdges;
   }
@@ -16,7 +22,6 @@ export class Polygon extends BaseShape {
 
   set height(height: number) {
     this._height = !height ? 0 : Math.abs(height);
-    this.svgNode.setAttribute('height', this.height.toString());
   }
 
   private _width: number;
@@ -27,8 +32,8 @@ export class Polygon extends BaseShape {
 
   set width(width: number) {
     this._width = !width ? 0 : Math.abs(width);
-    this.svgNode.setAttribute('width', this.width.toString());
   }
+
   get origin(): Coordinate {
     return this._origin;
   }

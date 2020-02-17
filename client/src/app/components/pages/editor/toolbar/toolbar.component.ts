@@ -10,6 +10,7 @@ import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/use
 import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
 import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
+import { PolygonContourType, PolygonToolProperties } from '../../../../models/tool-properties/polygon-tool-properties';
 import { RectangleContourType, RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 
@@ -19,6 +20,7 @@ enum Tool {
   Rectangle = 'Rectangle',
   Line = 'Line',
   ColorPicker = 'ColorPicker',
+  Polygon = 'Polygon',
 }
 
 @Component({
@@ -45,6 +47,9 @@ export class ToolbarComponent {
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
 
+  polygonContourType = PolygonContourType;
+  polygonContourNames = Object.values(this.polygonContourType);
+
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
 
@@ -59,6 +64,7 @@ export class ToolbarComponent {
   penProperties: PenToolProperties;
   brushProperties: BrushToolProperties;
   rectangleProperties: RectangleToolProperties;
+  polygonProperties: PolygonToolProperties;
 
   lineProperties: LineToolProperties;
   modalIsOpened: boolean;
@@ -68,6 +74,8 @@ export class ToolbarComponent {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
     this.toolChanged = new EventEmitter<ToolProperties>();
     this.editorBackgroundChanged = new EventEmitter<Color>();
+    this.polygonContourType = PolygonContourType;
+    this.polygonContourNames = Object.values(this.polygonContourType);
     this.rectangleContourTypes = RectangleContourType;
     this.rectangleContourNames = Object.values(this.rectangleContourTypes);
     this.lineJunctionTypes = LineJunctionType;
@@ -76,6 +84,7 @@ export class ToolbarComponent {
     this.penProperties = new PenToolProperties();
     this.brushProperties = new BrushToolProperties();
     this.rectangleProperties = new RectangleToolProperties();
+    this.polygonProperties = new PolygonToolProperties();
     this.lineProperties = new LineToolProperties();
     this.selectedColor = SelectedColorType.primary;
     this.SelectedColorType = SelectedColorType;
@@ -115,6 +124,9 @@ export class ToolbarComponent {
         break;
       case this.tools.Line:
         this.toolChanged.emit(this.lineProperties);
+        break;
+      case this.tools.Polygon:
+        this.toolChanged.emit(this.polygonProperties);
         break;
     }
   }

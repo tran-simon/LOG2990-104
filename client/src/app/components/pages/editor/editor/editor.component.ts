@@ -12,6 +12,7 @@ import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { PolygonTool } from '../../../../models/tools/creator-tools/shape-tools/polygon-tool';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 
 export interface EditorParams {
@@ -58,7 +59,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
       },
       1: () => {
         this.selectRectangleTool(this.toolbar.rectangleProperties);
-        return false; // todo - enable default behavior when typing in text field
+        return false;
+      },
+      3: () => {
+        this.selectPolygonTool(this.toolbar.polygonProperties);
+        return false;
       },
       def: (e) => {
         return this.currentTool.handleKeyboardEvent(e);
@@ -96,6 +101,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
       case 'Line':
         this.selectLineTool(toolEvent);
         break;
+      case 'Polygon':
+        this.selectPolygonTool(toolEvent);
+        break;
     }
   }
 
@@ -125,7 +133,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.currentTool.toolProperties = properties;
     }
   }
-
+  selectPolygonTool(properties: ToolProperties): void {
+    if (this.toolbar.currentTool !== this.toolbar.tools.Polygon) {
+      this.toolbar.currentTool = this.toolbar.tools.Polygon;
+    } else {
+      this.currentTool = new PolygonTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
+  }
   selectLineTool(properties: ToolProperties): void {
     if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
       this.toolbar.currentTool = this.toolbar.tools.Line;

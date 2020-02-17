@@ -42,11 +42,6 @@ export class PolygonTool extends ShapeTool {
     this.drawShape();
   }
 
-  handleToolMouseEvent(e: MouseEvent): void {
-    // todo - make a proper mouse manager
-    // const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
-  }
-
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.polygon.origin): void {
     this.polygon.origin = origin;
     this.polygon.width = dimensions.x;
