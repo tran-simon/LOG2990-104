@@ -5,10 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/brush-toolbar/brush-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/pen-toolbar/pen-toolbar.component';
-import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolType } from 'src/app/models/tools/tool';
 import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
+import { RectangleToolbarComponent } from './toolbar-entries/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from './toolbar.component';
 
 describe('ToolbarComponent', () => {
@@ -49,7 +49,7 @@ describe('ToolbarComponent', () => {
     fixture.debugElement.nativeElement.querySelector('#btn-pen-tool').click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(ToolType.Pen);
+    expect(component.currentToolType).toBe(ToolType.Pen);
   });
 
   it('should select the rectangle tool', () => {
@@ -57,7 +57,7 @@ describe('ToolbarComponent', () => {
     rectangleButton.click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(ToolType.Rectangle);
+    expect(component.currentToolType).toBe(ToolType.Rectangle);
   });
 
   it('should select the line tool', () => {
@@ -65,7 +65,7 @@ describe('ToolbarComponent', () => {
     lineButton.click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(ToolType.Line);
+    expect(component.currentToolType).toBe(ToolType.Line);
   });
 
   it('should select the brush tool', () => {
@@ -73,7 +73,7 @@ describe('ToolbarComponent', () => {
     brushButton.click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(ToolType.Brush);
+    expect(component.currentToolType).toBe(ToolType.Brush);
   });
 
   it('should select the primary color and the secondary color when clicking associated squares', () => {

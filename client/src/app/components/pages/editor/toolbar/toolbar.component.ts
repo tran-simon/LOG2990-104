@@ -3,16 +3,12 @@ import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { ToolType } from 'src/app/models/tools/tool';
 import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
-import { LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
-import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
-import { RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
-import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 
 @Component({
   selector: 'app-toolbar',
@@ -24,12 +20,14 @@ export class ToolbarComponent {
   static readonly SLIDER_STEP = 0.1;
 
   @Input() stepThickness: number;
-  @Output() toolChanged: EventEmitter<ToolProperties>;
+  @Output() toolChanged: EventEmitter<ToolType>;
   @Output() editorBackgroundChanged: EventEmitter<Color>;
 
+  @Input() currentToolProperties: ToolProperties;
+
   ToolType = ToolType;
-  tools = Object.values(ToolType);
-  currentTool: ToolType;
+  toolTypeKeys = Object.values(ToolType);
+  currentToolType: ToolType;
 
   selectedColor: SelectedColorType;
   SelectedColorType = SelectedColorType;
@@ -42,25 +40,16 @@ export class ToolbarComponent {
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
-  penProperties: PenToolProperties;
-  brushProperties: BrushToolProperties;
-  rectangleProperties: RectangleToolProperties;
-
-  lineProperties: LineToolProperties;
   modalIsOpened: boolean;
   dialogRef: MatDialogRef<AbstractModalComponent>;
 
   constructor(private router: Router, public selectedColors: SelectedColorsService, public dialog: MatDialog) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
-    this.toolChanged = new EventEmitter<ToolProperties>();
+    this.toolChanged = new EventEmitter<ToolType>();
     this.editorBackgroundChanged = new EventEmitter<Color>();
     this.showColorPicker = false;
-    this.penProperties = new PenToolProperties();
-    this.brushProperties = new BrushToolProperties();
-    this.rectangleProperties = new RectangleToolProperties();
-    this.lineProperties = new LineToolProperties();
     this.selectedColor = SelectedColorType.primary;
-    this.currentTool = ToolType.Pen;
+    this.currentToolType = ToolType.Pen;
     this.modalIsOpened = false;
   }
 
@@ -82,23 +71,9 @@ export class ToolbarComponent {
   }
 
   selectTool(selection: ToolType): void {
-    this.currentTool = selection;
+    this.currentToolType = selection;
     this.showColorPicker = false;
-
-    switch (this.currentTool) {
-      case ToolType.Pen:
-        this.toolChanged.emit(this.penProperties);
-        break;
-      case ToolType.Brush:
-        this.toolChanged.emit(this.brushProperties);
-        break;
-      case ToolType.Rectangle:
-        this.toolChanged.emit(this.rectangleProperties);
-        break;
-      case ToolType.Line:
-        this.toolChanged.emit(this.lineProperties);
-        break;
-    }
+    this.toolChanged.emit(selection);
   }
 
   selectColor(index: number): void {
@@ -116,7 +91,7 @@ export class ToolbarComponent {
   }
 
   getToolbarIcon(tool: ToolType): string {
-    //todo
+    // todo
     switch (tool) {
       case ToolType.Pen:
         return 'edit';

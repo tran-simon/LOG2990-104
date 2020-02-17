@@ -1,6 +1,7 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { ToolType } from 'src/app/models/tools/tool';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -9,8 +10,8 @@ export abstract class ShapeTool extends CreatorTool {
   private forceEqualDimensions: boolean;
   private initialMouseCoord: Coordinate;
 
-  constructor(drawingSurface: DrawingSurfaceComponent) {
-    super(drawingSurface);
+  protected constructor(drawingSurface: DrawingSurfaceComponent, type: ToolType) {
+    super(drawingSurface, type);
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;

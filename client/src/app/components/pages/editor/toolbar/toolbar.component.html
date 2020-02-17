@@ -4,8 +4,8 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <div class="toolbar-section-divider"></div>
-      <div *ngFor='let tool of tools'>
-        <button id='{{"btn-" + tool}}' mat-icon-button [ngClass]="{'selected-tool': currentTool === tool}"
+      <div *ngFor='let tool of toolTypeKeys'>
+        <button id='{{"btn-" + tool}}' mat-icon-button [ngClass]="{'selected-tool': currentToolType === tool}"
                 (click)="selectTool(tool)">
           <mat-icon>{{getToolbarIcon(tool)}}</mat-icon>
         </button>
@@ -36,15 +36,15 @@
 </div>
 <mat-drawer-container>
   <mat-drawer #drawer mode="side">
-    <mat-drawer-content [ngSwitch]="currentTool">
+    <mat-drawer-content [ngSwitch]="currentToolType">
       <div *ngIf=!showColorPicker>
-        <app-pen-toolbar *ngSwitchCase='ToolType.Pen' [toolProperties]='penProperties' class='toolbar-tool-section'></app-pen-toolbar>
-        <app-brush-toolbar *ngSwitchCase='ToolType.Brush' [toolProperties]='brushProperties' class='toolbar-tool-section'>
+        <app-pen-toolbar *ngSwitchCase='ToolType.Pen' [toolProperties]='currentToolProperties' class='toolbar-tool-section'></app-pen-toolbar>
+        <app-brush-toolbar *ngSwitchCase='ToolType.Brush' [toolProperties]='currentToolProperties' class='toolbar-tool-section'>
         </app-brush-toolbar>
-        <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' [toolProperties]='rectangleProperties'
+        <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' [toolProperties]='currentToolProperties'
                                class='toolbar-tool-section'>
         </app-rectangle-toolbar>
-        <app-line-toolbar *ngSwitchCase=ToolType.Line [toolProperties]='lineProperties'
+        <app-line-toolbar *ngSwitchCase=ToolType.Line [toolProperties]='currentToolProperties'
                           class='toolbar-tool-section'></app-line-toolbar>
       </div>
       <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType" class="toolbar-tool-section">

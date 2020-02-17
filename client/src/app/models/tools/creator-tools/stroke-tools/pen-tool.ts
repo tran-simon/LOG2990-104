@@ -2,15 +2,17 @@ import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing
 import { Path } from 'src/app/models/shapes/path';
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { ToolType } from 'src/app/models/tools/tool';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 
 export class PenTool extends CreatorTool {
-  path: Path;
-  _toolProperties: PenToolProperties;
+  toolProperties: PenToolProperties;
 
-  constructor(drawingSurface: DrawingSurfaceComponent, protected selectedColors: SelectedColorsService) {
-    super(drawingSurface);
-    this._toolProperties = new PenToolProperties();
+  path: Path;
+
+  constructor(drawingSurface: DrawingSurfaceComponent, protected selectedColors: SelectedColorsService, type = ToolType.Pen) {
+    super(drawingSurface, type);
+    this.toolProperties = new PenToolProperties();
   }
 
   get shape(): Path {
@@ -33,9 +35,9 @@ export class PenTool extends CreatorTool {
   initPath(): void {
     this.path = new Path(this.mousePosition);
 
-    this.path.properties.strokeColor = this.selectedColors.primaryColor;
-    this.path.properties.strokeOpacity = this.selectedColors.primaryColor.a;
-    this.path.properties.strokeWidth = this._toolProperties.thickness;
+    this.path.shapeProperties.strokeColor = this.selectedColors.primaryColor;
+    this.path.shapeProperties.strokeOpacity = this.selectedColors.primaryColor.a;
+    this.path.shapeProperties.strokeWidth = this.toolProperties.thickness;
 
     this.path.updateProperties();
     this.drawShape();

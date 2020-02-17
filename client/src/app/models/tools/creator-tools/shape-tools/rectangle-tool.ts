@@ -2,12 +2,14 @@ import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
+import { ToolType } from 'src/app/models/tools/tool';
 import { SelectedColorsService } from 'src/app/services/selected-colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class RectangleTool extends ShapeTool {
-  protected _toolProperties: RectangleToolProperties;
+  toolProperties: RectangleToolProperties;
+
   private rectangle: Rectangle;
 
   get shape(): Rectangle {
@@ -15,27 +17,28 @@ export class RectangleTool extends ShapeTool {
   }
 
   constructor(drawingSurface: DrawingSurfaceComponent, private selectedColors: SelectedColorsService) {
-    super(drawingSurface);
+    super(drawingSurface, ToolType.Rectangle);
+    this.toolProperties = new RectangleToolProperties();
   }
 
   initShape(c: Coordinate): void {
     this.rectangle = new Rectangle(c);
 
-    switch (this._toolProperties.contourType) {
+    switch (this.toolProperties.contourType) {
       case RectangleContourType.FILLEDCONTOUR:
-        this.rectangle.properties.strokeWidth = this._toolProperties.thickness;
-        this.rectangle.properties.fillColor = this.selectedColors.primaryColor;
-        this.rectangle.properties.strokeColor = this.selectedColors.secondaryColor;
+        this.rectangle.shapeProperties.strokeWidth = this.toolProperties.thickness;
+        this.rectangle.shapeProperties.fillColor = this.selectedColors.primaryColor;
+        this.rectangle.shapeProperties.strokeColor = this.selectedColors.secondaryColor;
         break;
       case RectangleContourType.FILLED:
-        this.rectangle.properties.strokeWidth = 0;
-        this.rectangle.properties.fillColor = this.selectedColors.primaryColor;
-        this.rectangle.properties.strokeColor = Color.TRANSPARENT;
+        this.rectangle.shapeProperties.strokeWidth = 0;
+        this.rectangle.shapeProperties.fillColor = this.selectedColors.primaryColor;
+        this.rectangle.shapeProperties.strokeColor = Color.TRANSPARENT;
         break;
       case RectangleContourType.CONTOUR:
-        this.rectangle.properties.strokeWidth = this._toolProperties.thickness;
-        this.rectangle.properties.fillColor = Color.TRANSPARENT;
-        this.rectangle.properties.strokeColor = this.selectedColors.secondaryColor;
+        this.rectangle.shapeProperties.strokeWidth = this.toolProperties.thickness;
+        this.rectangle.shapeProperties.fillColor = Color.TRANSPARENT;
+        this.rectangle.shapeProperties.strokeColor = this.selectedColors.secondaryColor;
         break;
     }
     this.rectangle.updateProperties();

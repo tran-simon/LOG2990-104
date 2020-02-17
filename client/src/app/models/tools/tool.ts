@@ -14,12 +14,14 @@ export abstract class Tool {
   protected drawingSurface: DrawingSurfaceComponent;
   protected keyboardEventHandler: KeyboardEventHandler;
   private _mousePosition: Coordinate;
+  readonly type: ToolType;
 
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
 
-  protected constructor(drawingSurface: DrawingSurfaceComponent) {
+  protected constructor(type: ToolType, drawingSurface: DrawingSurfaceComponent) {
+    this.type = type;
     this.drawingSurface = drawingSurface;
     this.keyboardEventHandler = {} as KeyboardEventHandler;
     this._mousePosition = new Coordinate();
