@@ -11,6 +11,7 @@ import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-p
 import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
 import { RectangleContourType, RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
+import { EllipseContourType, EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 
 enum Tool {
@@ -19,6 +20,7 @@ enum Tool {
   Rectangle = 'Rectangle',
   Line = 'Line',
   ColorPicker = 'ColorPicker',
+  Ellipse = 'Ellipse',
 }
 
 @Component({
@@ -45,6 +47,9 @@ export class ToolbarComponent {
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
 
+  ellipseContourTypes = EllipseContourType;
+  ellipseContourNames = Object.values(this.ellipseContourTypes);
+
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
 
@@ -59,6 +64,7 @@ export class ToolbarComponent {
   penProperties: PenToolProperties;
   brushProperties: BrushToolProperties;
   rectangleProperties: RectangleToolProperties;
+  ellipseProperties: EllipseToolProperties;
 
   lineProperties: LineToolProperties;
   modalIsOpened: boolean;
@@ -76,6 +82,7 @@ export class ToolbarComponent {
     this.penProperties = new PenToolProperties();
     this.brushProperties = new BrushToolProperties();
     this.rectangleProperties = new RectangleToolProperties();
+    this.ellipseProperties = new EllipseToolProperties();
     this.lineProperties = new LineToolProperties();
     this.selectedColor = SelectedColorType.primary;
     this.SelectedColorType = SelectedColorType;
@@ -115,6 +122,9 @@ export class ToolbarComponent {
         break;
       case this.tools.Line:
         this.toolChanged.emit(this.lineProperties);
+        break;
+      case this.tools.Ellipse:
+        this.toolChanged.emit(this.ellipseProperties);
         break;
     }
   }

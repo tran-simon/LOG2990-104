@@ -20,6 +20,10 @@
       (click)="selectTool(tools.Line)" (dblclick)="openPanel(tools.Line)">
       <mat-icon>show_chart</mat-icon>
     </button>
+    <button id="ellipse-button" mat-icon-button [ngClass]="{'selected-tool': currentTool === tools.Ellipse}"
+      (click)="selectTool(tools.Ellipse)" (dblclick)="openPanel(tools.Ellipse)">
+      <mat-icon>panorama_fish_eye</mat-icon>
+    </button>
   </div>
   <div id="toolbar-middle-buttons">
     <button id="swap-button" mat-icon-button (click)="selectedColors.swapColors()">

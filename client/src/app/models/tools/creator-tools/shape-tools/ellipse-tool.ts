@@ -19,6 +19,7 @@ export class EllipseTool extends ShapeTool {
   }
 
   initShape(c: Coordinate): void {
+    this._ellipse = new Ellipse(c);
     switch (this._toolProperties.contourType) {
       case EllipseContourType.FILLEDCONTOUR:
         this._ellipse.properties.strokeWidth = this._toolProperties.thickness;
@@ -36,10 +37,13 @@ export class EllipseTool extends ShapeTool {
         this._ellipse.properties.strokeColor = this.selectedColors.secondaryColor;
         break;
     }
+    this._ellipse.updateProperties();
+    this.drawShape();
   }
+
   resizeShape(dimensions: Coordinate, origin: Coordinate = this._ellipse.origin): void {
     this._ellipse.origin = origin;
-    this._ellipse.radiusX = dimensions.x;
-    this._ellipse.radiusY = dimensions.y;
+    this._ellipse.radiusX = dimensions.x / 2;
+    this._ellipse.radiusY = dimensions.y / 2;
   }
 }

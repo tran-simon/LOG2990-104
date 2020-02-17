@@ -29,11 +29,11 @@ export class Ellipse extends BaseShape {
 
   set origin(c: Coordinate) {
     this._origin = c;
-    this.svgNode.setAttribute('cx', this._origin.x.toString());
-    this.svgNode.setAttribute('cy', this._origin.y.toString());
+    this.svgNode.setAttribute('cx', this.center.x.toString());
+    this.svgNode.setAttribute('cy', this.center.y.toString());
   }
   get center(): Coordinate {
-    return new Coordinate(this._radiusX / 2, this._radiusY / 2);
+    return Coordinate.add(this.origin, new Coordinate(this._radiusX, this._radiusY));
   }
 
   constructor(origin = new Coordinate(), rx: number = 0, ry: number = rx) {

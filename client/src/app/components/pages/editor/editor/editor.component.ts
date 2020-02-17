@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
@@ -60,6 +61,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
         this.selectRectangleTool(this.toolbar.rectangleProperties);
         return false; // todo - enable default behavior when typing in text field
       },
+      p: () => {
+        this.selectEllipseTool(this.toolbar.ellipseProperties);
+        return false;
+      },
       def: (e) => {
         return this.currentTool.handleKeyboardEvent(e);
       },
@@ -96,6 +101,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
       case 'Line':
         this.selectLineTool(toolEvent);
         break;
+      case 'Ellipse':
+        this.selectEllipseTool(toolEvent);
+        break;
     }
   }
 
@@ -131,6 +139,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.toolbar.currentTool = this.toolbar.tools.Line;
     } else {
       this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
+      this.currentTool.toolProperties = properties;
+    }
+  }
+  selectEllipseTool(properties: ToolProperties): void {
+    if (this.toolbar.currentTool !== this.toolbar.tools.Ellipse) {
+      this.toolbar.currentTool = this.toolbar.tools.Ellipse;
+    } else {
+      this.currentTool = new EllipseTool(this.drawingSurface, this.selectedColors);
       this.currentTool.toolProperties = properties;
     }
   }
