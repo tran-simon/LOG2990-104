@@ -1,18 +1,18 @@
 <div id="main-container">
-    <div id="main-container-title">
-        <h1>Polydessin</h1>
-    </div>
+  <div id="main-container-title">
+    <h1>Polydessin</h1>
+  </div>
 
-    <div id="main-container-buttons">
-        <button mat-raised-button (click)="openCreateModal()">Nouveau dessin</button>
-        <button mat-raised-button>Gallerie</button>
-        <button mat-raised-button>Guide utilisateur</button>
+  <div id="main-container-buttons">
+    <button id="btn-create" mat-raised-button (click)="openModal('create')">Nouveau dessin</button>
+    <button id="btn-gallery" mat-raised-button (click)="openGallery()">Galerie</button>
+    <button id="btn-guide" mat-raised-button (click)="openModal('help')">Guide utilisateur</button>
 
-        <button mat-raised-button *ngIf="previousDrawings; else noPreviousDrawings">
-            Continuer mon dessin
-        </button>
-        <ng-template #noPreviousDrawings>
-            <button mat-raised-button disabled>Continuer mon dessin</button>
-        </ng-template>
-    </div>
+    <button mat-raised-button *ngIf="previousDrawings; else noPreviousDrawings">
+      Continuer mon dessin
+    </button>
+    <ng-template #noPreviousDrawings>
+      <button mat-raised-button disabled>Continuer mon dessin</button>
+    </ng-template>
+  </div>
 </div>

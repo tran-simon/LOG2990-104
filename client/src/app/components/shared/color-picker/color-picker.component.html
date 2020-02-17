@@ -1,0 +1,69 @@
+<div id="color-picker" [style.background-color]="color.hexString" >
+  <div *ngIf=showHistory>
+    <app-color-history (colorSelectedEvent)='closed.emit()'></app-color-history>
+  </div>
+  <div>
+    <canvas #canvas id="color-square"
+      width="{{size}}"
+      height="{{size}}"
+      (mousemove)="onMouseMove($event)"
+      (mousedown)="onMouseDown($event)">
+    </canvas>
+
+    <app-color-lightness [color]="color"
+      (colorChanged)="colorChange($event)"
+      [isVertical]="isVertical"
+    ></app-color-lightness>
+  </div>
+
+  <form [formGroup]="formGroup" >
+    <app-hex-input  #redinput
+      required=true
+      id="red-color-input"
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.r255.toString(16)"
+      (valueChange)="rgbChange(redinput.value, 'r')"
+      [formGroup]="formGroup">
+      R:
+    </app-hex-input>
+    <app-hex-input #greeninput
+      required=true
+      id="green-color-input"
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.g255.toString(16)"
+      (valueChange)="rgbChange(greeninput.value, 'g')"
+      [formGroup]="formGroup">
+      V:
+    </app-hex-input>
+    <app-hex-input #blueinput
+      required=true
+      id="blue-color-input"
+      [errorMessages]="hexInputErrorMessages"
+      [maxLength]=2
+      [value]="color.b255.toString(16)"
+      (valueChange)="rgbChange(blueinput.value, 'b')"
+      [formGroup]="formGroup">
+      B:
+    </app-hex-input>
+    <app-hex-input #hexinput
+      id="hex-color-input"
+      required=true
+      [length]=6
+      prefix="#"
+      [errorMessages]="hexInputErrorMessages"
+      [value]="color.hex"
+      (valueChange)="hexChange(hexinput.value)"
+      [formGroup]="formGroup">Hex:
+    </app-hex-input>
+  </form>
+  <app-alpha [color]='color'
+    (colorChanged)="alphaChange($event)"
+    [isVertical]="false"
+  ></app-alpha>
+  <div *ngIf=showHistory>
+    <button id='btn-cancel' (click)='cancel()'>Annuler</button>
+    <button id='btn-confirm' (click)='confirm()'>Confirmer</button>
+  </div>
+</div>

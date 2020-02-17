@@ -1,0 +1,18 @@
+<mat-form-field appearance="fill" [formGroup]="formGroup">
+  <mat-label>
+    <label for="{{id}}">
+      <ng-content></ng-content>
+    </label>
+  </mat-label>
+  <span *ngIf="prefix" matPrefix>{{prefix}}</span>
+  <input #input matInput (focus)='onFocus()' (keyup)="onChange(input.value)" (blur)='onBlur(input.value)'
+    [value]='value' [formControl]="formControl" id="{{id}}">
+  <span *ngIf="suffix" matSuffix>{{suffix}}</span>
+
+  <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched) && formControl.errors"
+    class="alert alert-danger">
+    <mat-error *ngFor="let error of errors">
+      {{getErrorMessage(error)}}
+    </mat-error>
+  </div>
+</mat-form-field>

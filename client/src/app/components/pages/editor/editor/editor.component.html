@@ -1,1 +1,14 @@
-<p>editor works!</p>
+<div id="editor-container">
+  <app-toolbar #toolbar id='toolbar'
+  (toolChanged)="handleToolChanged($event)"
+  (editorBackgroundChanged)="changeBackground($event)"
+  (mouseleave)="toolbar.drawer.close()"
+  ></app-toolbar>
+  <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
+    (dblclick)="handleMouseEvent($event)"
+    (mousedown)="handleMouseEvent($event)"
+    (mousemove)="handleMouseEvent($event)"
+    (mouseup)="handleMouseEvent($event)"
+    (mouseleave)="handleMouseEvent($event)"
+  ></app-drawing-surface>
+</div>

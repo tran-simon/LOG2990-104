@@ -1,0 +1,15 @@
+<app-abstract-modal>
+  <div content>
+    <form [formGroup]="formGroup">
+      <app-number-input allowExternalUpdatesWhenFocused=true required=true suffix="px" [(value)]='width' [formGroup]="formGroup">Largeur:</app-number-input>
+      <app-number-input allowExternalUpdatesWhenFocused=true required=true suffix="px" [(value)]='height' [formGroup]="formGroup">Hauteur:</app-number-input>
+      <app-color-picker isVertical="{{true}}" #colorpicker [formGroup]="formGroup"></app-color-picker>
+    </form>
+  </div>
+  <div actions>
+    <button id="btn-create" mat-stroked-button (click)="onCreateClick()"
+            [disabled]="formGroup.invalid">
+      Créer
+    </button>
+  </div>
+</app-abstract-modal>
