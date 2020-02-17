@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
+import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';

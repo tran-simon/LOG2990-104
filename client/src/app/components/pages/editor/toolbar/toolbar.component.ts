@@ -7,11 +7,11 @@ import { SelectedColorsService, SelectedColorType } from 'src/app/services/selec
 import { Color } from 'src/app/utils/color/color';
 
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { EllipseContourType, EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
 import { BrushTextureType, BrushToolProperties } from '../../../../models/tool-properties/brush-tool-properties';
 import { LineJunctionType, LineToolProperties } from '../../../../models/tool-properties/line-tool-properties';
 import { PenToolProperties } from '../../../../models/tool-properties/pen-tool-properties';
 import { RectangleContourType, RectangleToolProperties } from '../../../../models/tool-properties/rectangle-tool-properties';
-import { EllipseContourType, EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 
 enum Tool {

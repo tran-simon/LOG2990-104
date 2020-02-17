@@ -1,10 +1,10 @@
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { Ellipse } from '../../../../models/shapes/ellipse';
+import { SelectedColorsService } from '../../../../services/selected-colors.service';
+import { Color } from '../../../../utils/color/color';
+import { Coordinate } from '../../../../utils/math/coordinate';
 import { EllipseContourType, EllipseToolProperties } from '../../../tool-properties/ellipse-tool-properties';
 import { ShapeTool } from './shape-tool';
-import { SelectedColorsService } from '../../../../services/selected-colors.service';
-import { Coordinate } from '../../../../utils/math/coordinate';
-import { Color } from '../../../../utils/color/color';
 
 export class EllipseTool extends ShapeTool {
   protected _toolProperties: EllipseToolProperties;
