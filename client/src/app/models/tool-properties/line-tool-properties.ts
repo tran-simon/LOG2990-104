@@ -12,6 +12,8 @@ export class LineToolProperties extends ToolProperties {
   static readonly MIN_DIAMETER = 1;
   static readonly MAX_DIAMETER = 50;
 
+  minThickness: number = LineToolProperties.MIN_THICKNESS;
+  maxThickness: number = LineToolProperties.MAX_THICKNESS;
   private readonly _minDiameter = LineToolProperties.MIN_DIAMETER;
   private readonly _maxDiameter = LineToolProperties.MAX_DIAMETER;
 
@@ -23,7 +25,7 @@ export class LineToolProperties extends ToolProperties {
     junctionType: LineJunctionType = LineJunctionType.POINTS,
     junctionDiameter: number = LineToolProperties.MIN_DIAMETER,
   ) {
-    super('Line', LineToolProperties.MIN_THICKNESS, LineToolProperties.MAX_THICKNESS);
+    super('Line');
 
     this.thickness = thickness;
     this.junctionType = junctionType;
