@@ -16,6 +16,7 @@ export class PolygonTool extends ShapeTool {
 
   constructor(drawingSurface: DrawingSurfaceComponent, private selectedColors: SelectedColorsService) {
     super(drawingSurface);
+    this.setEqualDimensions(true);
   }
 
   initShape(c: Coordinate): void {
