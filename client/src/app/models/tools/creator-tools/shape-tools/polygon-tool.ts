@@ -44,7 +44,6 @@ export class PolygonTool extends ShapeTool {
 
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.polygon.origin): void {
     this.polygon.origin = origin;
-    this.polygon.width = dimensions.x;
-    this.polygon.height = dimensions.y;
+    this.polygon.size = Math.min(dimensions.x, dimensions.y);
   }
 }
