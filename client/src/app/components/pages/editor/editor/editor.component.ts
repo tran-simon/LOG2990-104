@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CommandReceiver } from 'src/app/models/commands/command-receiver';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
@@ -10,8 +12,6 @@ import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 
 export interface EditorParams {
@@ -39,10 +39,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceWidth: number;
   surfaceHeight: number;
 
-  constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService) {
+  constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService, private commandReceiver: CommandReceiver) {
     this.surfaceColor = Color.WHITE;
     this.surfaceWidth = 0;
     this.surfaceHeight = 0;
+
     this.keyboardEventHandler = {
       l: () => {
         this.selectLineTool(this.toolbar.lineProperties);
@@ -58,7 +59,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
       },
       1: () => {
         this.selectRectangleTool(this.toolbar.rectangleProperties);
-        return false; // todo - enable default behavior when typing in text field
+        return false;
+      },
+      ctrl_z: () => {
+        this.commandReceiver.undo();
+        return true;
+      },
+      ctrl_shift_z: () => {
+        this.commandReceiver.redo();
+        return true;
       },
       def: (e) => {
         return this.currentTool.handleKeyboardEvent(e);
