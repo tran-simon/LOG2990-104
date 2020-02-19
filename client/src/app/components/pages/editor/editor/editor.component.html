@@ -1,7 +1,7 @@
 <div id="editor-container">
   <app-toolbar #toolbar id='toolbar'
-               [currentTool]=currentTool
-  (toolChanged)="handleToolChanged($event)"
+               [tools]=tools
+               [(currentToolType)]=currentToolType
   (editorBackgroundChanged)="changeBackground($event)"
   (mouseleave)="toolbar.drawer.close()"
                (mouseenter)='toolbar.drawer.open()'

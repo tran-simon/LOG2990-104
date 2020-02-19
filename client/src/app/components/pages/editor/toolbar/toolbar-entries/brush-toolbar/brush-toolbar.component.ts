@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/toolbar-entries/abstract-toolbar-entry';
-import { ToolsService } from 'src/app/components/pages/editor/tools.service';
 import { BrushTextureType } from 'src/app/models/tool-properties/brush-tool-properties';
 import { ToolType } from 'src/app/models/tools/tool';
 
@@ -12,7 +11,7 @@ import { ToolType } from 'src/app/models/tools/tool';
 export class BrushToolbarComponent extends AbstractToolbarEntry {
   brushTextureNames = Object.values(BrushTextureType);
 
-  constructor(tools: ToolsService) {
-    super(ToolType.Brush, tools);
+  constructor() {
+    super(ToolType.Brush);
   }
 }

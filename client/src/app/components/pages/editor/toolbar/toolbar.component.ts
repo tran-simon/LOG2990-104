@@ -3,8 +3,7 @@ import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { ToolType } from 'src/app/models/tools/tool';
+import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { ColorsService, SelectedColorType } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 
@@ -20,14 +19,15 @@ export class ToolbarComponent {
   static readonly SLIDER_STEP = 0.1;
 
   @Input() stepThickness: number;
-  @Output() toolChanged: EventEmitter<ToolType>;
-  @Output() editorBackgroundChanged: EventEmitter<Color>;
 
-  @Input() currentTool: CreatorTool;
+  @Input() currentToolType: ToolType;
+  @Output() currentToolTypeChange = new EventEmitter<ToolType>();
+
+  @Output() editorBackgroundChanged: EventEmitter<Color>;
+  @Input() tools: Record<ToolType, Tool>;
 
   ToolType = ToolType;
   toolTypeKeys = Object.values(ToolType);
-  currentToolType: ToolType;
 
   selectedColor: SelectedColorType;
   SelectedColorType = SelectedColorType;
@@ -45,11 +45,9 @@ export class ToolbarComponent {
 
   constructor(private router: Router, public selectedColors: ColorsService, public dialog: MatDialog) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
-    this.toolChanged = new EventEmitter<ToolType>();
     this.editorBackgroundChanged = new EventEmitter<Color>();
     this.showColorPicker = false;
     this.selectedColor = SelectedColorType.primary;
-    this.currentToolType = ToolType.Pen;
     this.modalIsOpened = false;
   }
 
@@ -73,7 +71,7 @@ export class ToolbarComponent {
   selectTool(selection: ToolType): void {
     this.currentToolType = selection;
     this.showColorPicker = false;
-    this.toolChanged.emit(selection);
+    this.currentToolTypeChange.emit(selection);
   }
 
   selectColor(index: number): void {

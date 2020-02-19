@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ToolsService } from 'src/app/components/pages/editor/tools.service';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { ToolType } from 'src/app/models/tools/tool';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
+import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
+import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
@@ -26,13 +28,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
-  currentTool: CreatorTool;
+  currentToolType: ToolType;
+
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
 
-  constructor(private router: ActivatedRoute, public colorsService: ColorsService, public tools: ToolsService) {
-    // todo
+  tools: Record<ToolType, Tool>;
+
+  constructor(private router: ActivatedRoute, public colorsService: ColorsService) {
     this.surfaceColor = Color.WHITE;
     this.surfaceWidth = 0;
     this.surfaceHeight = 0;
@@ -57,7 +61,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
         return this.currentTool.handleKeyboardEvent(e);
       },
     } as KeyboardEventHandler;
-    this.selectTool(ToolType.Pen); // todo
+
+    this.tools = {
+      [ToolType.Pen]: new PenTool(colorsService),
+      [ToolType.Brush]: new BrushTool(colorsService),
+      [ToolType.Rectangle]: new RectangleTool(colorsService),
+      [ToolType.Line]: new LineTool(colorsService),
+    } as Record<ToolType, Tool>;
+
+    this.selectTool(ToolType.Pen);
   }
 
   ngOnInit(): void {
@@ -69,19 +81,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.selectTool(ToolType.Pen); // todo
+    this.selectTool(ToolType.Pen);
   }
 
   handleMouseEvent(e: MouseEvent): void {
     this.currentTool.handleMouseEvent(e, this.drawingSurface);
   }
 
-  handleToolChanged(type: ToolType): void {
-    this.selectTool(type);
-  }
-
   selectTool(type: ToolType): void {
-    this.currentTool = this.tools.tools[type];
+    this.currentToolType = type;
   }
 
   changeBackground(color: Color): void {
@@ -97,5 +105,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('contextmenu', ['$event'])
   onRightClick(e: MouseEvent): void {
     e.preventDefault();
+  }
+
+  get currentTool(): Tool {
+    return this.tools[this.currentToolType];
   }
 }

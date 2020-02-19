@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/toolbar-entries/abstract-toolbar-entry';
-import { ToolsService } from 'src/app/components/pages/editor/tools.service';
 import { LineJunctionType } from 'src/app/models/tool-properties/line-tool-properties';
 import { ToolType } from 'src/app/models/tools/tool';
 
@@ -13,7 +12,7 @@ export class LineToolbarComponent extends AbstractToolbarEntry {
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
 
-  constructor(tools: ToolsService) {
-    super(ToolType.Line, tools);
+  constructor() {
+    super(ToolType.Line);
   }
 }
