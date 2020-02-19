@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/toolbar-entries/abstract-toolbar-entry';
-import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { ToolsService } from 'src/app/components/pages/editor/tools.service';
+import { LineJunctionType } from 'src/app/models/tool-properties/line-tool-properties';
+import { ToolType } from 'src/app/models/tools/tool';
 
 @Component({
   selector: 'app-line-toolbar',
@@ -8,9 +10,10 @@ import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-proper
   styleUrls: ['../../toolbar.component.scss'],
 })
 export class LineToolbarComponent extends AbstractToolbarEntry {
-  @Input()
-  toolProperties: LineToolProperties;
-
   lineJunctionTypes = LineJunctionType;
   lineJunctionNames = Object.values(this.lineJunctionTypes);
+
+  constructor(tools: ToolsService) {
+    super(ToolType.Line, tools);
+  }
 }

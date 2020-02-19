@@ -2,14 +2,14 @@
 import { TestBed } from '@angular/core/testing';
 import { Color } from 'src/app/utils/color/color';
 
-import { SelectedColorsService } from './selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 
-describe('SelectedColorsService', () => {
-  let service: SelectedColorsService;
+describe('ColorsService', () => {
+  let service: ColorsService;
   beforeEach(() => TestBed.configureTestingModule({}));
 
   beforeEach(() => {
-    service = TestBed.get(SelectedColorsService);
+    service = TestBed.get(ColorsService);
     service['_colors'] = [Color.RED, Color.BLUE];
   });
 
@@ -18,8 +18,8 @@ describe('SelectedColorsService', () => {
   });
 
   it('can get color', () => {
-    expect(service.colorByIndex(0)).toEqual(Color.RED);
-    expect(service.colorByIndex(1)).toEqual(Color.BLUE);
+    expect(service.getColor(0)).toEqual(Color.RED);
+    expect(service.getColor(1)).toEqual(Color.BLUE);
     expect(service.primaryColor).toEqual(Color.RED);
     expect(service.secondaryColor).toEqual(Color.BLUE);
   });

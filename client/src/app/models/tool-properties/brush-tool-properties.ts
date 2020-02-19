@@ -20,7 +20,7 @@ export class BrushToolProperties extends ToolProperties {
   constructor(thickness: number = BrushToolProperties.MIN_THICKNESS, texture: BrushTextureType = BrushTextureType.TEXTURE_1) {
     super('Brush');
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
     this.texture = texture;
   }
 }

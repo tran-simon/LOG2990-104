@@ -12,7 +12,7 @@ describe('Brush Tool Properties', () => {
   });
 
   it('should create with the default thickness', () => {
-    expect(brushProperties.thickness).toBe(BrushToolProperties.MIN_THICKNESS);
+    expect(brushProperties.strokeWidth).toBe(BrushToolProperties.MIN_THICKNESS);
   });
 
   it('should create with the default texture', () => {

@@ -21,7 +21,7 @@ export class RectangleToolProperties extends ToolProperties {
   ) {
     super('Rectangle');
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
     this.contourType = contourType;
   }
 }

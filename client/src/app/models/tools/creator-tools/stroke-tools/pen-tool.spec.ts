@@ -1,6 +1,6 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { PenTool } from './pen-tool';
@@ -9,7 +9,7 @@ describe('PenTool', () => {
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let surface: DrawingSurfaceComponent;
   let penTool: PenTool;
-  let selectedColorsService: SelectedColorsService;
+  let selectedColorsService: ColorsService;
 
   const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
     return {
@@ -48,7 +48,7 @@ describe('PenTool', () => {
   }));
 
   beforeEach(() => {
-    selectedColorsService = new SelectedColorsService();
+    selectedColorsService = new ColorsService();
     fixture = TestBed.createComponent(DrawingSurfaceComponent);
     fixture.detectChanges();
     surface = fixture.componentInstance;

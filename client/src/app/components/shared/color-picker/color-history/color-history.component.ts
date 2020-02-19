@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -13,7 +13,7 @@ export class ColorHistoryComponent {
 
   @Output() colorSelectedEvent: EventEmitter<Color>;
 
-  constructor(private selectedColors: SelectedColorsService) {
+  constructor(private selectedColors: ColorsService) {
     this.colorSelectedEvent = new EventEmitter<Color>();
   }
 

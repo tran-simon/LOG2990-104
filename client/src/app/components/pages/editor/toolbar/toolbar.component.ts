@@ -3,9 +3,9 @@ import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
-import { SelectedColorsService, SelectedColorType } from 'src/app/services/selected-colors.service';
+import { ColorsService, SelectedColorType } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
@@ -23,7 +23,7 @@ export class ToolbarComponent {
   @Output() toolChanged: EventEmitter<ToolType>;
   @Output() editorBackgroundChanged: EventEmitter<Color>;
 
-  @Input() currentToolProperties: ToolProperties;
+  @Input() currentTool: CreatorTool;
 
   ToolType = ToolType;
   toolTypeKeys = Object.values(ToolType);
@@ -43,7 +43,7 @@ export class ToolbarComponent {
   modalIsOpened: boolean;
   dialogRef: MatDialogRef<AbstractModalComponent>;
 
-  constructor(private router: Router, public selectedColors: SelectedColorsService, public dialog: MatDialog) {
+  constructor(private router: Router, public selectedColors: ColorsService, public dialog: MatDialog) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
     this.toolChanged = new EventEmitter<ToolType>();
     this.editorBackgroundChanged = new EventEmitter<Color>();
@@ -118,6 +118,6 @@ export class ToolbarComponent {
   }
 
   get color(): Color {
-    return this.selectedColors.colorByIndex(this.selectedColor);
+    return this.selectedColors.getColor(this.selectedColor);
   }
 }

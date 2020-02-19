@@ -10,7 +10,7 @@ import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-pro
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { ToolType } from 'src/app/models/tools/tool';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { SharedModule } from '../../../shared/shared.module';
@@ -43,7 +43,7 @@ describe('EditorComponent', () => {
         BrushToolbarComponent,
         LineToolbarComponent,
       ],
-      providers: [SelectedColorsService],
+      providers: [ColorsService],
     }).compileComponents();
   }));
 

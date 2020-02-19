@@ -12,7 +12,7 @@ describe('Line Tool Properties', () => {
   });
 
   it('should create with the default thickness', () => {
-    expect(lineProperties.thickness).toBe(LineToolProperties.MIN_THICKNESS);
+    expect(lineProperties.strokeWidth).toBe(LineToolProperties.MIN_THICKNESS);
   });
 
   it('should have the correct minimum diameter', () => {

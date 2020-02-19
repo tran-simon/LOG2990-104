@@ -12,6 +12,6 @@ describe('Pen Tool Properties', () => {
   });
 
   it('should create with the default thickness', () => {
-    expect(penProperties.thickness).toBe(PenToolProperties.MIN_THICKNESS);
+    expect(penProperties.strokeWidth).toBe(PenToolProperties.MIN_THICKNESS);
   });
 });

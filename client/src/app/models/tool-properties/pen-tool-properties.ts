@@ -10,6 +10,6 @@ export class PenToolProperties extends ToolProperties {
   constructor(thickness: number = PenToolProperties.MIN_THICKNESS) {
     super('Pen');
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
   }
 }

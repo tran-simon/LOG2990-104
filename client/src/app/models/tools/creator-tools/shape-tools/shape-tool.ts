@@ -10,8 +10,8 @@ export abstract class ShapeTool extends CreatorTool {
   private forceEqualDimensions: boolean;
   private initialMouseCoord: Coordinate;
 
-  protected constructor(drawingSurface: DrawingSurfaceComponent, type: ToolType) {
-    super(drawingSurface, type);
+  protected constructor(type: ToolType) {
+    super(type);
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;
@@ -28,17 +28,17 @@ export abstract class ShapeTool extends CreatorTool {
     } as KeyboardEventHandler;
   }
 
-  abstract initShape(c: Coordinate): void;
+  abstract initShape(c: Coordinate, drawingSurfaceComponent: DrawingSurfaceComponent): void;
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
-  handleToolMouseEvent(e: MouseEvent): void {
+  handleToolMouseEvent(e: MouseEvent, drawingSurfaceComponent: DrawingSurfaceComponent): void {
     // todo - make a proper mouse manager
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 
     if (this.isActive) {
       if (e.type === 'mouseup') {
         this.isActive = false;
-        this.removePreviewArea();
+        this.removePreviewArea(drawingSurfaceComponent);
       } else if (e.type === 'mousemove') {
         this.updateCurrentCoord(mouseCoord);
       }
@@ -46,8 +46,8 @@ export abstract class ShapeTool extends CreatorTool {
       this.isActive = true;
       this.initialMouseCoord = mouseCoord;
       this.previewArea = new Rectangle(mouseCoord);
-      this.drawPreviewArea();
-      this.initShape(mouseCoord);
+      this.drawPreviewArea(drawingSurfaceComponent);
+      this.initShape(mouseCoord, drawingSurfaceComponent);
     }
   }
 
@@ -58,12 +58,12 @@ export abstract class ShapeTool extends CreatorTool {
     }
   }
 
-  drawPreviewArea(): void {
-    this.drawingSurface.svg.nativeElement.appendChild(this.previewArea.svgNode);
+  drawPreviewArea(drawingSurfaceComponent: DrawingSurfaceComponent): void {
+    drawingSurfaceComponent.svg.nativeElement.appendChild(this.previewArea.svgNode);
   }
 
-  removePreviewArea(): void {
-    this.drawingSurface.svg.nativeElement.removeChild(this.previewArea.svgNode);
+  removePreviewArea(drawingSurfaceComponent: DrawingSurfaceComponent): void {
+    drawingSurfaceComponent.svg.nativeElement.removeChild(this.previewArea.svgNode);
   }
 
   updateCurrentCoord(c: Coordinate): void {

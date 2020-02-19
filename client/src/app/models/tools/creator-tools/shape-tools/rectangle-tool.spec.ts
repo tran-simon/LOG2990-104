@@ -2,16 +2,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { SelectedColorsService } from '../../../../services/selected-colors.service';
 
 describe('RectangleTool', () => {
   let rectangleTool: RectangleTool;
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let surface: DrawingSurfaceComponent;
   let properties: RectangleToolProperties;
-  let selectedColorsService: SelectedColorsService;
+  let selectedColorsService: ColorsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,7 +20,7 @@ describe('RectangleTool', () => {
   }));
 
   beforeEach(() => {
-    selectedColorsService = new SelectedColorsService();
+    selectedColorsService = new ColorsService();
     fixture = TestBed.createComponent(DrawingSurfaceComponent);
     fixture.detectChanges();
     surface = fixture.componentInstance;

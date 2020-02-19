@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/toolbar-entries/abstract-toolbar-entry';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { ToolsService } from 'src/app/components/pages/editor/tools.service';
+import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { ToolType } from 'src/app/models/tools/tool';
 
 @Component({
   selector: 'app-rectangle-toolbar',
@@ -8,9 +10,10 @@ import { RectangleContourType, RectangleToolProperties } from 'src/app/models/to
   styleUrls: ['../../toolbar.component.scss'],
 })
 export class RectangleToolbarComponent extends AbstractToolbarEntry {
-  @Input()
-  toolProperties: RectangleToolProperties;
-
   rectangleContourTypes = RectangleContourType;
   rectangleContourNames = Object.values(this.rectangleContourTypes);
+
+  constructor(tools: ToolsService) {
+    super(ToolType.Rectangle, tools);
+  }
 }

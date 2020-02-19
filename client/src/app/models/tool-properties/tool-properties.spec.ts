@@ -10,7 +10,7 @@ class MockToolProperties extends ToolProperties {
   constructor(thickness: number = MockToolProperties.MIN_THICKNESS) {
     super('MockTool');
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
   }
 }
 
@@ -26,19 +26,19 @@ describe('Tool Properties', () => {
   });
 
   it('should correct a thickness input that is too low', () => {
-    toolProperties.thickness = toolProperties.minThickness - 1;
-    expect(toolProperties.thickness).toEqual(toolProperties.minThickness);
+    toolProperties.strokeWidth = toolProperties.minThickness - 1;
+    expect(toolProperties.strokeWidth).toEqual(toolProperties.minThickness);
   });
 
   it('should correct a thickness input that is too high', () => {
-    toolProperties.thickness = toolProperties.maxThickness + 1;
-    expect(toolProperties.thickness).toEqual(toolProperties.maxThickness);
+    toolProperties.strokeWidth = toolProperties.maxThickness + 1;
+    expect(toolProperties.strokeWidth).toEqual(toolProperties.maxThickness);
   });
 
   it('should keep a correct thickness input', () => {
     const correctValue = (toolProperties.maxThickness - toolProperties.minThickness) / 2 + toolProperties.minThickness;
-    toolProperties.thickness = correctValue;
-    expect(toolProperties.thickness).toEqual(correctValue);
+    toolProperties.strokeWidth = correctValue;
+    expect(toolProperties.strokeWidth).toEqual(correctValue);
   });
 
   it('should return the correct minimum thickness', () => {

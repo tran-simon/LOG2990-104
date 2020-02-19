@@ -1,7 +1,7 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { LineJunctionType } from '../../tool-properties/line-tool-properties';
 import { LineTool } from './line-tool';
@@ -10,7 +10,7 @@ describe('LineTool', () => {
   let lineTool: LineTool;
   let fixture: ComponentFixture<DrawingSurfaceComponent>;
   let surface: DrawingSurfaceComponent;
-  let selectedColorsService: SelectedColorsService;
+  let selectedColorsService: ColorsService;
 
   const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
     return {
@@ -55,12 +55,12 @@ describe('LineTool', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DrawingSurfaceComponent],
-      providers: [SelectedColorsService],
+      providers: [ColorsService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    selectedColorsService = new SelectedColorsService();
+    selectedColorsService = new ColorsService();
     fixture = TestBed.createComponent(DrawingSurfaceComponent);
     fixture.detectChanges();
     surface = fixture.componentInstance;
@@ -122,7 +122,7 @@ describe('LineTool', () => {
     expect(lineTool.shape).toBeTruthy();
     expect(lineTool.shape.properties.strokeColor).toEqual(lineTool['selectedColors'].primaryColor);
     expect(lineTool.shape.properties.fillColor).toEqual(lineTool['selectedColors'].secondaryColor);
-    expect(lineTool.shape.properties.strokeWidth).toEqual(lineTool['_toolProperties'].thickness);
+    expect(lineTool.shape.properties.strokeWidth).toEqual(lineTool['_toolProperties'].strokeWidth);
     expect(drawSpy).toHaveBeenCalled();
   });
 

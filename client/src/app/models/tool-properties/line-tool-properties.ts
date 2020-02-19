@@ -27,7 +27,7 @@ export class LineToolProperties extends ToolProperties {
   ) {
     super('Line');
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
     this.junctionType = junctionType;
     this._junctionDiameter = junctionDiameter;
   }

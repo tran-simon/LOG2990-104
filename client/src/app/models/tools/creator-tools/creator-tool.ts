@@ -9,17 +9,17 @@ export abstract class CreatorTool extends Tool {
 
   abstract get shape(): BaseShape;
 
-  protected constructor(drawingSurface: DrawingSurfaceComponent, type: ToolType) {
-    super(type, drawingSurface);
+  protected constructor(type: ToolType) {
+    super(type);
     this.isActive = false;
   }
 
-  drawShape(): void {
-    this.drawingSurface.svg.nativeElement.appendChild(this.shape.svgNode);
+  drawShape(drawingSurface: DrawingSurfaceComponent): void {
+    drawingSurface.drawShape(this);
   }
 
-  cancelShape(): void {
-    this.drawingSurface.svg.nativeElement.removeChild(this.shape.svgNode);
+  cancelShape(drawingSurface: DrawingSurfaceComponent): void {
+    drawingSurface.cancelShape(this);
     this.isActive = false;
   }
 }

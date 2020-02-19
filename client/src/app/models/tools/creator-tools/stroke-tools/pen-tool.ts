@@ -3,15 +3,15 @@ import { Path } from 'src/app/models/shapes/path';
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 
 export class PenTool extends CreatorTool {
   toolProperties: PenToolProperties;
 
   path: Path;
 
-  constructor(drawingSurface: DrawingSurfaceComponent, protected selectedColors: SelectedColorsService, type = ToolType.Pen) {
-    super(drawingSurface, type);
+  constructor(public selectedColors: ColorsService, type = ToolType.Pen) {
+    super(type);
     this.toolProperties = new PenToolProperties();
   }
 
@@ -19,7 +19,7 @@ export class PenTool extends CreatorTool {
     return this.path;
   }
 
-  handleToolMouseEvent(e: MouseEvent): void {
+  handleToolMouseEvent(e: MouseEvent, drawingSurface: DrawingSurfaceComponent): void {
     if (this.isActive) {
       if (e.type === 'mouseup' || e.type === 'mouseleave') {
         this.isActive = false;
@@ -28,19 +28,19 @@ export class PenTool extends CreatorTool {
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;
-      this.initPath();
+      this.initPath(drawingSurface);
     }
   }
 
-  initPath(): void {
+  initPath(drawingSurface: DrawingSurfaceComponent): void {
     this.path = new Path(this.mousePosition);
 
     this.path.shapeProperties.strokeColor = this.selectedColors.primaryColor;
     this.path.shapeProperties.strokeOpacity = this.selectedColors.primaryColor.a;
-    this.path.shapeProperties.strokeWidth = this.toolProperties.thickness;
+    this.path.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
     this.path.updateProperties();
-    this.drawShape();
+    this.drawShape(drawingSurface);
     this.path.addPoint(this.mousePosition);
   }
 }
