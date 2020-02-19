@@ -1,9 +1,8 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
-import { ColorsService } from 'src/app/services/colors.service';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -12,8 +11,8 @@ export class LineTool extends CreatorTool {
     return this.line;
   }
 
-  constructor(public selectedColors: ColorsService) {
-    super(ToolType.Line);
+  constructor(editorComponent: EditorComponent) {
+    super(editorComponent, ToolType.Line);
     this.toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
@@ -51,11 +50,11 @@ export class LineTool extends CreatorTool {
   private line: CompositeLine;
   private lockMethod: (c: Coordinate) => Coordinate;
 
-  initLine(drawingSurfaceComponent: DrawingSurfaceComponent): void {
+  initLine(): void {
     this.line = new CompositeLine(this.mousePosition);
 
-    this.line.shapeProperties.strokeColor = this.selectedColors.primaryColor;
-    this.line.shapeProperties.fillColor = this.selectedColors.secondaryColor;
+    this.line.shapeProperties.strokeColor = this.editorComponent.colorsService.primaryColor;
+    this.line.shapeProperties.fillColor = this.editorComponent.colorsService.secondaryColor;
     this.line.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
     if (this.toolProperties.junctionType === LineJunctionType.POINTS) {
@@ -65,10 +64,10 @@ export class LineTool extends CreatorTool {
     }
 
     this.line.updateProperties();
-    this.drawShape(drawingSurfaceComponent);
+    this.drawShape();
   }
 
-  handleToolMouseEvent(e: MouseEvent, drawingSurfaceComponent: DrawingSurfaceComponent): void {
+  handleToolMouseEvent(e: MouseEvent): void {
     if (this.isActive) {
       if (e.type === 'dblclick') {
         this.isActive = false;
@@ -80,7 +79,7 @@ export class LineTool extends CreatorTool {
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;
-      this.initLine(drawingSurfaceComponent);
+      this.initLine();
     }
   }
 

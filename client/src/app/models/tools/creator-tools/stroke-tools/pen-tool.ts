@@ -1,17 +1,16 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { Path } from 'src/app/models/shapes/path';
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
-import { ColorsService } from 'src/app/services/colors.service';
 
 export class PenTool extends CreatorTool {
   toolProperties: PenToolProperties;
 
   path: Path;
 
-  constructor(public selectedColors: ColorsService, type = ToolType.Pen) {
-    super(type);
+  constructor(editorComponent: EditorComponent, type = ToolType.Pen) {
+    super(editorComponent, type);
     this.toolProperties = new PenToolProperties();
   }
 
@@ -19,7 +18,7 @@ export class PenTool extends CreatorTool {
     return this.path;
   }
 
-  handleToolMouseEvent(e: MouseEvent, drawingSurface: DrawingSurfaceComponent): void {
+  handleToolMouseEvent(e: MouseEvent): void {
     if (this.isActive) {
       if (e.type === 'mouseup' || e.type === 'mouseleave') {
         this.isActive = false;
@@ -28,19 +27,19 @@ export class PenTool extends CreatorTool {
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;
-      this.initPath(drawingSurface);
+      this.initPath();
     }
   }
 
-  initPath(drawingSurface: DrawingSurfaceComponent): void {
+  initPath(): void {
     this.path = new Path(this.mousePosition);
 
-    this.path.shapeProperties.strokeColor = this.selectedColors.primaryColor;
-    this.path.shapeProperties.strokeOpacity = this.selectedColors.primaryColor.a;
+    this.path.shapeProperties.strokeColor = this.editorComponent.colorsService.primaryColor;
+    this.path.shapeProperties.strokeOpacity = this.editorComponent.colorsService.primaryColor.a;
     this.path.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
     this.path.updateProperties();
-    this.drawShape(drawingSurface);
+    this.drawShape();
     this.path.addPoint(this.mousePosition);
   }
 }

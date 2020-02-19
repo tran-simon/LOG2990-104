@@ -1,4 +1,4 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
 
@@ -7,17 +7,17 @@ export abstract class CreatorTool extends Tool {
 
   abstract get shape(): BaseShape;
 
-  protected constructor(type: ToolType) {
-    super(type);
-    this.isActive = false;
+  protected constructor(editorComponent: EditorComponent, type: ToolType, isActive = false) {
+    super(editorComponent, type);
+    this.isActive = isActive;
   }
 
-  drawShape(drawingSurface: DrawingSurfaceComponent): void {
-    drawingSurface.drawShape(this);
+  drawShape(): void {
+    this.editorComponent.drawingSurface.drawShape(this);
   }
 
-  cancelShape(drawingSurface: DrawingSurfaceComponent): void {
-    drawingSurface.cancelShape(this);
+  cancelShape(): void {
+    this.editorComponent.drawingSurface.cancelShape(this);
     this.isActive = false;
   }
 }

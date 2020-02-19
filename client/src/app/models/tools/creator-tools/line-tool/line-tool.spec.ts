@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { ColorsService } from 'src/app/services/colors.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { LineJunctionType } from '../../tool-properties/line-tool-properties';
-import { LineTool } from './line-tool';
+import { LineJunctionType } from '../../../tool-properties/line-tool-properties';
+import { LineTool } from './';
 
 describe('LineTool', () => {
   let lineTool: LineTool;

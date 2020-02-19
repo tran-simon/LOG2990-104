@@ -1,4 +1,5 @@
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -15,12 +16,14 @@ export abstract class Tool {
   private _mousePosition: Coordinate;
   readonly type: ToolType;
   abstract toolProperties: ToolProperties;
+  protected editorComponent: EditorComponent;
 
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
 
-  protected constructor(type: ToolType) {
+  protected constructor(editorComponent: EditorComponent, type: ToolType) {
+    this.editorComponent = editorComponent;
     this.type = type;
     this.keyboardEventHandler = {} as KeyboardEventHandler;
     this._mousePosition = new Coordinate();

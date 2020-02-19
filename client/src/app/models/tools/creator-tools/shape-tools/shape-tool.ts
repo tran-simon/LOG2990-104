@@ -1,4 +1,4 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
@@ -10,8 +10,8 @@ export abstract class ShapeTool extends CreatorTool {
   private forceEqualDimensions: boolean;
   private initialMouseCoord: Coordinate;
 
-  protected constructor(type: ToolType) {
-    super(type);
+  protected constructor(editorComponent: EditorComponent, type: ToolType) {
+    super(editorComponent, type);
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;
@@ -28,17 +28,17 @@ export abstract class ShapeTool extends CreatorTool {
     } as KeyboardEventHandler;
   }
 
-  abstract initShape(c: Coordinate, drawingSurfaceComponent: DrawingSurfaceComponent): void;
+  abstract initShape(c: Coordinate): void;
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
-  handleToolMouseEvent(e: MouseEvent, drawingSurfaceComponent: DrawingSurfaceComponent): void {
+  handleToolMouseEvent(e: MouseEvent): void {
     // todo - make a proper mouse manager
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 
     if (this.isActive) {
       if (e.type === 'mouseup') {
         this.isActive = false;
-        this.removePreviewArea(drawingSurfaceComponent);
+        this.removePreviewArea();
       } else if (e.type === 'mousemove') {
         this.updateCurrentCoord(mouseCoord);
       }
@@ -46,8 +46,8 @@ export abstract class ShapeTool extends CreatorTool {
       this.isActive = true;
       this.initialMouseCoord = mouseCoord;
       this.previewArea = new Rectangle(mouseCoord);
-      this.drawPreviewArea(drawingSurfaceComponent);
-      this.initShape(mouseCoord, drawingSurfaceComponent);
+      this.drawPreviewArea();
+      this.initShape(mouseCoord);
     }
   }
 
@@ -58,12 +58,12 @@ export abstract class ShapeTool extends CreatorTool {
     }
   }
 
-  drawPreviewArea(drawingSurfaceComponent: DrawingSurfaceComponent): void {
-    drawingSurfaceComponent.svg.nativeElement.appendChild(this.previewArea.svgNode);
+  drawPreviewArea(): void {
+    this.editorComponent.drawingSurface.svg.nativeElement.appendChild(this.previewArea.svgNode);
   }
 
-  removePreviewArea(drawingSurfaceComponent: DrawingSurfaceComponent): void {
-    drawingSurfaceComponent.svg.nativeElement.removeChild(this.previewArea.svgNode);
+  removePreviewArea(): void {
+    this.editorComponent.drawingSurface.svg.nativeElement.removeChild(this.previewArea.svgNode);
   }
 
   updateCurrentCoord(c: Coordinate): void {

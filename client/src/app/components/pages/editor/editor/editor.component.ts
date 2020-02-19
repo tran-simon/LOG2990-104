@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
@@ -63,10 +63,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     } as KeyboardEventHandler;
 
     this.tools = {
-      [ToolType.Pen]: new PenTool(colorsService),
-      [ToolType.Brush]: new BrushTool(colorsService),
-      [ToolType.Rectangle]: new RectangleTool(colorsService),
-      [ToolType.Line]: new LineTool(colorsService),
+      [ToolType.Pen]: new PenTool(this),
+      [ToolType.Brush]: new BrushTool(this),
+      [ToolType.Rectangle]: new RectangleTool(this),
+      [ToolType.Line]: new LineTool(this),
     } as Record<ToolType, Tool>;
 
     this.selectTool(ToolType.Pen);
