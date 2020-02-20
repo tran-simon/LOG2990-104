@@ -1,11 +1,19 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { SharedModule } from 'src/app/components/shared/shared.module';
+import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { LineJunctionType } from '../../../tool-properties/line-tool-properties';
 
 describe('LineTool', () => {
@@ -55,7 +63,16 @@ describe('LineTool', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DrawingSurfaceComponent],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+        EditorComponent,
+        DrawingSurfaceComponent,
+      ],
+      imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],
     }).compileComponents();
   }));
@@ -65,6 +82,7 @@ describe('LineTool', () => {
     fixture.detectChanges();
     colorsService = fixture.componentInstance.editorService.colorsService;
     lineTool = new LineTool(fixture.componentInstance.editorService);
+    lineTool['line'] = new CompositeLine();
   });
 
   it('should call removeLastPoint on backspace if isActive', () => {

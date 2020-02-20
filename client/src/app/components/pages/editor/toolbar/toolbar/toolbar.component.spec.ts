@@ -1,15 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/brush-toolbar/brush-toolbar.component';
-import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/line-toolbar/line-toolbar.component';
-import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/pen-toolbar/pen-toolbar.component';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { UserGuideModule } from 'src/app/components/pages/user-guide/user-guide.module';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool';
 import { Color } from 'src/app/utils/color/color';
-import { SharedModule } from '../../../shared/shared.module';
-import { RectangleToolbarComponent } from './toolbar-entries/rectangle-toolbar/rectangle-toolbar.component';
-import { ToolbarComponent } from './toolbar.component';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -19,9 +22,11 @@ describe('ToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, RouterTestingModule],
+      imports: [SharedModule, RouterTestingModule, UserGuideModule],
       declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
-    }).compileComponents();
+    })
+      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
+      .compileComponents();
   }));
 
   beforeEach(() => {

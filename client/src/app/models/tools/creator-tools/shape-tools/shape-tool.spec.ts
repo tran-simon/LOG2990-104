@@ -1,9 +1,16 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
 import { ToolProperties } from '../../../tool-properties/tool-properties';
@@ -80,7 +87,16 @@ describe('ShapeTool', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DrawingSurfaceComponent],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+        EditorComponent,
+        DrawingSurfaceComponent,
+      ],
+      imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],
     }).compileComponents();
   }));

@@ -2,17 +2,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/brush-toolbar/brush-toolbar.component';
-import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/line-toolbar/line-toolbar.component';
-import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar-entries/pen-toolbar/pen-toolbar.component';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-import { RectangleToolbarComponent } from '../toolbar/toolbar-entries/rectangle-toolbar/rectangle-toolbar.component';
-import { ToolbarComponent } from '../toolbar/toolbar.component';
+import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { EditorComponent } from './editor.component';
 
 const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {

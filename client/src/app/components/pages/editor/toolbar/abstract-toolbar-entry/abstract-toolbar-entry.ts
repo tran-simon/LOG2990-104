@@ -1,5 +1,5 @@
 import { Input } from '@angular/core';
-import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
 
