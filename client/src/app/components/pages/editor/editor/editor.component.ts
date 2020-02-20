@@ -25,16 +25,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
   drawingSurface: DrawingSurfaceComponent;
 
   private _currentToolType: ToolType;
-  get currentToolType(): ToolType {
-    return this._currentToolType;
-  }
-
-  set currentToolType(value: ToolType) {
-    if (this.currentTool) {
-      this.currentTool.cancel();
-    }
-    this._currentToolType = value;
-  }
 
   surfaceColor: Color;
   surfaceWidth: number;
@@ -79,11 +69,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.editorService.view = this.drawingSurface.svg;
-    this.currentToolType = ToolType.Pen;
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    this.currentTool.handleMouseEvent(e, this.drawingSurface);
+    this.currentTool.handleMouseEvent(e);
   }
 
   changeBackground(color: Color): void {
@@ -103,5 +92,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   get currentTool(): Tool {
     return this.editorService.tools[this.currentToolType];
+  }
+
+  get currentToolType(): ToolType {
+    return this._currentToolType;
+  }
+
+  set currentToolType(value: ToolType) {
+    if (this.currentTool) {
+      this.currentTool.cancel();
+    }
+    this._currentToolType = value;
   }
 }

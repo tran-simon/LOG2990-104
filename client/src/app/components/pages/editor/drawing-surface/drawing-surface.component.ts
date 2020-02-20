@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -16,7 +15,7 @@ export class DrawingSurfaceComponent {
   @ViewChild('svg', { static: false })
   svg: ElementRef;
 
-  constructor(public tools: ColorsService) {
+  constructor() {
     this.color = Color.WHITE;
   }
 

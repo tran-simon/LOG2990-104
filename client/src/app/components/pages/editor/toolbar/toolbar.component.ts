@@ -74,10 +74,10 @@ export class ToolbarComponent {
     this.currentToolTypeChange.emit(selection);
   }
 
-  selectColor(index: number): void {
+  editColor(selectedColorType: SelectedColorType): void {
     this.showColorPicker = true;
     this.drawer.open();
-    this.selectedColor = index;
+    this.selectedColor = selectedColorType;
   }
 
   navigate(path: string): void {

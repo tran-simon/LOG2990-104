@@ -16,10 +16,10 @@
       <mat-icon>swap_horiz</mat-icon>
     </button>
     <div id="toolbar-primary-color" [style.background-color]="primaryColor.hexString"
-         (click)="selectColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 1}">
+         (click)="editColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 1}">
     </div>
     <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
-         (click)="selectColor(SelectedColorType.secondary)"
+         (click)="editColor(SelectedColorType.secondary)"
          [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ColorsService } from 'src/app/services/colors.service';
+import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -13,7 +13,7 @@ export class ColorHistoryComponent {
 
   @Output() colorSelectedEvent: EventEmitter<Color>;
 
-  constructor(private selectedColors: ColorsService) {
+  constructor(private editorService: EditorService) {
     this.colorSelectedEvent = new EventEmitter<Color>();
   }
 
@@ -29,11 +29,11 @@ export class ColorHistoryComponent {
   }
 
   onClick(color: Color): void {
-    this.selectedColors.primaryColor = color;
+    this.editorService.colorsService.primaryColor = color;
     this.colorSelectedEvent.emit(color);
   }
   onRightClick(color: Color): void {
-    this.selectedColors.secondaryColor = color;
+    this.editorService.colorsService.secondaryColor = color;
     this.colorSelectedEvent.emit(color);
   }
 }

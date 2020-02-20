@@ -20,8 +20,7 @@ export class EditorService {
     } as Record<ToolType, Tool>;
   }
 
-  tools: Record<ToolType, Tool>;
-
+  readonly tools: Record<ToolType, Tool>;
   view: ElementRef | undefined;
 
   private shapesBuffer = new Array<BaseShape>();
@@ -46,7 +45,7 @@ export class EditorService {
     this.clearShapesBuffer();
   }
 
-  clearShapesBuffer() {
+  clearShapesBuffer(): void {
     const removeShapes = (shape: BaseShape): void => {
       EditorService.removeShapeFromView(this.view, shape);
     };

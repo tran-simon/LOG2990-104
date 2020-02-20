@@ -1,4 +1,3 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
@@ -30,11 +29,11 @@ export abstract class Tool {
     this._mousePosition = new Coordinate();
   }
 
-  abstract handleToolMouseEvent(e: MouseEvent, drawingSurface: DrawingSurfaceComponent): void;
+  abstract handleToolMouseEvent(e: MouseEvent): void;
 
-  handleMouseEvent(e: MouseEvent, drawingSurface: DrawingSurfaceComponent): void {
+  handleMouseEvent(e: MouseEvent): void {
     this._mousePosition = new Coordinate(e.offsetX, e.offsetY);
-    this.handleToolMouseEvent(e, drawingSurface);
+    this.handleToolMouseEvent(e);
   }
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {

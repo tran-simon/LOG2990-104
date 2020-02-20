@@ -1,16 +1,17 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { ColorsService } from 'src/app/services/colors.service';
+import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { LineJunctionType } from '../../../tool-properties/line-tool-properties';
-import { LineTool } from './';
 
 describe('LineTool', () => {
   let lineTool: LineTool;
-  let fixture: ComponentFixture<DrawingSurfaceComponent>;
-  let surface: DrawingSurfaceComponent;
-  let selectedColorsService: ColorsService;
+  let fixture: ComponentFixture<EditorComponent>;
+  let colorsService: ColorsService;
 
   const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
     return {
@@ -55,16 +56,15 @@ describe('LineTool', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DrawingSurfaceComponent],
-      providers: [ColorsService],
+      providers: [EditorService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    selectedColorsService = new ColorsService();
-    fixture = TestBed.createComponent(DrawingSurfaceComponent);
+    fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
-    surface = fixture.componentInstance;
-    lineTool = new LineTool(surface, selectedColorsService);
+    colorsService = fixture.componentInstance.editorService.colorsService;
+    lineTool = new LineTool(fixture.componentInstance.editorService);
   });
 
   it('should call removeLastPoint on backspace if isActive', () => {
@@ -120,22 +120,22 @@ describe('LineTool', () => {
     const drawSpy = spyOn(lineTool, 'drawShape');
     lineTool.initLine();
     expect(lineTool.shape).toBeTruthy();
-    expect(lineTool.shape.properties.strokeColor).toEqual(lineTool['selectedColors'].primaryColor);
-    expect(lineTool.shape.properties.fillColor).toEqual(lineTool['selectedColors'].secondaryColor);
-    expect(lineTool.shape.properties.strokeWidth).toEqual(lineTool['_toolProperties'].strokeWidth);
+    expect(lineTool.shape.shapeProperties.strokeColor).toEqual(colorsService.primaryColor);
+    expect(lineTool.shape.shapeProperties.fillColor).toEqual(colorsService.secondaryColor);
+    expect(lineTool.shape.shapeProperties.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth);
     expect(drawSpy).toHaveBeenCalled();
   });
 
   it('can init line with junctions', () => {
-    lineTool['_toolProperties'].junctionType = LineJunctionType.POINTS;
+    lineTool['toolProperties'].junctionType = LineJunctionType.POINTS;
     lineTool.initLine();
-    expect(lineTool.shape.properties.thickness).toEqual(lineTool['_toolProperties'].junctionDiameter);
+    expect(lineTool.shape.shapeProperties.thickness).toEqual(lineTool['toolProperties'].junctionDiameter);
   });
 
   it('can init line without junctions', () => {
-    lineTool['_toolProperties'].junctionType = LineJunctionType.EMPTY;
+    lineTool['toolProperties'].junctionType = LineJunctionType.EMPTY;
     lineTool.initLine();
-    expect(lineTool.shape.properties.thickness).toEqual(0);
+    expect(lineTool.shape.shapeProperties.thickness).toEqual(0);
   });
 
   it('should call endLine on double click if isActive', () => {

@@ -1,14 +1,16 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { ColorsService } from 'src/app/services/colors.service';
+import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 
 describe('RectangleTool', () => {
   let rectangleTool: RectangleTool;
-  let fixture: ComponentFixture<DrawingSurfaceComponent>;
+  let fixture: ComponentFixture<EditorComponent>;
   let surface: DrawingSurfaceComponent;
   let properties: RectangleToolProperties;
   let selectedColorsService: ColorsService;
@@ -16,16 +18,17 @@ describe('RectangleTool', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DrawingSurfaceComponent],
+      providers: [EditorService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     selectedColorsService = new ColorsService();
-    fixture = TestBed.createComponent(DrawingSurfaceComponent);
+    fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
-    surface = fixture.componentInstance;
+    surface = fixture.componentInstance.drawingSurface;
     properties = new RectangleToolProperties();
-    rectangleTool = new RectangleTool(surface, selectedColorsService);
+    rectangleTool = new RectangleTool(fixture.componentInstance.editorService);
   });
 
   it('can initialize new Rectangle', () => {

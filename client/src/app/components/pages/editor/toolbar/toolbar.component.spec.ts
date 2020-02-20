@@ -77,9 +77,6 @@ describe('ToolbarComponent', () => {
   });
 
   it('should select the primary color and the secondary color when clicking associated squares', () => {
-    component.selectTool(ToolType.ColorPicker);
-    fixture.detectChanges();
-
     const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
     const secondaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-secondary-color');
 
@@ -116,7 +113,7 @@ describe('ToolbarComponent', () => {
 
   it('should emit editBackgroundChanged on update background button clicked', () => {
     const backgroundChangedSpy = spyOn(component.editorBackgroundChanged, 'emit');
-    component.selectColor(1);
+    component.editColor(1);
     fixture.detectChanges();
     component.colorPicker.color = Color.GREEN;
 

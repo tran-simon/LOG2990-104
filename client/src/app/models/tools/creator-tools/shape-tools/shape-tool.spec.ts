@@ -1,5 +1,8 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { ToolType } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
@@ -8,14 +11,14 @@ import { ShapeTool } from './shape-tool';
 
 export class MockShapeTool extends ShapeTool {
   _shape: Rectangle;
-  _toolProperties: ToolProperties;
+  toolProperties: ToolProperties;
 
   get shape() {
     return this._shape;
   }
 
-  constructor(d: DrawingSurfaceComponent) {
-    super(d);
+  constructor(editorService: EditorService, type = 'TYPE_MOCK' as ToolType) {
+    super(editorService, type);
   }
 
   initShape(c: Coordinate) {
@@ -32,7 +35,7 @@ export class MockShapeTool extends ShapeTool {
 
 describe('ShapeTool', () => {
   let mockShapeTool: MockShapeTool;
-  let fixture: ComponentFixture<DrawingSurfaceComponent>;
+  let fixture: ComponentFixture<EditorComponent>;
   let surface: DrawingSurfaceComponent;
 
   const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
@@ -78,14 +81,15 @@ describe('ShapeTool', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DrawingSurfaceComponent],
+      providers: [EditorService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DrawingSurfaceComponent);
+    fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
-    surface = fixture.componentInstance;
-    mockShapeTool = new MockShapeTool(surface);
+    surface = fixture.componentInstance.drawingSurface;
+    mockShapeTool = new MockShapeTool(fixture.componentInstance.editorService);
   });
 
   it('can draw preview area', () => {

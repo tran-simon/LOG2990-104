@@ -1,15 +1,13 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ColorsService } from 'src/app/services/colors.service';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { PenTool } from './pen-tool';
 
 describe('PenTool', () => {
-  let fixture: ComponentFixture<DrawingSurfaceComponent>;
-  let surface: DrawingSurfaceComponent;
+  let fixture: ComponentFixture<EditorComponent>;
   let penTool: PenTool;
-  let selectedColorsService: ColorsService;
 
   const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
     return {
@@ -48,11 +46,9 @@ describe('PenTool', () => {
   }));
 
   beforeEach(() => {
-    selectedColorsService = new ColorsService();
-    fixture = TestBed.createComponent(DrawingSurfaceComponent);
+    fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
-    surface = fixture.componentInstance;
-    penTool = new PenTool(surface, selectedColorsService);
+    penTool = new PenTool(fixture.componentInstance.editorService);
   });
 
   it('Should call initPath on mousedown event', () => {
