@@ -11,6 +11,13 @@ import { ColorsService } from 'src/app/services/colors.service';
   providedIn: 'root',
 })
 export class EditorService {
+  readonly tools: Map<ToolType, Tool>;
+  view: ElementRef | undefined;
+
+  private shapesBuffer: BaseShape[];
+  readonly shapes: BaseShape[];
+  private previewShapes: BaseShape[];
+
   constructor(public colorsService: ColorsService) {
     this.tools = new Map<ToolType, Tool>([
       [ToolType.Pen, new PenTool(this)],
@@ -18,14 +25,10 @@ export class EditorService {
       [ToolType.Rectangle, new RectangleTool(this)],
       [ToolType.Line, new LineTool(this)],
     ]);
+    this.shapesBuffer = new Array<BaseShape>();
+    this.shapes = new Array<BaseShape>();
+    this.previewShapes = new Array<BaseShape>();
   }
-
-  readonly tools: Map<ToolType, Tool>;
-  view: ElementRef | undefined;
-
-  private shapesBuffer = new Array<BaseShape>();
-  private shapes = new Array<BaseShape>();
-  private previewShapes = new Array<BaseShape>();
 
   static removeShapeFromView(view: ElementRef | undefined, shape: BaseShape): void {
     if (view) {
@@ -65,14 +68,5 @@ export class EditorService {
     this.shapesBuffer = [shape];
 
     EditorService.addShapeToView(this.view, shape);
-  }
-
-  removeShapeFromBuffer(shape: BaseShape): void {
-    const index = this.shapes.indexOf(shape);
-    if (index !== -1) {
-      this.shapes.splice(index, 1);
-
-      EditorService.removeShapeFromView(this.view, shape);
-    }
   }
 }

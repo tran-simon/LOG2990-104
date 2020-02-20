@@ -35,7 +35,7 @@ export class ToolbarComponent {
   showColorPicker: boolean;
 
   @ViewChild('drawer', { static: false })
-  private drawer: MatDrawer;
+  readonly drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;

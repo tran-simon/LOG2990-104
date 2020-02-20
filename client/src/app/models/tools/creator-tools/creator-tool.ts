@@ -21,7 +21,7 @@ export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
   }
 
   cancelShape(): void {
-    this.editorService.removeShapeFromBuffer(this.shape);
+    this.editorService.clearShapesBuffer();
     this.isActive = false;
   }
 }
