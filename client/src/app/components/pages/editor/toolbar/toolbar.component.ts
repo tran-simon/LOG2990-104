@@ -3,8 +3,9 @@ import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
-import { Tool, ToolType } from 'src/app/models/tools/tool';
-import { ColorsService, SelectedColorType } from 'src/app/services/colors.service';
+import { ToolType } from 'src/app/models/tools/tool';
+import { SelectedColorType } from 'src/app/services/colors.service';
+import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
@@ -24,7 +25,6 @@ export class ToolbarComponent {
   @Output() currentToolTypeChange = new EventEmitter<ToolType>();
 
   @Output() editorBackgroundChanged: EventEmitter<Color>;
-  @Input() tools: Record<ToolType, Tool>;
 
   ToolType = ToolType;
   toolTypeKeys = Object.values(ToolType);
@@ -35,7 +35,7 @@ export class ToolbarComponent {
   showColorPicker: boolean;
 
   @ViewChild('drawer', { static: false })
-  drawer: MatDrawer;
+  private drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
@@ -43,7 +43,7 @@ export class ToolbarComponent {
   modalIsOpened: boolean;
   dialogRef: MatDialogRef<AbstractModalComponent>;
 
-  constructor(private router: Router, public selectedColors: ColorsService, public dialog: MatDialog) {
+  constructor(private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
     this.editorBackgroundChanged = new EventEmitter<Color>();
     this.showColorPicker = false;
@@ -104,18 +104,18 @@ export class ToolbarComponent {
   }
 
   get primaryColor(): Color {
-    return this.selectedColors.primaryColor;
+    return this.editorService.colorsService.primaryColor;
   }
 
   get secondaryColor(): Color {
-    return this.selectedColors.secondaryColor;
+    return this.editorService.colorsService.secondaryColor;
   }
 
   set color(color: Color) {
-    this.selectedColors.setColorByIndex(color, this.selectedColor);
+    this.editorService.colorsService.setColorByIndex(color, this.selectedColor);
   }
 
   get color(): Color {
-    return this.selectedColors.getColor(this.selectedColor);
+    return this.editorService.colorsService.getColor(this.selectedColor);
   }
 }

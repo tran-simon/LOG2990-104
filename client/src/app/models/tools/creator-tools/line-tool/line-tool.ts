@@ -1,8 +1,8 @@
-import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -11,8 +11,8 @@ export class LineTool extends CreatorTool {
     return this.line;
   }
 
-  constructor(editorComponent: EditorComponent) {
-    super(editorComponent, ToolType.Line);
+  constructor(editorService: EditorService) {
+    super(editorService, ToolType.Line);
     this.toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
@@ -24,10 +24,7 @@ export class LineTool extends CreatorTool {
         return false;
       },
       escape: () => {
-        if (this.isActive) {
-          // this.cancelShape(this);//TODO : FIX
-          this.isActive = false; // todo
-        }
+        this.cancel();
         return false;
       },
       shift_shift: () => {
@@ -51,10 +48,8 @@ export class LineTool extends CreatorTool {
   private lockMethod: (c: Coordinate) => Coordinate;
 
   initLine(): void {
-    this.line = new CompositeLine(this.mousePosition);
-
-    this.line.shapeProperties.strokeColor = this.editorComponent.colorsService.primaryColor;
-    this.line.shapeProperties.fillColor = this.editorComponent.colorsService.secondaryColor;
+    this.line.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
+    this.line.shapeProperties.fillColor = this.editorService.colorsService.secondaryColor;
     this.line.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
     if (this.toolProperties.junctionType === LineJunctionType.POINTS) {
@@ -67,17 +62,24 @@ export class LineTool extends CreatorTool {
     this.drawShape();
   }
 
+  applyShape(): void {
+    super.applyShape();
+    this.line.endLine(this.mousePosition);
+  }
+
   handleToolMouseEvent(e: MouseEvent): void {
     if (this.isActive) {
       if (e.type === 'dblclick') {
-        this.isActive = false;
-        this.line.endLine(this.mousePosition);
+        this.applyShape();
       } else if (e.type === 'mousemove') {
         this.line.updateCurrentCoord(this.lockMethod(this.mousePosition));
       } else if (e.type === 'mousedown') {
         this.line.confirmPoint();
       }
     } else if (e.type === 'mousedown') {
+      if (!this.isActive) {
+        this.line = new CompositeLine(this.mousePosition);
+      }
       this.isActive = true;
       this.initLine();
     }

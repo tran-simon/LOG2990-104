@@ -1,7 +1,8 @@
-import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
+import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -10,8 +11,8 @@ export abstract class ShapeTool extends CreatorTool {
   private forceEqualDimensions: boolean;
   private initialMouseCoord: Coordinate;
 
-  protected constructor(editorComponent: EditorComponent, type: ToolType) {
-    super(editorComponent, type);
+  protected constructor(editorService: EditorService, type: ToolType) {
+    super(editorService, type);
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;
@@ -37,17 +38,16 @@ export abstract class ShapeTool extends CreatorTool {
 
     if (this.isActive) {
       if (e.type === 'mouseup') {
-        this.isActive = false;
-        this.removePreviewArea();
+        this.applyShape();
       } else if (e.type === 'mousemove') {
         this.updateCurrentCoord(mouseCoord);
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;
       this.initialMouseCoord = mouseCoord;
-      this.previewArea = new Rectangle(mouseCoord);
-      this.drawPreviewArea();
       this.initShape(mouseCoord);
+      this.updateCurrentCoord(mouseCoord);
+      this.editorService.addPreviewShape(this.previewArea);
     }
   }
 
@@ -56,14 +56,6 @@ export abstract class ShapeTool extends CreatorTool {
     if (this.isActive) {
       this.updateCurrentCoord(this.mousePosition);
     }
-  }
-
-  drawPreviewArea(): void {
-    this.editorComponent.drawingSurface.svg.nativeElement.appendChild(this.previewArea.svgNode);
-  }
-
-  removePreviewArea(): void {
-    this.editorComponent.drawingSurface.svg.nativeElement.removeChild(this.previewArea.svgNode);
   }
 
   updateCurrentCoord(c: Coordinate): void {
@@ -75,6 +67,8 @@ export abstract class ShapeTool extends CreatorTool {
     this.previewArea.origin = origin;
     this.previewArea.width = previewDimensions.x;
     this.previewArea.height = previewDimensions.y;
+    this.previewArea.shapeProperties.fillColor = Color.TRANSPARENT;
+    this.previewArea.updateProperties();
 
     if (this.forceEqualDimensions) {
       const minDimension = Math.min(dimensions.x, dimensions.y);

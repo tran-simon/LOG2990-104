@@ -1,11 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
-import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
-import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
-import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
-import { ColorsService } from 'src/app/services/colors.service';
+import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
@@ -28,33 +24,41 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
-  currentToolType: ToolType;
+  private _currentToolType: ToolType;
+  get currentToolType(): ToolType {
+    return this._currentToolType;
+  }
+
+  set currentToolType(value: ToolType) {
+    if (this.currentTool) {
+      this.currentTool.cancel();
+    }
+    this._currentToolType = value;
+  }
 
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
 
-  tools: Record<ToolType, Tool>;
-
-  constructor(private router: ActivatedRoute, public colorsService: ColorsService) {
+  constructor(private router: ActivatedRoute, public editorService: EditorService) {
     this.surfaceColor = Color.WHITE;
     this.surfaceWidth = 0;
     this.surfaceHeight = 0;
     this.keyboardEventHandler = {
       l: () => {
-        this.selectTool(ToolType.Line);
+        this.currentToolType = ToolType.Line;
         return false;
       },
       c: () => {
-        this.selectTool(ToolType.Pen);
+        this.currentToolType = ToolType.Pen;
         return false;
       },
       w: () => {
-        this.selectTool(ToolType.Brush);
+        this.currentToolType = ToolType.Brush;
         return false;
       },
       1: () => {
-        this.selectTool(ToolType.Rectangle);
+        this.currentToolType = ToolType.Rectangle;
         return false; // todo - enable default behavior when typing in text field
       },
       def: (e) => {
@@ -62,14 +66,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       },
     } as KeyboardEventHandler;
 
-    this.tools = {
-      [ToolType.Pen]: new PenTool(this),
-      [ToolType.Brush]: new BrushTool(this),
-      [ToolType.Rectangle]: new RectangleTool(this),
-      [ToolType.Line]: new LineTool(this),
-    } as Record<ToolType, Tool>;
-
-    this.selectTool(ToolType.Pen);
+    this.currentToolType = ToolType.Pen;
   }
 
   ngOnInit(): void {
@@ -81,15 +78,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.selectTool(ToolType.Pen);
+    this.editorService.view = this.drawingSurface.svg;
+    this.currentToolType = ToolType.Pen;
   }
 
   handleMouseEvent(e: MouseEvent): void {
     this.currentTool.handleMouseEvent(e, this.drawingSurface);
-  }
-
-  selectTool(type: ToolType): void {
-    this.currentToolType = type;
   }
 
   changeBackground(color: Color): void {
@@ -108,6 +102,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   get currentTool(): Tool {
-    return this.tools[this.currentToolType];
+    return this.editorService.tools[this.currentToolType];
   }
 }

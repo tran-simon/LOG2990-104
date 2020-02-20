@@ -1,16 +1,16 @@
-import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { Path } from 'src/app/models/shapes/path';
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { ToolType } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
 
 export class PenTool extends CreatorTool {
   toolProperties: PenToolProperties;
 
   path: Path;
 
-  constructor(editorComponent: EditorComponent, type = ToolType.Pen) {
-    super(editorComponent, type);
+  constructor(editorService: EditorService, type = ToolType.Pen) {
+    super(editorService, type);
     this.toolProperties = new PenToolProperties();
   }
 
@@ -21,7 +21,7 @@ export class PenTool extends CreatorTool {
   handleToolMouseEvent(e: MouseEvent): void {
     if (this.isActive) {
       if (e.type === 'mouseup' || e.type === 'mouseleave') {
-        this.isActive = false;
+        this.applyShape();
       } else if (e.type === 'mousemove') {
         this.shape.addPoint(this.mousePosition);
       }
@@ -34,8 +34,8 @@ export class PenTool extends CreatorTool {
   initPath(): void {
     this.path = new Path(this.mousePosition);
 
-    this.path.shapeProperties.strokeColor = this.editorComponent.colorsService.primaryColor;
-    this.path.shapeProperties.strokeOpacity = this.editorComponent.colorsService.primaryColor.a;
+    this.path.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
+    this.path.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
     this.path.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
     this.path.updateProperties();
