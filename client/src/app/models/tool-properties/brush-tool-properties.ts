@@ -1,4 +1,5 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { ToolType } from '../tools/tool';
 
 export enum BrushTextureType {
   TEXTURE_1 = 'Texture 1',
@@ -18,7 +19,7 @@ export class BrushToolProperties extends ToolProperties {
   texture: BrushTextureType;
 
   constructor(thickness: number = BrushToolProperties.MIN_THICKNESS, texture: BrushTextureType = BrushTextureType.TEXTURE_1) {
-    super('Brush');
+    super(ToolType.Brush);
 
     this.strokeWidth = thickness;
     this.texture = texture;

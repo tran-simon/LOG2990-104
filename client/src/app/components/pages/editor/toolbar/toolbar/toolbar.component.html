@@ -39,10 +39,10 @@
   <mat-drawer #drawer mode="side">
     <mat-drawer-content [ngSwitch]="currentToolType">
       <div *ngIf=!showColorPicker>
-        <app-pen-toolbar [tool]=editorService.tools[ToolType.Pen] *ngSwitchCase='ToolType.Pen' class='toolbar-tool-section'></app-pen-toolbar>
-        <app-brush-toolbar [tool]=editorService.tools[ToolType.Brush] *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
-        <app-rectangle-toolbar [tool]=editorService.tools[ToolType.Rectangle] *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>
-        <app-line-toolbar [tool]=editorService.tools[ToolType.Line] *ngSwitchCase=ToolType.Line class='toolbar-tool-section'></app-line-toolbar>
+        <app-pen-toolbar *ngSwitchCase='ToolType.Pen' class='toolbar-tool-section'></app-pen-toolbar>
+        <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
+        <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>
+        <app-line-toolbar *ngSwitchCase=ToolType.Line class='toolbar-tool-section'></app-line-toolbar>
 
       </div>
       <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType" class="toolbar-tool-section">

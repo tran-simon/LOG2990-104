@@ -70,13 +70,13 @@ describe('PenTool', () => {
   });
 
   it('Should call initPath on mousedown event', () => {
-    const initSpy = spyOn(penTool, 'initPath');
+    const initSpy = spyOn<any>(penTool, 'initPath');
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(initSpy).toHaveBeenCalled();
   });
 
   it('Should not call initPath on mousedown if isActive', () => {
-    const initSpy = spyOn(penTool, 'initPath');
+    const initSpy = spyOn<any>(penTool, 'initPath');
     penTool['isActive'] = true;
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(initSpy).not.toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe('PenTool', () => {
   });
 
   it('Should add point on mousemove if isActive', () => {
-    penTool.initPath();
+    penTool['initPath']();
     penTool['isActive'] = true;
     const addPointSpy = spyOn(penTool.shape, 'addPoint');
     penTool.handleMouseEvent(mouseMove(new Coordinate(100, 100)));
@@ -103,7 +103,7 @@ describe('PenTool', () => {
   });
 
   it('Should not add point on mousemove if not isActive', () => {
-    penTool.initPath();
+    penTool['initPath']();
     penTool['isActive'] = false;
     const addPointSpy = spyOn(penTool.shape, 'addPoint');
     penTool.handleMouseEvent(mouseMove(new Coordinate(100, 100)));

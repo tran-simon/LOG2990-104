@@ -7,7 +7,6 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
@@ -24,8 +23,8 @@ export class MockShapeTool extends ShapeTool {
     return this._shape;
   }
 
-  constructor(editorService: EditorService, type = 'TYPE_MOCK' as ToolType) {
-    super(editorService, type);
+  constructor(editorService: EditorService) {
+    super(editorService);
   }
 
   initShape(c: Coordinate) {

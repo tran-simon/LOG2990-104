@@ -10,6 +10,7 @@ import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
@@ -77,13 +78,13 @@ describe('EditorComponent', () => {
 
   it('should cancel current drawing on tool change', () => {
     component.currentToolType = ToolType.Pen;
-    const cancelSpy = spyOn(component.editorService.tools[ToolType.Pen], 'cancel');
+    const cancelSpy = spyOn(component.editorService.tools.get(ToolType.Pen) as Tool, 'cancel');
     component.currentToolType = ToolType.Brush;
     expect(cancelSpy).toHaveBeenCalled();
   });
 
   it('should pass down events when unknown keys are pressed', () => {
-    const spy = spyOn(component.currentTool, 'handleKeyboardEvent');
+    const spy = spyOn(component.currentTool as Tool, 'handleKeyboardEvent');
 
     KeyboardListener.keyEvent(keyDown('x'), component['keyboardEventHandler']);
 
@@ -107,37 +108,40 @@ describe('EditorComponent', () => {
 
   it('should select the line tool', () => {
     component.currentToolType = ToolType.Line;
-    fixture.detectChanges();
-
-    expect(component.currentTool.type).toEqual(ToolType.Line);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Line);
   });
 
   it('should select the rectangle tool', () => {
     component.currentToolType = ToolType.Rectangle;
 
-    expect(component.currentTool.type).toEqual(ToolType.Rectangle);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Rectangle);
   });
 
   it('should select the brush tool', () => {
     component.currentToolType = ToolType.Brush;
 
-    expect(component.currentTool.type).toEqual(ToolType.Brush);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Brush);
   });
 
   it('should select the pen tool after selecting the brush tool', () => {
     component.currentToolType = ToolType.Brush;
     component.currentToolType = ToolType.Pen;
 
-    expect(component.currentTool.type).toEqual(ToolType.Pen);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Pen);
   });
 
   it('can get current tool', () => {
-    const tool: Tool = { type: 'toolMock' as ToolType } as Tool;
-    component.editorService.tools['toolMock' as ToolType] = tool;
+    const tool: Tool = { toolProperties: { type: 'toolMock' as ToolType } as ToolProperties } as Tool;
+    component.editorService.tools.set('toolMock' as ToolType, tool);
 
     component.currentToolType = 'toolMock' as ToolType;
 
-    expect(component.currentTool).toEqual(tool);
-    expect(component.currentTool.type).toEqual('toolMock');
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool).toEqual(tool);
+    expect(currentTool.toolProperties.type).toEqual('toolMock');
   });
 });

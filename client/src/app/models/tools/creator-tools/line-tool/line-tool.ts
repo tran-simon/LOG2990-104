@@ -1,18 +1,17 @@
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export class LineTool extends CreatorTool {
+export class LineTool extends CreatorTool<LineToolProperties> {
   get shape(): CompositeLine {
     return this.line;
   }
 
   constructor(editorService: EditorService) {
-    super(editorService, ToolType.Line);
+    super(editorService);
     this.toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
@@ -42,7 +41,6 @@ export class LineTool extends CreatorTool {
   static readonly MAX_HORIZONTAL_LOCK_ANGLE = Math.PI / 6;
   static readonly MAX_DIAGONAL_LOCK_ANGLE = Math.PI / 3;
   static readonly MAX_VERTICAL_LOCK_ANGLE = Math.PI / 2;
-  toolProperties: LineToolProperties;
 
   private line: CompositeLine;
   private lockMethod: (c: Coordinate) => Coordinate;

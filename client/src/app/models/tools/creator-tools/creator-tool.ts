@@ -1,12 +1,13 @@
 import { BaseShape } from 'src/app/models/shapes/base-shape';
-import { Tool, ToolType } from 'src/app/models/tools/tool';
+import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
+import { ToolProperties } from '../../tool-properties/tool-properties';
 
-export abstract class CreatorTool extends Tool {
+export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
   abstract get shape(): BaseShape;
 
-  protected constructor(editorService: EditorService, type: ToolType, isActive = false) {
-    super(editorService, type);
+  protected constructor(editorService: EditorService, isActive = false) {
+    super(editorService);
     this.isActive = isActive;
   }
 
@@ -21,7 +22,6 @@ export abstract class CreatorTool extends Tool {
 
   cancelShape(): void {
     this.editorService.removeShapeFromBuffer(this.shape);
-    // this.editorService.drawingSurface.cancelShape(this);
     this.isActive = false;
   }
 }

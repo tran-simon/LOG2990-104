@@ -12,15 +12,15 @@ import { ColorsService } from 'src/app/services/colors.service';
 })
 export class EditorService {
   constructor(public colorsService: ColorsService) {
-    this.tools = {
-      [ToolType.Pen]: new PenTool(this),
-      [ToolType.Brush]: new BrushTool(this),
-      [ToolType.Rectangle]: new RectangleTool(this),
-      [ToolType.Line]: new LineTool(this),
-    } as Record<ToolType, Tool>;
+    this.tools = new Map<ToolType, Tool>([
+      [ToolType.Pen, new PenTool(this)],
+      [ToolType.Brush, new BrushTool(this)],
+      [ToolType.Rectangle, new RectangleTool(this)],
+      [ToolType.Line, new LineTool(this)],
+    ]);
   }
 
-  readonly tools: Record<ToolType, Tool>;
+  readonly tools: Map<ToolType, Tool>;
   view: ElementRef | undefined;
 
   private shapesBuffer = new Array<BaseShape>();

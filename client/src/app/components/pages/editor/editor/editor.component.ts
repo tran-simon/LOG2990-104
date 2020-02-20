@@ -52,7 +52,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         return false; // todo - enable default behavior when typing in text field
       },
       def: (e) => {
-        return this.currentTool.handleKeyboardEvent(e);
+        return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
       },
     } as KeyboardEventHandler;
 
@@ -72,7 +72,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    this.currentTool.handleMouseEvent(e);
+    if (this.currentTool) {
+      this.currentTool.handleMouseEvent(e);
+    }
   }
 
   changeBackground(color: Color): void {
@@ -90,8 +92,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     e.preventDefault();
   }
 
-  get currentTool(): Tool {
-    return this.editorService.tools[this.currentToolType];
+  get currentTool(): Tool | undefined {
+    return this.editorService.tools.get(this.currentToolType);
   }
 
   get currentToolType(): ToolType {

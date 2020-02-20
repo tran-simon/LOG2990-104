@@ -1,5 +1,6 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { MathUtil } from '../../utils/math/math-util';
+import { ToolType } from '../tools/tool';
 
 export enum LineJunctionType {
   POINTS = 'Avec points',
@@ -25,7 +26,7 @@ export class LineToolProperties extends ToolProperties {
     junctionType: LineJunctionType = LineJunctionType.POINTS,
     junctionDiameter: number = LineToolProperties.MIN_DIAMETER,
   ) {
-    super('Line');
+    super(ToolType.Line);
 
     this.strokeWidth = thickness;
     this.junctionType = junctionType;

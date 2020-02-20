@@ -1,4 +1,5 @@
 import { BrushTextureType, BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
+import { ToolType } from '../tools/tool';
 
 describe('Brush Tool Properties', () => {
   let brushProperties: BrushToolProperties;
@@ -7,8 +8,8 @@ describe('Brush Tool Properties', () => {
     brushProperties = new BrushToolProperties();
   });
 
-  it('should create with the correct tool name', () => {
-    expect(brushProperties.toolName).toBe('Brush');
+  it('should create with the correct tool type', () => {
+    expect(brushProperties.type).toBe(ToolType.Brush);
   });
 
   it('should create with the default thickness', () => {

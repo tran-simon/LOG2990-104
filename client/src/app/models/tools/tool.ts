@@ -10,21 +10,19 @@ export enum ToolType {
   Rectangle = 'rectangle-tool',
   Line = 'line-tool',
 }
-export abstract class Tool {
+export abstract class Tool<T = ToolProperties> {
   protected keyboardEventHandler: KeyboardEventHandler;
   private _mousePosition: Coordinate;
-  readonly type: ToolType;
-  abstract toolProperties: ToolProperties;
   protected editorService: EditorService;
   protected isActive: boolean;
+  toolProperties: T;
 
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
 
-  protected constructor(editorService: EditorService, type: ToolType) {
+  protected constructor(editorService: EditorService) {
     this.editorService = editorService;
-    this.type = type;
     this.keyboardEventHandler = {} as KeyboardEventHandler;
     this._mousePosition = new Coordinate();
   }

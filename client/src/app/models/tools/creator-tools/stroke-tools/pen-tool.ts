@@ -1,37 +1,15 @@
 import { Path } from 'src/app/models/shapes/path';
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
+import { StrokeTool } from './stroke-tool';
 
-export class PenTool extends CreatorTool {
-  toolProperties: PenToolProperties;
-
-  path: Path;
-
-  constructor(editorService: EditorService, type = ToolType.Pen) {
-    super(editorService, type);
+export class PenTool extends StrokeTool<PenToolProperties> {
+  constructor(editorService: EditorService) {
+    super(editorService);
     this.toolProperties = new PenToolProperties();
   }
 
-  get shape(): Path {
-    return this.path;
-  }
-
-  handleToolMouseEvent(e: MouseEvent): void {
-    if (this.isActive) {
-      if (e.type === 'mouseup' || e.type === 'mouseleave') {
-        this.applyShape();
-      } else if (e.type === 'mousemove') {
-        this.shape.addPoint(this.mousePosition);
-      }
-    } else if (e.type === 'mousedown') {
-      this.isActive = true;
-      this.initPath();
-    }
-  }
-
-  initPath(): void {
+  protected initPath(): void {
     this.path = new Path(this.mousePosition);
 
     this.path.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;

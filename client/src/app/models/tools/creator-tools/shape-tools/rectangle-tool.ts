@@ -1,14 +1,11 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
-import { ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export class RectangleTool extends ShapeTool {
-  toolProperties: RectangleToolProperties;
-
+export class RectangleTool extends ShapeTool<RectangleToolProperties> {
   private rectangle: Rectangle;
 
   get shape(): Rectangle {
@@ -16,7 +13,7 @@ export class RectangleTool extends ShapeTool {
   }
 
   constructor(editorService: EditorService) {
-    super(editorService, ToolType.Rectangle);
+    super(editorService);
     this.toolProperties = new RectangleToolProperties();
   }
 

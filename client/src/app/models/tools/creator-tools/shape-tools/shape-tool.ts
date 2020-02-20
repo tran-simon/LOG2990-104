@@ -1,18 +1,18 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { ToolProperties } from '../../../tool-properties/tool-properties';
 
-export abstract class ShapeTool extends CreatorTool {
+export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
   private initialMouseCoord: Coordinate;
 
-  protected constructor(editorService: EditorService, type: ToolType) {
-    super(editorService, type);
+  protected constructor(editorService: EditorService) {
+    super(editorService);
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;

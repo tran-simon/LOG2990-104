@@ -1,3 +1,4 @@
+import { ToolType } from '../tools/tool';
 import { ToolProperties } from './tool-properties';
 
 class MockToolProperties extends ToolProperties {
@@ -8,7 +9,7 @@ class MockToolProperties extends ToolProperties {
   maxThickness: number = MockToolProperties.MAX_THICKNESS;
 
   constructor(thickness: number = MockToolProperties.MIN_THICKNESS) {
-    super('MockTool');
+    super('MockTool' as ToolType);
 
     this.strokeWidth = thickness;
   }
@@ -21,8 +22,8 @@ describe('Tool Properties', () => {
     toolProperties = new MockToolProperties();
   });
 
-  it('should have the correct tool name', () => {
-    expect(toolProperties.toolName).toBe('MockTool');
+  it('should have the correct tool type', () => {
+    expect(toolProperties.type).toBe('MockTool' as ToolType);
   });
 
   it('should correct a thickness input that is too low', () => {

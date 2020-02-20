@@ -1,8 +1,9 @@
 import { SelectedColorType } from 'src/app/services/colors.service';
 import { MathUtil } from 'src/app/utils/math/math-util';
+import { ToolType } from '../tools/tool';
 
 export abstract class ToolProperties {
-  toolName: string;
+  type: ToolType;
 
   private _strokeWidth: number;
   abstract readonly minThickness: number;
@@ -13,8 +14,8 @@ export abstract class ToolProperties {
   strokeColor: SelectedColorType;
   strokeOpacity: number;
 
-  protected constructor(toolName: string) {
-    this.toolName = toolName;
+  protected constructor(type: ToolType) {
+    this.type = type;
 
     this.fillOpacity = 1;
     this.strokeOpacity = 1;

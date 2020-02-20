@@ -1,3 +1,4 @@
+import { ToolType } from '../tools/tool';
 import { LineToolProperties } from './line-tool-properties';
 
 describe('Line Tool Properties', () => {
@@ -7,8 +8,8 @@ describe('Line Tool Properties', () => {
     lineProperties = new LineToolProperties();
   });
 
-  it('should create with the correct tool name', () => {
-    expect(lineProperties.toolName).toBe('Line');
+  it('should create with the correct tool type', () => {
+    expect(lineProperties.type).toBe(ToolType.Line);
   });
 
   it('should create with the default thickness', () => {
