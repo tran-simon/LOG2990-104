@@ -20,10 +20,10 @@ import { SharedModule } from './components/shared/shared.module';
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'edit', component: EditorComponent },
-      { path: 'help', component: UserGuideModalComponent },
     ]),
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
+  entryComponents: [UserGuideModalComponent],
 })
 export class AppModule {}
