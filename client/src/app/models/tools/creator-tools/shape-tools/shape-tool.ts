@@ -32,7 +32,8 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
   abstract initShape(c: Coordinate): void;
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
-  handleToolMouseEvent(e: MouseEvent): void {
+  handleMouseEvent(e: MouseEvent): void {
+    super.handleMouseEvent(e);
     // todo - make a proper mouse manager
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 

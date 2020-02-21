@@ -1,23 +1,20 @@
-import { BrushPath } from 'src/app/models/shapes/brush-path';
-import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
+import { Path } from 'src/app/models/shapes/path';
+import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
-import { StrokeTool } from './stroke-tool';
+import { StrokeTool } from '../stroke-tool';
 
-export class BrushTool extends StrokeTool<BrushToolProperties> {
-  protected path: BrushPath;
-
+export class PenTool extends StrokeTool<PenToolProperties> {
   constructor(editorService: EditorService) {
     super(editorService);
-    this.toolProperties = new BrushToolProperties();
+    this.toolProperties = new PenToolProperties();
   }
 
   protected initPath(): void {
-    this.path = new BrushPath(this.mousePosition);
+    this.path = new Path(this.mousePosition);
 
     this.path.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
     this.path.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
     this.path.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-    this.path.changeFilter(this.toolProperties.texture);
 
     this.path.updateProperties();
     this.drawShape();

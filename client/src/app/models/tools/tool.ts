@@ -27,11 +27,8 @@ export abstract class Tool<T = ToolProperties> {
     this._mousePosition = new Coordinate();
   }
 
-  abstract handleToolMouseEvent(e: MouseEvent): void;
-
   handleMouseEvent(e: MouseEvent): void {
     this._mousePosition = new Coordinate(e.offsetX, e.offsetY);
-    this.handleToolMouseEvent(e);
   }
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {

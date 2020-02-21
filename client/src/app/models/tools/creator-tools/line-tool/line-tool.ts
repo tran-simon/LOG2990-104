@@ -65,7 +65,8 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     this.line.endLine(this.mousePosition);
   }
 
-  handleToolMouseEvent(e: MouseEvent): void {
+  handleMouseEvent(e: MouseEvent): void {
+    super.handleMouseEvent(e);
     if (this.isActive) {
       if (e.type === 'dblclick') {
         this.applyShape();

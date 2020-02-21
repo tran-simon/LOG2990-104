@@ -2,8 +2,8 @@ import { ElementRef, Injectable } from '@angular/core';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
-import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
-import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
+import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { ColorsService } from 'src/app/services/colors.service';
 

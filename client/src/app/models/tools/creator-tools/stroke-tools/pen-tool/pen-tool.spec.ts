@@ -9,43 +9,14 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { DrawingSurfaceComponent } from '../../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { RectangleToolbarComponent } from '../../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { mouseDown, mouseLeave, mouseMove, mouseUp } from '../stroke-tool.spec';
 import { PenTool } from './pen-tool';
 
 describe('PenTool', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let penTool: PenTool;
-
-  const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
-    return {
-      type: 'mousedown',
-      offsetX: c.x,
-      offsetY: c.y,
-    } as MouseEvent;
-  };
-
-  const mouseMove = (c: Coordinate = new Coordinate()): MouseEvent => {
-    return {
-      type: 'mousemove',
-      offsetX: c.x,
-      offsetY: c.y,
-    } as MouseEvent;
-  };
-
-  const mouseUp = (c: Coordinate = new Coordinate()): MouseEvent => {
-    return {
-      type: 'mouseup',
-      offsetX: c.x,
-      offsetY: c.y,
-    } as MouseEvent;
-  };
-
-  const mouseLeave = (): MouseEvent => {
-    return {
-      type: 'mouseleave',
-    } as MouseEvent;
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -40,7 +40,7 @@ export class MockShapeTool extends ShapeTool {
 }
 
 describe('ShapeTool', () => {
-  let mockShapeTool: MockShapeTool;
+  let mockShapeTool: ShapeTool;
   let fixture: ComponentFixture<EditorComponent>;
   let surface: DrawingSurfaceComponent;
 
@@ -105,6 +105,10 @@ describe('ShapeTool', () => {
     fixture.detectChanges();
     surface = fixture.componentInstance.drawingSurface;
     mockShapeTool = new MockShapeTool(fixture.componentInstance.editorService);
+  });
+
+  it('should create', () => {
+    expect(mockShapeTool).toBeTruthy();
   });
 
   it('can draw preview area', () => {
