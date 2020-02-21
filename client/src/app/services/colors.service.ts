@@ -23,8 +23,8 @@ export class ColorsService {
     return this._colors[MathUtil.fit(index)];
   }
 
-  setColorByIndex(color: Color, index: number): void {
-    this._colors[MathUtil.fit(index)] = color;
+  setColorByType(color: Color, type: SelectedColorType): void {
+    this._colors[MathUtil.fit(type)] = color;
   }
 
   get primaryColor(): Color {
@@ -32,7 +32,7 @@ export class ColorsService {
   }
 
   set primaryColor(color: Color) {
-    this.setColorByIndex(color, SelectedColorType.primary);
+    this.setColorByType(color, SelectedColorType.primary);
   }
 
   get secondaryColor(): Color {
@@ -40,6 +40,6 @@ export class ColorsService {
   }
 
   set secondaryColor(color: Color) {
-    this.setColorByIndex(color, SelectedColorType.secondary);
+    this.setColorByType(color, SelectedColorType.secondary);
   }
 }

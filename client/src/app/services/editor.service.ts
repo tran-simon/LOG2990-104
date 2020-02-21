@@ -43,7 +43,7 @@ export class EditorService {
   }
 
   applyShapesBuffer(): void {
-    this.shapes.concat(this.shapesBuffer);
+    this.shapes.push(...this.shapesBuffer);
     this.shapesBuffer = [];
     this.clearShapesBuffer();
   }
@@ -64,8 +64,7 @@ export class EditorService {
   }
 
   addShapeToBuffer(shape: BaseShape): void {
-    this.shapes.concat(this.shapesBuffer);
-    this.shapesBuffer = [shape];
+    this.shapesBuffer.push(shape);
 
     EditorService.addShapeToView(this.view, shape);
   }

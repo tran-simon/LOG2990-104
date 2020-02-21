@@ -112,7 +112,7 @@ export class ToolbarComponent {
   }
 
   set color(color: Color) {
-    this.editorService.colorsService.setColorByIndex(color, this.selectedColor);
+    this.editorService.colorsService.setColorByType(color, this.selectedColor);
   }
 
   get color(): Color {

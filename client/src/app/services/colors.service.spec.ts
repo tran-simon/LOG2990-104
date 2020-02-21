@@ -2,7 +2,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Color } from 'src/app/utils/color/color';
 
-import { ColorsService } from 'src/app/services/colors.service';
+import { ColorsService, SelectedColorType } from 'src/app/services/colors.service';
 
 describe('ColorsService', () => {
   let service: ColorsService;
@@ -28,5 +28,11 @@ describe('ColorsService', () => {
     service.swapColors();
     expect(service.primaryColor).toEqual(Color.BLUE);
     expect(service.secondaryColor).toEqual(Color.RED);
+  });
+
+  it('can set color by type', () => {
+    service.setColorByType(Color.GREEN, SelectedColorType.secondary);
+    expect(service.getColor(SelectedColorType.secondary)).toEqual(Color.GREEN);
+    expect(service.secondaryColor).toEqual(Color.GREEN);
   });
 });

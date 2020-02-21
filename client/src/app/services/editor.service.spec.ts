@@ -1,17 +1,32 @@
 /* tslint:disable:no-string-literal */
 import { ElementRef } from '@angular/core';
+import createSpyObj = jasmine.createSpyObj;
+import SpyObj = jasmine.SpyObj;
+import { Ellipse } from '../models/shapes/ellipse';
 import { Line } from '../models/shapes/line';
 import { Rectangle } from '../models/shapes/rectangle';
 import { ToolType } from '../models/tools/tool';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
-import createSpyObj = jasmine.createSpyObj;
 
-fdescribe('EditorService', () => {
+describe('EditorService', () => {
   let service: EditorService;
+  let line: Line;
+  let rectangle: Rectangle;
+  let nativeElementSpyObj: SpyObj<any>;
+  let view: ElementRef;
 
   beforeEach(() => {
     service = new EditorService(new ColorsService());
+    line = new Line();
+    rectangle = new Rectangle();
+    nativeElementSpyObj = createSpyObj('nativeElement', ['removeChild', 'appendChild']);
+    view = { nativeElement: nativeElementSpyObj };
+    service.view = view;
+
+    service['shapesBuffer'] = [rectangle, rectangle];
+    // @ts-ignore
+    service['shapes'] = [line];
   });
 
   it('should be created', () => {
@@ -30,8 +45,6 @@ fdescribe('EditorService', () => {
   });
 
   it('can remove shape from the view', () => {
-    const nativeElementSpyObj = createSpyObj('nativeElement', ['removeChild', 'appendChild']);
-    const view: ElementRef = { nativeElement: nativeElementSpyObj };
     const shape = new Rectangle();
 
     EditorService.removeShapeFromView(view, shape);
@@ -39,25 +52,56 @@ fdescribe('EditorService', () => {
   });
 
   it('can add shape to the view', () => {
-    const viewNativeElementSpyObj = createSpyObj('nativeElement', ['removeChild', 'appendChild']);
-    const view: ElementRef = { nativeElement: viewNativeElementSpyObj };
     const shape = new Rectangle();
 
     EditorService.addShapeToView(view, shape);
-    expect(viewNativeElementSpyObj.appendChild).toHaveBeenCalledWith(shape.svgNode);
+    expect(nativeElementSpyObj.appendChild).toHaveBeenCalledWith(shape.svgNode);
   });
 
   it('updates shapes and clears buffer on applyShapeBuffer', () => {
     const clearShapesBufferSpy = spyOn(service, 'clearShapesBuffer');
-    const line = new Line();
-    const rectangle = new Rectangle();
-    service['shapesBuffer'] = [rectangle, rectangle];
-    // @ts-ignore
-    service['shapes'] = [line];
 
     service.applyShapesBuffer();
 
+    expect(service['shapesBuffer']).toEqual([]);
     expect(service.shapes).toEqual([line, rectangle, rectangle]);
     expect(clearShapesBufferSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('clears shape buffer', () => {
+    service.clearShapesBuffer();
+    expect(service['shapesBuffer'].length).toEqual(0);
+    expect(service['previewShapes'].length).toEqual(0);
+  });
+
+  it('removes the shapes that were in the buffer from the view on clearShapesBuffer', () => {
+    const removeShapeFromViewSpy = spyOn(EditorService, 'removeShapeFromView');
+    service.addPreviewShape(line);
+
+    service.clearShapesBuffer();
+
+    expect(removeShapeFromViewSpy).toHaveBeenCalledTimes(3);
+    expect(removeShapeFromViewSpy).toHaveBeenCalledWith(view, rectangle);
+    expect(removeShapeFromViewSpy).toHaveBeenCalledWith(view, line);
+  });
+
+  it('updates view on addPreviewShape', () => {
+    const addShapeToViewSpy = spyOn(EditorService, 'addShapeToView');
+
+    service.addPreviewShape(line);
+
+    expect(addShapeToViewSpy).toHaveBeenCalledWith(view, line);
+    expect(service['previewShapes']).toEqual([line]);
+  });
+
+  it('updates view on addShapeToBuffer', () => {
+    const addShapeToViewSpy = spyOn(EditorService, 'addShapeToView');
+    const ellipse = new Ellipse();
+
+    service.addShapeToBuffer(ellipse);
+
+    expect(service['shapes']).toEqual([line]);
+    expect(service['shapesBuffer']).toEqual([rectangle, rectangle, ellipse]);
+    expect(addShapeToViewSpy).toHaveBeenCalledWith(view, ellipse);
   });
 });
