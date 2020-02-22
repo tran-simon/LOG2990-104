@@ -17,7 +17,7 @@ export class PenTool extends StrokeTool<PenToolProperties> {
     this.path.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
     this.path.updateProperties();
-    this.drawShape();
+    this.addShape();
     this.path.addPoint(this.mousePosition);
   }
 }

@@ -1,4 +1,5 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
@@ -12,34 +13,27 @@ import { ColorsService } from 'src/app/services/colors.service';
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
-  view: ElementRef | undefined;
-
-  private shapesBuffer: BaseShape[];
-  readonly shapes: BaseShape[];
-  private previewShapes: BaseShape[];
 
   constructor(public colorsService: ColorsService) {
-    this.tools = new Map<ToolType, Tool>([
-      [ToolType.Pen, new PenTool(this)],
-      [ToolType.Brush, new BrushTool(this)],
-      [ToolType.Rectangle, new RectangleTool(this)],
-      [ToolType.Line, new LineTool(this)],
-    ]);
+    this.tools = new Map<ToolType, Tool>();
+    this.initTools();
+
     this.shapesBuffer = new Array<BaseShape>();
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
   }
 
-  static removeShapeFromView(view: ElementRef | undefined, shape: BaseShape): void {
-    if (view) {
-      view.nativeElement.removeChild(shape.svgNode);
-    }
-  }
+  view: DrawingSurfaceComponent;
 
-  static addShapeToView(view: ElementRef | undefined, shape: BaseShape): void {
-    if (view) {
-      view.nativeElement.appendChild(shape.svgNode);
-    }
+  private shapesBuffer: BaseShape[];
+  readonly shapes: BaseShape[];
+  private previewShapes: BaseShape[];
+
+  private initTools(): void {
+    this.tools.set(ToolType.Pen, new PenTool(this));
+    this.tools.set(ToolType.Brush, new BrushTool(this));
+    this.tools.set(ToolType.Rectangle, new RectangleTool(this));
+    this.tools.set(ToolType.Line, new LineTool(this));
   }
 
   applyShapesBuffer(): void {
@@ -50,7 +44,9 @@ export class EditorService {
 
   clearShapesBuffer(): void {
     const removeShapes = (shape: BaseShape): void => {
-      EditorService.removeShapeFromView(this.view, shape);
+      if (this.view) {
+        this.view.removeShape(shape);
+      }
     };
     this.shapesBuffer.forEach(removeShapes);
     this.previewShapes.forEach(removeShapes);
@@ -60,12 +56,16 @@ export class EditorService {
 
   addPreviewShape(shape: BaseShape): void {
     this.previewShapes.push(shape);
-    EditorService.addShapeToView(this.view, shape);
+    if (this.view) {
+      this.view.addShape(shape);
+    }
   }
 
   addShapeToBuffer(shape: BaseShape): void {
     this.shapesBuffer.push(shape);
 
-    EditorService.addShapeToView(this.view, shape);
+    if (this.view) {
+      this.view.addShape(shape);
+    }
   }
 }

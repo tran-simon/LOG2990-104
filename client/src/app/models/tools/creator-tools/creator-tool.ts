@@ -16,7 +16,7 @@ export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
     this.editorService.applyShapesBuffer();
   }
 
-  drawShape(): void {
+  addShape(): void {
     this.editorService.addShapeToBuffer(this.shape);
   }
 

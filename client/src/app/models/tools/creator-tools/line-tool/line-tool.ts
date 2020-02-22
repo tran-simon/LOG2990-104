@@ -57,7 +57,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     }
 
     this.line.updateProperties();
-    this.drawShape();
+    this.addShape();
   }
 
   applyShape(): void {

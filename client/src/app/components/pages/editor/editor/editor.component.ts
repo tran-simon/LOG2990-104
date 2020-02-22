@@ -68,7 +68,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.editorService.view = this.drawingSurface.svg;
+    this.editorService.view = this.drawingSurface;
   }
 
   handleMouseEvent(e: MouseEvent): void {

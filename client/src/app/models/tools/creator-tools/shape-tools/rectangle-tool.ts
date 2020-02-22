@@ -38,7 +38,7 @@ export class RectangleTool extends ShapeTool<RectangleToolProperties> {
         break;
     }
     this.rectangle.updateProperties();
-    this.drawShape();
+    this.addShape();
   }
 
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.rectangle.origin): void {

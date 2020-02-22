@@ -135,7 +135,7 @@ describe('LineTool', () => {
   });
 
   it('can init line', () => {
-    const drawSpy = spyOn(lineTool, 'drawShape');
+    const drawSpy = spyOn(lineTool, 'addShape');
     lineTool.initLine();
     expect(lineTool.shape).toBeTruthy();
     expect(lineTool.shape.shapeProperties.strokeColor).toEqual(colorsService.primaryColor);

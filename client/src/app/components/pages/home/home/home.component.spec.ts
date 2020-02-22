@@ -112,6 +112,12 @@ describe('HomeComponent', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['test']);
   });
 
+  it('should not open modal if link is invalid', () => {
+    component.openModal('invalid_link');
+    expect(component.dialogRef).not.toBeDefined();
+    expect(dialogOpenSpy).not.toHaveBeenCalled();
+  });
+
   /* keyboard shortcuts */
 
   it('should handle keyboard event', () => {

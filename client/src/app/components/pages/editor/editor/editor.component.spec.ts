@@ -6,6 +6,7 @@ import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/b
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
@@ -15,6 +16,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { EditorComponent } from './editor.component';
+import createSpyObj = jasmine.createSpyObj;
 
 const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
@@ -143,5 +145,24 @@ describe('EditorComponent', () => {
     const currentTool = component.currentTool as Tool;
     expect(currentTool).toEqual(tool);
     expect(currentTool.toolProperties.type).toEqual('toolMock');
+  });
+
+  it('handles mouse event', () => {
+    const tool: Tool = component.editorService.tools.get(component.currentToolType) as Tool;
+    const handleMouseEventSpy = spyOn(tool, 'handleMouseEvent');
+    const event = mouseDown();
+
+    component.handleMouseEvent(event);
+
+    expect(handleMouseEventSpy).toHaveBeenCalledWith(event);
+  });
+
+  it('prevents default on right click', () => {
+    const rightClickSpy = spyOn(component, 'onRightClick').and.callThrough();
+    const event = createSpyObj('event', ['preventDefault']);
+    fixture.debugElement.triggerEventHandler('contextmenu', event);
+
+    expect(rightClickSpy).toHaveBeenCalledWith(event);
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 });

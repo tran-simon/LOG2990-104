@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
+
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { ToolType } from 'src/app/models/tools/tool';
 import { SelectedColorType } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
-
-import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -43,12 +43,21 @@ export class ToolbarComponent {
   modalIsOpened: boolean;
   dialogRef: MatDialogRef<AbstractModalComponent>;
 
+  readonly toolbarIcons: Map<ToolType, string>;
+
   constructor(private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
     this.editorBackgroundChanged = new EventEmitter<Color>();
     this.showColorPicker = false;
     this.selectedColor = SelectedColorType.primary;
     this.modalIsOpened = false;
+
+    this.toolbarIcons = new Map<ToolType, string>([
+      [ToolType.Pen, 'edit'],
+      [ToolType.Brush, 'brush'],
+      [ToolType.Rectangle, 'crop_square'],
+      [ToolType.Line, 'show_chart'],
+    ]);
   }
 
   handleColorChanged(eventColor: Color): void {
@@ -86,21 +95,6 @@ export class ToolbarComponent {
 
   updateBackground(color: Color): void {
     this.editorBackgroundChanged.emit(color);
-  }
-
-  getToolbarIcon(tool: ToolType): string {
-    // todo
-    switch (tool) {
-      case ToolType.Pen:
-        return 'edit';
-      case ToolType.Brush:
-        return 'brush';
-      case ToolType.Rectangle:
-        return 'crop_square';
-      case ToolType.Line:
-        return 'show_chart';
-    }
-    return '';
   }
 
   get primaryColor(): Color {

@@ -20,7 +20,7 @@ export class BrushTool extends StrokeTool<BrushToolProperties> {
     this.path.changeFilter(this.toolProperties.texture);
 
     this.path.updateProperties();
-    this.drawShape();
+    this.addShape();
     this.path.addPoint(this.mousePosition);
   }
 }

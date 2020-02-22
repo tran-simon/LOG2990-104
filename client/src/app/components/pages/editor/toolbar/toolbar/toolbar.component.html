@@ -7,7 +7,7 @@
     <div *ngFor='let tool of toolTypeKeys'>
       <button id='{{"btn-" + tool}}' mat-icon-button [ngClass]="{'selected-tool': currentToolType === tool}"
               (click)="selectTool(tool)">
-        <mat-icon>{{getToolbarIcon(tool)}}</mat-icon>
+        <mat-icon>{{toolbarIcons.get(tool)}}</mat-icon>
       </button>
     </div>
   </div>

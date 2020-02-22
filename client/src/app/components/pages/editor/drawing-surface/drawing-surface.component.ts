@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -19,11 +19,11 @@ export class DrawingSurfaceComponent {
     this.color = Color.WHITE;
   }
 
-  drawShape(tool: CreatorTool): void {
-    this.svg.nativeElement.appendChild(tool.shape.svgNode);
+  addShape(shape: BaseShape): void {
+    this.svg.nativeElement.appendChild(shape.svgNode);
   }
 
-  cancelShape(tool: CreatorTool): void {
-    this.svg.nativeElement.removeChild(tool.shape.svgNode);
+  removeShape(shape: BaseShape): void {
+    this.svg.nativeElement.removeChild(shape.svgNode);
   }
 }
