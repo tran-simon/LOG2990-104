@@ -11,12 +11,6 @@ export enum ToolType {
   Line = 'line-tool',
 }
 export abstract class Tool<T = ToolProperties> {
-  protected keyboardEventHandler: KeyboardEventHandler;
-  private _mousePosition: Coordinate;
-  protected editorService: EditorService;
-  protected isActive: boolean;
-  toolProperties: T;
-
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
@@ -26,9 +20,18 @@ export abstract class Tool<T = ToolProperties> {
     this.keyboardEventHandler = {} as KeyboardEventHandler;
     this._mousePosition = new Coordinate();
   }
+  protected keyboardEventHandler: KeyboardEventHandler;
+  private _mousePosition: Coordinate;
+  protected editorService: EditorService;
+  protected isActive: boolean;
+  toolProperties: T;
+  protected abstract updateProperties(): void;
 
   handleMouseEvent(e: MouseEvent): void {
     this._mousePosition = new Coordinate(e.offsetX, e.offsetY);
+    if (this.isActive) {
+      this.updateProperties();
+    }
   }
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {

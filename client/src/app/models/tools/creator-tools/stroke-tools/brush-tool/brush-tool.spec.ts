@@ -40,15 +40,16 @@ describe('BrushTool', () => {
     brushTool = new BrushTool(fixture.componentInstance.editorService);
   });
 
-  it('Should call initPath on mousedown event', () => {
-    const initSpy = spyOn<any>(brushTool, 'initPath');
+  it('Should not add shape on mousedown event if already active', () => {
+    const addShapeSpy = spyOn(brushTool, 'addShape');
+    brushTool['isActive'] = true;
     brushTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
-    expect(initSpy).toHaveBeenCalled();
+    expect(addShapeSpy).not.toHaveBeenCalled();
   });
 
-  it('should add shape on initPath', () => {
+  it('should add shape on mousedown when not already active', () => {
     const addShapeSpy = spyOn(brushTool, 'addShape');
-    brushTool['initPath']();
+    brushTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(addShapeSpy).toHaveBeenCalled();
   });
 });

@@ -19,9 +19,8 @@ export class StrokeToolMock extends StrokeTool {
     super(editorService);
   }
 
-  protected initPath(): void {
-    this.path = new Path(new Coordinate());
-    this.isActive = true;
+  createShape(): Path {
+    return new Path(new Coordinate());
   }
 }
 
@@ -86,19 +85,21 @@ describe('StrokeTool', () => {
 
   it('returns a path on getShape', () => {
     const path = new Path(new Coordinate(1, 2));
-    strokeToolMock['path'] = path;
+    strokeToolMock['shape'] = path;
 
     expect(strokeToolMock.shape).toEqual(path);
   });
 
   it('should set active and initialize path on mouse down', () => {
-    const initSpy = spyOn<any>(strokeToolMock, 'initPath');
+    const addShapeSpy = spyOn(strokeToolMock, 'addShape');
     strokeToolMock.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
-    expect(initSpy).toHaveBeenCalled();
+    expect(addShapeSpy).toHaveBeenCalled();
+    expect(strokeToolMock['isActive']).toEqual(true);
   });
 
   it('should apply shape on mouseup and mouseleave if tool is active', () => {
-    strokeToolMock['initPath']();
+    strokeToolMock['shape'] = strokeToolMock.createShape();
+    strokeToolMock['isActive'] = true;
     const applyShapeSpy = spyOn(strokeToolMock, 'applyShape');
     strokeToolMock.handleMouseEvent(mouseUp());
 
@@ -109,7 +110,8 @@ describe('StrokeTool', () => {
   });
 
   it('should add point to shape on mousemove', () => {
-    strokeToolMock['initPath']();
+    strokeToolMock['shape'] = strokeToolMock.createShape();
+    strokeToolMock['isActive'] = true;
     const addPointSpy = spyOn(strokeToolMock.shape, 'addPoint');
     const coord = new Coordinate(1, 2);
 
@@ -119,7 +121,8 @@ describe('StrokeTool', () => {
   });
 
   it('should ignore mouseup mouseleave mousemove if tool is not active', () => {
-    strokeToolMock['initPath']();
+    strokeToolMock['shape'] = strokeToolMock.createShape();
+    strokeToolMock['isActive'] = true;
     const applyShapeSpy = spyOn(strokeToolMock, 'applyShape');
     const addPointSpy = spyOn(strokeToolMock.shape, 'addPoint');
     strokeToolMock['isActive'] = false;

@@ -40,17 +40,17 @@ describe('PenTool', () => {
     penTool = new PenTool(fixture.componentInstance.editorService);
   });
 
-  it('Should call initPath on mousedown event', () => {
-    const initSpy = spyOn<any>(penTool, 'initPath');
+  it('Should call add shape on mousedown event', () => {
+    const addShapeSpy = spyOn(penTool, 'addShape');
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
-    expect(initSpy).toHaveBeenCalled();
+    expect(addShapeSpy).toHaveBeenCalled();
   });
 
-  it('Should not call initPath on mousedown if isActive', () => {
-    const initSpy = spyOn<any>(penTool, 'initPath');
+  it('Should not addshape on mousedown if isActive', () => {
+    const addShapeSpy = spyOn(penTool, 'addShape');
     penTool['isActive'] = true;
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
-    expect(initSpy).not.toHaveBeenCalled();
+    expect(addShapeSpy).not.toHaveBeenCalled();
   });
 
   it('Should end line on mouseup', () => {
@@ -66,7 +66,7 @@ describe('PenTool', () => {
   });
 
   it('Should add point on mousemove if isActive', () => {
-    penTool['initPath']();
+    penTool['shape'] = penTool.createShape();
     penTool['isActive'] = true;
     const addPointSpy = spyOn(penTool.shape, 'addPoint');
     penTool.handleMouseEvent(mouseMove(new Coordinate(100, 100)));
@@ -74,7 +74,7 @@ describe('PenTool', () => {
   });
 
   it('Should not add point on mousemove if not isActive', () => {
-    penTool['initPath']();
+    penTool['shape'] = penTool.createShape();
     penTool['isActive'] = false;
     const addPointSpy = spyOn(penTool.shape, 'addPoint');
     penTool.handleMouseEvent(mouseMove(new Coordinate(100, 100)));

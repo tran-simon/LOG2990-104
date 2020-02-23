@@ -10,6 +10,7 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
@@ -47,14 +48,15 @@ describe('RectangleTool', () => {
 
   it('can initialize new Rectangle', () => {
     rectangleTool.toolProperties = properties;
-    rectangleTool.initShape(new Coordinate(100, 100));
+    rectangleTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(rectangleTool.shape.origin).toEqual(new Coordinate(100, 100));
     expect(fixture.componentInstance.drawingSurface.svg.nativeElement.querySelector('rect')).toBeTruthy();
   });
 
   it('can resize Rectangle', () => {
     rectangleTool.toolProperties = properties;
-    rectangleTool.initShape(new Coordinate(100, 100));
+    rectangleTool['_mousePosition'] = new Coordinate(100, 100);
+    rectangleTool['shape'] = rectangleTool.createShape();
     rectangleTool.resizeShape(new Coordinate(75, 50));
     expect(rectangleTool.shape.width).toEqual(75);
     expect(rectangleTool.shape.height).toEqual(50);
@@ -62,7 +64,8 @@ describe('RectangleTool', () => {
 
   it('can resize and reposition Rectangle', () => {
     rectangleTool.toolProperties = properties;
-    rectangleTool.initShape(new Coordinate(100, 100));
+    rectangleTool['_mousePosition'] = new Coordinate(100, 100);
+    rectangleTool['shape'] = rectangleTool.createShape();
     rectangleTool.resizeShape(new Coordinate(75, 50), new Coordinate(125, 125));
     expect(rectangleTool.shape.origin).toEqual(new Coordinate(125, 125));
     expect(rectangleTool.shape.width).toEqual(75);
@@ -72,7 +75,8 @@ describe('RectangleTool', () => {
   it('can draw Rectangle contour and fill', () => {
     properties.contourType = RectangleContourType.FILLEDCONTOUR;
     rectangleTool.toolProperties = properties;
-    rectangleTool.initShape(new Coordinate(100, 100));
+    rectangleTool['_mousePosition'] = new Coordinate(100, 100);
+    rectangleTool['shape'] = rectangleTool.createShape();
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
     expect(style.stroke).toEqual(selectedColorsService.secondaryColor.rgbString);
@@ -81,7 +85,9 @@ describe('RectangleTool', () => {
   it('can draw Rectangle fill only', () => {
     properties.contourType = RectangleContourType.FILLED;
     rectangleTool.toolProperties = properties;
-    rectangleTool.initShape(new Coordinate(100, 100));
+    rectangleTool['_mousePosition'] = new Coordinate(100, 100);
+    rectangleTool['shape'] = rectangleTool.createShape();
+    rectangleTool['updateProperties']();
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
     const strokeWidth = style.strokeWidth as string;
@@ -91,7 +97,9 @@ describe('RectangleTool', () => {
   it('can draw Rectangle contour only', () => {
     properties.contourType = RectangleContourType.CONTOUR;
     rectangleTool.toolProperties = properties;
-    rectangleTool.initShape(new Coordinate(100, 100));
+    rectangleTool['_mousePosition'] = new Coordinate(100, 100);
+    rectangleTool['shape'] = rectangleTool.createShape();
+    rectangleTool['updateProperties']();
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fillOpacity).toEqual('0');
     expect(style.stroke).toEqual(selectedColorsService.secondaryColor.rgbString);

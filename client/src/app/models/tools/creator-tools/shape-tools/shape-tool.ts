@@ -9,7 +9,7 @@ import { ToolProperties } from '../../../tool-properties/tool-properties';
 export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
-  private initialMouseCoord: Coordinate;
+  protected initialMouseCoord: Coordinate;
 
   protected constructor(editorService: EditorService) {
     super(editorService);
@@ -29,7 +29,6 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     } as KeyboardEventHandler;
   }
 
-  abstract initShape(c: Coordinate): void;
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
   handleMouseEvent(e: MouseEvent): void {
@@ -46,7 +45,10 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     } else if (e.type === 'mousedown') {
       this.isActive = true;
       this.initialMouseCoord = mouseCoord;
-      this.initShape(mouseCoord);
+      this.shape = this.createShape();
+      this.updateProperties();
+      this.addShape();
+
       this.updateCurrentCoord(mouseCoord);
       this.editorService.addPreviewShape(this.previewArea);
     }

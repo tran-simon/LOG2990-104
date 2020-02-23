@@ -9,15 +9,13 @@ export class PenTool extends StrokeTool<PenToolProperties> {
     this.toolProperties = new PenToolProperties();
   }
 
-  protected initPath(): void {
-    this.path = new Path(this.mousePosition);
+  protected updateProperties(): void {
+    super.updateProperties();
+    this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+    this.shape.updateProperties();
+  }
 
-    this.path.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
-    this.path.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
-    this.path.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-
-    this.path.updateProperties();
-    this.addShape();
-    this.path.addPoint(this.mousePosition);
+  createShape(): Path {
+    return new Path(this.mousePosition);
   }
 }

@@ -12,30 +12,25 @@ import { DrawingSurfaceComponent } from '../../../../components/pages/editor/dra
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
-import { ToolProperties } from '../../../tool-properties/tool-properties';
 import { ShapeTool } from './shape-tool';
 
 export class MockShapeTool extends ShapeTool {
-  _shape: Rectangle;
-  toolProperties: ToolProperties;
-
-  get shape() {
-    return this._shape;
-  }
+  shape: Rectangle;
 
   constructor(editorService: EditorService) {
     super(editorService);
   }
 
-  initShape(c: Coordinate) {
-    this._shape = new Rectangle(c);
+  createShape(): Rectangle {
+    return new Rectangle();
   }
-  resizeShape() {
+
+  resizeShape(origin: Coordinate, dimensions: Coordinate): void {
     return;
   }
 
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
+  protected updateProperties(): void {
+    return;
   }
 }
 
@@ -118,8 +113,9 @@ describe('ShapeTool', () => {
 
   it('can remove preview area', () => {
     mockShapeTool.handleMouseEvent(mouseDown());
+    expect(mockShapeTool['editorService']['previewShapes'].length).not.toEqual(0);
     mockShapeTool.handleMouseEvent(mouseUp());
-    expect(surface.svg.nativeElement.querySelector('rect')).toBeFalsy();
+    expect(mockShapeTool['editorService']['previewShapes'].length).toEqual(0);
   });
 
   it('can update preview rectangle', () => {

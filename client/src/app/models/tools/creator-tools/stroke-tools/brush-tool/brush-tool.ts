@@ -4,23 +4,23 @@ import { EditorService } from 'src/app/services/editor.service';
 import { StrokeTool } from '../stroke-tool';
 
 export class BrushTool extends StrokeTool<BrushToolProperties> {
-  protected path: BrushPath;
+  shape: BrushPath;
 
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new BrushToolProperties();
   }
 
-  protected initPath(): void {
-    this.path = new BrushPath(this.mousePosition);
+  protected updateProperties(): void {
+    super.updateProperties();
+    this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
+    this.shape.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
+    this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+    this.shape.changeFilter(this.toolProperties.texture);
+    this.shape.updateProperties();
+  }
 
-    this.path.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
-    this.path.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
-    this.path.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-    this.path.changeFilter(this.toolProperties.texture);
-
-    this.path.updateProperties();
-    this.addShape();
-    this.path.addPoint(this.mousePosition);
+  createShape(): BrushPath {
+    return new BrushPath(this.mousePosition);
   }
 }

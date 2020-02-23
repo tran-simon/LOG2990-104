@@ -6,44 +6,41 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class RectangleTool extends ShapeTool<RectangleToolProperties> {
-  private rectangle: Rectangle;
-
-  get shape(): Rectangle {
-    return this.rectangle;
-  }
+  shape: Rectangle;
 
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new RectangleToolProperties();
   }
 
-  initShape(c: Coordinate): void {
-    this.rectangle = new Rectangle(c);
-
+  protected updateProperties(): void {
     switch (this.toolProperties.contourType) {
       case RectangleContourType.FILLEDCONTOUR:
-        this.rectangle.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-        this.rectangle.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
-        this.rectangle.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
+        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
+        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
         break;
       case RectangleContourType.FILLED:
-        this.rectangle.shapeProperties.strokeWidth = 0;
-        this.rectangle.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
-        this.rectangle.shapeProperties.strokeColor = Color.TRANSPARENT;
+        this.shape.shapeProperties.strokeWidth = 0;
+        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
+        this.shape.shapeProperties.strokeColor = Color.TRANSPARENT;
         break;
       case RectangleContourType.CONTOUR:
-        this.rectangle.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-        this.rectangle.shapeProperties.fillColor = Color.TRANSPARENT;
-        this.rectangle.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
+        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+        this.shape.shapeProperties.fillColor = Color.TRANSPARENT;
+        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
         break;
     }
-    this.rectangle.updateProperties();
-    this.addShape();
+    this.shape.updateProperties();
   }
 
-  resizeShape(dimensions: Coordinate, origin: Coordinate = this.rectangle.origin): void {
-    this.rectangle.origin = origin;
-    this.rectangle.width = dimensions.x;
-    this.rectangle.height = dimensions.y;
+  createShape(): Rectangle {
+    return new Rectangle(this.initialMouseCoord);
+  }
+
+  resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
+    this.shape.origin = origin;
+    this.shape.width = dimensions.x;
+    this.shape.height = dimensions.y;
   }
 }

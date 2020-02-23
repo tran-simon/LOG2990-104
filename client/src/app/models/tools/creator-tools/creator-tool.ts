@@ -4,7 +4,8 @@ import { EditorService } from 'src/app/services/editor.service';
 import { ToolProperties } from '../../tool-properties/tool-properties';
 
 export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
-  abstract get shape(): BaseShape;
+  abstract shape: BaseShape | undefined;
+  abstract createShape(): BaseShape;
 
   protected constructor(editorService: EditorService, isActive = false) {
     super(editorService);
@@ -12,12 +13,16 @@ export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
   }
 
   applyShape(): void {
+    this.updateProperties();
+    this.shape = undefined;
     this.isActive = false;
     this.editorService.applyShapesBuffer();
   }
 
   addShape(): void {
-    this.editorService.addShapeToBuffer(this.shape);
+    if (this.shape) {
+      this.editorService.addShapeToBuffer(this.shape);
+    }
   }
 
   cancelShape(): void {
