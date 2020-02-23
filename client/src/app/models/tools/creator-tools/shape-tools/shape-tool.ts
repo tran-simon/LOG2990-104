@@ -1,16 +1,18 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
+import { EditorService } from 'src/app/services/editor.service';
+import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { ToolProperties } from '../../../tool-properties/tool-properties';
 
-export abstract class ShapeTool extends CreatorTool {
+export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
-  private initialMouseCoord: Coordinate;
+  protected initialMouseCoord: Coordinate;
 
-  constructor(drawingSurface: DrawingSurfaceComponent) {
-    super(drawingSurface);
+  protected constructor(editorService: EditorService) {
+    super(editorService);
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;
@@ -27,26 +29,28 @@ export abstract class ShapeTool extends CreatorTool {
     } as KeyboardEventHandler;
   }
 
-  abstract initShape(c: Coordinate): void;
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
-  handleToolMouseEvent(e: MouseEvent): void {
+  handleMouseEvent(e: MouseEvent): void {
+    super.handleMouseEvent(e);
     // todo - make a proper mouse manager
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 
     if (this.isActive) {
       if (e.type === 'mouseup') {
-        this.isActive = false;
-        this.removePreviewArea();
+        this.applyShape();
       } else if (e.type === 'mousemove') {
         this.updateCurrentCoord(mouseCoord);
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;
       this.initialMouseCoord = mouseCoord;
-      this.previewArea = new Rectangle(mouseCoord);
-      this.drawPreviewArea();
-      this.initShape(mouseCoord);
+      this.shape = this.createShape();
+      this.updateProperties();
+      this.addShape();
+
+      this.updateCurrentCoord(mouseCoord);
+      this.editorService.addPreviewShape(this.previewArea);
     }
   }
 
@@ -55,14 +59,6 @@ export abstract class ShapeTool extends CreatorTool {
     if (this.isActive) {
       this.updateCurrentCoord(this.mousePosition);
     }
-  }
-
-  drawPreviewArea(): void {
-    this.drawingSurface.svg.nativeElement.appendChild(this.previewArea.svgNode);
-  }
-
-  removePreviewArea(): void {
-    this.drawingSurface.svg.nativeElement.removeChild(this.previewArea.svgNode);
   }
 
   updateCurrentCoord(c: Coordinate): void {
@@ -74,6 +70,8 @@ export abstract class ShapeTool extends CreatorTool {
     this.previewArea.origin = origin;
     this.previewArea.width = previewDimensions.x;
     this.previewArea.height = previewDimensions.y;
+    this.previewArea.shapeProperties.fillColor = Color.TRANSPARENT;
+    this.previewArea.updateProperties();
 
     if (this.forceEqualDimensions) {
       const minDimension = Math.min(dimensions.x, dimensions.y);
