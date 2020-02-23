@@ -16,17 +16,17 @@ describe('BaseShape', () => {
     component = new BaseShapeImpl('rect');
   });
   it('should update properties', () => {
-    component.properties.strokeWidth = 8;
-    component.properties.strokeOpacity = 17;
-    component.properties.strokeColor = Color.GREEN;
-    component.properties.fillColor = Color.BLUE;
+    component.shapeProperties.strokeWidth = 8;
+    component.shapeProperties.strokeOpacity = 17;
+    component.shapeProperties.strokeColor = Color.GREEN;
+    component.shapeProperties.fillColor = Color.BLUE;
     component.updateProperties();
     const width = component.svgNode.style.strokeWidth as string;
-    expect(parseInt(width, 10)).toEqual(component.properties.strokeWidth);
-    expect(component.svgNode.style.strokeOpacity).toEqual(component.properties.strokeOpacity.toString());
-    expect(component.svgNode.style.stroke).toEqual(component.properties.strokeColor.rgbString);
-    expect(component.svgNode.style.fillOpacity).toEqual(component.properties.fillColor.a.toString());
-    expect(component.svgNode.style.fill).toEqual(component.properties.fillColor.rgbString);
-    expect(component.svgNode.style.visibility).toEqual(component.properties.visibility);
+    expect(parseInt(width, 10)).toEqual(component.shapeProperties.strokeWidth);
+    expect(component.svgNode.style.strokeOpacity).toEqual(component.shapeProperties.strokeOpacity.toString());
+    expect(component.svgNode.style.stroke).toEqual(component.shapeProperties.strokeColor.rgbString);
+    expect(component.svgNode.style.fillOpacity).toEqual(component.shapeProperties.fillColor.a.toString());
+    expect(component.svgNode.style.fill).toEqual(component.shapeProperties.fillColor.rgbString);
+    expect(component.svgNode.style.visibility).toEqual(component.shapeProperties.visibility);
   });
 });

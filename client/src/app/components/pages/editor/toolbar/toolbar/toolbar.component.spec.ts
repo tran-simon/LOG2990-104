@@ -1,10 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef } from '@angular/material';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { UserGuideModule } from 'src/app/components/pages/user-guide/user-guide.module';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import { SharedModule } from 'src/app/components/shared/shared.module';
+import { ToolType } from 'src/app/models/tools/tool';
 import { Color } from 'src/app/utils/color/color';
-import { SharedModule } from '../../../shared/shared.module';
-import { ToolbarComponent } from './toolbar.component';
+import Spy = jasmine.Spy;
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -12,17 +23,37 @@ describe('ToolbarComponent', () => {
 
   let router: Router;
 
+  let dialogOpenSpy: Spy;
+  let afterClosedFunc: () => void;
+  const matDialogRefMock = {
+    close: () => {
+      afterClosedFunc();
+    },
+    afterClosed: () => {
+      return {
+        subscribe: (func: () => void) => {
+          afterClosedFunc = func;
+        },
+      };
+    },
+  } as MatDialogRef<AbstractModalComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, RouterTestingModule],
-      declarations: [ToolbarComponent],
-    }).compileComponents();
+      imports: [SharedModule, RouterTestingModule, UserGuideModule],
+      declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+    })
+      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolbarComponent);
     router = TestBed.get(Router);
     component = fixture.componentInstance;
+
+    dialogOpenSpy = spyOn(component.dialog, 'open').and.returnValue(matDialogRefMock);
+
     fixture.detectChanges();
   });
 
@@ -41,61 +72,37 @@ describe('ToolbarComponent', () => {
   });
 
   it('should select the pen tool', () => {
-    fixture.debugElement.nativeElement.querySelector('#pen-button').click();
+    fixture.debugElement.nativeElement.querySelector('#btn-pen-tool').click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(component.tools.Pen);
-  });
-
-  it('should open the drawer when double clicking the brush tool button', () => {
-    const brushButton = fixture.debugElement.nativeElement.querySelector('#brush-button');
-    const doubleClickEvent = new Event('dblclick');
-    brushButton.dispatchEvent(doubleClickEvent);
-    fixture.detectChanges();
-
-    expect(component.drawer.opened).toBe(true);
-  });
-
-  it('should close the drawer when selecting the rectangle tool a second time', () => {
-    const rectangleButton = fixture.debugElement.nativeElement.querySelector('#rectangle-button');
-    const doubleClickEvent = new Event('dblclick');
-    rectangleButton.dispatchEvent(doubleClickEvent);
-    fixture.detectChanges();
-
-    rectangleButton.dispatchEvent(doubleClickEvent);
-    fixture.detectChanges();
-
-    expect(component.drawer.opened).toBe(false);
+    expect(component.currentToolType).toBe(ToolType.Pen);
   });
 
   it('should select the rectangle tool', () => {
-    const rectangleButton = fixture.debugElement.nativeElement.querySelector('#rectangle-button');
+    const rectangleButton = fixture.debugElement.nativeElement.querySelector('#btn-rectangle-tool');
     rectangleButton.click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(component.tools.Rectangle);
+    expect(component.currentToolType).toBe(ToolType.Rectangle);
   });
 
   it('should select the line tool', () => {
-    const lineButton = fixture.debugElement.nativeElement.querySelector('#line-button');
+    const lineButton = fixture.debugElement.nativeElement.querySelector('#btn-line-tool');
     lineButton.click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(component.tools.Line);
+    expect(component.currentToolType).toBe(ToolType.Line);
   });
 
   it('should select the brush tool', () => {
-    const brushButton = fixture.debugElement.nativeElement.querySelector('#brush-button');
+    const brushButton = fixture.debugElement.nativeElement.querySelector('#btn-brush-tool');
     brushButton.click();
     fixture.detectChanges();
 
-    expect(component.currentTool).toBe(component.tools.Brush);
+    expect(component.currentToolType).toBe(ToolType.Brush);
   });
 
   it('should select the primary color and the secondary color when clicking associated squares', () => {
-    component.selectTool(component.tools.ColorPicker);
-    fixture.detectChanges();
-
     const primaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-primary-color');
     const secondaryColorSquare = fixture.debugElement.nativeElement.querySelector('#toolbar-secondary-color');
 
@@ -132,7 +139,7 @@ describe('ToolbarComponent', () => {
 
   it('should emit editBackgroundChanged on update background button clicked', () => {
     const backgroundChangedSpy = spyOn(component.editorBackgroundChanged, 'emit');
-    component.selectColor(1);
+    component.editColor(1);
     fixture.detectChanges();
     component.colorPicker.color = Color.GREEN;
 
@@ -142,11 +149,30 @@ describe('ToolbarComponent', () => {
   });
 
   it('should open the help modal when clicking the help button', () => {
-    const spy = spyOn(component, 'openModal').and.callThrough();
-
     const helpButton = fixture.debugElement.nativeElement.querySelector('#help-button');
     helpButton.click();
 
-    expect(spy).toHaveBeenCalled();
+    expect(dialogOpenSpy).toHaveBeenCalled();
+  });
+
+  it('should not open modal if already opened', () => {
+    component.openModal();
+    component.openModal();
+    expect(dialogOpenSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should open second modal after first one is closed', () => {
+    component.openModal();
+    expect(component.modalIsOpened).toEqual(true);
+
+    component.dialogRef.close();
+    expect(component.modalIsOpened).toEqual(false);
+
+    component.openModal();
+    expect(dialogOpenSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('can get toolbar icons', () => {
+    expect(component.toolbarIcons.get(ToolType.Pen)).toEqual('edit');
   });
 });

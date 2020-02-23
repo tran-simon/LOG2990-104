@@ -38,19 +38,19 @@ export class CompositeLine extends BaseShape {
   updateProperties(): void {
     if (this.lineArray) {
       this.lineArray.forEach((line) => {
-        line.properties.strokeColor = this.properties.strokeColor;
-        line.properties.strokeOpacity = this.properties.strokeColor.a;
-        line.properties.strokeWidth = this.properties.strokeWidth;
+        line.shapeProperties.strokeColor = this.shapeProperties.strokeColor;
+        line.shapeProperties.strokeOpacity = this.shapeProperties.strokeColor.a;
+        line.shapeProperties.strokeWidth = this.shapeProperties.strokeWidth;
         line.updateProperties();
       });
     }
     if (this.junctionArray) {
       this.junctionArray.forEach((junction) => {
-        junction.properties.fillColor = this.properties.fillColor;
-        junction.properties.strokeOpacity = this.properties.fillColor.a;
-        junction.properties.strokeWidth = 0;
-        junction.radiusX = this.properties.thickness;
-        junction.radiusY = this.properties.thickness;
+        junction.shapeProperties.fillColor = this.shapeProperties.fillColor;
+        junction.shapeProperties.strokeOpacity = this.shapeProperties.fillColor.a;
+        junction.shapeProperties.strokeWidth = 0;
+        junction.radiusX = this.shapeProperties.thickness;
+        junction.radiusY = this.shapeProperties.thickness;
         junction.updateProperties();
       });
     }
@@ -105,7 +105,7 @@ export class CompositeLine extends BaseShape {
 
   addJunction(c: Coordinate): void {
     const junction = new Ellipse(c, 2); // todo - use editor properties
-    junction.properties.fillColor = Color.BLACK;
+    junction.shapeProperties.fillColor = Color.BLACK;
     junction.updateProperties();
 
     this.junctionArray.push(junction);

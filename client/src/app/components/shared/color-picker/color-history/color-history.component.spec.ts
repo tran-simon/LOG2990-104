@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 import { ColorHistoryComponent } from './color-history.component';
@@ -9,18 +9,18 @@ import { ColorHistoryComponent } from './color-history.component';
 describe('ColorHistoryComponent', () => {
   let component: ColorHistoryComponent;
   let fixture: ComponentFixture<ColorHistoryComponent>;
-  let selectedColors: SelectedColorsService;
+  let selectedColors: ColorsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ColorHistoryComponent],
-      providers: [SelectedColorsService],
+      providers: [ColorsService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ColorHistoryComponent);
-    selectedColors = TestBed.get(SelectedColorsService);
+    selectedColors = TestBed.get(ColorsService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

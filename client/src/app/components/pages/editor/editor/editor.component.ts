@@ -1,18 +1,12 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommandReceiver } from 'src/app/models/commands/command-receiver';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
-import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
-import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
-import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { Tool, ToolType } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-import { ToolbarComponent } from '../toolbar/toolbar.component';
 
 export interface EditorParams {
   width: string;
@@ -28,38 +22,36 @@ export interface EditorParams {
 export class EditorComponent implements OnInit, AfterViewInit {
   private readonly keyboardEventHandler: KeyboardEventHandler;
 
-  @ViewChild('toolbar', { static: false })
-  toolbar: ToolbarComponent;
-
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
-  currentTool: CreatorTool;
+  private _currentToolType: ToolType;
+
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
 
-  constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService, private commandReceiver: CommandReceiver) {
+  constructor(private router: ActivatedRoute, public editorService: EditorService, private commandReceiver: CommandReceiver) {
     this.surfaceColor = Color.WHITE;
     this.surfaceWidth = 0;
     this.surfaceHeight = 0;
 
     this.keyboardEventHandler = {
       l: () => {
-        this.selectLineTool(this.toolbar.lineProperties);
+        this.currentToolType = ToolType.Line;
         return false;
       },
       c: () => {
-        this.selectPenTool(this.toolbar.penProperties);
+        this.currentToolType = ToolType.Pen;
         return false;
       },
       w: () => {
-        this.selectBrushTool(this.toolbar.brushProperties);
+        this.currentToolType = ToolType.Brush;
         return false;
       },
       1: () => {
-        this.selectRectangleTool(this.toolbar.rectangleProperties);
-        return false;
+        this.currentToolType = ToolType.Rectangle;
+        return false; // todo - enable default behavior when typing in text field
       },
       ctrl_z: () => {
         this.commandReceiver.undo();
@@ -70,9 +62,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
         return true;
       },
       def: (e) => {
-        return this.currentTool.handleKeyboardEvent(e);
+        return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
       },
     } as KeyboardEventHandler;
+
+    this.currentToolType = ToolType.Pen;
   }
 
   ngOnInit(): void {
@@ -84,63 +78,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.selectPenTool(this.toolbar.lineProperties);
+    this.editorService.view = this.drawingSurface;
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    this.currentTool.handleMouseEvent(e);
-  }
-
-  handleToolChanged(toolEvent: ToolProperties): void {
-    switch (toolEvent.toolName) {
-      case 'Pen':
-        this.selectPenTool(toolEvent);
-        break;
-      case 'Brush':
-        this.selectBrushTool(toolEvent);
-        break;
-      case 'Rectangle':
-        this.selectRectangleTool(toolEvent);
-        break;
-      case 'Line':
-        this.selectLineTool(toolEvent);
-        break;
-    }
-  }
-
-  selectPenTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Pen) {
-      this.toolbar.currentTool = this.toolbar.tools.Pen;
-    } else {
-      this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
-    }
-  }
-
-  selectBrushTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Brush) {
-      this.toolbar.currentTool = this.toolbar.tools.Brush;
-    } else {
-      this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
-    }
-  }
-
-  selectRectangleTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Rectangle) {
-      this.toolbar.currentTool = this.toolbar.tools.Rectangle;
-    } else {
-      this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
-    }
-  }
-
-  selectLineTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
-      this.toolbar.currentTool = this.toolbar.tools.Line;
-    } else {
-      this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
+    if (this.currentTool) {
+      this.currentTool.handleMouseEvent(e);
     }
   }
 
@@ -157,5 +100,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('contextmenu', ['$event'])
   onRightClick(e: MouseEvent): void {
     e.preventDefault();
+  }
+
+  get currentTool(): Tool | undefined {
+    return this.editorService.tools.get(this.currentToolType);
+  }
+
+  get currentToolType(): ToolType {
+    return this._currentToolType;
+  }
+
+  set currentToolType(value: ToolType) {
+    if (this.currentTool) {
+      this.currentTool.cancel();
+    }
+    this._currentToolType = value;
   }
 }

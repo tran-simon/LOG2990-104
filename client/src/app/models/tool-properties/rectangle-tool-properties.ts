@@ -1,4 +1,5 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { ToolType } from '../tools/tool';
 
 export enum RectangleContourType {
   FILLEDCONTOUR = 'Plein avec contour',
@@ -10,19 +11,18 @@ export class RectangleToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;
   static readonly MAX_THICKNESS = 10;
 
-  minThickness = RectangleToolProperties.MIN_THICKNESS;
-  maxThickness = RectangleToolProperties.MAX_THICKNESS;
+  minThickness: number = RectangleToolProperties.MIN_THICKNESS;
+  maxThickness: number = RectangleToolProperties.MAX_THICKNESS;
 
-  thickness: number;
   contourType: RectangleContourType;
 
   constructor(
     thickness: number = RectangleToolProperties.MIN_THICKNESS,
     contourType: RectangleContourType = RectangleContourType.FILLEDCONTOUR,
   ) {
-    super('Rectangle');
+    super(ToolType.Rectangle);
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
     this.contourType = contourType;
   }
 }

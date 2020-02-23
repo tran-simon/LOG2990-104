@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrushGuideComponent } from 'src/app/components/pages/user-guide/brush-guide/brush-guide.component';
 import { ColorGuideComponent } from 'src/app/components/pages/user-guide/color-guide/color-guide.component';
 import { LineGuideComponent } from 'src/app/components/pages/user-guide/line-guide/line-guide.component';
@@ -35,7 +36,9 @@ describe('UserGuideComponent', () => {
         { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    })
+      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
+      .compileComponents();
   }));
 
   beforeEach(() => {
