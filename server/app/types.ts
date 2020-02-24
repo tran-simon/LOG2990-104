@@ -3,4 +3,6 @@ export default {
   Application: Symbol('Application'),
   APIController: Symbol('APIController'),
   APIService: Symbol('APIService'),
+  DatabaseController: Symbol('DatabaseController'),
+  DatabaseService: Symbol('DatabaseService'),
 };
