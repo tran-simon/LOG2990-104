@@ -9,6 +9,7 @@ export enum ToolType {
   Brush = 'brush-tool',
   Rectangle = 'rectangle-tool',
   Line = 'line-tool',
+  Polygon = 'polygon-tool',
 }
 export abstract class Tool<T = ToolProperties> {
   get mousePosition(): Coordinate {

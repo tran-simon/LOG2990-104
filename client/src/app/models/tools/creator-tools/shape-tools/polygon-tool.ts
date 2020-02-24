@@ -1,50 +1,44 @@
-import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { SelectedColorsService } from '../../../../services/selected-colors.service';
+import { EditorService } from '../../../../services/editor.service';
 import { Color } from '../../../../utils/color/color';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Polygon } from '../../../shapes/polygon';
 import { PolygonContourType, PolygonToolProperties } from '../../../tool-properties/polygon-tool-properties';
 import { ShapeTool } from './shape-tool';
 
-export class PolygonTool extends ShapeTool {
-  protected _toolProperties: PolygonToolProperties;
-  private polygon: Polygon;
+export class PolygonTool extends ShapeTool<PolygonToolProperties> {
+  shape: Polygon;
 
-  get shape(): Polygon {
-    return this.polygon;
-  }
-
-  constructor(drawingSurface: DrawingSurfaceComponent, private selectedColors: SelectedColorsService) {
-    super(drawingSurface);
+  constructor(editorService: EditorService) {
+    super(editorService);
+    this.toolProperties = new PolygonToolProperties();
     this.setEqualDimensions(true);
   }
 
-  initShape(c: Coordinate): void {
-    this.polygon = new Polygon(c);
-
-    switch (this._toolProperties.contourType) {
+  protected updateProperties(): void {
+    switch (this.toolProperties.contourType) {
       case PolygonContourType.FILLEDCONTOUR:
-        this.polygon.properties.strokeWidth = this._toolProperties.thickness;
-        this.polygon.properties.fillColor = this.selectedColors.primaryColor;
-        this.polygon.properties.strokeColor = this.selectedColors.secondaryColor;
+        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
+        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
         break;
       case PolygonContourType.FILLED:
-        this.polygon.properties.strokeWidth = 0;
-        this.polygon.properties.fillColor = this.selectedColors.primaryColor;
-        this.polygon.properties.strokeColor = Color.TRANSPARENT;
+        this.shape.shapeProperties.strokeWidth = 0;
+        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
+        this.shape.shapeProperties.strokeColor = Color.TRANSPARENT;
         break;
       case PolygonContourType.CONTOUR:
-        this.polygon.properties.strokeWidth = this._toolProperties.thickness;
-        this.polygon.properties.fillColor = Color.TRANSPARENT;
-        this.polygon.properties.strokeColor = this.selectedColors.secondaryColor;
+        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+        this.shape.shapeProperties.fillColor = Color.TRANSPARENT;
+        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
         break;
     }
-    this.polygon.updateProperties();
-    this.drawShape();
+    this.shape.updateProperties();
   }
-
-  resizeShape(dimensions: Coordinate, origin: Coordinate = this.polygon.origin): void {
-    this.polygon.origin = origin;
-    this.polygon.size = Math.min(dimensions.x, dimensions.y);
+  createShape(): Polygon {
+    return new Polygon(this.initialMouseCoord);
+  }
+  resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
+    this.shape.origin = origin;
+    this.shape.size = Math.min(dimensions.x, dimensions.y);
   }
 }

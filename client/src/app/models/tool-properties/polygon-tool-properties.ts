@@ -1,3 +1,4 @@
+import { ToolType } from '../tools/tool';
 import { ToolProperties } from './tool-properties';
 
 export enum PolygonContourType {
@@ -15,8 +16,8 @@ export class PolygonToolProperties extends ToolProperties {
   contourType: PolygonContourType;
 
   constructor(thickness: number = PolygonToolProperties.MIN_THICKNESS, contourType: PolygonContourType = PolygonContourType.FILLEDCONTOUR) {
-    super('Polygon');
-    this.thickness = thickness;
+    super(ToolType.Polygon);
+    this.strokeWidth = thickness;
     this.contourType = contourType;
   }
 }
