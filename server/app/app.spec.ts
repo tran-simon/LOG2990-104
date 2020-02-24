@@ -9,6 +9,7 @@ import { container } from './inversify.config';
 import Types from './types';
 
 import { Application } from './app';
+import { doesNotReject } from 'assert';
 
 let application: Application;
 
@@ -22,12 +23,13 @@ describe('Application', () => {
     done();
   });
 
-  it('should setup error handling after binding routes', () => {
+  it('should setup error handling after binding routes', (done: Mocha.Done) => {
     const spy = sinon.spy(application, 'errorHandling' as any);
 
     application.bindRoutes();
 
     chai.expect(spy.called).to.be.equal(true);
+    done();
   });
 
   it('should provoke an error when accessing an unknown path in the dev environment', (done: Mocha.Done) => {
