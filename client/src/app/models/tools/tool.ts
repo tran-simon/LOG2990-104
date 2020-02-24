@@ -4,12 +4,6 @@ import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handle
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export enum ToolType {
-  Pen = 'pen-tool',
-  Brush = 'brush-tool',
-  Rectangle = 'rectangle-tool',
-  Line = 'line-tool',
-}
 export abstract class Tool<T = ToolProperties> {
   get mousePosition(): Coordinate {
     return this._mousePosition;

@@ -8,7 +8,8 @@ import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide
 import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
 
 import { Router } from '@angular/router';
-import { GuideSubject, UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
 import { SharedModule } from '../../../shared/shared.module';
 import createSpyObj = jasmine.createSpyObj;

@@ -1,6 +1,6 @@
-import { SelectedColorType } from 'src/app/services/colors.service';
+import { ToolType } from 'src/app/models/tools/tool-type';
+import { SelectedColorType } from 'src/app/services/selected-color-type';
 import { MathUtil } from 'src/app/utils/math/math-util';
-import { ToolType } from '../tools/tool';
 
 export abstract class ToolProperties {
   type: ToolType;
