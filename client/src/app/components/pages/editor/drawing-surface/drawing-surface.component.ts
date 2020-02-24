@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -16,5 +17,13 @@ export class DrawingSurfaceComponent {
 
   constructor() {
     this.color = Color.WHITE;
+  }
+
+  addShape(shape: BaseShape): void {
+    this.svg.nativeElement.appendChild(shape.svgNode);
+  }
+
+  removeShape(shape: BaseShape): void {
+    this.svg.nativeElement.removeChild(shape.svgNode);
   }
 }

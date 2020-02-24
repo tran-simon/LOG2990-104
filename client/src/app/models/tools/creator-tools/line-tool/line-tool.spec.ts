@@ -1,16 +1,25 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { SharedModule } from 'src/app/components/shared/shared.module';
+import { CompositeLine } from 'src/app/models/shapes/composite-line';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
+import { ColorsService } from 'src/app/services/colors.service';
+import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { LineJunctionType } from '../../tool-properties/line-tool-properties';
-import { LineTool } from './line-tool';
+import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { LineJunctionType } from '../../../tool-properties/line-tool-properties';
 
 describe('LineTool', () => {
   let lineTool: LineTool;
-  let fixture: ComponentFixture<DrawingSurfaceComponent>;
-  let surface: DrawingSurfaceComponent;
-  let selectedColorsService: SelectedColorsService;
+  let fixture: ComponentFixture<EditorComponent>;
+  let colorsService: ColorsService;
 
   const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
     return {
@@ -54,21 +63,29 @@ describe('LineTool', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DrawingSurfaceComponent],
-      providers: [SelectedColorsService],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+        EditorComponent,
+        DrawingSurfaceComponent,
+      ],
+      imports: [SharedModule, RouterTestingModule],
+      providers: [EditorService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    selectedColorsService = new SelectedColorsService();
-    fixture = TestBed.createComponent(DrawingSurfaceComponent);
+    fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
-    surface = fixture.componentInstance;
-    lineTool = new LineTool(surface, selectedColorsService);
+    colorsService = fixture.componentInstance.editorService.colorsService;
+    lineTool = new LineTool(fixture.componentInstance.editorService);
+    lineTool['shape'] = new CompositeLine();
   });
 
   it('should call removeLastPoint on backspace if isActive', () => {
-    lineTool.initLine();
     lineTool['isActive'] = true;
     const removeSpy = spyOn(lineTool.shape, 'removeLastPoint');
     lineTool.handleKeyboardEvent(keyDown('backspace'));
@@ -76,7 +93,6 @@ describe('LineTool', () => {
   });
 
   it('should not call removeLastPoint on backspace if not isActive', () => {
-    lineTool.initLine();
     lineTool['isActive'] = false;
     const removeSpy = spyOn(lineTool.shape, 'removeLastPoint');
     lineTool.handleKeyboardEvent(keyDown('backspace'));
@@ -84,7 +100,6 @@ describe('LineTool', () => {
   });
 
   it('should call cancelShape on escape if isActive', () => {
-    lineTool.initLine();
     lineTool['isActive'] = false;
     const cancelSpy = spyOn(lineTool, 'cancelShape');
     lineTool.handleKeyboardEvent(keyDown('escape'));
@@ -92,7 +107,6 @@ describe('LineTool', () => {
   });
 
   it('should not call cancelShape on escape if not isActive', () => {
-    lineTool.initLine();
     lineTool['isActive'] = false;
     const cancelSpy = spyOn(lineTool, 'cancelShape');
     lineTool.handleKeyboardEvent(keyDown('escape'));
@@ -100,7 +114,6 @@ describe('LineTool', () => {
   });
 
   it('should determine lock method and update on shift down', () => {
-    lineTool.initLine();
     const lockSpy = spyOn(lineTool, 'determineLockMethod').and.callThrough();
     const updateSpy = spyOn(lineTool.shape, 'updateCurrentCoord');
     lineTool.handleKeyboardEvent(keyDown('shift', true));
@@ -109,37 +122,36 @@ describe('LineTool', () => {
   });
 
   it('should reset lock method and update on shift up', () => {
-    lineTool.initLine();
     const updateSpy = spyOn(lineTool.shape, 'updateCurrentCoord');
     lineTool.handleKeyboardEvent(keyUp('shift'));
     expect(lineTool['lockMethod']).toEqual(lineTool['calculateNoLock']);
     expect(updateSpy).toHaveBeenCalled();
   });
 
-  it('can init line', () => {
-    const drawSpy = spyOn(lineTool, 'drawShape');
-    lineTool.initLine();
+  it('can create new line', () => {
+    const drawSpy = spyOn(lineTool, 'addShape');
+    lineTool.handleMouseEvent(mouseDown());
     expect(lineTool.shape).toBeTruthy();
-    expect(lineTool.shape.properties.strokeColor).toEqual(lineTool['selectedColors'].primaryColor);
-    expect(lineTool.shape.properties.fillColor).toEqual(lineTool['selectedColors'].secondaryColor);
-    expect(lineTool.shape.properties.strokeWidth).toEqual(lineTool['_toolProperties'].thickness);
+    expect(lineTool.shape.shapeProperties.strokeColor).toEqual(colorsService.primaryColor);
+    expect(lineTool.shape.shapeProperties.fillColor).toEqual(colorsService.secondaryColor);
+    expect(lineTool.shape.shapeProperties.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth);
     expect(drawSpy).toHaveBeenCalled();
   });
 
   it('can init line with junctions', () => {
-    lineTool['_toolProperties'].junctionType = LineJunctionType.POINTS;
-    lineTool.initLine();
-    expect(lineTool.shape.properties.thickness).toEqual(lineTool['_toolProperties'].junctionDiameter);
+    lineTool['toolProperties'].junctionType = LineJunctionType.POINTS;
+    lineTool.handleMouseEvent(mouseDown());
+    expect(lineTool.shape.shapeProperties.thickness).toEqual(lineTool['toolProperties'].junctionDiameter);
   });
 
   it('can init line without junctions', () => {
-    lineTool['_toolProperties'].junctionType = LineJunctionType.EMPTY;
-    lineTool.initLine();
-    expect(lineTool.shape.properties.thickness).toEqual(0);
+    lineTool['toolProperties'].junctionType = LineJunctionType.EMPTY;
+    lineTool.handleMouseEvent(mouseDown());
+    expect(lineTool.shape.shapeProperties.thickness).toEqual(0);
   });
 
   it('should call endLine on double click if isActive', () => {
-    lineTool.initLine();
+    lineTool.handleMouseEvent(mouseDown());
     const endSpy = spyOn(lineTool.shape, 'endLine');
     lineTool['isActive'] = true;
     lineTool.handleMouseEvent(dblClick());
@@ -147,7 +159,7 @@ describe('LineTool', () => {
   });
 
   it('should not endLine on double click if not isActive', () => {
-    lineTool.initLine();
+    lineTool.handleMouseEvent(mouseDown());
     const endSpy = spyOn(lineTool.shape, 'endLine');
     lineTool['isActive'] = false;
     lineTool.handleMouseEvent(dblClick());
@@ -155,7 +167,7 @@ describe('LineTool', () => {
   });
 
   it('should update current coordinate on mouseMove if isActive', () => {
-    lineTool.initLine();
+    lineTool.handleMouseEvent(mouseDown());
     const updateSpy = spyOn(lineTool.shape, 'updateCurrentCoord');
     lineTool['isActive'] = true;
     lineTool.handleMouseEvent(mouseMove());
@@ -163,18 +175,18 @@ describe('LineTool', () => {
   });
 
   it('should confirm point on mouseDown if isActive', () => {
-    lineTool.initLine();
+    lineTool.handleMouseEvent(mouseDown());
     const confirmSpy = spyOn(lineTool.shape, 'confirmPoint');
     lineTool['isActive'] = true;
     lineTool.handleMouseEvent(mouseDown());
     expect(confirmSpy).toHaveBeenCalled();
   });
 
-  it('should init lint on mouseDown if not isActive', () => {
-    const initSpy = spyOn(lineTool, 'initLine');
+  it('should create new shape on mouseDown if not isActive', () => {
+    const createShapeSpy = spyOn(lineTool, 'createShape');
     lineTool['isActive'] = false;
     lineTool.handleMouseEvent(mouseDown());
-    expect(initSpy).toHaveBeenCalled();
+    expect(createShapeSpy).toHaveBeenCalled();
   });
 
   it('can determine horizontal lock method', () => {

@@ -1,3 +1,4 @@
+import { ToolType } from '../tools/tool';
 import { RectangleContourType, RectangleToolProperties } from './rectangle-tool-properties';
 
 describe('Rectangle Tool Properties', () => {
@@ -7,12 +8,12 @@ describe('Rectangle Tool Properties', () => {
     rectangleProperties = new RectangleToolProperties();
   });
 
-  it('should have the correct tool name', () => {
-    expect(rectangleProperties.toolName).toBe('Rectangle');
+  it('should have the correct tool type', () => {
+    expect(rectangleProperties.type).toBe(ToolType.Rectangle);
   });
 
   it('should create with the default thickness', () => {
-    expect(rectangleProperties.thickness).toBe(RectangleToolProperties.MIN_THICKNESS);
+    expect(rectangleProperties.strokeWidth).toBe(RectangleToolProperties.MIN_THICKNESS);
   });
 
   it('should create with the default contour', () => {

@@ -2,17 +2,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
-import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
-import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
-import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
+import { Tool, ToolType } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-import { ToolbarComponent } from '../toolbar/toolbar.component';
+import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { EditorComponent } from './editor.component';
+import createSpyObj = jasmine.createSpyObj;
 
 const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
@@ -29,8 +33,16 @@ describe('EditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule],
-      declarations: [EditorComponent, DrawingSurfaceComponent, ToolbarComponent],
-      providers: [SelectedColorsService],
+      declarations: [
+        EditorComponent,
+        DrawingSurfaceComponent,
+        ToolbarComponent,
+        PenToolbarComponent,
+        RectangleToolbarComponent,
+        BrushToolbarComponent,
+        LineToolbarComponent,
+      ],
+      providers: [EditorService],
     }).compileComponents();
   }));
 
@@ -62,16 +74,19 @@ describe('EditorComponent', () => {
   });
 
   it('should select the pen tool when typing c', () => {
-    const spy = spyOn(component, 'selectPenTool');
-
     KeyboardListener.keyEvent(keyDown('c'), component['keyboardEventHandler']);
-    KeyboardListener.keyEvent(keyDown('c'), component['keyboardEventHandler']);
+    expect(component.currentToolType).toEqual(ToolType.Pen);
+  });
 
-    expect(spy).toHaveBeenCalledTimes(2);
+  it('should cancel current drawing on tool change', () => {
+    component.currentToolType = ToolType.Pen;
+    const cancelSpy = spyOn(component.editorService.tools.get(ToolType.Pen) as Tool, 'cancel');
+    component.currentToolType = ToolType.Brush;
+    expect(cancelSpy).toHaveBeenCalled();
   });
 
   it('should pass down events when unknown keys are pressed', () => {
-    const spy = spyOn(component.currentTool, 'handleKeyboardEvent');
+    const spy = spyOn(component.currentTool as Tool, 'handleKeyboardEvent');
 
     KeyboardListener.keyEvent(keyDown('x'), component['keyboardEventHandler']);
 
@@ -79,57 +94,75 @@ describe('EditorComponent', () => {
   });
 
   it('should select the brush tool when typing w', () => {
-    const spy = spyOn(component, 'selectBrushTool');
-
     KeyboardListener.keyEvent(keyDown('w'), component['keyboardEventHandler']);
-    KeyboardListener.keyEvent(keyDown('w'), component['keyboardEventHandler']);
-
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(component.currentToolType).toEqual(ToolType.Brush);
   });
 
   it('should select the rectangle tool when typing 1', () => {
-    const spy = spyOn(component, 'selectRectangleTool');
-
     KeyboardListener.keyEvent(keyDown('1'), component['keyboardEventHandler']);
-    KeyboardListener.keyEvent(keyDown('1'), component['keyboardEventHandler']);
-
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(component.currentToolType).toEqual(ToolType.Rectangle);
   });
 
   it('should select the line tool when typing l', () => {
-    const spy = spyOn(component, 'selectLineTool');
-
     KeyboardListener.keyEvent(keyDown('l'), component['keyboardEventHandler']);
-    KeyboardListener.keyEvent(keyDown('l'), component['keyboardEventHandler']);
-
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(component.currentToolType).toEqual(ToolType.Line);
   });
 
   it('should select the line tool', () => {
-    component.handleToolChanged(new LineToolProperties());
-    component.handleToolChanged(new LineToolProperties());
-
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Line);
+    component.currentToolType = ToolType.Line;
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Line);
   });
 
   it('should select the rectangle tool', () => {
-    component.handleToolChanged(new RectangleToolProperties());
-    component.handleToolChanged(new RectangleToolProperties());
+    component.currentToolType = ToolType.Rectangle;
 
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Rectangle);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Rectangle);
   });
 
   it('should select the brush tool', () => {
-    component.handleToolChanged(new BrushToolProperties());
-    component.handleToolChanged(new BrushToolProperties());
+    component.currentToolType = ToolType.Brush;
 
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Brush);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Brush);
   });
 
   it('should select the pen tool after selecting the brush tool', () => {
-    component.handleToolChanged(new BrushToolProperties());
-    component.handleToolChanged(new PenToolProperties());
+    component.currentToolType = ToolType.Brush;
+    component.currentToolType = ToolType.Pen;
 
-    expect(component.toolbar.currentTool).toBe(component.toolbar.tools.Pen);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.toolProperties.type).toEqual(ToolType.Pen);
+  });
+
+  it('can get current tool', () => {
+    const tool: Tool = { toolProperties: { type: 'toolMock' as ToolType } as ToolProperties } as Tool;
+    component.editorService.tools.set('toolMock' as ToolType, tool);
+
+    component.currentToolType = 'toolMock' as ToolType;
+
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool).toEqual(tool);
+    expect(currentTool.toolProperties.type).toEqual('toolMock');
+  });
+
+  it('handles mouse event', () => {
+    const tool: Tool = component.editorService.tools.get(component.currentToolType) as Tool;
+    const handleMouseEventSpy = spyOn(tool, 'handleMouseEvent');
+    const event = mouseDown();
+
+    component.handleMouseEvent(event);
+
+    expect(handleMouseEventSpy).toHaveBeenCalledWith(event);
+  });
+
+  it('prevents default on right click', () => {
+    const rightClickSpy = spyOn(component, 'onRightClick').and.callThrough();
+    const event = createSpyObj('event', ['preventDefault']);
+    fixture.debugElement.triggerEventHandler('contextmenu', event);
+
+    expect(rightClickSpy).toHaveBeenCalledWith(event);
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 });

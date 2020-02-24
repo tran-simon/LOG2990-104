@@ -10,7 +10,7 @@ export enum SelectedColorType {
 @Injectable({
   providedIn: 'root',
 })
-export class SelectedColorsService {
+export class ColorsService {
   private _colors: Color[] = [Color.WHITE, Color.BLACK];
 
   swapColors(): void {
@@ -19,27 +19,27 @@ export class SelectedColorsService {
     this.primaryColor = tempColor;
   }
 
-  colorByIndex(index: number): Color {
+  getColor(index: SelectedColorType): Color {
     return this._colors[MathUtil.fit(index)];
   }
 
-  setColorByIndex(color: Color, index: number): void {
-    this._colors[MathUtil.fit(index)] = color;
+  setColorByType(color: Color, type: SelectedColorType): void {
+    this._colors[MathUtil.fit(type)] = color;
   }
 
   get primaryColor(): Color {
-    return this.colorByIndex(SelectedColorType.primary);
+    return this.getColor(SelectedColorType.primary);
   }
 
   set primaryColor(color: Color) {
-    this.setColorByIndex(color, SelectedColorType.primary);
+    this.setColorByType(color, SelectedColorType.primary);
   }
 
   get secondaryColor(): Color {
-    return this.colorByIndex(SelectedColorType.secondary);
+    return this.getColor(SelectedColorType.secondary);
   }
 
   set secondaryColor(color: Color) {
-    this.setColorByIndex(color, SelectedColorType.secondary);
+    this.setColorByType(color, SelectedColorType.secondary);
   }
 }
