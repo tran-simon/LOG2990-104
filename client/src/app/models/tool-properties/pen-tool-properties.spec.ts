@@ -1,3 +1,4 @@
+import { ToolType } from '../tools/tool';
 import { PenToolProperties } from './pen-tool-properties';
 
 describe('Pen Tool Properties', () => {
@@ -7,11 +8,11 @@ describe('Pen Tool Properties', () => {
     penProperties = new PenToolProperties();
   });
 
-  it('should have the correct tool name', () => {
-    expect(penProperties.toolName).toBe('Pen');
+  it('should have the correct tool type', () => {
+    expect(penProperties.type).toBe(ToolType.Pen);
   });
 
   it('should create with the default thickness', () => {
-    expect(penProperties.thickness).toBe(PenToolProperties.MIN_THICKNESS);
+    expect(penProperties.strokeWidth).toBe(PenToolProperties.MIN_THICKNESS);
   });
 });

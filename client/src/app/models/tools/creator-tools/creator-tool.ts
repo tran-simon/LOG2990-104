@@ -1,29 +1,32 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { Tool } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
+import { ToolProperties } from '../../tool-properties/tool-properties';
 
-export abstract class CreatorTool extends Tool {
-  protected isActive: boolean;
-  protected abstract _toolProperties: ToolProperties;
+export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
+  abstract shape: BaseShape | undefined;
+  abstract createShape(): BaseShape;
 
-  abstract get shape(): BaseShape;
-
-  set toolProperties(properties: ToolProperties) {
-    this._toolProperties = properties;
+  protected constructor(editorService: EditorService, isActive = false) {
+    super(editorService);
+    this.isActive = isActive;
   }
 
-  protected constructor(drawingSurface: DrawingSurfaceComponent) {
-    super(drawingSurface);
+  applyShape(): void {
+    this.updateProperties();
+    this.shape = undefined;
     this.isActive = false;
+    this.editorService.applyShapesBuffer();
   }
 
-  drawShape(): void {
-    this.drawingSurface.svg.nativeElement.appendChild(this.shape.svgNode);
+  addShape(): void {
+    if (this.shape) {
+      this.editorService.addShapeToBuffer(this.shape);
+    }
   }
 
   cancelShape(): void {
-    this.drawingSurface.svg.nativeElement.removeChild(this.shape.svgNode);
+    this.editorService.clearShapesBuffer();
     this.isActive = false;
   }
 }

@@ -19,5 +19,6 @@ import { SharedModule } from '../../shared/shared.module';
     RectangleGuideComponent,
     ColorGuideComponent,
   ],
+  entryComponents: [UserGuideModalComponent],
 })
 export class UserGuideModule {}
