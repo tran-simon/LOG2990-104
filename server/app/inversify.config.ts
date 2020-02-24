@@ -2,15 +2,15 @@ import { Container } from 'inversify';
 import Types from './types';
 
 import { Application } from './app';
-import { IndexController } from './controllers/index.controller';
+import { APIController } from './controllers/api.controller';
 import { Server } from './server';
-import { IndexService } from './services/index.service';
+import { APIService } from './services/api.service';
 
 const container: Container = new Container();
 
 container.bind(Types.Server).to(Server);
 container.bind(Types.Application).to(Application);
-container.bind(Types.IndexController).to(IndexController);
-container.bind(Types.IndexService).to(IndexService);
+container.bind(Types.APIController).to(APIController);
+container.bind(Types.APIService).to(APIService);
 
 export { container };
