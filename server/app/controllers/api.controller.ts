@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import { inject, injectable } from 'inversify';
 
 import { APIService } from '../services/api.service';
@@ -15,7 +15,7 @@ export class APIController {
   private configureRouter(): void {
     this.router = Router();
 
-    this.router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    this.router.get('/', async (res: Response) => {
       // Send the request to the service and send the response
       res.send(this.apiService.message());
     });
