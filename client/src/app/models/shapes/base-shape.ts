@@ -4,8 +4,7 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 export abstract class BaseShape {
   protected _origin: Coordinate;
   protected _svgNode: SVGElement;
-
-  properties: ShapeProperties;
+  shapeProperties: ShapeProperties;
 
   get svgNode(): SVGElement {
     return this._svgNode;
@@ -16,18 +15,19 @@ export abstract class BaseShape {
 
   constructor(type: string) {
     this._svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
-    this.properties = new ShapeProperties();
     this._origin = new Coordinate();
+
+    this.shapeProperties = new ShapeProperties();
 
     this.updateProperties();
   }
 
   updateProperties(): void {
-    this._svgNode.style.strokeWidth = this.properties.strokeWidth.toString();
-    this._svgNode.style.strokeOpacity = this.properties.strokeOpacity.toString();
-    this._svgNode.style.stroke = this.properties.strokeColor.rgbString;
-    this._svgNode.style.fillOpacity = this.properties.fillColor.a.toString();
-    this._svgNode.style.fill = this.properties.fillColor.rgbString;
-    this._svgNode.style.visibility = this.properties.visibility;
+    this._svgNode.style.strokeWidth = this.shapeProperties.strokeWidth.toString();
+    this._svgNode.style.strokeOpacity = this.shapeProperties.strokeOpacity.toString();
+    this._svgNode.style.stroke = this.shapeProperties.strokeColor.rgbString;
+    this._svgNode.style.fillOpacity = this.shapeProperties.fillColor.a.toString();
+    this._svgNode.style.fill = this.shapeProperties.fillColor.rgbString;
+    this._svgNode.style.visibility = this.shapeProperties.visibility;
   }
 }

@@ -1,38 +1,42 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
+import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { SharedModule } from 'src/app/components/shared/shared.module';
+import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
-import { ToolProperties } from '../../../tool-properties/tool-properties';
 import { ShapeTool } from './shape-tool';
 
 export class MockShapeTool extends ShapeTool {
-  _shape: Rectangle;
-  _toolProperties: ToolProperties;
+  shape: Rectangle;
 
-  get shape() {
-    return this._shape;
+  constructor(editorService: EditorService) {
+    super(editorService);
   }
 
-  constructor(d: DrawingSurfaceComponent) {
-    super(d);
+  createShape(): Rectangle {
+    return new Rectangle();
   }
 
-  initShape(c: Coordinate) {
-    this._shape = new Rectangle(c);
-  }
-  resizeShape() {
+  resizeShape(origin: Coordinate, dimensions: Coordinate): void {
     return;
   }
 
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
+  protected updateProperties(): void {
+    return;
   }
 }
 
 describe('ShapeTool', () => {
-  let mockShapeTool: MockShapeTool;
-  let fixture: ComponentFixture<DrawingSurfaceComponent>;
+  let mockShapeTool: ShapeTool;
+  let fixture: ComponentFixture<EditorComponent>;
   let surface: DrawingSurfaceComponent;
 
   const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
@@ -77,15 +81,29 @@ describe('ShapeTool', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DrawingSurfaceComponent],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+        EditorComponent,
+        DrawingSurfaceComponent,
+      ],
+      imports: [SharedModule, RouterTestingModule],
+      providers: [EditorService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DrawingSurfaceComponent);
+    fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
-    surface = fixture.componentInstance;
-    mockShapeTool = new MockShapeTool(surface);
+    surface = fixture.componentInstance.drawingSurface;
+    mockShapeTool = new MockShapeTool(fixture.componentInstance.editorService);
+  });
+
+  it('should create', () => {
+    expect(mockShapeTool).toBeTruthy();
   });
 
   it('can draw preview area', () => {
@@ -95,8 +113,9 @@ describe('ShapeTool', () => {
 
   it('can remove preview area', () => {
     mockShapeTool.handleMouseEvent(mouseDown());
+    expect(mockShapeTool['editorService']['previewShapes'].length).not.toEqual(0);
     mockShapeTool.handleMouseEvent(mouseUp());
-    expect(surface.svg.nativeElement.querySelector('rect')).toBeFalsy();
+    expect(mockShapeTool['editorService']['previewShapes'].length).toEqual(0);
   });
 
   it('can update preview rectangle', () => {

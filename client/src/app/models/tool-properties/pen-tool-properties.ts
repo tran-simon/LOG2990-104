@@ -1,4 +1,5 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { ToolType } from '../tools/tool';
 
 export class PenToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;
@@ -8,8 +9,8 @@ export class PenToolProperties extends ToolProperties {
   maxThickness: number = PenToolProperties.MAX_THICKNESS;
 
   constructor(thickness: number = PenToolProperties.MIN_THICKNESS) {
-    super('Pen');
+    super(ToolType.Pen);
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
   }
 }
