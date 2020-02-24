@@ -108,7 +108,7 @@ describe('ShapeTool', () => {
 
   it('can draw preview area', () => {
     mockShapeTool.handleMouseEvent(mouseDown());
-    expect(surface.svg.nativeElement.querySelector('rect')).toBeTruthy();
+    expect(surface.svg.querySelector('rect')).toBeTruthy();
   });
 
   it('can remove preview area', () => {

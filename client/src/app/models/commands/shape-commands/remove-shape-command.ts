@@ -8,15 +8,15 @@ export class AddShapeCommand extends ShapeCommand {
   }
 
   execute(): void {
+    const index = this.editorService.shapes.findIndex((s) => s === this._shape);
+    this.editorService.shapes.splice(index, 1, this._shape);
+    this.editorService.view.svg.removeChild(this._shape.svgNode);
+  }
+
+  undo(): void {
     if (!this.editorService.view.svg.contains(this._shape.svgNode)) {
       this.editorService.addShapeToBuffer(this._shape);
     }
     this.editorService.applyShapesBuffer();
-  }
-
-  undo(): void {
-    const index = this.editorService.shapes.findIndex((s) => s === this._shape);
-    this.editorService.shapes.splice(index, 1, this._shape);
-    this.editorService.view.svg.removeChild(this._shape.svgNode);
   }
 }

@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommandReceiver } from 'src/app/models/commands/command-receiver';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
@@ -31,7 +30,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceWidth: number;
   surfaceHeight: number;
 
-  constructor(private router: ActivatedRoute, public editorService: EditorService, private commandReceiver: CommandReceiver) {
+  constructor(private router: ActivatedRoute, public editorService: EditorService) {
     this.surfaceColor = Color.WHITE;
     this.surfaceWidth = 0;
     this.surfaceHeight = 0;
@@ -54,11 +53,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
         return false; // todo - enable default behavior when typing in text field
       },
       ctrl_z: () => {
-        this.commandReceiver.undo();
+        this.editorService.commandReceiver.undo();
         return true;
       },
       ctrl_shift_z: () => {
-        this.commandReceiver.redo();
+        this.editorService.commandReceiver.redo();
         return true;
       },
       def: (e) => {

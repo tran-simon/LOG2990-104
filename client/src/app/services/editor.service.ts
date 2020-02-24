@@ -7,14 +7,20 @@ import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { Tool, ToolType } from 'src/app/models/tools/tool';
 import { ColorsService } from 'src/app/services/colors.service';
+import { CommandReceiver } from '../models/commands/command-receiver';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
+  view: DrawingSurfaceComponent;
 
-  constructor(public colorsService: ColorsService) {
+  private shapesBuffer: BaseShape[];
+  readonly shapes: BaseShape[];
+  private previewShapes: BaseShape[];
+
+  constructor(public colorsService: ColorsService, public commandReceiver: CommandReceiver) {
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
 
@@ -22,12 +28,6 @@ export class EditorService {
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
   }
-
-  view: DrawingSurfaceComponent;
-
-  private shapesBuffer: BaseShape[];
-  readonly shapes: BaseShape[];
-  private previewShapes: BaseShape[];
 
   private initTools(): void {
     this.tools.set(ToolType.Pen, new PenTool(this));

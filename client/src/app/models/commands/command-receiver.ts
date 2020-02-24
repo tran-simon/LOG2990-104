@@ -5,15 +5,21 @@ import { Command } from './command';
   providedIn: 'root',
 })
 export class CommandReceiver {
-  _commands: Command[];
-  _revertedCommands: Command[];
+  private _commands: Command[];
+  private _revertedCommands: Command[];
 
-  add(command: Command) {
+  constructor() {
+    this._commands = new Array<Command>();
+    this._revertedCommands = new Array<Command>();
+  }
+
+  add(command: Command): void {
+    this._revertedCommands = new Array<Command>();
     this._commands.push(command);
     command.execute();
   }
 
-  undo() {
+  undo(): void {
     const command = this._commands.pop();
     if (command) {
       this._revertedCommands.push(command);
@@ -21,7 +27,7 @@ export class CommandReceiver {
     }
   }
 
-  redo() {
+  redo(): void {
     const command = this._revertedCommands.pop();
     if (command) {
       this._commands.push(command);

@@ -1,3 +1,4 @@
+/*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
@@ -23,7 +24,7 @@ describe('DrawingSurfaceComponent', () => {
     component = fixture.componentInstance;
     nativeElementSpyObj = createSpyObj('nativeElement', ['removeChild', 'appendChild']);
     fixture.detectChanges();
-    component.svg.nativeElement = nativeElementSpyObj;
+    component['_svg'] = nativeElementSpyObj;
   });
 
   it('should create', () => {
