@@ -1,49 +1,46 @@
-import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { Ellipse } from '../../../../models/shapes/ellipse';
-import { SelectedColorsService } from '../../../../services/selected-colors.service';
-import { Color } from '../../../../utils/color/color';
-import { Coordinate } from '../../../../utils/math/coordinate';
+import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
+import { EditorService } from 'src/app/services/editor.service';
+import { Color } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
+import { Ellipse } from '../../../shapes/ellipse';
 import { EllipseContourType, EllipseToolProperties } from '../../../tool-properties/ellipse-tool-properties';
-import { ShapeTool } from './shape-tool';
 
-export class EllipseTool extends ShapeTool {
-  protected _toolProperties: EllipseToolProperties;
-  private _ellipse: Ellipse;
+export class EllipseTool extends ShapeTool<EllipseToolProperties> {
+  shape: Ellipse;
 
-  get shape(): Ellipse {
-    return this._ellipse;
+  constructor(editorService: EditorService) {
+    super(editorService);
+    this.toolProperties = new EllipseToolProperties();
   }
 
-  constructor(drawingSurface: DrawingSurfaceComponent, private selectedColors: SelectedColorsService) {
-    super(drawingSurface);
-  }
-
-  initShape(c: Coordinate): void {
-    this._ellipse = new Ellipse(c);
-    switch (this._toolProperties.contourType) {
+  protected updateProperties(): void {
+    switch (this.toolProperties.contourType) {
       case EllipseContourType.FILLEDCONTOUR:
-        this._ellipse.properties.strokeWidth = this._toolProperties.thickness;
-        this._ellipse.properties.fillColor = this.selectedColors.primaryColor;
-        this._ellipse.properties.strokeColor = this.selectedColors.secondaryColor;
+        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
+        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
         break;
       case EllipseContourType.FILLED:
-        this._ellipse.properties.strokeWidth = 0;
-        this._ellipse.properties.fillColor = this.selectedColors.primaryColor;
-        this._ellipse.properties.strokeColor = Color.TRANSPARENT;
+        this.shape.shapeProperties.strokeWidth = 0;
+        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
+        this.shape.shapeProperties.strokeColor = Color.TRANSPARENT;
         break;
       case EllipseContourType.CONTOUR:
-        this._ellipse.properties.strokeWidth = this._toolProperties.thickness;
-        this._ellipse.properties.fillColor = Color.TRANSPARENT;
-        this._ellipse.properties.strokeColor = this.selectedColors.secondaryColor;
+        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+        this.shape.shapeProperties.fillColor = Color.TRANSPARENT;
+        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
         break;
     }
-    this._ellipse.updateProperties();
-    this.drawShape();
+    this.shape.updateProperties();
   }
 
-  resizeShape(dimensions: Coordinate, origin: Coordinate = this._ellipse.origin): void {
-    this._ellipse.origin = origin;
-    this._ellipse.radiusX = dimensions.x / 2;
-    this._ellipse.radiusY = dimensions.y / 2;
+  createShape(): Ellipse {
+    return new Ellipse(this.initialMouseCoord);
+  }
+
+  resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
+    this.shape.origin = origin;
+    this.shape.radiusX = dimensions.x / 2;
+    this.shape.radiusY = dimensions.y / 2;
   }
 }

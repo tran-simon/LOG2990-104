@@ -51,6 +51,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
         this.currentToolType = ToolType.Rectangle;
         return false; // todo - enable default behavior when typing in text field
       },
+      o: () => {
+        this.currentToolType = ToolType.Ellipse;
+        return false;
+      },
       def: (e) => {
         return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
       },

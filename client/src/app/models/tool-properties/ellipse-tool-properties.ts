@@ -1,4 +1,5 @@
-import { ToolProperties } from './tool-properties';
+import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { ToolType } from '../tools/tool';
 
 export enum EllipseContourType {
   FILLEDCONTOUR = 'Plein avec contour',
@@ -16,9 +17,9 @@ export class EllipseToolProperties extends ToolProperties {
   contourType: EllipseContourType;
 
   constructor(thickness: number = EllipseToolProperties.MIN_THICKNESS, contourType: EllipseContourType = EllipseContourType.FILLEDCONTOUR) {
-    super('Ellipse');
+    super(ToolType.Ellipse);
 
-    this.thickness = thickness;
+    this.strokeWidth = thickness;
     this.contourType = contourType;
   }
 }

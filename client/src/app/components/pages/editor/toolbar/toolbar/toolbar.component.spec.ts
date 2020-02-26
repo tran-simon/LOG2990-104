@@ -5,6 +5,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
@@ -41,7 +42,14 @@ describe('ToolbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule, UserGuideModule],
-      declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+        EllipseToolbarComponent,
+      ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
       .compileComponents();

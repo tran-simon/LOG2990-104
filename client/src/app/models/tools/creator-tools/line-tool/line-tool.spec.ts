@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
@@ -69,6 +70,7 @@ describe('LineTool', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        EllipseToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],

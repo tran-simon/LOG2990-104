@@ -42,7 +42,8 @@
         <app-pen-toolbar *ngSwitchCase='ToolType.Pen' class='toolbar-tool-section'></app-pen-toolbar>
         <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
         <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>
-        <app-line-toolbar *ngSwitchCase=ToolType.Line class='toolbar-tool-section'></app-line-toolbar>
+        <app-line-toolbar *ngSwitchCase='ToolType.Line' class='toolbar-tool-section'></app-line-toolbar>
+        <app-ellipse-toolbar *ngSwitchCase='ToolType.Ellipse' class='toolbar-tool-section'></app-ellipse-toolbar>
 
       </div>
       <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType" class="toolbar-tool-section">
