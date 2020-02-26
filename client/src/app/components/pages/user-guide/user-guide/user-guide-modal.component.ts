@@ -32,7 +32,6 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   ngOnInit(): void {
     this.selectedSubject = this.subjects.Welcome;
   }
-
   selectSubject(selection: GuideSubject): void {
     this.selectedSubject = selection;
   }
