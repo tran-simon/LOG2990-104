@@ -1,9 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Command } from './command';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class CommandReceiver {
   private _commands: Command[];
   private _revertedCommands: Command[];

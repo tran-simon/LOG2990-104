@@ -24,7 +24,7 @@ describe('DrawingSurfaceComponent', () => {
     component = fixture.componentInstance;
     nativeElementSpyObj = createSpyObj('nativeElement', ['removeChild', 'appendChild']);
     fixture.detectChanges();
-    component['_svg'] = nativeElementSpyObj;
+    component['_svg'].nativeElement = nativeElementSpyObj;
   });
 
   it('should create', () => {

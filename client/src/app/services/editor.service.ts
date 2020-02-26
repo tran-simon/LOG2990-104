@@ -14,13 +14,20 @@ import { CommandReceiver } from '../models/commands/command-receiver';
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
+  readonly shapes: BaseShape[];
+  private shapesBuffer: BaseShape[];
+  private previewShapes: BaseShape[];
+  private _commandReceiver: CommandReceiver;
+
   view: DrawingSurfaceComponent;
 
-  private shapesBuffer: BaseShape[];
-  readonly shapes: BaseShape[];
-  private previewShapes: BaseShape[];
+  get commandReceiver() {
+    return this._commandReceiver;
+  }
 
-  constructor(public colorsService: ColorsService, public commandReceiver: CommandReceiver) {
+  constructor(public colorsService: ColorsService) {
+    this._commandReceiver = new CommandReceiver();
+
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
 
@@ -63,9 +70,16 @@ export class EditorService {
 
   addShapeToBuffer(shape: BaseShape): void {
     this.shapesBuffer.push(shape);
-
     if (this.view) {
       this.view.addShape(shape);
+    }
+  }
+
+  removeShape(shape: BaseShape): void {
+    const index = this.shapes.findIndex((s) => s === shape);
+    if (index !== -1) {
+      this.shapes.splice(index, 1, shape);
+      this.view.removeShape(shape);
     }
   }
 }

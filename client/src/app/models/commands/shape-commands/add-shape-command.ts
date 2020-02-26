@@ -15,8 +15,6 @@ export class AddShapeCommand extends ShapeCommand {
   }
 
   undo(): void {
-    const index = this.editorService.shapes.findIndex((s) => s === this._shape);
-    this.editorService.shapes.splice(index, 1, this._shape);
-    this.editorService.view.svg.removeChild(this._shape.svgNode);
+    this.editorService.removeShape(this._shape);
   }
 }
