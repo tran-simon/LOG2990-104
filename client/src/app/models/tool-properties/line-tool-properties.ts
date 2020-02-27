@@ -1,11 +1,7 @@
+import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { MathUtil } from '../../utils/math/math-util';
-import { ToolType } from '../tools/tool';
-
-export enum LineJunctionType {
-  POINTS = 'Avec points',
-  EMPTY = 'Sans points',
-}
 
 export class LineToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;

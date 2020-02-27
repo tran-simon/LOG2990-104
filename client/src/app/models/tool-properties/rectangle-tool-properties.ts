@@ -1,11 +1,6 @@
+import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from '../tools/tool';
-
-export enum RectangleContourType {
-  FILLEDCONTOUR = 'Plein avec contour',
-  FILLED = 'Plein',
-  CONTOUR = 'Contour',
-}
+import { ToolType } from 'src/app/models/tools/tool-type';
 
 export class RectangleToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS = 1;
@@ -18,7 +13,7 @@ export class RectangleToolProperties extends ToolProperties {
 
   constructor(
     thickness: number = RectangleToolProperties.MIN_THICKNESS,
-    contourType: RectangleContourType = RectangleContourType.FILLEDCONTOUR,
+    contourType: RectangleContourType = RectangleContourType.FILLED_CONTOUR,
   ) {
     super(ToolType.Rectangle);
 

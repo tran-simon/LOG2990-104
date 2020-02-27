@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, HostListener, ViewChild } 
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { EditorParams } from 'src/app/components/pages/editor/editor/editor.component';
+import { EditorParams } from 'src/app/components/pages/editor/editor/editor-params';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
