@@ -116,14 +116,14 @@ describe('LineTool', () => {
   it('should determine lock method and update on shift down', () => {
     const lockSpy = spyOn(lineTool, 'determineLockMethod').and.callThrough();
     const updateSpy = spyOn(lineTool.shape, 'updateCurrentCoord');
-    lineTool.handleKeyboardEvent(keyDown('shift', true));
+    lineTool.handleKeyboardEvent(keyDown('Shift', true));
     expect(lockSpy).toHaveBeenCalled();
     expect(updateSpy).toHaveBeenCalled();
   });
 
   it('should reset lock method and update on shift up', () => {
     const updateSpy = spyOn(lineTool.shape, 'updateCurrentCoord');
-    lineTool.handleKeyboardEvent(keyUp('shift'));
+    lineTool.handleKeyboardEvent(keyUp('Shift'));
     expect(lineTool['lockMethod']).toEqual(lineTool['calculateNoLock']);
     expect(updateSpy).toHaveBeenCalled();
   });

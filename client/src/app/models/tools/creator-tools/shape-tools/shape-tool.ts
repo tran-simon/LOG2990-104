@@ -2,7 +2,7 @@ import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { ToolProperties } from '../../../tool-properties/tool-properties';
 
@@ -16,17 +16,16 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;
-
-    this.keyboardEventHandler = {
-      shift_shift: () => {
+    this.keyboardListener.addEvents([
+      [KeyboardListener.getIdentifier('Shift', false, true), () => {
         this.setEqualDimensions(true);
         return false;
-      },
-      shift_up: () => {
+      }],
+      [KeyboardListener.getIdentifier('Shift', false, false, 'keyup'), () => {
         this.setEqualDimensions(false);
         return false;
-      },
-    } as KeyboardEventHandler;
+      }]
+    ]);
   }
 
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
@@ -67,12 +66,6 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     let dimensions = new Coordinate(previewDimensions.x, previewDimensions.y);
     let origin = Coordinate.minXYCoord(c, this.initialMouseCoord);
 
-    this.previewArea.origin = origin;
-    this.previewArea.width = previewDimensions.x;
-    this.previewArea.height = previewDimensions.y;
-    this.previewArea.shapeProperties.fillColor = Color.TRANSPARENT;
-    this.previewArea.updateProperties();
-
     if (this.forceEqualDimensions) {
       const minDimension = Math.min(dimensions.x, dimensions.y);
       dimensions = new Coordinate(minDimension, minDimension);
@@ -85,6 +78,12 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     if (delta.x < 0) {
       origin = new Coordinate(origin.x + previewDimensions.x - dimensions.x, origin.y);
     }
+
+    this.previewArea.origin = origin;
+    this.previewArea.width = dimensions.x;
+    this.previewArea.height = dimensions.y;
+    this.previewArea.shapeProperties.fillColor = Color.TRANSPARENT;
+    this.previewArea.updateProperties();
 
     this.resizeShape(dimensions, origin);
   }

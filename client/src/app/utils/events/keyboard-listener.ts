@@ -1,28 +1,56 @@
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 
+export type KeyboardEventAction = (event: KeyboardEvent) => boolean;
+export type KeyboardEventsHandlingMap = Map<string, KeyboardEventAction>;
 export class KeyboardListener {
-  /**
-   * Handles keyboard events with KeyboardEventHandler.
-   * It looks for a function in the handler following KeyboardEventHandler pattern (ie: 'ctrl_shift_o')
-   */
-  static keyEvent(event: KeyboardEvent, handler: KeyboardEventHandler): boolean {
-    let success: boolean;
-    let prefix = event.ctrlKey ? 'ctrl_' : '';
-    prefix += event.shiftKey ? 'shift_' : '';
-    const suffix = event.type === 'keyup' ? '_up' : '';
-    const func = handler[prefix + event.key.toLowerCase() + suffix];
 
-    if (func) {
-      success = func(event);
-    } else if (handler.def) {
-      success = handler.def(event);
-    } else {
-      success = false;
-    }
+  constructor(keyboardEventsHandlingMap?: KeyboardEventsHandlingMap) {
+    this.keyboardEventsHandlingMap =
+      keyboardEventsHandlingMap ?
+        keyboardEventsHandlingMap :
+        new Map<string, KeyboardEventAction>();
+  }
+
+  defaultEventAction: KeyboardEventAction;
+  private readonly keyboardEventsHandlingMap: KeyboardEventsHandlingMap;
+
+  static getIdentifierFromKeyboardEvent(event: KeyboardEvent): string {
+    const {ctrlKey, shiftKey, type, key} = event;
+
+    return this.getIdentifier(key, ctrlKey, shiftKey, type);
+  }
+
+  static getIdentifier(key: string, ctrlKey = false, shiftKey = false, type = 'keydown'): string {
+    let identifier = '';
+
+    identifier += ctrlKey ? 'ctrl_' : '';
+    identifier += shiftKey ? 'shift_' : '';
+    identifier += key;
+    identifier += `_${type}`;
+
+    return identifier;
+  }
+
+  handle(event: KeyboardEvent): boolean {
+    const func = this.keyboardEventsHandlingMap.get(KeyboardListener.getIdentifierFromKeyboardEvent(event));
+    const success = func ?
+      func(event) :
+      (this.defaultEventAction ?
+        this.defaultEventAction(event) :
+        false);
 
     if (success) {
       event.preventDefault();
     }
-    return success;
+    return success
+  }
+
+  addEvents(events: ReadonlyArray<readonly [string, KeyboardEventAction]>): void {
+    events.forEach((event) => {
+      this.addEvent(event[0], event[1]);
+    });
+  }
+
+  addEvent(eventIdentifier: string, action: KeyboardEventAction): void {
+    this.keyboardEventsHandlingMap.set(eventIdentifier, action);
   }
 }

@@ -137,14 +137,14 @@ describe('ShapeTool', () => {
     mockShapeTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(250, 200)));
     resizeShapeSpy.calls.reset();
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
   });
 
   it('can keep correct origin on shift down', () => {
     const resizeShapeSpy = spyOn(mockShapeTool, 'resizeShape');
     mockShapeTool.handleMouseEvent(mouseDown(new Coordinate(200, 200)));
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(50, 100)));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
   });
@@ -154,17 +154,17 @@ describe('ShapeTool', () => {
     mockShapeTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(250, 200)));
     resizeShapeSpy.calls.reset();
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
     resizeShapeSpy.calls.reset();
-    mockShapeTool.handleKeyboardEvent(keyUp('shift', false));
+    mockShapeTool.handleKeyboardEvent(keyUp('Shift', false));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(150, 100), new Coordinate(100, 100));
   });
 
   it('does not update current coordinate on shift if not active', () => {
     const updateCurrentCoordSpy = spyOn(mockShapeTool, 'updateCurrentCoord');
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', false));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', false));
     expect(updateCurrentCoordSpy).not.toHaveBeenCalled();
   });
 
