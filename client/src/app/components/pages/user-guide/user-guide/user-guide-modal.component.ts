@@ -1,16 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { MatSidenav } from '@angular/material/sidenav';
+import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
-
-export enum GuideSubject {
-  Welcome,
-  Pen,
-  Brush,
-  Rectangle,
-  Line,
-  Color,
-}
 
 @Component({
   selector: 'app-user-guide-modal',

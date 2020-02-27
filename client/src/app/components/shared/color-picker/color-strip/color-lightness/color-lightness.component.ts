@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AbstractColorStripComponent } from 'src/app/components/shared/color-picker/color-strip/abstract-color-strip.component';
-import { Color, ColorComponents } from 'src/app/utils/color/color';
+import { Color } from 'src/app/utils/color/color';
+import { ColorComponents } from 'src/app/utils/color/color-components';
 
 @Component({
   selector: 'app-color-lightness',

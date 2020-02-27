@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
+import { SelectedColorType } from 'src/app/services/selected-color-type';
 import { Color } from 'src/app/utils/color/color';
 import { MathUtil } from 'src/app/utils/math/math-util';
-
-export enum SelectedColorType {
-  primary,
-  secondary,
-}
 
 @Injectable({
   providedIn: 'root',
