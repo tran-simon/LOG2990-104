@@ -88,28 +88,28 @@ describe('LineTool', () => {
   it('should call removeLastPoint on backspace if isActive', () => {
     lineTool['isActive'] = true;
     const removeSpy = spyOn(lineTool.shape, 'removeLastPoint');
-    lineTool.handleKeyboardEvent(keyDown('backspace'));
+    lineTool.handleKeyboardEvent(keyDown('Backspace'));
     expect(removeSpy).toHaveBeenCalled();
   });
 
   it('should not call removeLastPoint on backspace if not isActive', () => {
     lineTool['isActive'] = false;
     const removeSpy = spyOn(lineTool.shape, 'removeLastPoint');
-    lineTool.handleKeyboardEvent(keyDown('backspace'));
+    lineTool.handleKeyboardEvent(keyDown('Backspace'));
     expect(removeSpy).not.toHaveBeenCalled();
   });
 
   it('should call cancelShape on escape if isActive', () => {
     lineTool['isActive'] = false;
     const cancelSpy = spyOn(lineTool, 'cancelShape');
-    lineTool.handleKeyboardEvent(keyDown('escape'));
+    lineTool.handleKeyboardEvent(keyDown('Escape'));
     expect(cancelSpy).not.toHaveBeenCalled();
   });
 
   it('should not call cancelShape on escape if not isActive', () => {
     lineTool['isActive'] = false;
     const cancelSpy = spyOn(lineTool, 'cancelShape');
-    lineTool.handleKeyboardEvent(keyDown('escape'));
+    lineTool.handleKeyboardEvent(keyDown('Escape'));
     expect(cancelSpy).not.toHaveBeenCalled();
   });
 

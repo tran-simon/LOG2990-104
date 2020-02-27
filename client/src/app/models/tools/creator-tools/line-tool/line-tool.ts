@@ -11,7 +11,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     this.toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
-    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('backspace'), () => {
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Backspace'), () => {
       if (this.isActive) {
         this.shape.removeLastPoint();
       }
@@ -28,7 +28,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
       this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
       return false;
     });
-    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('escape'), () => {
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Escape'), () => {
       this.cancel();
       return false;
     });
