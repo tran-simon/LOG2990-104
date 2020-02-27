@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '../../../../shared/shared.module';
 
-import { ToolType } from '../../../../../models/tools/tool';
+import { ToolType } from '../../../../../models/tools/tool-type';
 import { EditorService } from '../../../../../services/editor.service';
 import { EllipseToolbarComponent } from './ellipse-toolbar.component';
 

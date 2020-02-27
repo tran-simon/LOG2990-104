@@ -1,5 +1,5 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from '../tools/tool';
+import { ToolType } from '../tools/tool-type';
 
 export enum EllipseContourType {
   FILLEDCONTOUR = 'Plein avec contour',
