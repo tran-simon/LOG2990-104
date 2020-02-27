@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/abstract-toolbar-entry/abstract-toolbar-entry';
-import { BrushTextureType, BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
-import { ToolType } from 'src/app/models/tools/tool';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type';
+import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from '../../../../../services/editor.service';
 
 @Component({

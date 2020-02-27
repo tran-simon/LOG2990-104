@@ -6,7 +6,8 @@ import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/elli
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
-import { Tool, ToolType } from 'src/app/models/tools/tool';
+import { Tool } from 'src/app/models/tools/tool';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { ColorsService } from 'src/app/services/colors.service';
 
 @Injectable({

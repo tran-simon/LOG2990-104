@@ -1,4 +1,5 @@
-import { Color, ColorComponents } from './color';
+import { ColorComponents } from 'src/app/utils/color/color-components';
+import { Color } from './color';
 
 describe('Color', () => {
   const colorFromRGB = Color.rgb255(51, 153, 51);
