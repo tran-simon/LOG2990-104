@@ -1,4 +1,4 @@
-/* tslint:disable:no-require-imports no-var-requires*/
+/* tslint:disable:no-require-imports no-var-requires no-magic-numbers no-any */
 import * as chai from 'chai';
 import 'chai-http';
 chai.use(require('chai-http'));
@@ -9,7 +9,6 @@ import { container } from './inversify.config';
 import Types from './types';
 
 import { Application } from './app';
-import { doesNotReject } from 'assert';
 
 let application: Application;
 
@@ -35,7 +34,7 @@ describe('Application', () => {
   it('should provoke an error when accessing an unknown path in the dev environment', (done: Mocha.Done) => {
     chai.request(application.app).get('/').then((res) => {
       chai.expect(res.status).to.equal(500);
-      done()
+      done();
     });
   });
 });

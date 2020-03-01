@@ -1,4 +1,4 @@
-/* tslint:disable:no-string-literal */
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';

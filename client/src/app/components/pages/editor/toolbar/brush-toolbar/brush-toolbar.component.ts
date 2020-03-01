@@ -11,7 +11,7 @@ import { EditorService } from '../../../../../services/editor.service';
   styleUrls: ['../toolbar/toolbar.component.scss'],
 })
 export class BrushToolbarComponent extends AbstractToolbarEntry<BrushToolProperties> {
-  brushTextureNames = Object.values(BrushTextureType);
+  brushTextureNames: string[] = Object.values(BrushTextureType);
 
   constructor(protected editorService: EditorService) {
     super(editorService, ToolType.Brush);

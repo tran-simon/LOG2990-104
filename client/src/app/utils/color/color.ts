@@ -11,12 +11,12 @@ import { ColorComponents } from 'src/app/utils/color/color-components';
 import { MathUtil } from '../math/math-util';
 
 export class Color implements ColorComponents {
-  static RED = Color.rgb(1);
-  static GREEN = Color.rgb(0, 1, 0);
-  static BLUE = Color.rgb(0, 0, 1);
-  static WHITE = Color.rgb(1, 1, 1);
-  static BLACK = Color.rgb();
-  static TRANSPARENT = Color.rgb(0, 0, 0, 0);
+  static RED: Color = Color.rgb(1);
+  static GREEN: Color = Color.rgb(0, 1, 0);
+  static BLUE: Color = Color.rgb(0, 0, 1);
+  static WHITE: Color = Color.rgb(1, 1, 1);
+  static BLACK: Color = Color.rgb();
+  static TRANSPARENT: Color = Color.rgb(0, 0, 0, 0);
 
   /**
    * red component 0..1
@@ -62,7 +62,7 @@ export class Color implements ColorComponents {
    * https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB
    *
    */
-  private constructor(components: ColorComponents, doNotCompute = false) {
+  private constructor(components: ColorComponents, doNotCompute: boolean = false) {
     const { h, s, l, r, g, b, a } = components;
     if (doNotCompute) {
       this.h = MathUtil.fitAngle(h || 0);
@@ -78,12 +78,16 @@ export class Color implements ColorComponents {
       this.l = MathUtil.fit(l);
 
       const f = (n: number) => {
+        // tslint:disable-next-line:no-magic-numbers
         const k = (n + h / 30) % 12;
         const A = s * Math.min(l, 1 - l);
+        // tslint:disable-next-line:no-magic-numbers
         return l - A * Math.max(Math.min(k - 3, 9 - k, 1), -1);
       };
       this.r = f(0);
+      // tslint:disable-next-line:no-magic-numbers
       this.g = f(8);
+      // tslint:disable-next-line:no-magic-numbers
       this.b = f(4);
     } else if (!(r === undefined || g === undefined || b === undefined)) {
       this.r = MathUtil.fit(r);
@@ -99,7 +103,7 @@ export class Color implements ColorComponents {
 
   /* Color creator static methods */
 
-  static alpha(color: Color, a = 1): Color {
+  static alpha(color: Color, a: number = 1): Color {
     return new Color({ ...color, a }, true);
   }
 
@@ -110,14 +114,15 @@ export class Color implements ColorComponents {
    * @param b blue from 0 to 1
    * @param a alpha from 0 to 1
    */
-  static rgb(r = 0, g = 0, b = 0, a = 1): Color {
+  static rgb(r: number = 0, g: number = 0, b: number = 0, a: number = 1): Color {
     return new Color({ r, g, b, a });
   }
 
   /**
    * Creates a color from values between 0 and 255
    */
-  static rgb255(r255 = 0, g255 = 0, b255 = 0, a = 1): Color {
+  static rgb255(r255: number = 0, g255: number = 0, b255: number = 0, a: number = 1): Color {
+    // tslint:disable-next-line:no-magic-numbers
     return Color.rgb(r255 / 255, g255 / 255, b255 / 255, a);
   }
 
@@ -128,16 +133,17 @@ export class Color implements ColorComponents {
    * @param l lightness between 0 and 1
    * @param a alpha between 0 and 1
    */
-  static hsl(h = 0, s = 0, l = 0, a = 1): Color {
+  static hsl(h: number = 0, s: number = 0, l: number = 0, a: number = 1): Color {
     return new Color({ h, s, l, a });
   }
 
   /**
    * Creates a color from hex string
    */
-  static hex(hexString: string, a = 1): Color {
+  static hex(hexString: string, a: number = 1): Color {
     const r = parseInt(hexString.substr(0, 2), 16);
     const g = parseInt(hexString.substr(2, 2), 16);
+    // tslint:disable-next-line:no-magic-numbers
     const b = parseInt(hexString.substr(4, 2), 16);
     return Color.rgb255(r, g, b, a);
   }
@@ -145,9 +151,10 @@ export class Color implements ColorComponents {
   /* Utility methods */
 
   get hex(): string {
-    const r = this.r255.toString(16).padStart(2, '0');
-    const g = this.g255.toString(16).padStart(2, '0');
-    const b = this.b255.toString(16).padStart(2, '0');
+    const radix = 16;
+    const r = this.r255.toString(radix).padStart(2, '0');
+    const g = this.g255.toString(radix).padStart(2, '0');
+    const b = this.b255.toString(radix).padStart(2, '0');
     return `${r}${g}${b}`;
   }
 
@@ -161,7 +168,7 @@ export class Color implements ColorComponents {
    * Gets hue value from RGB color
    * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Hue_and_chroma
    */
-  private static calculateHue(r = 0, g = 0, b = 0): number {
+  private static calculateHue(r: number = 0, g: number = 0, b: number = 0): number {
     const M = Math.max(r, g, b);
     const m = Math.min(r, g, b);
     const C = M - m;
@@ -169,15 +176,18 @@ export class Color implements ColorComponents {
     let h: number | undefined;
     switch (M) {
       case r:
+        // tslint:disable-next-line:no-magic-numbers
         h = ((g - b) / C) % 6;
         break;
       case g:
         h = (b - r) / C + 2;
         break;
       case b:
+        // tslint:disable-next-line:no-magic-numbers
         h = (r - g) / C + 4;
         break;
     }
+    // tslint:disable-next-line:no-magic-numbers
     return MathUtil.fitAngle(h ? 60 * h : 0);
   }
 
@@ -185,7 +195,7 @@ export class Color implements ColorComponents {
    * Gets saturation from RGB color
    * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Saturation
    */
-  private static calculateSaturation(r = 0, g = 0, b = 0): number {
+  private static calculateSaturation(r: number = 0, g: number = 0, b: number = 0): number {
     const M = Math.max(r, g, b);
     const m = Math.min(r, g, b);
     const C = M - m;
@@ -202,7 +212,7 @@ export class Color implements ColorComponents {
    * Gets lightness from RGB color
    * Based on: https://en.wikipedia.org/wiki/HSL_and_HSV#Saturation
    */
-  private static calculateLightness(r = 0, g = 0, b = 0): number {
+  private static calculateLightness(r: number = 0, g: number = 0, b: number = 0): number {
     const M = Math.max(r, g, b);
     const m = Math.min(r, g, b);
     return (M + m) / 2;
@@ -217,6 +227,7 @@ export class Color implements ColorComponents {
    * @param l lightness (0 to 1)
    */
   static getHslString(h: number, s: number, l: number): string {
+    // tslint:disable-next-line:no-magic-numbers
     return `hsl(${h}, ${s * 100}%, ${l * 100}%)`;
   }
 
@@ -231,6 +242,7 @@ export class Color implements ColorComponents {
    * Get RGB string `rgb(255,255,255)`
    */
   get rgbString(): string {
+    // tslint:disable-next-line:no-magic-numbers
     return `rgb(${this.r * 255}, ${this.g * 255}, ${this.b * 255})`;
   }
 
@@ -249,14 +261,17 @@ export class Color implements ColorComponents {
   }
 
   get r255(): number {
+    // tslint:disable-next-line:no-magic-numbers
     return Math.round(this.r * 255);
   }
 
   get g255(): number {
+    // tslint:disable-next-line:no-magic-numbers
     return Math.round(this.g * 255);
   }
 
   get b255(): number {
+    // tslint:disable-next-line:no-magic-numbers
     return Math.round(this.b * 255);
   }
 }

@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { AbstractColorStripComponent } from 'src/app/components/shared/color-picker/color-strip/abstract-color-strip.component';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';

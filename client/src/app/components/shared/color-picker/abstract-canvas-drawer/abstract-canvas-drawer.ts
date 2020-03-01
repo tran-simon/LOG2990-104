@@ -3,6 +3,9 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterViewInit {
+  static readonly DEFAULT_INDICATOR_SIZE: number = 20;
+  static readonly DEFAULT_INDICATOR_LINE_WIDTH: number = 3;
+
   @Input('color')
   set color(color: Color) {
     if (!color || !this.color) {
@@ -26,8 +29,8 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
 
   constructor() {
     this._color = Color.WHITE;
-    this.indicatorSize = 20;
-    this.indicatorLineWidth = 3;
+    this.indicatorSize = AbstractCanvasDrawer.DEFAULT_INDICATOR_SIZE;
+    this.indicatorLineWidth = AbstractCanvasDrawer.DEFAULT_INDICATOR_LINE_WIDTH;
     this.mouseIsDown = false;
   }
 

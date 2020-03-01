@@ -6,6 +6,7 @@ import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/i
 import { Color } from 'src/app/utils/color/color';
 import { ColorComponents } from 'src/app/utils/color/color-components';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { MathUtil } from 'src/app/utils/math/math-util';
 
 @Component({
   selector: 'app-color-picker',
@@ -13,16 +14,29 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
   styleUrls: ['./color-picker.component.scss'],
 })
 export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit {
-  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() isVertical = false;
-  @Input() size = 300;
-  @Input() showHistory = false;
-  @Output() colorChanged = new EventEmitter<Color>();
-  @Output() closed = new EventEmitter();
+  static readonly DEFAULT_SIZE: number = 300;
+  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
+  @Input() isVertical: boolean;
+  @Input() size: number;
+  @Input() showHistory: boolean;
+  @Output() colorChanged: EventEmitter<Color>;
+  @Output() closed: EventEmitter<unknown>;
 
-  hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
-  formGroup: FormGroup = new FormGroup({});
+  hexInputErrorMessages: ErrorMessages<string>;
+  formGroup: FormGroup;
   initialColor: Color;
+
+  constructor() {
+    super();
+    this.isVertical = false;
+    this.size = ColorPickerComponent.DEFAULT_SIZE;
+    this.showHistory = false;
+    this.colorChanged = new EventEmitter<Color>();
+    this.closed = new EventEmitter();
+
+    this.hexInputErrorMessages = defaultErrorMessages({pattern: 'Doit être une couleur valide'});
+    this.formGroup = new FormGroup({});
+  }
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -30,16 +44,16 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   calculateIndicatorPosition(): Coordinate {
-    return new Coordinate((this.color.h / 360) * this.size, this.color.s * this.size);
+    return new Coordinate((this.color.h / MathUtil.MAX_ANGLE) * this.size, this.color.s * this.size);
   }
 
   draw(): void {
     if (this.renderingContext) {
       for (let i = 0; i < this.size; i++) {
-        const h = (i / this.size) * 360;
+        const h = (i / this.size) * MathUtil.MAX_ANGLE;
         const gradient = this.renderingContext.createLinearGradient(0, 0, 0, this.size);
-        gradient.addColorStop(0, Color.getHslString(h, 0, 0.5));
-        gradient.addColorStop(1, Color.getHslString(h, 1, 0.5));
+        gradient.addColorStop(0, Color.getHslString(h, 0, 1 / 2));
+        gradient.addColorStop(1, Color.getHslString(h, 1, 1 / 2));
 
         this.renderingContext.fillStyle = gradient;
         this.renderingContext.fillRect(i, 0, 1, this.size);
@@ -48,8 +62,8 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   drawIndicator(position: Coordinate): void {
-    const { x, y } = position;
-    const color = Color.hsl(this.color.h, this.color.s, 0.5);
+    const {x, y} = position;
+    const color = Color.hsl(this.color.h, this.color.s, 1 / 2);
     this.renderingContext.fillStyle = color.hexString;
     this.renderingContext.strokeStyle = color.negative.hexString;
     this.renderingContext.lineWidth = this.indicatorLineWidth;
@@ -58,7 +72,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   calculateColorFromMouseEvent(event: MouseEvent): Color {
-    const h = (event.offsetX / this.size) * 360;
+    const h = (event.offsetX / this.size) * MathUtil.MAX_ANGLE;
     const s = event.offsetY / this.size;
     return Color.hsl(h, s, this.color.l, this.color.a);
   }
@@ -76,7 +90,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   rgbChange(value: string, component: string): void {
-    let { r, g, b }: ColorComponents = this.color.color255;
+    let {r, g, b}: ColorComponents = this.color.color255;
     switch (component) {
       case 'r':
         r = parseInt(value, 16);
