@@ -7,6 +7,7 @@ import { CustomInputComponent } from '../custom-input/custom-input.component';
   styleUrls: ['../custom-input/custom-input.component.scss'],
 })
 export class NumberInputComponent extends CustomInputComponent implements OnInit {
+  static readonly DEFAULT_PATTERN_ERROR_MESSAGE: string = 'Valeur doit être numérique';
   @Input()
   set numberValue(value: number) {
     this.value = value.toString();
@@ -29,23 +30,16 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
   }
 
   static makeRegexString(allowNegatives: boolean = false, allowDecimals: boolean = false): string {
-    let regexString = '^';
-    if (allowNegatives) {
-      regexString += '-?';
-    }
+    let regexString = allowNegatives ? '^-?' : '^';
     regexString += '([0-9]*';
-    if (allowDecimals) {
-      regexString += '.)?[0-9]*$';
-    } else {
-      regexString += ')$';
-    }
+    regexString += allowDecimals ? '.)?[0-9]*$' : ')$';
     return regexString;
   }
 
   ngOnInit(): void {
     this.format = (v: string): string => (+v).toString();
     this.stringToMatch = NumberInputComponent.makeRegexString(this.allowNegatives, this.allowDecimals);
-    this.errorMessages.pattern = 'Valeur doit être numérique';
+    this.errorMessages.pattern = NumberInputComponent.DEFAULT_PATTERN_ERROR_MESSAGE;
     super.ngOnInit();
     this.valueChange.subscribe((value: string) => {
       this.numberValueChange.emit(+value);

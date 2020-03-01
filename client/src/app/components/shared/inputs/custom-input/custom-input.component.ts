@@ -84,12 +84,13 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.allowExternalUpdatesWhenFocused || !this.focused) {
-      this.value = this.format(this.value);
-      this.validValue = this.value;
-    } else {
-      this.value = this.editingValue;
-    }
+    const shouldUpdateValidValue = this.allowExternalUpdatesWhenFocused || !this.focused;
+
+    this.value = shouldUpdateValidValue ?
+      this.format(this.value) :
+      this.editingValue;
+    this.validValue = shouldUpdateValidValue ?
+      this.value : this.validValue;
   }
 
   getErrorMessage(errorName: string): string {
