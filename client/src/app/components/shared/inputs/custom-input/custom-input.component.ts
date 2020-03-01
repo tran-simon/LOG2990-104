@@ -75,7 +75,8 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   onChange(value: string = ''): void {
-    if (this.formControl && this.formControl.valid) {
+    const shouldUpdate = this.formControl && this.formControl.valid;
+    if(shouldUpdate) {
       this.value = value;
       this.editingValue = this.value;
       this.validValue = this.value;
@@ -99,7 +100,8 @@ export class CustomInputComponent implements OnInit, OnChanges {
 
   makeValidators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
-    if (!this.minLength && !this.maxLength) {
+    const minOrMaxLengthIsDefined = this.minLength || this.maxLength;
+    if (!minOrMaxLengthIsDefined) {
       this.minLength = this.length;
       this.maxLength = this.length;
     }

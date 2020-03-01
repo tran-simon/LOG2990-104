@@ -102,7 +102,8 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
         b = parseInt(value, 16);
         break;
     }
-    if (!(this.color.r255 === r && this.color.g255 === g && this.color.b255 === b)) {
+    const colorHasNotChanged = this.color.r255 === r && this.color.g255 === g && this.color.b255 === b;
+    if (!colorHasNotChanged) {
       this.color = Color.rgb255(r, g, b, this.color.a);
     }
   }
@@ -119,7 +120,8 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   confirm(): void {
-    if (this.initialColor.rgbString !== this.color.rgbString) {
+    const colorHasChanged = this.initialColor.rgbString !== this.color.rgbString;
+    if(colorHasChanged) {
       ColorHistoryComponent.push(this.color.opaqueColor);
     }
     this.initialColor = this.color;
