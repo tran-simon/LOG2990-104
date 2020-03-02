@@ -1,4 +1,4 @@
-import { ToolType } from '../tools/tool';
+import { ToolType } from '../tools/tool-type';
 import { ToolProperties } from './tool-properties';
 
 export enum PolygonContourType {
