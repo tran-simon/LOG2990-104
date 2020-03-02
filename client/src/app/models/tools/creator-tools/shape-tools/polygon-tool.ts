@@ -12,6 +12,7 @@ export class PolygonTool extends ShapeTool<PolygonToolProperties> {
     super(editorService);
     this.toolProperties = new PolygonToolProperties();
     this.setEqualDimensions(true);
+    this.keyboardEventHandler = {};
   }
 
   protected updateProperties(): void {
@@ -39,6 +40,9 @@ export class PolygonTool extends ShapeTool<PolygonToolProperties> {
   }
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
     this.shape.origin = origin;
-    this.shape.size = Math.min(dimensions.x, dimensions.y);
+    this.shape.width = dimensions.x;
+    this.shape.height = dimensions.y;
+    this.shape.updatePoints();
+    this.shape.drawPoints();
   }
 }
