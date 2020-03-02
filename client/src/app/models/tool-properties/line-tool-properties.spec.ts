@@ -1,4 +1,4 @@
-import { ToolType } from '../tools/tool';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { LineToolProperties } from './line-tool-properties';
 
 describe('Line Tool Properties', () => {

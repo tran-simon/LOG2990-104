@@ -7,6 +7,7 @@
  * Hue value will be made to keep the same angle if the value is out of bounds (ie: 400 will give a hue of 40)
  *
  */
+import { ColorComponents } from 'src/app/utils/color/color-components';
 import { MathUtil } from '../math/math-util';
 
 export class Color implements ColorComponents {
@@ -258,16 +259,4 @@ export class Color implements ColorComponents {
   get b255(): number {
     return Math.round(this.b * 255);
   }
-}
-
-export interface ColorComponents {
-  readonly r?: number;
-  readonly g?: number;
-  readonly b?: number;
-
-  readonly h?: number;
-  readonly s?: number;
-  readonly l?: number;
-
-  readonly a?: number;
 }

@@ -1,17 +1,12 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Tool, ToolType } from 'src/app/models/tools/tool';
+import { Tool } from 'src/app/models/tools/tool';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-
-export interface EditorParams {
-  width: string;
-  height: string;
-  color: string;
-}
 
 @Component({
   selector: 'app-editor',

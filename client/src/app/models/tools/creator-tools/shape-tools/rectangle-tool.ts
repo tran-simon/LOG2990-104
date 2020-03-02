@@ -1,5 +1,6 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
+import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
@@ -15,7 +16,7 @@ export class RectangleTool extends ShapeTool<RectangleToolProperties> {
 
   protected updateProperties(): void {
     switch (this.toolProperties.contourType) {
-      case RectangleContourType.FILLEDCONTOUR:
+      case RectangleContourType.FILLED_CONTOUR:
         this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
         this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
         this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
