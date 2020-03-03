@@ -36,7 +36,7 @@ export class PolygonTool extends ShapeTool<PolygonToolProperties> {
     this.shape.updateProperties();
   }
   createShape(): Polygon {
-    return new Polygon(this.initialMouseCoord);
+    return new Polygon(this.initialMouseCoord, this.toolProperties.nEdges);
   }
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
     this.shape.origin = origin;

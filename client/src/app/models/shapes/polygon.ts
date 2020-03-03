@@ -1,5 +1,6 @@
 import { Coordinate } from '../../utils/math/coordinate';
 import { BaseShape } from './base-shape';
+
 export const MIN_POLY_EDGES = 3;
 export const MAX_POLY_EDGES = 12;
 
@@ -18,10 +19,10 @@ export class Polygon extends BaseShape {
   }
 
   set nEdges(nEdges: number) {
-    if (nEdges > MAX_POLY_EDGES || !nEdges) {
-      this._nEdges = MAX_POLY_EDGES;
-    } else if (nEdges < MIN_POLY_EDGES) {
+    if (nEdges < MIN_POLY_EDGES || !nEdges) {
       this._nEdges = MIN_POLY_EDGES;
+    } else if (nEdges > MAX_POLY_EDGES) {
+      this._nEdges = MAX_POLY_EDGES;
     } else {
       this._nEdges = nEdges;
     }
@@ -66,6 +67,8 @@ export class Polygon extends BaseShape {
     super('polygon');
     this.origin = origin;
     this.nEdges = nEdges;
+    this.width = 0;
+    this.height = 0;
     this.points = [];
   }
 
@@ -83,7 +86,7 @@ export class Polygon extends BaseShape {
   }
 
   updatePoints() {
-    let angle = Math.PI / 2 - this.interiorAngle / 2;
+    let angle = this.interiorAngle / 2 + Math.PI / 2;
     for (let i = 0; i < this.nEdges; i++) {
       angle += this.interiorAngle;
       this.points[i] = this.coordRelativeToInCircle(angle);

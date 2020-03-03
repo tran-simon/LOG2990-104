@@ -16,6 +16,7 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { Color } from 'src/app/utils/color/color';
 import Spy = jasmine.Spy;
+import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -41,7 +42,14 @@ describe('ToolbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule, UserGuideModule],
-      declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        PolygonToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+      ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
       .compileComponents();
