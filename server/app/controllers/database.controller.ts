@@ -8,6 +8,8 @@ import { Drawing } from '../../models/drawing';
 
 import * as httpStatus from 'http-status-codes';
 
+import 'reflect-metadata';
+
 @injectable()
 export class DatabaseController {
 
@@ -31,7 +33,16 @@ export class DatabaseController {
           res.json(drawings);
         })
         .catch((error: Error) => {
-          res.status(httpStatus.NOT_FOUND).send(error.message);
+          res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+        });
+    });
+
+    this.router.post('/drawings', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      this.databaseService.addDrawing(req.body).then(() => {
+        res.sendStatus(httpStatus.OK).send();
+      })
+        .catch((error: Error) => {
+          res.status(httpStatus.BAD_REQUEST).send(error.message);
         });
     });
   }

@@ -1,3 +1,5 @@
 export interface Drawing {
-  id: number;
+  name: string;
+  tags: string[];
+  data: string;
 }

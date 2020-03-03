@@ -5,6 +5,8 @@ import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
 
 import { Drawing } from '../../models/drawing';
 
+import 'reflect-metadata';
+
 @injectable()
 export class DatabaseService {
 
@@ -23,10 +25,9 @@ export class DatabaseService {
     MongoClient.connect(DatabaseService.DATABASE_URL, this.options)
       .then((client: MongoClient) => {
         this.collection = client.db(DatabaseService.DATABASE_NAME).collection(DatabaseService.DATABASE_COLLECTION);
-        console.log('Connected to MongoDB Cloud!');
       })
       .catch(() => {
-        console.error('CONNECTION ERROR. EXITING PROCESS');
+        console.error("Couldn't connect to MongoDB Cloud, exiting...");
         process.exit(1);
       });
   }
@@ -43,5 +44,19 @@ export class DatabaseService {
       .catch((error: Error) => {
         throw error;
       });
+  }
+
+  async addDrawing(drawing: Drawing): Promise<void> {
+    if (this.validateDrawing(drawing)) {
+      this.collection.insertOne(drawing).catch((error: Error) => {
+        throw error;
+      });
+    } else {
+      throw new Error('Invalid drawing');
+    }
+  }
+
+  validateDrawing(drawing: Drawing): boolean {
+    return true;
   }
 }

@@ -5,8 +5,6 @@ chai.use(require('chai-http'));
 
 import * as httpStatus from 'http-status-codes';
 
-import * as sinon from 'sinon';
-
 import { container } from './inversify.config';
 import Types from './types';
 
