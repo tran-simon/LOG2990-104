@@ -8,6 +8,7 @@ import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-too
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { ColorsService } from 'src/app/services/colors.service';
+import { SprayTool } from '../models/tools/creator-tools/spray-tool/spray-tool';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,7 @@ export class EditorService {
     this.tools.set(ToolType.Brush, new BrushTool(this));
     this.tools.set(ToolType.Rectangle, new RectangleTool(this));
     this.tools.set(ToolType.Line, new LineTool(this));
+    this.tools.set(ToolType.Spray, new SprayTool(this));
   }
 
   applyShapesBuffer(): void {

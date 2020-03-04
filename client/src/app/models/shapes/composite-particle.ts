@@ -2,8 +2,6 @@ import { Coordinate } from '../../utils/math/coordinate';
 import { BaseShape } from './base-shape';
 import { Particle } from './particle';
 
-export const MAX_PARTICLES_COUNT = 10000;
-
 export class CompositeParticle extends BaseShape {
   particles: Particle[];
 
@@ -12,8 +10,7 @@ export class CompositeParticle extends BaseShape {
     return this._radius;
   }
   set radius(r: number) {
-    this._radius = !r ? 0.5 : Math.abs(r);
-    this.svgNode.setAttribute('r', this.radius.toString());
+    this._radius = !r ? 1 : Math.abs(r);
   }
 
   get origin(): Coordinate {
@@ -21,40 +18,39 @@ export class CompositeParticle extends BaseShape {
   }
   set origin(c: Coordinate) {
     this._origin = c;
-    this.svgNode.setAttribute('x', this._origin.x.toString());
-    this.svgNode.setAttribute('y', this._origin.y.toString());
   }
 
-  constructor(origin = new Coordinate()) {
-    super('circle');
+  constructor(origin: Coordinate = new Coordinate(), radius: number = 30) {
+    super('g');
+    this.radius = radius;
     this.origin = origin;
     this.particles = [];
   }
 
-  private genRandomPosition(): Coordinate {
-    const x = Math.random() * this.radius * Math.cos(Math.random() * (2 * Math.PI));
-    const y = Math.random() * this.radius * Math.sin(Math.random() * (2 * Math.PI));
+  private genRandomPosition(c: Coordinate): Coordinate {
+    const angle = Math.random() * (2 * Math.PI);
+    const x = c.x + Math.random() * this.radius * Math.cos(angle);
+    const y = c.y + Math.random() * this.radius * Math.sin(angle);
     return new Coordinate(x, y);
   }
 
   updateProperties(): void {
     if (this.particles) {
-      for (const p of this.particles) {
-        p.shapeProperties.strokeColor = this.shapeProperties.strokeColor;
-        p.shapeProperties.strokeOpacity = this.shapeProperties.strokeColor.a;
-        p.shapeProperties.strokeWidth = 0;
-        p.radius = this.shapeProperties.thickness;
-        p.updateProperties();
-      }
+      this.particles.forEach((particle) => {
+        particle.shapeProperties.fillColor = this.shapeProperties.fillColor;
+        particle.shapeProperties.strokeWidth = 0;
+        particle.radius = this.shapeProperties.thickness / 10;
+        particle.updateProperties();
+      });
     }
   }
 
-  addParticle(frequency: number): void {
-    if (this.particles.length < MAX_PARTICLES_COUNT) {
-      const particle = new Particle(this.genRandomPosition());
-      this.particles.push(particle);
-      this.updateProperties();
+  addParticle(c: Coordinate, frequency: number): void {
+    let particle: Particle;
+    for (let i = 0; i < frequency; i++) {
+      particle = new Particle(this.genRandomPosition(c));
       this.svgNode.appendChild(particle.svgNode);
+      this.particles.push(particle);
     }
   }
 }

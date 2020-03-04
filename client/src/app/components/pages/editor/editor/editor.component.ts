@@ -34,6 +34,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
         this.currentToolType = ToolType.Line;
         return false;
       },
+      a: () => {
+        this.currentToolType = ToolType.Spray;
+        return false;
+      },
       c: () => {
         this.currentToolType = ToolType.Pen;
         return false;
@@ -67,9 +71,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    if (this.currentTool) {
-      this.currentTool.handleMouseEvent(e);
+    if (!this.currentTool) {
+      return;
     }
+    this.currentTool.handleMouseEvent(e);
   }
 
   changeBackground(color: Color): void {
