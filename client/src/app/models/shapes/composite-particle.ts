@@ -37,15 +37,24 @@ export class CompositeParticle extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  addParticle() {
-    if (this.particles.length < MAX_PARTICLES_COUNT) {
-      this.particles.push(new Particle(this.genRandomPosition()));
+  updateProperties(): void {
+    if (this.particles) {
+      for (const p of this.particles) {
+        p.shapeProperties.strokeColor = this.shapeProperties.strokeColor;
+        p.shapeProperties.strokeOpacity = this.shapeProperties.strokeColor.a;
+        p.shapeProperties.strokeWidth = 0;
+        p.radius = this.shapeProperties.thickness;
+        p.updateProperties();
+      }
     }
   }
 
-  updateParticles() {
-    for (const p of this.particles) {
-      this.svgNode.appendChild(p.svgNode);
+  addParticle(frequency: number): void {
+    if (this.particles.length < MAX_PARTICLES_COUNT) {
+      const particle = new Particle(this.genRandomPosition());
+      this.particles.push(particle);
+      this.updateProperties();
+      this.svgNode.appendChild(particle.svgNode);
     }
   }
 }
