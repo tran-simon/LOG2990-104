@@ -71,10 +71,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    if (!this.currentTool) {
-      return;
+    if (this.currentTool) {
+      this.currentTool.handleMouseEvent(e);
     }
-    this.currentTool.handleMouseEvent(e);
   }
 
   changeBackground(color: Color): void {
