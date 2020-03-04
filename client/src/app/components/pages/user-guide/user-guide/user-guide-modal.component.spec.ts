@@ -1,16 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { BrushGuideComponent } from 'src/app/components/pages/user-guide/brush-guide/brush-guide.component';
-import { ColorGuideComponent } from 'src/app/components/pages/user-guide/color-guide/color-guide.component';
-import { LineGuideComponent } from 'src/app/components/pages/user-guide/line-guide/line-guide.component';
-import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide/pen-guide.component';
-import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
 
 import { Router } from '@angular/router';
 import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
 import { SharedModule } from '../../../shared/shared.module';
 import createSpyObj = jasmine.createSpyObj;
 import createSpy = jasmine.createSpy;
@@ -24,15 +18,7 @@ describe('UserGuideComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [
-        UserGuideModalComponent,
-        WelcomeComponent,
-        PenGuideComponent,
-        LineGuideComponent,
-        BrushGuideComponent,
-        RectangleGuideComponent,
-        ColorGuideComponent,
-      ],
+      declarations: [UserGuideModalComponent],
       providers: [
         { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
         { provide: Router, useValue: routerSpy },
