@@ -35,7 +35,7 @@ export class ToolbarComponent {
   showColorPicker: boolean;
 
   @ViewChild('drawer', { static: false })
-  readonly drawer: MatDrawer;
+  private readonly drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
@@ -60,10 +60,22 @@ export class ToolbarComponent {
     ]);
   }
 
+  toolButtonId(tool: string): string {
+    return `btn-${tool}`;
+  }
+
+  open(): void {
+    this.drawer.open();
+  }
+
+  close(): void {
+    this.drawer.close();
+  }
+
   handleColorChanged(eventColor: Color): void {
     this.color = eventColor;
     this.showColorPicker = false;
-    this.drawer.close();
+    this.close();
   }
 
   openModal(): void {
@@ -85,7 +97,7 @@ export class ToolbarComponent {
 
   editColor(selectedColorType: SelectedColorType): void {
     this.showColorPicker = true;
-    this.drawer.open();
+    this.open();
     this.selectedColor = selectedColorType;
   }
 

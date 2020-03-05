@@ -5,7 +5,8 @@
     </button>
     <div class="toolbar-section-divider"></div>
     <div *ngFor='let tool of toolTypeKeys'>
-      <button id='{{"btn-" + tool}}' mat-icon-button [ngClass]="{'selected-tool': currentToolType === tool}"
+      <button id='{{toolButtonId(tool)}}' mat-icon-button
+              [ngClass]="{'selected-tool': currentToolType === tool}"
               (click)="selectTool(tool)">
         <mat-icon>{{toolbarIcons.get(tool)}}</mat-icon>
       </button>

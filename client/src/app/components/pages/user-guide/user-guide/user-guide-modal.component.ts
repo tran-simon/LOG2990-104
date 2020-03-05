@@ -41,4 +41,12 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
     this.selectSubject(this.selectedSubject + 1);
     this.openCategories();
   }
+
+  get disablePreviousButton(): boolean {
+    return this.selectedSubject === this.subjects.Welcome;
+  }
+
+  get disableNextButton(): boolean {
+    return this.selectedSubject === this.subjects.Color
+  }
 }

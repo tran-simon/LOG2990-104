@@ -2,8 +2,8 @@
   <app-toolbar #toolbar id='toolbar'
                [(currentToolType)]=currentToolType
   (editorBackgroundChanged)="changeBackground($event)"
-  (mouseleave)="toolbar.drawer.close()"
-               (mouseenter)='toolbar.drawer.open()'
+  (mouseleave)="toolbar.close()"
+               (mouseenter)='toolbar.open()'
   ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
     (dblclick)="handleMouseEvent($event)"
