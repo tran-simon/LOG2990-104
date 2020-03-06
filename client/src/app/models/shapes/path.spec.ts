@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { Path } from 'src/app/models/shapes/path';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 

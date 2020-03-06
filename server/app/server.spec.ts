@@ -1,3 +1,4 @@
+/* tslint:disable:no-any no-magic-numbers */
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -29,7 +30,7 @@ describe('Server', () => {
             expect(stub.called).to.equal(true);
             stub.restore();
             done();
-        })
+        });
     });
 
     it('should init with a string port parameter', (done: Mocha.Done) => {
@@ -43,7 +44,7 @@ describe('Server', () => {
             expect(stub.called).to.equal(true);
             stub.restore();
             done();
-        })
+        });
     });
 
     it('should init with a string pipe name', (done: Mocha.Done) => {
@@ -57,7 +58,7 @@ describe('Server', () => {
             expect(stub.called).to.equal(true);
             stub.restore();
             done();
-        })
+        });
     });
 
     it('should start listening on init() and call onListening', (done: Mocha.Done) => {

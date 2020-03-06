@@ -21,19 +21,27 @@ export class HomeComponent {
     this.previousDrawings = false;
     this.modalIsOpened = false;
 
-    this.keyboardListener = new KeyboardListener(new Map<string, KeyboardEventAction>([
-      [KeyboardListener.getIdentifier('o', true), () => {
-        this.openModal('create');
-        return true;
-      }],
-      [KeyboardListener.getIdentifier('g', true), () => {
-        this.openGallery();
-        return true;
-      }]
-    ]));
+    this.keyboardListener = new KeyboardListener(
+      new Map<string, KeyboardEventAction>([
+        [
+          KeyboardListener.getIdentifier('o', true),
+          () => {
+            this.openModal('create');
+            return true;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('g', true),
+          () => {
+            this.openGallery();
+            return true;
+          },
+        ],
+      ]),
+    );
   }
 
-  openModal(link = 'create'): void {
+  openModal(link: string = 'create'): void {
     if (!this.modalIsOpened) {
       switch (link) {
         case 'create':

@@ -21,7 +21,7 @@ describe('KeyboardListener', () => {
     keyboardListener['keyboardEventsHandlingMap'].set('x_keydown', () => true);
     keyboardListener['keyboardEventsHandlingMap'].set('z_keydown', () => false);
     keyboardListener['keyboardEventsHandlingMap'].set('z_keyup', () => true);
-    keyboardListener['keyboardEventsHandlingMap'].set('ctrl_shift_a_keydown', ()=> true)
+    keyboardListener['keyboardEventsHandlingMap'].set('ctrl_shift_a_keydown', () => true);
   });
 
   it('should create', () => {
@@ -31,7 +31,7 @@ describe('KeyboardListener', () => {
   it('can create keyboard listener with keyboardEventsHandlingMap', () => {
     const map: KeyboardEventsHandlingMap = new Map<string, KeyboardEventAction>([
       ['ID1', () => false],
-      ['ID2', () => true]
+      ['ID2', () => true],
     ]);
 
     const keyboardListener1 = new KeyboardListener(map);
@@ -124,11 +124,10 @@ describe('KeyboardListener', () => {
   });
 
   it('can get identifier from keyboard event', () => {
-
     const event = {
       key: 'KEY',
       ctrlKey: true,
-      type: 'TYPE'
+      type: 'TYPE',
     } as KeyboardEvent;
 
     expect(KeyboardListener.getIdentifierFromKeyboardEvent(event)).toEqual('ctrl_KEY_TYPE');
@@ -139,13 +138,12 @@ describe('KeyboardListener', () => {
     expect(keyboardListener['keyboardEventsHandlingMap'].get('ID')).toBeDefined();
   });
 
-  it('can add multiple events', ()=> {
-
+  it('can add multiple events', () => {
     keyboardListener.addEvents([
-      ['ID1', ()=>false ],
-      ['ID2', ()=>false ],
+      ['ID1', () => false],
+      ['ID2', () => false],
     ]);
     expect(keyboardListener['keyboardEventsHandlingMap'].get('ID1')).toBeDefined();
     expect(keyboardListener['keyboardEventsHandlingMap'].get('ID2')).toBeDefined();
-  })
+  });
 });

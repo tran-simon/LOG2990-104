@@ -17,14 +17,20 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;
     this.keyboardListener.addEvents([
-      [KeyboardListener.getIdentifier('Shift', false, true), () => {
-        this.setEqualDimensions(true);
-        return false;
-      }],
-      [KeyboardListener.getIdentifier('Shift', false, false, 'keyup'), () => {
-        this.setEqualDimensions(false);
-        return false;
-      }]
+      [
+        KeyboardListener.getIdentifier('Shift', false, true),
+        () => {
+          this.setEqualDimensions(true);
+          return false;
+        },
+      ],
+      [
+        KeyboardListener.getIdentifier('Shift', false, false, 'keyup'),
+        () => {
+          this.setEqualDimensions(false);
+          return false;
+        },
+      ],
     ]);
   }
 
@@ -36,10 +42,13 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 
     if (this.isActive) {
-      if (e.type === 'mouseup') {
-        this.applyShape();
-      } else if (e.type === 'mousemove') {
-        this.updateCurrentCoord(mouseCoord);
+      switch (e.type) {
+        case 'mouseup':
+          this.applyShape();
+          break;
+        case 'mousemove':
+          this.updateCurrentCoord(mouseCoord);
+          break;
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;

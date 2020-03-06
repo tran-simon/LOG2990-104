@@ -3,8 +3,10 @@ import { FormGroup } from '@angular/forms';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
 import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
-import { Color, ColorComponents } from 'src/app/utils/color/color';
+import { Color } from 'src/app/utils/color/color';
+import { ColorComponents } from 'src/app/utils/color/color-components';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { MathUtil } from 'src/app/utils/math/math-util';
 
 @Component({
   selector: 'app-color-picker',
@@ -12,16 +14,29 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
   styleUrls: ['./color-picker.component.scss'],
 })
 export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit {
+  static readonly DEFAULT_SIZE: number = 300;
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  @Input() isVertical = false;
-  @Input() size = 300;
-  @Input() showHistory = false;
-  @Output() colorChanged = new EventEmitter<Color>();
-  @Output() closed = new EventEmitter();
+  @Input() isVertical: boolean;
+  @Input() size: number;
+  @Input() showHistory: boolean;
+  @Output() colorChanged: EventEmitter<Color>;
+  @Output() closed: EventEmitter<unknown>;
 
-  hexInputErrorMessages: ErrorMessages<string> = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
-  formGroup: FormGroup = new FormGroup({});
+  hexInputErrorMessages: ErrorMessages<string>;
+  formGroup: FormGroup;
   initialColor: Color;
+
+  constructor() {
+    super();
+    this.isVertical = false;
+    this.size = ColorPickerComponent.DEFAULT_SIZE;
+    this.showHistory = false;
+    this.colorChanged = new EventEmitter<Color>();
+    this.closed = new EventEmitter();
+
+    this.hexInputErrorMessages = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
+    this.formGroup = new FormGroup({});
+  }
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -29,16 +44,16 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   calculateIndicatorPosition(): Coordinate {
-    return new Coordinate((this.color.h / 360) * this.size, this.color.s * this.size);
+    return new Coordinate((this.color.h / MathUtil.MAX_ANGLE) * this.size, this.color.s * this.size);
   }
 
   draw(): void {
     if (this.renderingContext) {
       for (let i = 0; i < this.size; i++) {
-        const h = (i / this.size) * 360;
+        const h = (i / this.size) * MathUtil.MAX_ANGLE;
         const gradient = this.renderingContext.createLinearGradient(0, 0, 0, this.size);
-        gradient.addColorStop(0, Color.getHslString(h, 0, 0.5));
-        gradient.addColorStop(1, Color.getHslString(h, 1, 0.5));
+        gradient.addColorStop(0, Color.getHslString(h, 0, 1 / 2));
+        gradient.addColorStop(1, Color.getHslString(h, 1, 1 / 2));
 
         this.renderingContext.fillStyle = gradient;
         this.renderingContext.fillRect(i, 0, 1, this.size);
@@ -48,7 +63,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
 
   drawIndicator(position: Coordinate): void {
     const { x, y } = position;
-    const color = Color.hsl(this.color.h, this.color.s, 0.5);
+    const color = Color.hsl(this.color.h, this.color.s, 1 / 2);
     this.renderingContext.fillStyle = color.hexString;
     this.renderingContext.strokeStyle = color.negative.hexString;
     this.renderingContext.lineWidth = this.indicatorLineWidth;
@@ -57,7 +72,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   calculateColorFromMouseEvent(event: MouseEvent): Color {
-    const h = (event.offsetX / this.size) * 360;
+    const h = (event.offsetX / this.size) * MathUtil.MAX_ANGLE;
     const s = event.offsetY / this.size;
     return Color.hsl(h, s, this.color.l, this.color.a);
   }
@@ -87,7 +102,8 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
         b = parseInt(value, 16);
         break;
     }
-    if (!(this.color.r255 === r && this.color.g255 === g && this.color.b255 === b)) {
+    const colorHasNotChanged = this.color.r255 === r && this.color.g255 === g && this.color.b255 === b;
+    if (!colorHasNotChanged) {
       this.color = Color.rgb255(r, g, b, this.color.a);
     }
   }
@@ -104,7 +120,8 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   confirm(): void {
-    if (this.initialColor.rgbString !== this.color.rgbString) {
+    const colorHasChanged = this.initialColor.rgbString !== this.color.rgbString;
+    if (colorHasChanged) {
       ColorHistoryComponent.push(this.color.opaqueColor);
     }
     this.initialColor = this.color;

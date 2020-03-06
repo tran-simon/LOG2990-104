@@ -8,31 +8,47 @@ import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/i
   styleUrls: ['./custom-input.component.scss'],
 })
 export class CustomInputComponent implements OnInit, OnChanges {
+  // tslint:disable-next-line:typedef
   static id = 0;
-  @Input() id = `custom-input-${CustomInputComponent.id++}`;
-  @Input() autofocus = true;
-  @Input() formGroup = new FormGroup({});
+  @Input() id: string;
+  @Input() autofocus: boolean;
+  @Input() formGroup: FormGroup;
   @Input() stringToMatch: string;
-  @Input() required = false;
+  @Input() required: boolean;
   @Input() messages: string;
   @Input() length: number;
   @Input() minLength: number;
   @Input() maxLength: number;
   @Input() prefix: string;
   @Input() suffix: string;
-  @Input() allowExternalUpdatesWhenFocused = false;
+  @Input() allowExternalUpdatesWhenFocused: boolean;
 
   formControl: FormControl;
 
-  private _focused = false;
-  editingValue = '';
-  validValue = '';
+  private _focused: boolean;
+  editingValue: string;
+  validValue: string;
 
-  @Input() value = '';
-  @Output() valueChange = new EventEmitter<string>();
+  @Input() value: string;
+  @Output() valueChange: EventEmitter<string>;
 
-  @Input() errorMessages: ErrorMessages<string> = defaultErrorMessages();
-  @Input() format = (v: string) => v;
+  @Input() errorMessages: ErrorMessages<string>;
+  @Input() format: (v: string) => string;
+
+  constructor() {
+    this.editingValue = '';
+    this.validValue = '';
+    this.value = '';
+    this.valueChange = new EventEmitter<string>();
+    this.errorMessages = defaultErrorMessages();
+    this.id = `custom-input-${CustomInputComponent.id++}`;
+    this.autofocus = true;
+    this.formGroup = new FormGroup({});
+    this.required = false;
+    this.allowExternalUpdatesWhenFocused = false;
+    this._focused = false;
+    this.format = (v: string) => v;
+  }
 
   ngOnInit(): void {
     if (!this.formControl) {
@@ -47,7 +63,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
     this._focused = true;
   }
 
-  onBlur(value = ''): void {
+  onBlur(value: string = ''): void {
     this._focused = false;
     if (this.formControl) {
       this.value = this.format(this.formControl.valid ? value : this.validValue);
@@ -58,8 +74,9 @@ export class CustomInputComponent implements OnInit, OnChanges {
     }
   }
 
-  onChange(value = ''): void {
-    if (this.formControl && this.formControl.valid) {
+  onChange(value: string = ''): void {
+    const shouldUpdate = this.formControl && this.formControl.valid;
+    if (shouldUpdate) {
       this.value = value;
       this.editingValue = this.value;
       this.validValue = this.value;
@@ -68,12 +85,10 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.allowExternalUpdatesWhenFocused || !this.focused) {
-      this.value = this.format(this.value);
-      this.validValue = this.value;
-    } else {
-      this.value = this.editingValue;
-    }
+    const shouldUpdateValidValue = this.allowExternalUpdatesWhenFocused || !this.focused;
+
+    this.value = shouldUpdateValidValue ? this.format(this.value) : this.editingValue;
+    this.validValue = shouldUpdateValidValue ? this.value : this.validValue;
   }
 
   getErrorMessage(errorName: string): string {
@@ -82,7 +97,8 @@ export class CustomInputComponent implements OnInit, OnChanges {
 
   makeValidators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
-    if (!this.minLength && !this.maxLength) {
+    const minOrMaxLengthIsDefined = this.minLength || this.maxLength;
+    if (!minOrMaxLengthIsDefined) {
       this.minLength = this.length;
       this.maxLength = this.length;
     }

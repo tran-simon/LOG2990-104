@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -9,12 +9,12 @@ import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
+import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
-import { LineJunctionType } from '../../../tool-properties/line-tool-properties';
 
 describe('LineTool', () => {
   let lineTool: LineTool;
