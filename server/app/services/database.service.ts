@@ -73,4 +73,16 @@ export class DatabaseService {
       }
     });
   }
+
+  updateDrawing(res: express.Response, id: string, body: any): void {
+    DrawingModel.findByIdAndUpdate(id, body, (err, doc) => {
+      if (err) {
+        res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+      } else if (doc) {
+        res.sendStatus(httpStatus.OK);
+      } else {
+        res.sendStatus(httpStatus.NOT_FOUND);
+      }
+    })
+  }
 }

@@ -1,6 +1,6 @@
 import * as express from 'express';
-import { DatabaseService } from '../services/database.service';
 import { inject, injectable } from 'inversify';
+import { DatabaseService } from '../services/database.service';
 import Types from '../types';
 
 // import { Drawing } from '../../models/drawing';
@@ -36,6 +36,10 @@ export class DatabaseController {
 
     this.router.delete('/drawings/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       this.databaseService.deleteDrawing(res, req.params.id);
+    });
+
+    this.router.post('/drawings/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      this.databaseService.updateDrawing(res, req.params.id, req.body);
     });
   }
 }
