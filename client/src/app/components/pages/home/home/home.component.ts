@@ -3,8 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
 
 @Component({
@@ -13,7 +12,7 @@ import { CreateDrawingModalComponent } from '../create-drawing-modal/create-draw
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  keyboardEventHandler: KeyboardEventHandler;
+  private readonly keyboardListener: KeyboardListener;
   previousDrawings: boolean;
   modalIsOpened: boolean;
   dialogRef: MatDialogRef<AbstractModalComponent>;
@@ -21,16 +20,25 @@ export class HomeComponent {
   constructor(private router: Router, public dialog: MatDialog) {
     this.previousDrawings = false;
     this.modalIsOpened = false;
-    this.keyboardEventHandler = {
-      ctrl_o: () => {
-        this.openModal('create');
-        return true;
-      },
-      ctrl_g: () => {
-        this.openGallery();
-        return true;
-      },
-    } as KeyboardEventHandler;
+
+    this.keyboardListener = new KeyboardListener(
+      new Map<string, KeyboardEventAction>([
+        [
+          KeyboardListener.getIdentifier('o', true),
+          () => {
+            this.openModal('create');
+            return true;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('g', true),
+          () => {
+            this.openGallery();
+            return true;
+          },
+        ],
+      ]),
+    );
   }
 
   openModal(link: string = 'create'): void {
@@ -63,6 +71,6 @@ export class HomeComponent {
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
+    this.keyboardListener.handle(event);
   }
 }

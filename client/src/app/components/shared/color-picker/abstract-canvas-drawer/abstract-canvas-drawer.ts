@@ -9,7 +9,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
   @Input('color')
   set color(color: Color) {
     const shouldUpdateColor = color && this.color;
-    shouldUpdateColor ? this.updateColor(color) : this._color = color;
+    shouldUpdateColor ? this.updateColor(color) : (this._color = color);
   }
 
   get color(): Color {
@@ -72,7 +72,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
       const color: Color = change.currentValue;
       const previousColor: Color = change.previousValue;
       const shouldDraw = !previousColor || (color && this.shouldRedraw(color, previousColor));
-      if(shouldDraw) {
+      if (shouldDraw) {
         this.drawAll();
       }
     }

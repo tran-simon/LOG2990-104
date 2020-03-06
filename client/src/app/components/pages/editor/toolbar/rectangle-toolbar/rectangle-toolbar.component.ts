@@ -11,7 +11,7 @@ import { EditorService } from '../../../../../services/editor.service';
   styleUrls: ['../toolbar/toolbar.component.scss'],
 })
 export class RectangleToolbarComponent extends AbstractToolbarEntry<RectangleToolProperties> {
-  rectangleContourTypes: typeof RectangleContourType= RectangleContourType;
+  rectangleContourTypes: typeof RectangleContourType = RectangleContourType;
   rectangleContourNames: string[] = Object.values(this.rectangleContourTypes);
 
   constructor(protected editorService: EditorService) {

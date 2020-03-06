@@ -3,7 +3,7 @@ import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-t
 import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class LineTool extends CreatorTool<LineToolProperties> {
@@ -12,28 +12,27 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     this.toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
-    this.keyboardEventHandler = {
-      backspace: () => {
-        if (this.isActive) {
-          this.shape.removeLastPoint();
-        }
-        return false;
-      },
-      escape: () => {
-        this.cancel();
-        return false;
-      },
-      shift_shift: () => {
-        this.lockMethod = this.determineLockMethod();
-        this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-        return false;
-      },
-      shift_up: () => {
-        this.lockMethod = this.calculateNoLock;
-        this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-        return false;
-      },
-    } as KeyboardEventHandler;
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Backspace'), () => {
+      if (this.isActive) {
+        this.shape.removeLastPoint();
+      }
+      return false;
+    });
+
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Shift', false, true), () => {
+      this.lockMethod = this.determineLockMethod();
+      this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+      return false;
+    });
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Shift', false, false, 'keyup'), () => {
+      this.lockMethod = this.calculateNoLock;
+      this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+      return false;
+    });
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Escape'), () => {
+      this.cancel();
+      return false;
+    });
   }
   // tslint:disable-next-line:no-magic-numbers
   static readonly MAX_HORIZONTAL_LOCK_ANGLE: number = Math.PI / 6;
@@ -51,7 +50,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
       this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
       const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;
-      this.shape.shapeProperties.thickness = hasPoints? this.toolProperties.junctionDiameter : 0;
+      this.shape.shapeProperties.thickness = hasPoints ? this.toolProperties.junctionDiameter : 0;
 
       this.shape.updateProperties();
     }

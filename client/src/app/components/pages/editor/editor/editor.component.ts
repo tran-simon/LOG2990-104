@@ -4,8 +4,7 @@ import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 @Component({
@@ -17,7 +16,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   static readonly DEFAULT_WIDTH: number = 500;
   static readonly DEFAULT_HEIGHT: number = 500;
   static readonly DEFAULT_COLOR: Color = Color.WHITE;
-  private readonly keyboardEventHandler: KeyboardEventHandler;
+  private readonly keyboardListener: KeyboardListener;
 
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
@@ -32,27 +31,43 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.surfaceColor = EditorComponent.DEFAULT_COLOR;
     this.surfaceWidth = EditorComponent.DEFAULT_WIDTH;
     this.surfaceHeight = EditorComponent.DEFAULT_HEIGHT;
-    this.keyboardEventHandler = {
-      l: () => {
-        this.currentToolType = ToolType.Line;
-        return false;
-      },
-      c: () => {
-        this.currentToolType = ToolType.Pen;
-        return false;
-      },
-      w: () => {
-        this.currentToolType = ToolType.Brush;
-        return false;
-      },
-      1: () => {
-        this.currentToolType = ToolType.Rectangle;
-        return false; // todo - enable default behavior when typing in text field
-      },
-      def: (e) => {
-        return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
-      },
-    } as KeyboardEventHandler;
+
+    this.keyboardListener = new KeyboardListener(
+      new Map<string, KeyboardEventAction>([
+        [
+          KeyboardListener.getIdentifier('l'),
+          () => {
+            this.currentToolType = ToolType.Line;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('c'),
+          () => {
+            this.currentToolType = ToolType.Pen;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('w'),
+          () => {
+            this.currentToolType = ToolType.Brush;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('1'),
+          () => {
+            this.currentToolType = ToolType.Rectangle;
+            return false;
+          },
+        ],
+      ]),
+    );
+
+    this.keyboardListener.defaultEventAction = (e) => {
+      return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
+    };
 
     this.currentToolType = ToolType.Pen;
   }
@@ -82,7 +97,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
+    this.keyboardListener.handle(event);
   }
 
   @HostListener('contextmenu', ['$event'])

@@ -38,6 +38,7 @@ export const keyUp = (key: string, shiftKey: boolean = false): KeyboardEvent => 
 describe('EditorComponent', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
+  let keyboardListener: KeyboardListener;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,6 +59,7 @@ describe('EditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
+    keyboardListener = component['keyboardListener'];
     fixture.detectChanges();
   });
 
@@ -74,7 +76,7 @@ describe('EditorComponent', () => {
   });
 
   it('should catch a keyboard event on keydown', () => {
-    const spy = spyOn(KeyboardListener, 'keyEvent');
+    const spy = spyOn(keyboardListener, 'handle');
     const keydownEvent = new Event('keydown');
     window.dispatchEvent(keydownEvent);
     fixture.detectChanges();
@@ -83,7 +85,7 @@ describe('EditorComponent', () => {
   });
 
   it('should select the pen tool when typing c', () => {
-    KeyboardListener.keyEvent(keyDown('c'), component['keyboardEventHandler']);
+    keyboardListener.handle(keyDown('c'));
     expect(component.currentToolType).toEqual(ToolType.Pen);
   });
 
@@ -97,23 +99,23 @@ describe('EditorComponent', () => {
   it('should pass down events when unknown keys are pressed', () => {
     const spy = spyOn(component.currentTool as Tool, 'handleKeyboardEvent');
 
-    KeyboardListener.keyEvent(keyDown('x'), component['keyboardEventHandler']);
+    keyboardListener.handle(keyDown('x'));
 
     expect(spy).toHaveBeenCalled();
   });
 
   it('should select the brush tool when typing w', () => {
-    KeyboardListener.keyEvent(keyDown('w'), component['keyboardEventHandler']);
+    keyboardListener.handle(keyDown('w'));
     expect(component.currentToolType).toEqual(ToolType.Brush);
   });
 
   it('should select the rectangle tool when typing 1', () => {
-    KeyboardListener.keyEvent(keyDown('1'), component['keyboardEventHandler']);
+    keyboardListener.handle(keyDown('1'));
     expect(component.currentToolType).toEqual(ToolType.Rectangle);
   });
 
   it('should select the line tool when typing l', () => {
-    KeyboardListener.keyEvent(keyDown('l'), component['keyboardEventHandler']);
+    keyboardListener.handle(keyDown('l'));
     expect(component.currentToolType).toEqual(ToolType.Line);
   });
 

@@ -18,7 +18,8 @@ export abstract class StrokeTool<T = ToolProperties> extends CreatorTool<T> {
     super.handleMouseEvent(e);
     if (this.isActive) {
       switch (e.type) {
-        case 'mouseup': case 'mouseleave':
+        case 'mouseup':
+        case 'mouseleave':
           this.applyShape();
           break;
         case 'mousemove':

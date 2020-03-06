@@ -40,5 +40,4 @@ export class LineToolProperties extends ToolProperties {
   set junctionDiameter(diameter: number) {
     this._junctionDiameter = MathUtil.fit(diameter, this.minDiameter, this.maxDiameter);
   }
-
 }

@@ -15,7 +15,7 @@ import { MathUtil } from 'src/app/utils/math/math-util';
 })
 export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit {
   static readonly DEFAULT_SIZE: number = 300;
-  @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @Input() isVertical: boolean;
   @Input() size: number;
   @Input() showHistory: boolean;
@@ -34,7 +34,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
     this.colorChanged = new EventEmitter<Color>();
     this.closed = new EventEmitter();
 
-    this.hexInputErrorMessages = defaultErrorMessages({pattern: 'Doit être une couleur valide'});
+    this.hexInputErrorMessages = defaultErrorMessages({ pattern: 'Doit être une couleur valide' });
     this.formGroup = new FormGroup({});
   }
 
@@ -62,7 +62,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   drawIndicator(position: Coordinate): void {
-    const {x, y} = position;
+    const { x, y } = position;
     const color = Color.hsl(this.color.h, this.color.s, 1 / 2);
     this.renderingContext.fillStyle = color.hexString;
     this.renderingContext.strokeStyle = color.negative.hexString;
@@ -90,7 +90,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   rgbChange(value: string, component: string): void {
-    let {r, g, b}: ColorComponents = this.color.color255;
+    let { r, g, b }: ColorComponents = this.color.color255;
     switch (component) {
       case 'r':
         r = parseInt(value, 16);
@@ -121,7 +121,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
 
   confirm(): void {
     const colorHasChanged = this.initialColor.rgbString !== this.color.rgbString;
-    if(colorHasChanged) {
+    if (colorHasChanged) {
       ColorHistoryComponent.push(this.color.opaqueColor);
     }
     this.initialColor = this.color;
