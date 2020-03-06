@@ -28,13 +28,9 @@ export class Server {
 
     private normalizePort(val: number | string): number | string | boolean {
         const port: number = typeof val === 'string' ? parseInt(val, this.baseDix) : val;
-        if (isNaN(port)) {
-            return val;
-        } else if (port >= 0) {
-            return port;
-        } else {
-            return false;
-        }
+        return isNaN(port) ?
+            val : port >= 0 ?
+                port : false;
     }
 
     private onError(error: NodeJS.ErrnoException): void {

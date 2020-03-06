@@ -75,7 +75,8 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   onChange(value: string = ''): void {
-    if (this.formControl && this.formControl.valid) {
+    const shouldUpdate = this.formControl && this.formControl.valid;
+    if(shouldUpdate) {
       this.value = value;
       this.editingValue = this.value;
       this.validValue = this.value;
@@ -84,12 +85,13 @@ export class CustomInputComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.allowExternalUpdatesWhenFocused || !this.focused) {
-      this.value = this.format(this.value);
-      this.validValue = this.value;
-    } else {
-      this.value = this.editingValue;
-    }
+    const shouldUpdateValidValue = this.allowExternalUpdatesWhenFocused || !this.focused;
+
+    this.value = shouldUpdateValidValue ?
+      this.format(this.value) :
+      this.editingValue;
+    this.validValue = shouldUpdateValidValue ?
+      this.value : this.validValue;
   }
 
   getErrorMessage(errorName: string): string {
@@ -98,7 +100,8 @@ export class CustomInputComponent implements OnInit, OnChanges {
 
   makeValidators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
-    if (!this.minLength && !this.maxLength) {
+    const minOrMaxLengthIsDefined = this.minLength || this.maxLength;
+    if (!minOrMaxLengthIsDefined) {
       this.minLength = this.length;
       this.maxLength = this.length;
     }

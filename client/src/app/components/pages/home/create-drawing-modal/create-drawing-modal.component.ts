@@ -40,7 +40,8 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
 
   @HostListener('window:resize')
   onResize(): void {
-    if (this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString()) {
+    const shouldUpdate = this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString();
+    if(shouldUpdate) {
       this.windowWidth = window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH;
       this.windowHeight = window.innerHeight;
 

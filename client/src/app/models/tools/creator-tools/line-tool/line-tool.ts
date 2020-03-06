@@ -49,11 +49,10 @@ export class LineTool extends CreatorTool<LineToolProperties> {
       this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
       this.shape.shapeProperties.fillColor = this.editorService.colorsService.secondaryColor;
       this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-      if (this.toolProperties.junctionType === LineJunctionType.POINTS) {
-        this.shape.shapeProperties.thickness = this.toolProperties.junctionDiameter;
-      } else {
-        this.shape.shapeProperties.thickness = 0;
-      }
+
+      const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;
+      this.shape.shapeProperties.thickness = hasPoints? this.toolProperties.junctionDiameter : 0;
+
       this.shape.updateProperties();
     }
   }
@@ -94,11 +93,8 @@ export class LineTool extends CreatorTool<LineToolProperties> {
         const deltaX = this.shape.currentLine.endCoord.x - this.shape.currentLine.startCoord.x;
         const deltaY = this.shape.currentLine.endCoord.y - this.shape.currentLine.startCoord.y;
 
-        if ((deltaX > 0 && deltaY > 0) || (deltaX < 0 && deltaY < 0)) {
-          return this.calculatePositiveDiagonalLock;
-        } else {
-          return this.calculateNegativeDiagonalLock;
-        }
+        const positiveDiagonalLock = (deltaX > 0 && deltaY > 0) || (deltaX < 0 && deltaY < 0);
+        return positiveDiagonalLock ? this.calculatePositiveDiagonalLock : this.calculateNegativeDiagonalLock;
       } else if (angle <= LineTool.MAX_VERTICAL_LOCK_ANGLE) {
         return this.calculateVerticalLock;
       }

@@ -37,10 +37,13 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
 
     if (this.isActive) {
-      if (e.type === 'mouseup') {
-        this.applyShape();
-      } else if (e.type === 'mousemove') {
-        this.updateCurrentCoord(mouseCoord);
+      switch (e.type) {
+        case 'mouseup':
+          this.applyShape();
+          break;
+        case 'mousemove':
+          this.updateCurrentCoord(mouseCoord);
+          break;
       }
     } else if (e.type === 'mousedown') {
       this.isActive = true;

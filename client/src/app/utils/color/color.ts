@@ -200,12 +200,9 @@ export class Color implements ColorComponents {
     const m = Math.min(r, g, b);
     const C = M - m;
     const L = (M + m) / 2;
+    const S = () => C / (1 - Math.abs(2 * L - 1));
 
-    if (L === 1 || L === 0) {
-      return 0;
-    } else {
-      return C / (1 - Math.abs(2 * L - 1));
-    }
+    return L === 1 || L === 0 ? 0 : S();
   }
 
   /**
