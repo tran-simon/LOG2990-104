@@ -18,16 +18,23 @@ export class DatabaseService {
       });
   }
 
+  private static determineStatus(err: Error, results: Drawing | Drawing[]): number {
+    const status = err ? httpStatus.INTERNAL_SERVER_ERROR :
+      results ? httpStatus.OK : httpStatus.NOT_FOUND;
+
+    return status;
+  }
+
   getAllDrawings(res: express.Response): void {
     drawingModel.find({}, (err: Error, docs: Drawing[]) => {
-      const status = this.determineStatus(err, docs);
+      const status = DatabaseService.determineStatus(err, docs);
       docs ? res.status(status).json(docs) : res.sendStatus(status);
     });
   }
 
   getDrawingById(res: express.Response, id: string): void {
     drawingModel.findById(id, (err: Error, doc: Drawing) => {
-      const status = this.determineStatus(err, doc);
+      const status = DatabaseService.determineStatus(err, doc);
       doc ? res.status(status).json(doc) : res.sendStatus(status);
     });
   }
@@ -43,20 +50,14 @@ export class DatabaseService {
 
   deleteDrawing(res: express.Response, id: string): void {
     drawingModel.findByIdAndDelete(id, (err: Error, doc: Drawing) => {
-      res.sendStatus(this.determineStatus(err, doc));
+      res.sendStatus(DatabaseService.determineStatus(err, doc));
     });
   }
 
   updateDrawing(res: express.Response, id: string, body: string): void {
     drawingModel.findByIdAndUpdate(id, body, (err: Error, doc: Drawing) => {
-      res.sendStatus(this.determineStatus(err, doc));
+      res.sendStatus(DatabaseService.determineStatus(err, doc));
     });
   }
 
-  private determineStatus(err: Error, results: Drawing | Drawing[]): number {
-    const status = err ? httpStatus.INTERNAL_SERVER_ERROR :
-      results ? httpStatus.OK : httpStatus.NOT_FOUND;
-
-    return status;
-  }
 }
