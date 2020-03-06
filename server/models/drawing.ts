@@ -6,22 +6,11 @@ export interface Drawing extends mongoose.Document {
   data: string;
 }
 
-export const DrawingSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  tags: {
-    type: [String],
-    required: false
-  },
-  data: {
-    type: String,
-    required: true,
-  }
+export const drawingSchema = new mongoose.Schema({
+  name: String,
+  tags: [String],
+  data: String
 });
 
-
-
-const DrawingModel = mongoose.model<Drawing>('Drawing', DrawingSchema);
-export default DrawingModel;
+const drawingModel = mongoose.model<Drawing>('Drawing', drawingSchema);
+export default drawingModel;

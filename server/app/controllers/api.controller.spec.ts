@@ -19,4 +19,4 @@ describe('API Controller', () => {
       done();
     });
   });
-})
+});

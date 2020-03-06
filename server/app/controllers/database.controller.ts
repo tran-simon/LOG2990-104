@@ -3,8 +3,6 @@ import { inject, injectable } from 'inversify';
 import { DatabaseService } from '../services/database.service';
 import Types from '../types';
 
-// import { Drawing } from '../../models/drawing';
-
 @injectable()
 export class DatabaseController {
 
