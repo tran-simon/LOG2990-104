@@ -11,6 +11,14 @@ export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
     super(editorService);
     this.isActive = isActive;
   }
+  protected abstract updateProperties(): void;
+
+  handleMouseEvent(e: MouseEvent): void {
+    super.handleMouseEvent(e);
+    if (this.isActive) {
+      this.updateProperties();
+    }
+  }
 
   applyShape(): void {
     this.updateProperties();

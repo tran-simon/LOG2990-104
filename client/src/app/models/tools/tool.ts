@@ -9,6 +9,7 @@ export enum ToolType {
   Brush = 'brush-tool',
   Rectangle = 'rectangle-tool',
   Line = 'line-tool',
+  Select = 'select-tool',
 }
 export abstract class Tool<T = ToolProperties> {
   get mousePosition(): Coordinate {
@@ -25,13 +26,9 @@ export abstract class Tool<T = ToolProperties> {
   protected editorService: EditorService;
   protected isActive: boolean;
   toolProperties: T;
-  protected abstract updateProperties(): void;
 
   handleMouseEvent(e: MouseEvent): void {
     this._mousePosition = new Coordinate(e.offsetX, e.offsetY);
-    if (this.isActive) {
-      this.updateProperties();
-    }
   }
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {

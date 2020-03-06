@@ -26,6 +26,14 @@ export class CompositeLine extends BaseShape {
     this.lineArray[0].startCoord = c;
   }
 
+  get width() {
+    return 0; // todo
+  }
+
+  get height() {
+    return 0; // todo
+  }
+
   constructor(initCoord: Coordinate = new Coordinate()) {
     super('g');
 

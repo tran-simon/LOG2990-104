@@ -19,8 +19,16 @@ export class Coordinate {
     return new Coordinate(Math.abs(c.x), Math.abs(c.y));
   }
 
+  static copy(c: Coordinate): Coordinate {
+    return new Coordinate(c.x, c.y);
+  }
+
   static minXYCoord(c1: Coordinate, c2: Coordinate): Coordinate {
     return new Coordinate(Math.min(c1.x, c2.x), Math.min(c1.y, c2.y));
+  }
+
+  static maxXYCoord(c1: Coordinate, c2: Coordinate): Coordinate {
+    return new Coordinate(Math.max(c1.x, c2.x), Math.max(c1.y, c2.y));
   }
 
   static maxXYDistance(c1: Coordinate, c2: Coordinate): number {

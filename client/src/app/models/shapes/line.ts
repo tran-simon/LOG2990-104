@@ -33,6 +33,14 @@ export class Line extends BaseShape {
     this._origin = c;
   }
 
+  get width() {
+    return 0; // todo
+  }
+
+  get height() {
+    return 0; // todo
+  }
+
   get center(): Coordinate {
     return new Coordinate((this._startCoord.x + this._endCoord.x) / 2, (this._startCoord.y + this._endCoord.y) / 2);
   }
