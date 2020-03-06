@@ -1,7 +1,8 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { keyDown, keyUp } from 'src/app/components/pages/editor/editor/editor.component.spec';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
@@ -61,22 +62,6 @@ describe('ShapeTool', () => {
       offsetX: c.x,
       offsetY: c.y,
     } as MouseEvent;
-  };
-
-  const keyUp = (key: string, shiftKey: boolean = false): KeyboardEvent => {
-    return {
-      key,
-      type: 'keyup',
-      shiftKey,
-    } as KeyboardEvent;
-  };
-
-  const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
-    return {
-      key,
-      type: 'keydown',
-      shiftKey,
-    } as KeyboardEvent;
   };
 
   beforeEach(async(() => {
@@ -155,7 +140,6 @@ describe('ShapeTool', () => {
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(250, 200)));
     resizeShapeSpy.calls.reset();
     mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
-    expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
     resizeShapeSpy.calls.reset();
     mockShapeTool.handleKeyboardEvent(keyUp('shift', false));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(150, 100), new Coordinate(100, 100));

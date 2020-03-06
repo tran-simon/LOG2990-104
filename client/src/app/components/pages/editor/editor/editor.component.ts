@@ -14,6 +14,9 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
+  static readonly DEFAULT_WIDTH: number = 500;
+  static readonly DEFAULT_HEIGHT: number = 500;
+  static readonly DEFAULT_COLOR: Color = Color.WHITE;
   private readonly keyboardEventHandler: KeyboardEventHandler;
 
   @ViewChild('drawingSurface', { static: false })
@@ -26,9 +29,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceHeight: number;
 
   constructor(private router: ActivatedRoute, public editorService: EditorService) {
-    this.surfaceColor = Color.WHITE;
-    this.surfaceWidth = 0;
-    this.surfaceHeight = 0;
+    this.surfaceColor = EditorComponent.DEFAULT_COLOR;
+    this.surfaceWidth = EditorComponent.DEFAULT_WIDTH;
+    this.surfaceHeight = EditorComponent.DEFAULT_HEIGHT;
     this.keyboardEventHandler = {
       l: () => {
         this.currentToolType = ToolType.Line;
@@ -56,9 +59,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.router.params.subscribe((params) => {
-      this.surfaceWidth = params.width ? +params.width : 500;
-      this.surfaceHeight = params.height ? +params.height : 300;
-      this.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
+      this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
+      this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
+      this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
     });
   }
 

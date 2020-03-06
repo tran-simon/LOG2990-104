@@ -33,7 +33,7 @@ export class HomeComponent {
     } as KeyboardEventHandler;
   }
 
-  openModal(link = 'create'): void {
+  openModal(link: string = 'create'): void {
     if (!this.modalIsOpened) {
       switch (link) {
         case 'create':

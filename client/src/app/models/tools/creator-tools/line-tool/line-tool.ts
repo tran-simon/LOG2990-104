@@ -35,9 +35,11 @@ export class LineTool extends CreatorTool<LineToolProperties> {
       },
     } as KeyboardEventHandler;
   }
-  static readonly MAX_HORIZONTAL_LOCK_ANGLE = Math.PI / 6;
-  static readonly MAX_DIAGONAL_LOCK_ANGLE = Math.PI / 3;
-  static readonly MAX_VERTICAL_LOCK_ANGLE = Math.PI / 2;
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly MAX_HORIZONTAL_LOCK_ANGLE: number = Math.PI / 6;
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly MAX_DIAGONAL_LOCK_ANGLE: number = Math.PI / 3;
+  static readonly MAX_VERTICAL_LOCK_ANGLE: number = Math.PI / 2;
   shape: CompositeLine;
 
   private lockMethod: (c: Coordinate) => Coordinate;
@@ -63,13 +65,17 @@ export class LineTool extends CreatorTool<LineToolProperties> {
   handleMouseEvent(e: MouseEvent): void {
     super.handleMouseEvent(e);
     if (this.isActive) {
-      if (e.type === 'dblclick') {
-        this.shape.endLine(this.mousePosition);
-        this.applyShape();
-      } else if (e.type === 'mousemove') {
-        this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-      } else if (e.type === 'mousedown') {
-        this.shape.confirmPoint();
+      switch (e.type) {
+        case 'dblclick':
+          this.shape.endLine(this.mousePosition);
+          this.applyShape();
+          break;
+        case 'mousemove':
+          this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+          break;
+        case 'mousedown':
+          this.shape.confirmPoint();
+          break;
       }
     } else if (e.type === 'mousedown') {
       this.shape = this.createShape();
@@ -100,19 +106,23 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     return this.calculateNoLock;
   }
 
-  private readonly calculateHorizontalLock = (c: Coordinate): Coordinate => new Coordinate(c.x, this.shape.currentLine.startCoord.y);
+  private calculateHorizontalLock(c: Coordinate): Coordinate {
+    return new Coordinate(c.x, this.shape.currentLine.startCoord.y);
+  }
 
-  private readonly calculateVerticalLock = (c: Coordinate): Coordinate => new Coordinate(this.shape.currentLine.startCoord.x, c.y);
+  private calculateVerticalLock(c: Coordinate): Coordinate {
+    return new Coordinate(this.shape.currentLine.startCoord.x, c.y);
+  }
 
-  private readonly calculatePositiveDiagonalLock = (c: Coordinate): Coordinate => {
+  private calculatePositiveDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.shape.currentLine.startCoord.x;
     return new Coordinate(c.x, this.shape.currentLine.startCoord.y + deltaX);
-  };
+  }
 
-  private readonly calculateNegativeDiagonalLock = (c: Coordinate): Coordinate => {
+  private calculateNegativeDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.shape.currentLine.startCoord.x;
     return new Coordinate(c.x, this.shape.currentLine.startCoord.y - deltaX);
-  };
+  }
 
   private readonly calculateNoLock = (c: Coordinate): Coordinate => c;
 }

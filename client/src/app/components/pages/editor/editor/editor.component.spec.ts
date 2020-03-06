@@ -19,10 +19,18 @@ import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangl
 import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 
-const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
+export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
     key,
     type: 'keydown',
+    shiftKey,
+  } as KeyboardEvent;
+};
+
+export const keyUp = (key: string, shiftKey: boolean = false): KeyboardEvent => {
+  return {
+    key,
+    type: 'keyup',
     shiftKey,
   } as KeyboardEvent;
 };

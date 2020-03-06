@@ -15,12 +15,20 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
   get numberValue(): number {
     return +this.value;
   }
-  @Input() allowDecimals = false;
-  @Input() allowNegatives = false;
 
-  @Output() numberValueChange = new EventEmitter<number>();
+  @Input() allowDecimals: boolean;
+  @Input() allowNegatives: boolean;
 
-  static makeRegexString(allowNegatives = false, allowDecimals = false): string {
+  @Output() numberValueChange: EventEmitter<number>;
+
+  constructor() {
+    super();
+    this.allowDecimals = false;
+    this.allowNegatives = false;
+    this.numberValueChange = new EventEmitter<number>();
+  }
+
+  static makeRegexString(allowNegatives: boolean = false, allowDecimals: boolean = false): string {
     let regexString = '^';
     if (allowNegatives) {
       regexString += '-?';

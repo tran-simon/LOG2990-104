@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditorParams } from 'src/app/components/pages/editor/editor/editor-params';
+import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
@@ -27,8 +28,8 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
   ) {
     super(dialogRef);
     this.formGroup = new FormGroup({});
-    this.windowHeight = 500;
-    this.windowWidth = 500;
+    this.windowHeight = EditorComponent.DEFAULT_HEIGHT;
+    this.windowWidth = EditorComponent.DEFAULT_WIDTH;
     this.width = this.windowWidth.toString();
     this.height = this.windowHeight.toString();
   }

@@ -8,7 +8,7 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./color-history.component.scss'],
 })
 export class ColorHistoryComponent {
-  static readonly MAX_HISTORY_LENGTH = 10;
+  static readonly MAX_HISTORY_LENGTH: number = 10;
   private static COLOR_HISTORY: Color[] = new Array<Color>(ColorHistoryComponent.MAX_HISTORY_LENGTH).fill(Color.WHITE);
 
   @Output() colorSelectedEvent: EventEmitter<Color>;
