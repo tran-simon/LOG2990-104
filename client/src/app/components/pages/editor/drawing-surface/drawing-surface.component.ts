@@ -8,6 +8,7 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./drawing-surface.component.scss'],
 })
 export class DrawingSurfaceComponent {
+  static readonly MARGIN: number = 4;
   @Input() width: number;
   @Input() height: number;
   @Input() color: Color;

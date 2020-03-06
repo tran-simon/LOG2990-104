@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, HostListener, ViewChild } 
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorParams } from 'src/app/components/pages/editor/editor/editor-params';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
@@ -42,8 +43,8 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
   onResize(): void {
     const shouldUpdate = this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString();
     if (shouldUpdate) {
-      this.windowWidth = window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH;
-      this.windowHeight = window.innerHeight;
+      this.windowWidth = window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH - 2 * DrawingSurfaceComponent.MARGIN;
+      this.windowHeight = window.innerHeight - 3 * DrawingSurfaceComponent.MARGIN;
 
       this.width = this.windowWidth.toString();
       this.height = this.windowHeight.toString();
