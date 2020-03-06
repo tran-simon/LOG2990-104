@@ -8,6 +8,7 @@ import { CustomInputComponent } from '../custom-input/custom-input.component';
   styleUrls: ['../custom-input/custom-input.component.scss'],
 })
 export class NumberInputComponent extends CustomInputComponent implements OnInit {
+  static readonly DEFAULT_PATTERN_ERROR_MESSAGE: string = 'Valeur doit être numérique';
   @Input()
   set numberValue(value: number) {
     this.value = value.toString();
@@ -16,31 +17,32 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
   get numberValue(): number {
     return +this.value;
   }
-  @Input() allowDecimals = false;
-  @Input() allowNegatives = false;
+
+  @Input() allowDecimals: boolean;
+  @Input() allowNegatives: boolean;
   @Input() min: number;
   @Input() max: number;
 
-  @Output() numberValueChange = new EventEmitter<number>();
+  @Output() numberValueChange: EventEmitter<number>;
 
-  static makeRegexString(allowNegatives = false, allowDecimals = false): string {
-    let regexString = '^';
-    if (allowNegatives) {
-      regexString += '-?';
-    }
+  constructor() {
+    super();
+    this.allowDecimals = false;
+    this.allowNegatives = false;
+    this.numberValueChange = new EventEmitter<number>();
+  }
+
+  static makeRegexString(allowNegatives: boolean = false, allowDecimals: boolean = false): string {
+    let regexString = allowNegatives ? '^-?' : '^';
     regexString += '([0-9]*';
-    if (allowDecimals) {
-      regexString += '.)?[0-9]*$';
-    } else {
-      regexString += ')$';
-    }
+    regexString += allowDecimals ? '.)?[0-9]*$' : ')$';
     return regexString;
   }
 
   ngOnInit(): void {
     this.format = (v: string): string => (+v).toString();
     this.stringToMatch = NumberInputComponent.makeRegexString(this.allowNegatives, this.allowDecimals);
-    this.errorMessages.pattern = 'Valeur doit être numérique';
+    this.errorMessages.pattern = NumberInputComponent.DEFAULT_PATTERN_ERROR_MESSAGE;
     this.errorMessages.min = 'Valeur doit être plus grande ou égale à ' + this.min;
     this.errorMessages.max = 'Valeur doit être plus petite ou égale à ' + this.max;
     super.ngOnInit();

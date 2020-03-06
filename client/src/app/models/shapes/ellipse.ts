@@ -33,7 +33,7 @@ export class Ellipse extends BaseShape {
     this.svgNode.setAttribute('cy', this._origin.y.toString());
   }
 
-  constructor(origin = new Coordinate(), rx: number = 0, ry: number = rx) {
+  constructor(origin: Coordinate = new Coordinate(), rx: number = 0, ry: number = rx) {
     super('ellipse');
     this.origin = origin;
     this.radiusX = rx;

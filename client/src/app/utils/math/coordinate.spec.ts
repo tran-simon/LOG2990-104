@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 describe('Coordinate', () => {

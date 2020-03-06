@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -76,7 +76,7 @@ describe('RectangleTool', () => {
   it('can draw Rectangle contour and fill', () => {
     properties.contourType = RectangleContourType.FILLED_CONTOUR;
     rectangleTool.toolProperties = properties;
-    rectangleTool['_mousePosition'] = new Coordinate(100, 100);
+    rectangleTool['_mousePosition'] = new Coordinate(50, 100);
     rectangleTool['shape'] = rectangleTool.createShape();
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
