@@ -1,5 +1,4 @@
 import { injectable } from 'inversify';
-import { Message } from '../../../common/communication/message';
 
 import * as express from 'express';
 import * as httpStatus from 'http-status-codes';
@@ -21,10 +20,6 @@ export class DatabaseService {
           console.log('Connected to MongoDB');
         }
       });
-  }
-
-  message(): Message {
-    return { title: 'PolyDessin Database API', body: 'Welcome to the database API homepage.' };
   }
 
   getAllDrawings(res: express.Response): void {

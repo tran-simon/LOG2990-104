@@ -1,7 +1,8 @@
-import * as express from 'express';
 import { inject, injectable } from 'inversify';
-import { DatabaseService } from '../services/database.service';
 import Types from '../types';
+
+import * as express from 'express';
+import { DatabaseService } from '../services/database.service';
 
 @injectable()
 export class DatabaseController {
@@ -15,10 +16,6 @@ export class DatabaseController {
 
   private configureRouter(): void {
     this.router = express.Router();
-
-    this.router.get('/', async (req: express.Request, res: express.Response) => {
-      res.send(this.databaseService.message());
-    });
 
     this.router.get('/drawings', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       this.databaseService.getAllDrawings(res);
