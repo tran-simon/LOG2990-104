@@ -4,7 +4,7 @@ import { DatabaseService } from '../services/database.service';
 import { inject, injectable } from 'inversify';
 import Types from '../types';
 
-import { Drawing } from '../../models/drawing';
+// import { Drawing } from '../../models/drawing';
 
 import * as httpStatus from 'http-status-codes';
 
@@ -27,15 +27,15 @@ export class DatabaseController {
       res.send(this.databaseService.message());
     });
 
-    this.router.get('/drawings', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      this.databaseService.getAllDrawings()
-        .then((drawings: Drawing[]) => {
-          res.json(drawings);
-        })
-        .catch((error: Error) => {
-          res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error.message);
-        });
-    });
+    // this.router.get('/drawings', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    //   this.databaseService.getAllDrawings()
+    //     .then((drawings: Drawing[]) => {
+    //       res.json(drawings);
+    //     })
+    //     .catch((error: Error) => {
+    //       res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+    //     });
+    // });
 
     this.router.post('/drawings', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       this.databaseService.addDrawing(req.body).then(() => {

@@ -1,8 +1,6 @@
 import { injectable } from 'inversify';
 import { Message } from '../../../common/communication/message';
 
-import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
-
 import { Drawing } from '../../models/drawing';
 
 import 'reflect-metadata';
@@ -14,49 +12,20 @@ export class DatabaseService {
   static DATABASE_NAME = 'polydessin';
   static DATABASE_COLLECTION = 'dessin';
 
-  collection: Collection<Drawing>;
-
-  private options: MongoClientOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  };
-
-  constructor() {
-    MongoClient.connect(DatabaseService.DATABASE_URL, this.options)
-      .then((client: MongoClient) => {
-        this.collection = client.db(DatabaseService.DATABASE_NAME).collection(DatabaseService.DATABASE_COLLECTION);
-      })
-      .catch(() => {
-        console.error("Couldn't connect to MongoDB Cloud, exiting...");
-        process.exit(1);
-      });
-  }
+  //constructor() {
+  //}
 
   message(): Message {
     return { title: 'PolyDessin Database API', body: 'Welcome to the database API homepage.' };
   }
 
-  async getAllDrawings(): Promise<Drawing[]> {
-    return this.collection.find({}).toArray()
-      .then((drawings: Drawing[]) => {
-        return drawings;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
+  // async getAllDrawings(): Promise<Drawing[]> {
+  // }
 
-  async addDrawing(drawing: Drawing): Promise<void> {
-    if (this.validateDrawing(drawing)) {
-      this.collection.insertOne(drawing).catch((error: Error) => {
-        throw error;
-      });
-    } else {
-      throw new Error('Invalid drawing');
-    }
-  }
+  // async addDrawing(drawing: Drawing): Promise<void> {
+  // }
 
-  validateDrawing(drawing: Drawing): boolean {
-    return true;
-  }
+  // validateDrawing(drawing: Drawing): boolean {
+  //  return true;
+  // }
 }
