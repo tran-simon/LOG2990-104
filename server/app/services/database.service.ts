@@ -55,40 +55,26 @@ export class DatabaseService {
     const drawing = new drawingModel(body);
 
     drawing.save((err: mongoose.Error) => {
-      if (err) {
-        res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-      } else {
-        res.sendStatus(httpStatus.OK);
-      }
+      const status = err ? httpStatus.INTERNAL_SERVER_ERROR : httpStatus.OK;
+      res.sendStatus(status);
     });
   }
 
   deleteDrawing(res: express.Response, id: string): void {
     drawingModel.findByIdAndDelete(id, (err, doc) => {
-      err ?
-        res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR) :
-        doc ?
-          res.sendStatus(httpStatus.OK) :
-          res.sendStatus(httpStatus.NOT_FOUND);
-      // if (err) {
-      //   res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-      // } else if (doc) {
-      //   res.sendStatus(httpStatus.OK);
-      // } else {
-      //   res.sendStatus(httpStatus.NOT_FOUND);
-      // }
+      const status = err ? httpStatus.INTERNAL_SERVER_ERROR :
+        doc ? httpStatus.OK : httpStatus.NOT_FOUND;
+
+      res.sendStatus(status);
     });
   }
 
   updateDrawing(res: express.Response, id: string, body: string): void {
     drawingModel.findByIdAndUpdate(id, body, (err, doc) => {
-      if (err) {
-        res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-      } else if (doc) {
-        res.sendStatus(httpStatus.OK);
-      } else {
-        res.sendStatus(httpStatus.NOT_FOUND);
-      }
+      const status = err ? httpStatus.INTERNAL_SERVER_ERROR :
+        doc ? httpStatus.OK : httpStatus.NOT_FOUND;
+
+      res.sendStatus(status);
     });
   }
 }
