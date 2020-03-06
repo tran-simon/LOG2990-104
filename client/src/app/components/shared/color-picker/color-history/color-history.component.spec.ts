@@ -30,13 +30,15 @@ describe('ColorHistoryComponent', () => {
   });
 
   it('can push color when limit reached', () => {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < ColorHistoryComponent.MAX_HISTORY_LENGTH; i++) {
       ColorHistoryComponent.push(i % 2 === 0 ? Color.RED : Color.GREEN);
     }
     expect(component.colorHistory[0]).toEqual(Color.RED);
+    // tslint:disable-next-line:no-magic-numbers
     expect(component.colorHistory[9]).toEqual(Color.GREEN);
     ColorHistoryComponent.push(Color.BLUE);
     expect(component.colorHistory[0]).toEqual(Color.GREEN);
+    // tslint:disable-next-line:no-magic-numbers
     expect(component.colorHistory[9]).toEqual(Color.BLUE);
   });
 

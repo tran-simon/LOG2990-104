@@ -13,7 +13,7 @@ import { UserGuideModule } from 'src/app/components/pages/user-guide/user-guide.
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ToolType } from 'src/app/models/tools/tool';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { Color } from 'src/app/utils/color/color';
 import Spy = jasmine.Spy;
 

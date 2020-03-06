@@ -1,8 +1,9 @@
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
-import { LineJunctionType, LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type';
+import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class LineTool extends CreatorTool<LineToolProperties> {
@@ -11,32 +12,33 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     this.toolProperties = new LineToolProperties();
     this.lockMethod = this.calculateNoLock;
 
-    this.keyboardEventHandler = {
-      backspace: () => {
-        if (this.isActive) {
-          this.shape.removeLastPoint();
-        }
-        return false;
-      },
-      escape: () => {
-        this.cancel();
-        return false;
-      },
-      shift_shift: () => {
-        this.lockMethod = this.determineLockMethod();
-        this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-        return false;
-      },
-      shift_up: () => {
-        this.lockMethod = this.calculateNoLock;
-        this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-        return false;
-      },
-    } as KeyboardEventHandler;
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Backspace'), () => {
+      if (this.isActive) {
+        this.shape.removeLastPoint();
+      }
+      return false;
+    });
+
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Shift', false, true), () => {
+      this.lockMethod = this.determineLockMethod();
+      this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+      return false;
+    });
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Shift', false, false, 'keyup'), () => {
+      this.lockMethod = this.calculateNoLock;
+      this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+      return false;
+    });
+    this.keyboardListener.addEvent(KeyboardListener.getIdentifier('Escape'), () => {
+      this.cancel();
+      return false;
+    });
   }
-  static readonly MAX_HORIZONTAL_LOCK_ANGLE = Math.PI / 6;
-  static readonly MAX_DIAGONAL_LOCK_ANGLE = Math.PI / 3;
-  static readonly MAX_VERTICAL_LOCK_ANGLE = Math.PI / 2;
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly MAX_HORIZONTAL_LOCK_ANGLE: number = Math.PI / 6;
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly MAX_DIAGONAL_LOCK_ANGLE: number = Math.PI / 3;
+  static readonly MAX_VERTICAL_LOCK_ANGLE: number = Math.PI / 2;
   shape: CompositeLine;
 
   private lockMethod: (c: Coordinate) => Coordinate;
@@ -46,11 +48,10 @@ export class LineTool extends CreatorTool<LineToolProperties> {
       this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
       this.shape.shapeProperties.fillColor = this.editorService.colorsService.secondaryColor;
       this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-      if (this.toolProperties.junctionType === LineJunctionType.POINTS) {
-        this.shape.shapeProperties.thickness = this.toolProperties.junctionDiameter;
-      } else {
-        this.shape.shapeProperties.thickness = 0;
-      }
+
+      const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;
+      this.shape.shapeProperties.thickness = hasPoints ? this.toolProperties.junctionDiameter : 0;
+
       this.shape.updateProperties();
     }
   }
@@ -62,13 +63,17 @@ export class LineTool extends CreatorTool<LineToolProperties> {
   handleMouseEvent(e: MouseEvent): void {
     super.handleMouseEvent(e);
     if (this.isActive) {
-      if (e.type === 'dblclick') {
-        this.shape.endLine(this.mousePosition);
-        this.applyShape();
-      } else if (e.type === 'mousemove') {
-        this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-      } else if (e.type === 'mousedown') {
-        this.shape.confirmPoint();
+      switch (e.type) {
+        case 'dblclick':
+          this.shape.endLine(this.mousePosition);
+          this.applyShape();
+          break;
+        case 'mousemove':
+          this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+          break;
+        case 'mousedown':
+          this.shape.confirmPoint();
+          break;
       }
     } else if (e.type === 'mousedown') {
       this.shape = this.createShape();
@@ -87,11 +92,8 @@ export class LineTool extends CreatorTool<LineToolProperties> {
         const deltaX = this.shape.currentLine.endCoord.x - this.shape.currentLine.startCoord.x;
         const deltaY = this.shape.currentLine.endCoord.y - this.shape.currentLine.startCoord.y;
 
-        if ((deltaX > 0 && deltaY > 0) || (deltaX < 0 && deltaY < 0)) {
-          return this.calculatePositiveDiagonalLock;
-        } else {
-          return this.calculateNegativeDiagonalLock;
-        }
+        const positiveDiagonalLock = (deltaX > 0 && deltaY > 0) || (deltaX < 0 && deltaY < 0);
+        return positiveDiagonalLock ? this.calculatePositiveDiagonalLock : this.calculateNegativeDiagonalLock;
       } else if (angle <= LineTool.MAX_VERTICAL_LOCK_ANGLE) {
         return this.calculateVerticalLock;
       }
@@ -99,19 +101,23 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     return this.calculateNoLock;
   }
 
-  private readonly calculateHorizontalLock = (c: Coordinate): Coordinate => new Coordinate(c.x, this.shape.currentLine.startCoord.y);
+  private calculateHorizontalLock(c: Coordinate): Coordinate {
+    return new Coordinate(c.x, this.shape.currentLine.startCoord.y);
+  }
 
-  private readonly calculateVerticalLock = (c: Coordinate): Coordinate => new Coordinate(this.shape.currentLine.startCoord.x, c.y);
+  private calculateVerticalLock(c: Coordinate): Coordinate {
+    return new Coordinate(this.shape.currentLine.startCoord.x, c.y);
+  }
 
-  private readonly calculatePositiveDiagonalLock = (c: Coordinate): Coordinate => {
+  private calculatePositiveDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.shape.currentLine.startCoord.x;
     return new Coordinate(c.x, this.shape.currentLine.startCoord.y + deltaX);
-  };
+  }
 
-  private readonly calculateNegativeDiagonalLock = (c: Coordinate): Coordinate => {
+  private calculateNegativeDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.shape.currentLine.startCoord.x;
     return new Coordinate(c.x, this.shape.currentLine.startCoord.y - deltaX);
-  };
+  }
 
   private readonly calculateNoLock = (c: Coordinate): Coordinate => c;
 }

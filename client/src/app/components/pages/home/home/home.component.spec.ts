@@ -1,3 +1,4 @@
+/* tslint:disable:no-string-literal */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -6,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { SharedModule } from '../../../shared/shared.module';
 
 import { HomeComponent } from './home.component';
@@ -121,7 +121,7 @@ describe('HomeComponent', () => {
   /* keyboard shortcuts */
 
   it('should handle keyboard event', () => {
-    const keyDownSpy = spyOn(KeyboardListener, 'keyEvent');
+    const keyDownSpy = spyOn(component['keyboardListener'], 'handle');
 
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
 

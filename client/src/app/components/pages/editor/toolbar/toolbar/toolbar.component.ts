@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
-import { ToolType } from 'src/app/models/tools/tool';
-import { SelectedColorType } from 'src/app/services/colors.service';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
+import { SelectedColorType } from 'src/app/services/selected-color-type';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -16,21 +16,21 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  static readonly TOOLBAR_WIDTH = 60;
-  static readonly SLIDER_STEP = 0.1;
+  static readonly TOOLBAR_WIDTH: number = 60;
+  static readonly SLIDER_STEP: number = 0.1;
 
   @Input() stepThickness: number;
 
   @Input() currentToolType: ToolType;
-  @Output() currentToolTypeChange = new EventEmitter<ToolType>();
+  @Output() currentToolTypeChange: EventEmitter<ToolType> = new EventEmitter<ToolType>();
 
   @Output() editorBackgroundChanged: EventEmitter<Color>;
 
-  ToolType = ToolType;
-  toolTypeKeys = Object.values(ToolType);
+  ToolType: typeof ToolType = ToolType;
+  toolTypeKeys: string[] = Object.values(ToolType);
 
+  SelectedColorType: typeof SelectedColorType = SelectedColorType;
   selectedColor: SelectedColorType;
-  SelectedColorType = SelectedColorType;
 
   showColorPicker: boolean;
 
