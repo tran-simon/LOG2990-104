@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ValidatorFn, Validators } from '@angular/forms';
 import { CustomInputComponent } from '../custom-input/custom-input.component';
 
 @Component({
@@ -17,6 +18,8 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
   }
   @Input() allowDecimals = false;
   @Input() allowNegatives = false;
+  @Input() min: number;
+  @Input() max: number;
 
   @Output() numberValueChange = new EventEmitter<number>();
 
@@ -38,9 +41,23 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
     this.format = (v: string): string => (+v).toString();
     this.stringToMatch = NumberInputComponent.makeRegexString(this.allowNegatives, this.allowDecimals);
     this.errorMessages.pattern = 'Valeur doit être numérique';
+    this.errorMessages.min = 'Valeur doit être plus grande ou égale à ' + this.min;
+    this.errorMessages.max = 'Valeur doit être plus petite ou égale à ' + this.max;
     super.ngOnInit();
     this.valueChange.subscribe((value: string) => {
       this.numberValueChange.emit(+value);
     });
+  }
+
+  makeValidators(): ValidatorFn[] {
+    const validators =  super.makeValidators();
+    if (this.min !== undefined) {
+      validators.push(Validators.min(this.min));
+    }
+    if (this.max !== undefined) {
+      validators.push(Validators.max(this.max));
+    }
+
+    return validators;
   }
 }
