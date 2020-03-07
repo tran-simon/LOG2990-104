@@ -19,7 +19,7 @@ export class DrawingSurfaceComponent {
   svg: ElementRef;
 
   constructor() {
-    this.color = Color.WHITE;;
+    this.color = Color.WHITE;
   }
 
   addShape(shape: BaseShape): void {
