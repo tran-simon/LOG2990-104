@@ -16,21 +16,21 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  static readonly TOOLBAR_WIDTH = 60;
-  static readonly SLIDER_STEP = 0.1;
+  static readonly TOOLBAR_WIDTH: number = 60;
+  static readonly SLIDER_STEP: number = 0.1;
 
   @Input() stepThickness: number;
 
   @Input() currentToolType: ToolType;
-  @Output() currentToolTypeChange = new EventEmitter<ToolType>();
+  @Output() currentToolTypeChange: EventEmitter<ToolType> = new EventEmitter<ToolType>();
 
   @Output() editorBackgroundChanged: EventEmitter<Color>;
 
-  ToolType = ToolType;
-  toolTypeKeys = Object.values(ToolType);
+  ToolType: typeof ToolType = ToolType;
+  toolTypeKeys: string[] = Object.values(ToolType);
 
+  SelectedColorType: typeof SelectedColorType = SelectedColorType;
   selectedColor: SelectedColorType;
-  SelectedColorType = SelectedColorType;
 
   showColorPicker: boolean;
 

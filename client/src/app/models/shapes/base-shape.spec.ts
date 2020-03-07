@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';

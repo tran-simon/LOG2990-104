@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
@@ -48,7 +48,7 @@ describe('PenTool', () => {
     expect(addShapeSpy).toHaveBeenCalled();
   });
 
-  it('Should not addshape on mousedown if isActive', () => {
+  it('Should not add shape on mousedown if isActive', () => {
     const addShapeSpy = spyOn(penTool, 'addShape');
     penTool['isActive'] = true;
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));

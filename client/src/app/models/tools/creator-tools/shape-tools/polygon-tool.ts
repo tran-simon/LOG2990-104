@@ -12,7 +12,6 @@ export class PolygonTool extends ShapeTool<PolygonToolProperties> {
     super(editorService);
     this.toolProperties = new PolygonToolProperties();
     this.setEqualDimensions(true);
-    this.keyboardEventHandler = {};
   }
 
   protected updateProperties(): void {

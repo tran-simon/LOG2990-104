@@ -31,8 +31,7 @@ export class Application {
     this.app.use(cors());
   }
 
-  bindRoutes(): void {
-    // Notre application utilise le routeur de notre API `Index`
+  private bindRoutes(): void {
     this.app.use('/api', this.apiController.router);
     this.errorHandling();
   }

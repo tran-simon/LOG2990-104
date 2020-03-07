@@ -10,8 +10,8 @@ import { EditorService } from '../../../../../services/editor.service';
   styleUrls: ['../toolbar/toolbar.component.scss'],
 })
 export class PolygonToolbarComponent extends AbstractToolbarEntry<PolygonToolProperties> {
-  polygonContourTypes = PolygonContourType;
-  polygonContourNames = Object.values(this.polygonContourTypes);
+  polygonContourTypes: typeof PolygonContourType = PolygonContourType;
+  polygonContourNames: string[] = Object.values(this.polygonContourTypes);
 
   constructor(protected editorService: EditorService) {
     super(editorService, ToolType.Polygon);

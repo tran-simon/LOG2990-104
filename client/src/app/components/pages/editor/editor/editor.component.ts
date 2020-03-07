@@ -4,8 +4,7 @@ import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 @Component({
@@ -14,7 +13,10 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  private readonly keyboardEventHandler: KeyboardEventHandler;
+  static readonly DEFAULT_WIDTH: number = 500;
+  static readonly DEFAULT_HEIGHT: number = 500;
+  static readonly DEFAULT_COLOR: Color = Color.WHITE;
+  private readonly keyboardListener: KeyboardListener;
 
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
@@ -26,43 +28,62 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceHeight: number;
 
   constructor(private router: ActivatedRoute, public editorService: EditorService) {
-    this.surfaceColor = Color.WHITE;
-    this.surfaceWidth = 0;
-    this.surfaceHeight = 0;
-    this.keyboardEventHandler = {
-      l: () => {
-        this.currentToolType = ToolType.Line;
-        return false;
-      },
-      c: () => {
-        this.currentToolType = ToolType.Pen;
-        return false;
-      },
-      w: () => {
-        this.currentToolType = ToolType.Brush;
-        return false;
-      },
-      1: () => {
-        this.currentToolType = ToolType.Rectangle;
-        return false; // todo - enable default behavior when typing in text field
-      },
-      3: () => {
-        this.currentToolType = ToolType.Polygon;
-        return false; // todo - enable default behavior when typing in text field
-      },
-      def: (e) => {
-        return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
-      },
-    } as KeyboardEventHandler;
+    this.surfaceColor = EditorComponent.DEFAULT_COLOR;
+    this.surfaceWidth = EditorComponent.DEFAULT_WIDTH;
+    this.surfaceHeight = EditorComponent.DEFAULT_HEIGHT;
+
+    this.keyboardListener = new KeyboardListener(
+      new Map<string, KeyboardEventAction>([
+        [
+          KeyboardListener.getIdentifier('l'),
+          () => {
+            this.currentToolType = ToolType.Line;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('3'),
+          () => {
+            this.currentToolType = ToolType.Polygon;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('c'),
+          () => {
+            this.currentToolType = ToolType.Pen;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('w'),
+          () => {
+            this.currentToolType = ToolType.Brush;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('1'),
+          () => {
+            this.currentToolType = ToolType.Rectangle;
+            return false;
+          },
+        ],
+      ]),
+    );
+
+    this.keyboardListener.defaultEventAction = (e) => {
+      return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
+    };
 
     this.currentToolType = ToolType.Pen;
   }
 
   ngOnInit(): void {
     this.router.params.subscribe((params) => {
-      this.surfaceWidth = params.width ? +params.width : 500;
-      this.surfaceHeight = params.height ? +params.height : 300;
-      this.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
+      this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
+      this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
+      this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
     });
   }
 
@@ -83,7 +104,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
+    this.keyboardListener.handle(event);
   }
 
   @HostListener('contextmenu', ['$event'])

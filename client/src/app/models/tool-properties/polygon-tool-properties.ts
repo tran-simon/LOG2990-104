@@ -9,14 +9,14 @@ export enum PolygonContourType {
 }
 
 export class PolygonToolProperties extends ToolProperties {
-  static readonly MIN_THICKNESS = 1;
-  static readonly MAX_THICKNESS = 10;
+  static readonly MIN_THICKNESS: number = 1;
+  static readonly MAX_THICKNESS: number = 10;
 
-  minPolyEdges = MIN_POLY_EDGES;
-  maxPolyEdges = MAX_POLY_EDGES;
+  minPolyEdges: number = MIN_POLY_EDGES;
+  maxPolyEdges: number = MAX_POLY_EDGES;
 
-  minThickness = PolygonToolProperties.MIN_THICKNESS;
-  maxThickness = PolygonToolProperties.MAX_THICKNESS;
+  minThickness: number = PolygonToolProperties.MIN_THICKNESS;
+  maxThickness: number = PolygonToolProperties.MAX_THICKNESS;
 
   contourType: PolygonContourType;
   nEdges: number;

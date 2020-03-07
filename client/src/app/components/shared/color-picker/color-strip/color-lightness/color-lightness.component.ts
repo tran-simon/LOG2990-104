@@ -14,7 +14,7 @@ export class ColorLightnessComponent extends AbstractColorStripComponent {
   getFillStyle(width: number, height: number): string | CanvasGradient | CanvasPattern {
     const gradient = this.renderingContext.createLinearGradient(0, 0, width, height);
     gradient.addColorStop(0, 'black');
-    gradient.addColorStop(0.5, Color.getHslString(this.color.h, this.color.s, 0.5));
+    gradient.addColorStop(1 / 2, Color.getHslString(this.color.h, this.color.s, 1 / 2));
     gradient.addColorStop(1, 'white');
     return gradient;
   }
