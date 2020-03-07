@@ -1,22 +1,30 @@
-import { Response, Router } from 'express';
+import * as express from 'express';
 import { inject, injectable } from 'inversify';
 
 import { APIService } from '../services/api.service';
 import Types from '../types';
+import { DatabaseController } from './database.controller';
 
 @injectable()
 export class APIController {
-  router: Router;
+  app: express.Application;
+  router: express.Router;
 
-  constructor(@inject(Types.APIService) private apiService: APIService) {
+  constructor(
+    @inject(Types.APIService) private apiService: APIService,
+    @inject(Types.DatabaseController) private databaseController: DatabaseController,
+  ) {
+    this.app = express();
+
     this.configureRouter();
   }
 
   private configureRouter(): void {
-    this.router = Router();
+    this.router = express.Router();
 
-    this.router.get('/', async (res: Response) => {
-      // Send the request to the service and send the response
+    this.router.use('/database', this.databaseController.router);
+
+    this.router.get('/', async (req: express.Request, res: express.Response) => {
       res.send(this.apiService.message());
     });
   }
