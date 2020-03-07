@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
+import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
@@ -25,6 +23,7 @@ export class ToolbarComponent {
   @Output() currentToolTypeChange: EventEmitter<ToolType> = new EventEmitter<ToolType>();
 
   @Output() editorBackgroundChanged: EventEmitter<Color>;
+  @Output() guideButtonClicked: EventEmitter<boolean>;
 
   ToolType: typeof ToolType = ToolType;
   toolTypeKeys: string[] = Object.values(ToolType);
@@ -35,24 +34,21 @@ export class ToolbarComponent {
   showColorPicker: boolean;
 
   @ViewChild('drawer', { static: false })
-  readonly drawer: MatDrawer;
+  private readonly drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
-  modalIsOpened: boolean;
-  dialogRef: MatDialogRef<AbstractModalComponent>;
+  readonly toolbarIcons: Map<ToolType | string, string>;
 
-  readonly toolbarIcons: Map<ToolType, string>;
-
-  constructor(private router: Router, public editorService: EditorService, public dialog: MatDialog) {
+  constructor(private router: Router, public editorService: EditorService) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
     this.editorBackgroundChanged = new EventEmitter<Color>();
     this.showColorPicker = false;
     this.selectedColor = SelectedColorType.primary;
-    this.modalIsOpened = false;
+    this.guideButtonClicked = new EventEmitter<boolean>();
 
-    this.toolbarIcons = new Map<ToolType, string>([
+    this.toolbarIcons = new Map<ToolType | string, string>([
       [ToolType.Pen, 'edit'],
       [ToolType.Brush, 'brush'],
       [ToolType.Rectangle, 'crop_square'],
@@ -60,32 +56,40 @@ export class ToolbarComponent {
     ]);
   }
 
-  handleColorChanged(eventColor: Color): void {
-    this.color = eventColor;
-    this.showColorPicker = false;
+  toolButtonId(tool: string): string {
+    return `btn-${tool}`;
+  }
+
+  open(): void {
+    this.drawer.open();
+  }
+
+  close(): void {
     this.drawer.close();
   }
 
-  openModal(): void {
-    if (!this.modalIsOpened) {
-      this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
-
-      this.dialogRef.afterClosed().subscribe(() => {
-        this.modalIsOpened = false;
-      });
-      this.modalIsOpened = true;
-    }
+  handleColorChanged(eventColor: Color): void {
+    this.color = eventColor;
+    this.showColorPicker = false;
+    this.close();
   }
 
-  selectTool(selection: ToolType): void {
-    this.currentToolType = selection;
-    this.showColorPicker = false;
-    this.currentToolTypeChange.emit(selection);
+  openGuide(): void {
+    this.guideButtonClicked.emit(true);
+  }
+
+  selectTool(selection: string): void {
+    const type = selection as ToolType;
+    if (type) {
+      this.currentToolType = type;
+      this.showColorPicker = false;
+      this.currentToolTypeChange.emit(type);
+    }
   }
 
   editColor(selectedColorType: SelectedColorType): void {
     this.showColorPicker = true;
-    this.drawer.open();
+    this.open();
     this.selectedColor = selectedColorType;
   }
 
