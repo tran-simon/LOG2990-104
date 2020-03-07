@@ -13,21 +13,21 @@ describe('Polygon', () => {
     expect(polygon.nEdges).toBe(MIN_POLY_EDGES);
   });
   it('should be at MAX_POLY_EDGE in higher edge case', () => {
-    polygon.nEdges = 13;
+    polygon.nEdges = MAX_POLY_EDGES + 1;
     expect(polygon.nEdges).toBe(MAX_POLY_EDGES);
   });
   it('should be at MIN_POLY_EDGE in unexpected cases', () => {
     polygon.nEdges = NaN;
     expect(polygon.nEdges).toBe(MIN_POLY_EDGES);
   });
-  it('Should init with interiorAngle at 2Pi/3', () => {
-    expect(polygon.interiorAngle).toBe((2 * Math.PI) / 3);
+  it('Should init with interiorAngle at 2Pi/ nEdges', () => {
+    expect(polygon.interiorAngle).toBe((2 * Math.PI) / polygon.nEdges);
   });
   it('Should change internal angle on nEdges change', () => {
     const initialAngle = polygon.interiorAngle;
-    polygon.nEdges = 6;
+    polygon.nEdges = 2 * MIN_POLY_EDGES;
     expect(polygon.interiorAngle !== initialAngle).toBe(true);
-    expect(polygon.interiorAngle).toBe(Math.PI / 3);
+    expect(polygon.interiorAngle).toBe(Math.PI / MIN_POLY_EDGES);
   });
   it('should have positive height value on negative input', () => {
     polygon.height = -1;
@@ -40,7 +40,7 @@ describe('Polygon', () => {
   it('Should have is center at half width and half height', () => {
     polygon.width = 1;
     polygon.height = 1;
-    expect(polygon.center.x).toBe(0.5);
-    expect(polygon.center.y).toBe(0.5);
+    expect(polygon.center.x).toBe(1 / 2);
+    expect(polygon.center.y).toBe(1 / 2);
   });
 });

@@ -63,7 +63,7 @@ export class Polygon extends BaseShape {
     return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
-  constructor(origin = new Coordinate(), nEdges: number = MIN_POLY_EDGES) {
+  constructor(origin: Coordinate = new Coordinate(), nEdges: number = MIN_POLY_EDGES) {
     super('polygon');
     this.origin = origin;
     this.nEdges = nEdges;
@@ -79,13 +79,13 @@ export class Polygon extends BaseShape {
   }
 
   // Will be useful later for changing individual polygon vertex position with SelectionTool
-  transformPoint(index: number, newPoint: Coordinate) {
+  transformPoint(index: number, newPoint: Coordinate): void {
     if (index < this.points.length && !!index && !!newPoint) {
       this.points[index] = newPoint;
     }
   }
 
-  updatePoints() {
+  updatePoints(): void {
     let angle = this.interiorAngle / 2 + Math.PI / 2;
     for (let i = 0; i < this.nEdges; i++) {
       angle += this.interiorAngle;
