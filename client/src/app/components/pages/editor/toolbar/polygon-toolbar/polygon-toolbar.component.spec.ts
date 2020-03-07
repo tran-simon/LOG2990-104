@@ -4,7 +4,7 @@ import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from '../../../../../services/editor.service';
 import { PolygonToolbarComponent } from './polygon-toolbar.component';
 
-xdescribe('PolygonToolbarComponent', () => {
+describe('PolygonToolbarComponent', () => {
   let component: PolygonToolbarComponent;
   let fixture: ComponentFixture<PolygonToolbarComponent>;
 

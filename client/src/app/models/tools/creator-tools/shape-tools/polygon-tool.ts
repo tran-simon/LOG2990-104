@@ -16,7 +16,7 @@ export class PolygonTool extends ShapeTool<PolygonToolProperties> {
 
   protected updateProperties(): void {
     switch (this.toolProperties.contourType) {
-      case PolygonContourType.FILLEDCONTOUR:
+      case PolygonContourType.FILLED_CONTOUR:
         this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
         this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
         this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;

@@ -3,7 +3,7 @@ import { ToolType } from '../tools/tool-type';
 import { ToolProperties } from './tool-properties';
 
 export enum PolygonContourType {
-  FILLEDCONTOUR = 'Plein avec contour',
+  FILLED_CONTOUR = 'Plein avec contour',
   FILLED = 'Plein',
   CONTOUR = 'Contour',
 }
@@ -22,7 +22,7 @@ export class PolygonToolProperties extends ToolProperties {
   nEdges: number;
   constructor(
     thickness: number = PolygonToolProperties.MIN_THICKNESS,
-    contourType: PolygonContourType = PolygonContourType.FILLEDCONTOUR,
+    contourType: PolygonContourType = PolygonContourType.FILLED_CONTOUR,
     nEdge: number = MIN_POLY_EDGES,
   ) {
     super(ToolType.Polygon);

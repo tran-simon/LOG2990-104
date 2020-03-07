@@ -122,7 +122,7 @@ describe('EditorComponent', () => {
   });
 
   it('should select the polygon tool when typing 3', () => {
-    KeyboardListener.keyEvent(keyDown('3'), component['keyboardEventHandler']);
+    keyboardListener.handle(keyDown('3'));
     expect(component.currentToolType).toEqual(ToolType.Polygon);
   });
 
