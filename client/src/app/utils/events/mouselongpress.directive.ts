@@ -8,7 +8,7 @@ export class MouselongpressDirective {
   @HostBinding('class.longPress') get longPress(): EventEmitter<MouseEvent> {
     return this.longPressed;
   }
-  interval: any;
+  interval: number;
   @HostListener('mousedown', ['$event'])
   onMouseDown(e: MouseEvent): void {
     this.interval = setInterval(() => {
