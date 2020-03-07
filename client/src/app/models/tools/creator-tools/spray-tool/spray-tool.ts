@@ -21,18 +21,25 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
   handleMouseEvent(e: MouseEvent): void {
     super.handleMouseEvent(e);
     if (this.isActive) {
-      if (e.type === 'mouseup' || e.type === 'mouseleave') {
-        this.noMovementFrames = 0;
-        this.applyShape();
-      } else if (e.type === 'mousemove') {
-        this.noMovementFrames = 0;
-        this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
-        this.shape.addParticle(this.mousePosition);
-      } else if (e.type === 'mousedown') {
-        if (this.noMovementFrames >= NB_FRAME_BUFFER) {
-          this.shape.addParticle(this.lastMovePosition);
+      switch (e.type) {
+        case 'mouseup' || 'mouseleave': {
+          this.noMovementFrames = 0;
+          this.applyShape();
+          break;
         }
-        this.noMovementFrames++;
+        case 'mousemove': {
+          this.noMovementFrames = 0;
+          this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
+          this.shape.addParticle(this.mousePosition);
+          break;
+        }
+        case 'mousedown': {
+          if (this.noMovementFrames >= NB_FRAME_BUFFER) {
+            this.shape.addParticle(this.lastMovePosition);
+          }
+          this.noMovementFrames++;
+          break;
+        }
       }
     } else if (e.type === 'mousedown') {
       this.shape = this.createShape();
