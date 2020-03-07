@@ -1,15 +1,19 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
+import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
@@ -39,6 +43,7 @@ describe('EditorComponent', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
   let keyboardListener: KeyboardListener;
+  const modalDialogServiceSpy = createSpyObj('ModalDialogService', ['openByName']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -51,9 +56,18 @@ describe('EditorComponent', () => {
         RectangleToolbarComponent,
         BrushToolbarComponent,
         LineToolbarComponent,
+        CreateDrawingModalComponent,
+        UserGuideModalComponent
       ],
-      providers: [EditorService],
-    }).compileComponents();
+      providers: [EditorService,
+        {
+          provide: ModalDialogService,
+          useValue: modalDialogServiceSpy
+        }
+      ],
+    })
+      .overrideModule(BrowserDynamicTestingModule, {set: {entryComponents: [CreateDrawingModalComponent, UserGuideModalComponent]}})
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -148,7 +162,7 @@ describe('EditorComponent', () => {
   });
 
   it('can get current tool', () => {
-    const tool: Tool = { toolProperties: { type: 'toolMock' as ToolType } as ToolProperties } as Tool;
+    const tool: Tool = {toolProperties: {type: 'toolMock' as ToolType} as ToolProperties} as Tool;
     component.editorService.tools.set('toolMock' as ToolType, tool);
 
     component.currentToolType = 'toolMock' as ToolType;
@@ -175,5 +189,16 @@ describe('EditorComponent', () => {
 
     expect(rightClickSpy).toHaveBeenCalledWith(event);
     expect(event.preventDefault).toHaveBeenCalled();
+  });
+
+  it('can open modal with keyboard shortcut', () => {
+    const openModalSpy = spyOn(component, 'openModal');
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'o', ctrlKey: true}));
+    expect(openModalSpy).toHaveBeenCalled();
+  });
+
+  it('opens dialog on openModal', () => {
+    component.openModal(ModalTypes.GUIDE);
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.GUIDE);
   });
 });

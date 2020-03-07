@@ -1,8 +1,8 @@
 <app-abstract-modal>
   <div content>
     <form [formGroup]="formGroup">
-      <app-number-input allowExternalUpdatesWhenFocused=true required=true suffix="px" [min]=1 [(value)]='width' [formGroup]="formGroup">Largeur:</app-number-input>
-      <app-number-input allowExternalUpdatesWhenFocused=true required=true suffix="px" [(value)]='height' [formGroup]="formGroup">Hauteur:</app-number-input>
+      <app-number-input allowExternalUpdatesWhenFocused=true required=true suffix="px" [min]=1 [max]=9999 [(value)]='width' [formGroup]="formGroup">Largeur:</app-number-input>
+      <app-number-input allowExternalUpdatesWhenFocused=true required=true suffix="px" [min]=1 [max]=9999 [(value)]='height' [formGroup]="formGroup">Hauteur:</app-number-input>
       <app-color-picker isVertical="{{true}}" #colorpicker [formGroup]="formGroup"></app-color-picker>
     </form>
   </div>

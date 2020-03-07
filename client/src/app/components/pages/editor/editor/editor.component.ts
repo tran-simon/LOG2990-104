@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
+import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
@@ -13,9 +14,6 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  static readonly DEFAULT_WIDTH: number = 500;
-  static readonly DEFAULT_HEIGHT: number = 500;
-  static readonly DEFAULT_COLOR: Color = Color.WHITE;
   private readonly keyboardListener: KeyboardListener;
 
   @ViewChild('drawingSurface', { static: false })
@@ -26,11 +24,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
+  modalTypes: typeof ModalTypes;
 
-  constructor(private router: ActivatedRoute, public editorService: EditorService) {
-    this.surfaceColor = EditorComponent.DEFAULT_COLOR;
-    this.surfaceWidth = EditorComponent.DEFAULT_WIDTH;
-    this.surfaceHeight = EditorComponent.DEFAULT_HEIGHT;
+  constructor(private router: ActivatedRoute, public editorService: EditorService, private dialog: ModalDialogService) {
+    this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
+    this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
+    this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
+    this.modalTypes = ModalTypes;
 
     this.keyboardListener = new KeyboardListener(
       new Map<string, KeyboardEventAction>([
@@ -60,6 +60,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           () => {
             this.currentToolType = ToolType.Rectangle;
             return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('o', true),
+          () => {
+            this.openModal(ModalTypes.CREATE);
+            return true;
           },
         ],
       ]),
@@ -103,6 +110,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('contextmenu', ['$event'])
   onRightClick(e: MouseEvent): void {
     e.preventDefault();
+  }
+
+  openModal(link: ModalTypes = ModalTypes.CREATE): void {
+    this.dialog.openByName(link);
   }
 
   get currentTool(): Tool | undefined {
