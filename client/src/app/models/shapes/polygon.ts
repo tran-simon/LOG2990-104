@@ -1,4 +1,5 @@
 import { Coordinate } from '../../utils/math/coordinate';
+import { MathUtil } from '../../utils/math/math-util';
 import { BaseShape } from './base-shape';
 
 export const MIN_POLY_EDGES = 3;
@@ -6,45 +7,33 @@ export const MAX_POLY_EDGES = 12;
 
 export class Polygon extends BaseShape {
   points: Coordinate[];
-  private _interiorAngle: number; // in rad
+  private _interiorAngle: number;
 
   get interiorAngle(): number {
     return this._interiorAngle;
   }
 
   private _nEdges: number;
-
   get nEdges(): number {
     return this._nEdges;
   }
-
   set nEdges(nEdges: number) {
-    if (nEdges < MIN_POLY_EDGES || !nEdges) {
-      this._nEdges = MIN_POLY_EDGES;
-    } else if (nEdges > MAX_POLY_EDGES) {
-      this._nEdges = MAX_POLY_EDGES;
-    } else {
-      this._nEdges = nEdges;
-    }
+    this._nEdges = nEdges ? MathUtil.fit(nEdges, MIN_POLY_EDGES, MAX_POLY_EDGES) : MIN_POLY_EDGES;
     this._interiorAngle = (2 * Math.PI) / this.nEdges;
   }
 
   private _height: number;
-
   get height(): number {
     return this._height;
   }
-
   set height(height: number) {
     this._height = !height ? 0 : Math.abs(height);
   }
 
   private _width: number;
-
   get width(): number {
     return this._width;
   }
-
   set width(width: number) {
     this._width = !width ? 0 : Math.abs(width);
   }
@@ -52,7 +41,6 @@ export class Polygon extends BaseShape {
   get origin(): Coordinate {
     return this._origin;
   }
-
   set origin(c: Coordinate) {
     this._origin = c;
     this.svgNode.setAttribute('x', this._origin.x.toString());
@@ -88,9 +76,9 @@ export class Polygon extends BaseShape {
 
   drawPoints(): void {
     let sPoints = '';
-    for (const c of this.points) {
+    this.points.forEach((c: Coordinate) => {
       sPoints += c.x.toString() + ',' + c.y.toString() + ' ';
-    }
+    });
     this.svgNode.setAttribute('points', sPoints);
   }
 }
