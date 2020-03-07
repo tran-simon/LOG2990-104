@@ -7,6 +7,8 @@ import { EditorModule } from './components/pages/editor/editor.module';
 import { EditorComponent } from './components/pages/editor/editor/editor.component';
 import { HomeModule } from './components/pages/home/home.module';
 import { HomeComponent } from './components/pages/home/home/home.component';
+import { SaveDrawingModule } from './components/pages/save-drawing/save-drawing.module';
+import { SaveDrawingModalComponent } from './components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 import { UserGuideModule } from './components/pages/user-guide/user-guide.module';
 import { SharedModule } from './components/shared/shared.module';
 
@@ -17,6 +19,7 @@ import { SharedModule } from './components/shared/shared.module';
     HomeModule,
     EditorModule,
     UserGuideModule,
+    SaveDrawingModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'edit', component: EditorComponent },
@@ -24,6 +27,6 @@ import { SharedModule } from './components/shared/shared.module';
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
-  entryComponents: [UserGuideModalComponent],
+  entryComponents: [UserGuideModalComponent, SaveDrawingModalComponent],
 })
 export class AppModule {}

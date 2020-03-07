@@ -1,0 +1,26 @@
+<app-abstract-modal>
+  <div content>
+    <div id="main-container">
+      <img id="preview" src="assets/placeholder.jpg">
+      <div id="form-container">
+        <app-name-input [(value)]="name" required=true>Nom du dessin</app-name-input>
+        <div id="tag-container" *ngFor="let tag of tags; index as i">
+          <app-tag-input [(value)]="tags[i].value" required=true>Tag</app-tag-input>
+        </div>
+        <div id="tag-button-container">
+          <button mat-icon-button (click)="removeTag()">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-icon-button (click)="addTag()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div actions>
+    <button id="btn-save" mat-stroked-button (click)="saveDrawing()">
+      Sauvegarder
+    </button>
+  </div>
+</app-abstract-modal>

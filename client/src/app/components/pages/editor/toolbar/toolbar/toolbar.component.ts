@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { MatDialog, MatDialogRef, MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 
+import { SaveDrawingModalComponent } from 'src/app/components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
@@ -66,9 +67,18 @@ export class ToolbarComponent {
     this.drawer.close();
   }
 
-  openModal(): void {
+  openModal(link: string): void {
     if (!this.modalIsOpened) {
-      this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
+      switch (link) {
+        case 'help':
+          this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
+          break;
+        case 'save':
+          this.dialogRef = this.dialog.open(SaveDrawingModalComponent, {});
+          break;
+        default:
+          return;
+      }
 
       this.dialogRef.afterClosed().subscribe(() => {
         this.modalIsOpened = false;
