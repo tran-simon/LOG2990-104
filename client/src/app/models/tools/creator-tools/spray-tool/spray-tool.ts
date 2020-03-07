@@ -1,37 +1,50 @@
 import { EditorService } from '../../../../services/editor.service';
+import { Coordinate } from '../../../../utils/math/coordinate';
 import { CompositeParticle } from '../../../shapes/composite-particle';
 import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
 import { CreatorTool } from '../creator-tool';
 
 export class SprayTool extends CreatorTool<SprayToolProperties> {
   shape: CompositeParticle;
+  private noMovementFrames: number;
+  private lastMovePosition: Coordinate;
 
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new SprayToolProperties();
+    this.noMovementFrames = 0;
+    this.lastMovePosition = new Coordinate();
   }
 
   handleMouseEvent(e: MouseEvent): void {
     super.handleMouseEvent(e);
     if (this.isActive) {
       if (e.type === 'mouseup' || e.type === 'mouseleave') {
+        this.noMovementFrames = 0;
         this.applyShape();
       } else if (e.type === 'mousemove') {
-        this.shape.addParticle(this.mousePosition, this.toolProperties.frequency);
+        this.noMovementFrames = 0;
+        this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
+        this.shape.addParticle(this.mousePosition);
+      } else if (e.type === 'mousedown') {
+        if (this.noMovementFrames >= 5) {
+          this.shape.addParticle(this.lastMovePosition);
+        }
+        this.noMovementFrames++;
       }
     } else if (e.type === 'mousedown') {
       this.shape = this.createShape();
       this.isActive = true;
+      this.lastMovePosition = this.mousePosition;
       this.updateProperties();
       this.addShape();
-      this.shape.addParticle(this.mousePosition, this.toolProperties.frequency);
     }
   }
 
   protected updateProperties(): void {
     if (this.shape) {
       this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
-      this.shape.shapeProperties.thickness = this.toolProperties.radius;
+      this.shape.shapeProperties.strokeWidth = this.toolProperties.radius;
       this.shape.updateProperties();
     }
   }

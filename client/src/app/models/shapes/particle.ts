@@ -7,8 +7,9 @@ export class Particle extends BaseShape {
     return this._radius;
   }
   set radius(r: number) {
-    this._radius = !r ? 0 : Math.abs(r);
-    this.svgNode.setAttribute('r', this.radius.toString());
+    this._radius = !r ? 1 : Math.abs(r);
+    this.svgNode.setAttribute('width', this.radius.toString());
+    this.svgNode.setAttribute('height', this.radius.toString());
   }
 
   get origin(): Coordinate {
@@ -16,13 +17,14 @@ export class Particle extends BaseShape {
   }
   set origin(c: Coordinate) {
     this._origin = c;
-    this.svgNode.setAttribute('cx', this._origin.x.toString());
-    this.svgNode.setAttribute('cy', this._origin.y.toString());
+    this.svgNode.setAttribute('x', this._origin.x.toString());
+    this.svgNode.setAttribute('y', this._origin.y.toString());
   }
 
-  constructor(origin = new Coordinate(), radius: number = 0) {
-    super('circle');
+  constructor(origin = new Coordinate(), radius: number = 1) {
+    super('rect');
     this.radius = radius;
     this.origin = origin;
+    this.updateProperties();
   }
 }

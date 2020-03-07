@@ -75,6 +75,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.currentTool.handleMouseEvent(e);
     }
   }
+  // TODO Mousehandler
+  onLongPress(e: MouseEvent) {
+    if (this.currentTool && this.currentToolType === ToolType.Spray) {
+      this.currentTool.handleMouseEvent(e);
+    }
+  }
 
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;

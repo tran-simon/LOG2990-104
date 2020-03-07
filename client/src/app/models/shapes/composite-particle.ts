@@ -20,7 +20,7 @@ export class CompositeParticle extends BaseShape {
     this._origin = c;
   }
 
-  constructor(origin: Coordinate = new Coordinate(), radius: number = 30) {
+  constructor(origin: Coordinate = new Coordinate(), radius: number = 1) {
     super('g');
     this.radius = radius;
     this.origin = origin;
@@ -38,19 +38,15 @@ export class CompositeParticle extends BaseShape {
     if (this.particles) {
       this.particles.forEach((particle) => {
         particle.shapeProperties.fillColor = this.shapeProperties.fillColor;
-        particle.shapeProperties.strokeWidth = 0;
-        particle.radius = this.shapeProperties.thickness / 10;
+        particle.radius = this.shapeProperties.thickness;
         particle.updateProperties();
       });
     }
   }
 
-  addParticle(c: Coordinate, frequency: number): void {
-    let particle: Particle;
-    for (let i = 0; i < frequency; i++) {
-      particle = new Particle(this.genRandomPosition(c));
-      this.svgNode.appendChild(particle.svgNode);
-      this.particles.push(particle);
-    }
+  addParticle(c: Coordinate): void {
+    const particle = new Particle(this.genRandomPosition(c));
+    this.particles.push(particle);
+    this.svgNode.appendChild(particle.svgNode);
   }
 }
