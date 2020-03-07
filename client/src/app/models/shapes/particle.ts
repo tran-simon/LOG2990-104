@@ -21,10 +21,9 @@ export class Particle extends BaseShape {
     this.svgNode.setAttribute('y', this._origin.y.toString());
   }
 
-  constructor(origin = new Coordinate(), radius: number = 1) {
+  constructor(origin: Coordinate = new Coordinate(), radius: number = 1) {
     super('rect');
     this.radius = radius;
     this.origin = origin;
-    this.updateProperties();
   }
 }

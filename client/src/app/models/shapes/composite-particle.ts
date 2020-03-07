@@ -38,6 +38,7 @@ export class CompositeParticle extends BaseShape {
     if (this.particles) {
       this.particles.forEach((particle) => {
         particle.shapeProperties.fillColor = this.shapeProperties.fillColor;
+        particle.shapeProperties.strokeColor = this.shapeProperties.strokeColor;
         particle.radius = this.shapeProperties.thickness;
         particle.updateProperties();
       });
@@ -47,6 +48,7 @@ export class CompositeParticle extends BaseShape {
   addParticle(c: Coordinate): void {
     const particle = new Particle(this.genRandomPosition(c));
     this.particles.push(particle);
+    this.updateProperties();
     this.svgNode.appendChild(particle.svgNode);
   }
 }

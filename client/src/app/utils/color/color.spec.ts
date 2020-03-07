@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { ColorComponents } from 'src/app/utils/color/color-components';
 import { Color } from './color';
 

@@ -4,6 +4,8 @@ import { CompositeParticle } from '../../../shapes/composite-particle';
 import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
 import { CreatorTool } from '../creator-tool';
 
+export const NB_FRAME_BUFFER = 5;
+
 export class SprayTool extends CreatorTool<SprayToolProperties> {
   shape: CompositeParticle;
   private noMovementFrames: number;
@@ -27,7 +29,7 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
         this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
         this.shape.addParticle(this.mousePosition);
       } else if (e.type === 'mousedown') {
-        if (this.noMovementFrames >= 5) {
+        if (this.noMovementFrames >= NB_FRAME_BUFFER) {
           this.shape.addParticle(this.lastMovePosition);
         }
         this.noMovementFrames++;
@@ -44,6 +46,7 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
   protected updateProperties(): void {
     if (this.shape) {
       this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
+      this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
       this.shape.shapeProperties.strokeWidth = this.toolProperties.radius;
       this.shape.updateProperties();
     }

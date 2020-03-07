@@ -1,27 +1,24 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, HostBinding, HostListener, Output } from '@angular/core';
 
 @Directive({
   selector: '[mouselongpress]',
 })
 export class MouselongpressDirective {
-  interval: any;
-
-  @Input() frequency = 1;
-  @Output() longPressed = new EventEmitter<MouseEvent>();
-  @HostBinding('class.longPress') get longPress() {
+  @Output() longPressed: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @HostBinding('class.longPress') get longPress(): EventEmitter<MouseEvent> {
     return this.longPressed;
   }
-
+  interval: any;
   @HostListener('mousedown', ['$event'])
-  onMouseDown(e: MouseEvent) {
+  onMouseDown(e: MouseEvent): void {
     this.interval = setInterval(() => {
       this.longPressed.emit(e);
-    }, 0.5);
+    }, 1);
   }
 
   @HostListener('mouseup')
   @HostListener('mouseleave')
-  endPress() {
+  endPress(): void {
     clearInterval(this.interval);
   }
 }
