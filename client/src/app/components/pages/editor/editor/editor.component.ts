@@ -16,7 +16,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 export class EditorComponent implements OnInit, AfterViewInit {
   private readonly keyboardListener: KeyboardListener;
 
-  @ViewChild('drawingSurface', { static: false })
+  @ViewChild('drawingSurface', {static: false})
   drawingSurface: DrawingSurfaceComponent;
 
   private _currentToolType: ToolType;
@@ -65,7 +65,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         [
           KeyboardListener.getIdentifier('o', true),
           () => {
-            this.openModal(ModalTypes.CREATE);
+            this.openCreateModal();
             return true;
           },
         ],
@@ -112,8 +112,19 @@ export class EditorComponent implements OnInit, AfterViewInit {
     e.preventDefault();
   }
 
-  openModal(link: ModalTypes = ModalTypes.CREATE): void {
-    this.dialog.openByName(link);
+  openGuide(): void {
+    this.dialog.openByName(ModalTypes.GUIDE);
+  }
+
+  openCreateModal(): void {
+    const confirmDialog = this.dialog.openByName(ModalTypes.CONFIRM);
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        if (result) {
+          this.dialog.openByName(ModalTypes.CREATE);
+        }
+      });
+    }
   }
 
   get currentTool(): Tool | undefined {

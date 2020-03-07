@@ -3,7 +3,7 @@
     [(currentToolType)]=currentToolType
     (editorBackgroundChanged)="changeBackground($event)"
     (mouseleave)="toolbar.close()"
-    (guideButtonClicked)="openModal(modalTypes.GUIDE)"
+    (guideButtonClicked)="openGuide()"
     (mouseenter)='toolbar.open()'
   ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"

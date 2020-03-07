@@ -1,30 +1,32 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import { ConfirmModalComponent } from 'src/app/components/shared/abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
 
 export enum ModalTypes {
   CREATE = 'create',
   GUIDE = 'help',
+  CONFIRM = 'confirm',
 }
 @Injectable({
   providedIn: 'root'
 })
 export class ModalDialogService extends MatDialog {
 
-  openByName(dialogName: ModalTypes): void {
+  openByName(dialogName: ModalTypes): MatDialogRef<AbstractModalComponent> | null {
     if (!this.modalIsOpened) {
       switch (dialogName) {
         case ModalTypes.CREATE:
-          this.open(CreateDrawingModalComponent, {});
-          break;
+          return this.open(CreateDrawingModalComponent, {});
         case ModalTypes.GUIDE:
-          this.open(UserGuideModalComponent, {});
-          break;
-        default:
-          return;
+          return this.open(UserGuideModalComponent, {});
+        case ModalTypes.CONFIRM:
+          return this.open(ConfirmModalComponent, {});
       }
     }
+    return null;
   }
 
   get modalIsOpened(): boolean {

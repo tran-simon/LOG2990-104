@@ -191,14 +191,14 @@ describe('EditorComponent', () => {
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('can open modal with keyboard shortcut', () => {
-    const openModalSpy = spyOn(component, 'openModal');
+  it('can open create modal with keyboard shortcut', () => {
+    const openModalSpy = spyOn(component, 'openCreateModal');
     window.dispatchEvent(new KeyboardEvent('keydown', {key: 'o', ctrlKey: true}));
     expect(openModalSpy).toHaveBeenCalled();
   });
 
-  it('opens dialog on openModal', () => {
-    component.openModal(ModalTypes.GUIDE);
+  it('opens dialog on openGuide', () => {
+    component.openGuide();
     expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.GUIDE);
   });
 });
