@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 import { Router } from '@angular/router';
@@ -11,11 +10,9 @@ import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolb
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { UserGuideModule } from 'src/app/components/pages/user-guide/user-guide.module';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { Color } from 'src/app/utils/color/color';
-import Spy = jasmine.Spy;
 import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
 
 describe('ToolbarComponent', () => {
@@ -24,21 +21,6 @@ describe('ToolbarComponent', () => {
 
   let router: Router;
 
-  let dialogOpenSpy: Spy;
-  let afterClosedFunc: () => void;
-  const matDialogRefMock = {
-    close: () => {
-      afterClosedFunc();
-    },
-    afterClosed: () => {
-      return {
-        subscribe: (func: () => void) => {
-          afterClosedFunc = func;
-        },
-      };
-    },
-  } as MatDialogRef<AbstractModalComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule, UserGuideModule],
@@ -46,9 +28,9 @@ describe('ToolbarComponent', () => {
         ToolbarComponent,
         PenToolbarComponent,
         BrushToolbarComponent,
-        PolygonToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        PolygonToolbarComponent,
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
@@ -59,8 +41,6 @@ describe('ToolbarComponent', () => {
     fixture = TestBed.createComponent(ToolbarComponent);
     router = TestBed.get(Router);
     component = fixture.componentInstance;
-
-    dialogOpenSpy = spyOn(component.dialog, 'open').and.returnValue(matDialogRefMock);
 
     fixture.detectChanges();
   });
@@ -92,6 +72,14 @@ describe('ToolbarComponent', () => {
     fixture.detectChanges();
 
     expect(component.currentToolType).toBe(ToolType.Rectangle);
+  });
+
+  it('should select the polygon tool', () => {
+    const polygonButton = fixture.debugElement.nativeElement.querySelector('#btn-polygon-tool');
+    polygonButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentToolType).toBe(ToolType.Polygon);
   });
 
   it('should select the line tool', () => {
@@ -157,27 +145,11 @@ describe('ToolbarComponent', () => {
   });
 
   it('should open the help modal when clicking the help button', () => {
+    const guideButtonClickedSpy = spyOn(component.guideButtonClicked, 'emit');
     const helpButton = fixture.debugElement.nativeElement.querySelector('#help-button');
     helpButton.click();
 
-    expect(dialogOpenSpy).toHaveBeenCalled();
-  });
-
-  it('should not open modal if already opened', () => {
-    component.openModal();
-    component.openModal();
-    expect(dialogOpenSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should open second modal after first one is closed', () => {
-    component.openModal();
-    expect(component.modalIsOpened).toEqual(true);
-
-    component.dialogRef.close();
-    expect(component.modalIsOpened).toEqual(false);
-
-    component.openModal();
-    expect(dialogOpenSpy).toHaveBeenCalledTimes(2);
+    expect(guideButtonClickedSpy).toHaveBeenCalled();
   });
 
   it('can get toolbar icons', () => {
