@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
@@ -20,6 +20,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
+
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
   private _currentToolType: ToolType;
 
@@ -59,6 +61,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           KeyboardListener.getIdentifier('1'),
           () => {
             this.currentToolType = ToolType.Rectangle;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('i'),
+          () => {
+            this.currentToolType = ToolType.Pipette;
             return false;
           },
         ],
@@ -102,6 +111,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(e: MouseEvent): void {
+    this.handleMouseEvent(e);
     e.preventDefault();
   }
 

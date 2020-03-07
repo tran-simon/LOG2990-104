@@ -8,6 +8,7 @@
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
     (dblclick)="handleMouseEvent($event)"
     (mousedown)="handleMouseEvent($event)"
+    (click)="handleMouseEvent($event)"
     (mousemove)="handleMouseEvent($event)"
     (mouseleave)="handleMouseEvent($event)"
   ></app-drawing-surface>

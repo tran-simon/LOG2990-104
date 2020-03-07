@@ -20,7 +20,7 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
 
   @Input() indicatorSize: number;
   @Input() indicatorLineWidth: number;
-  canvas: ElementRef<HTMLCanvasElement>;
+  abstract canvas: ElementRef<HTMLCanvasElement>;
   renderingContext: CanvasRenderingContext2D;
   mouseIsDown: boolean;
 

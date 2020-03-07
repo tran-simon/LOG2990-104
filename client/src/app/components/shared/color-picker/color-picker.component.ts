@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
-import { ColorHistoryComponent } from 'src/app/components/shared/color-picker/color-history/color-history.component';
 import { defaultErrorMessages, ErrorMessages } from 'src/app/components/shared/inputs/error-messages';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { ColorComponents } from 'src/app/utils/color/color-components';
 import { Coordinate } from 'src/app/utils/math/coordinate';
@@ -122,7 +122,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   confirm(): void {
     const colorHasChanged = this.initialColor.rgbString !== this.color.rgbString;
     if (colorHasChanged) {
-      ColorHistoryComponent.push(this.color.opaqueColor);
+      ColorsService.pushHistory(this.color.opaqueColor);
     }
     this.initialColor = this.color;
     this.colorChanged.emit(this.color);
