@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { HttpClientModule } from '@angular/common/http';
 import {
   MatButtonModule,
   MatDialogModule,
@@ -44,6 +45,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     MatExpansionModule,
     MatDividerModule,
     MatListModule,
+    HttpClientModule,
   ],
   declarations: [
     AbstractModalComponent,

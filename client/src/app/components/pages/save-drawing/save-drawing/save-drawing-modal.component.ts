@@ -3,6 +3,8 @@ import { MatDialogRef } from '@angular/material';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/tag-input.component';
 import { Drawing } from 'src/app/models/drawing';
+import { APIService } from 'src/app/services/api.service';
+import { EditorService } from 'src/app/services/editor.service';
 
 @Component({
   selector: 'app-save-drawing-modal',
@@ -13,7 +15,11 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
   tags: TagInputComponent[];
   name: string;
 
-  constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
+  constructor(
+    private apiService: APIService,
+    private editorService: EditorService,
+    public dialogRef: MatDialogRef<AbstractModalComponent>,
+  ) {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
     this.name = '';
@@ -26,8 +32,11 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
       tagValues.push(tag.value);
     });
 
-    const drawing = new Drawing(this.name, tagValues, '');
-    console.log(drawing);
+    const data = JSON.stringify(this.editorService.shapes);
+    const drawing = new Drawing(this.name, tagValues, data);
+
+    this.apiService.uploadDrawing(drawing);
+
     this.dialogRef.close();
   }
 
