@@ -156,19 +156,19 @@ describe('ToolbarComponent', () => {
   });
 
   it('should not open modal if already opened', () => {
-    component.openModal();
-    component.openModal();
+    component.openModal('help');
+    component.openModal('help');
     expect(dialogOpenSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should open second modal after first one is closed', () => {
-    component.openModal();
+    component.openModal('help');
     expect(component.modalIsOpened).toEqual(true);
 
     component.dialogRef.close();
     expect(component.modalIsOpened).toEqual(false);
 
-    component.openModal();
+    component.openModal('help');
     expect(dialogOpenSpy).toHaveBeenCalledTimes(2);
   });
 
