@@ -12,12 +12,9 @@ describe('ConfirmModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfirmModalComponent, AbstractModalComponent],
-      providers: [
-        { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
-      ],
-    })
-    .compileComponents();
+      declarations: [ConfirmModalComponent, AbstractModalComponent],
+      providers: [{ provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

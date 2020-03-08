@@ -22,10 +22,11 @@ import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
+import { PolygonToolbarComponent } from '../toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
-import { EditorComponent } from './editor.component';
 
 export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
@@ -64,6 +65,7 @@ describe('EditorComponent', () => {
         LineToolbarComponent,
         CreateDrawingModalComponent,
         UserGuideModalComponent,
+        PolygonToolbarComponent,
         SprayToolbarComponent,
       ],
       providers: [
@@ -145,6 +147,11 @@ describe('EditorComponent', () => {
   it('should select the pipette tool when typing i', () => {
     keyboardListener.handle(keyDown('i'));
     expect(component.currentToolType).toEqual(ToolType.Pipette);
+  });
+
+  it('should select the polygon tool when typing 3', () => {
+    keyboardListener.handle(keyDown('3'));
+    expect(component.currentToolType).toEqual(ToolType.Polygon);
   });
 
   it('should select the line tool', () => {

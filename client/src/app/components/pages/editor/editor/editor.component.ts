@@ -42,6 +42,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           },
         ],
         [
+          KeyboardListener.getIdentifier('3'),
+          () => {
+            this.currentToolType = ToolType.Polygon;
+            return false;
+          },
+        ],
+        [
           KeyboardListener.getIdentifier('a'),
           () => {
             this.currentToolType = ToolType.Spray;

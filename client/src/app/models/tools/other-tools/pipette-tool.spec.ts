@@ -13,6 +13,7 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { SelectedColorType } from 'src/app/services/selected-color-type';
 import { Color } from 'src/app/utils/color/color';
+import { PolygonToolbarComponent } from '../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { SprayToolbarComponent } from '../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 
 describe('PipetteTool', () => {
@@ -28,6 +29,7 @@ describe('PipetteTool', () => {
         RectangleToolbarComponent,
         SprayToolbarComponent,
         LineToolbarComponent,
+        PolygonToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],

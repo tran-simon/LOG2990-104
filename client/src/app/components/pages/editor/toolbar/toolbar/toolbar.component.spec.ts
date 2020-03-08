@@ -13,6 +13,7 @@ import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/use
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { Color } from 'src/app/utils/color/color';
+import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
 import { SprayToolbarComponent } from '../spray-toolbar/spray-toolbar.component';
 
 describe('ToolbarComponent', () => {
@@ -30,6 +31,7 @@ describe('ToolbarComponent', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        PolygonToolbarComponent,
         SprayToolbarComponent,
       ],
     })
@@ -72,6 +74,14 @@ describe('ToolbarComponent', () => {
     fixture.detectChanges();
 
     expect(component.currentToolType).toBe(ToolType.Rectangle);
+  });
+
+  it('should select the polygon tool', () => {
+    const polygonButton = fixture.debugElement.nativeElement.querySelector('#btn-polygon-tool');
+    polygonButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentToolType).toBe(ToolType.Polygon);
   });
 
   it('should select the line tool', () => {

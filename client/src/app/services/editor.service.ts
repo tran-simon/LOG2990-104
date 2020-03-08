@@ -9,6 +9,7 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { ColorsService } from 'src/app/services/colors.service';
+import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '../models/tools/creator-tools/spray-tool/spray-tool';
 
 @Injectable({
@@ -38,6 +39,7 @@ export class EditorService {
     this.tools.set(ToolType.Rectangle, new RectangleTool(this));
     this.tools.set(ToolType.Line, new LineTool(this));
     this.tools.set(ToolType.Pipette, new PipetteTool(this));
+    this.tools.set(ToolType.Polygon, new PolygonTool(this));
     this.tools.set(ToolType.Spray, new SprayTool(this));
   }
 
