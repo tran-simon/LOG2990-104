@@ -1,3 +1,4 @@
+/* tslint:disable: no-magic-numbers */
 import { MAX_POLY_EDGES, MIN_POLY_EDGES, Polygon } from './polygon';
 
 describe('Polygon', () => {
@@ -25,9 +26,9 @@ describe('Polygon', () => {
   });
   it('Should change internal angle on nEdges change', () => {
     const initialAngle = polygon.interiorAngle;
-    polygon.nEdges = 2 * MIN_POLY_EDGES;
+    polygon.nEdges = 6;
     expect(polygon.interiorAngle !== initialAngle).toBe(true);
-    expect(polygon.interiorAngle).toBe(Math.PI / MIN_POLY_EDGES);
+    expect(polygon.interiorAngle).toBe(Math.PI / 3);
   });
   it('should have positive height value on negative input', () => {
     polygon.height = -1;
@@ -40,7 +41,7 @@ describe('Polygon', () => {
   it('Should have is center at half width and half height', () => {
     polygon.width = 1;
     polygon.height = 1;
-    expect(polygon.center.x).toBe(1 / 2);
-    expect(polygon.center.y).toBe(1 / 2);
+    expect(polygon.center.x).toBe(0.5);
+    expect(polygon.center.y).toBe(0.5);
   });
 });

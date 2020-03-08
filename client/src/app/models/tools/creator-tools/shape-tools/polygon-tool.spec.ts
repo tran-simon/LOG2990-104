@@ -41,12 +41,12 @@ describe('PolygonTool', () => {
   }));
 
   beforeEach(() => {
-    selectedColorsService = new ColorsService();
     fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
     properties = new PolygonToolProperties();
     polygonTool = new PolygonTool(fixture.componentInstance.editorService);
     polygonTool.toolProperties = properties;
+    selectedColorsService = new ColorsService();
   });
 
   it('can initialize new Polygon', () => {
