@@ -125,7 +125,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   openSave(): void {
-    this.dialog.openByName(ModalTypes.SAVE);
+    this.dialog.openByName(ModalType.SAVE);
   }
 
   openCreateModal(): void {

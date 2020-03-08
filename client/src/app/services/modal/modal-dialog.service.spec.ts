@@ -4,6 +4,7 @@ import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
+import { SaveDrawingModalComponent } from 'src/app/components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { ConfirmModalComponent } from 'src/app/components/shared/abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
@@ -55,6 +56,11 @@ describe('ModalDialogService', () => {
   it('can open confirm dialog', () => {
     service.openByName(ModalType.CONFIRM);
     expect(openSpy).toHaveBeenCalledWith(ConfirmModalComponent, {});
+  });
+
+  it('can open save dialog', () => {
+    service.openByName(ModalType.SAVE);
+    expect(openSpy).toHaveBeenCalledWith(SaveDrawingModalComponent, {});
   });
 
   it('should open second modal after first one is closed', () => {
