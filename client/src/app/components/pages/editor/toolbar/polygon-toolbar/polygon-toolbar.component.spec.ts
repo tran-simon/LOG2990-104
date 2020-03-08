@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from '../../../../../services/editor.service';
 import { PolygonToolbarComponent } from './polygon-toolbar.component';
 
