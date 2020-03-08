@@ -7,21 +7,6 @@ import { MathUtil } from 'src/app/utils/math/math-util';
   providedIn: 'root',
 })
 export class ColorsService {
-  private _colors: Color[] = [Color.WHITE, Color.BLACK];
-
-  swapColors(): void {
-    const tempColor = this.secondaryColor;
-    this.secondaryColor = this.primaryColor;
-    this.primaryColor = tempColor;
-  }
-
-  getColor(index: SelectedColorType): Color {
-    return this._colors[MathUtil.fit(index)];
-  }
-
-  setColorByType(color: Color, type: SelectedColorType): void {
-    this._colors[MathUtil.fit(type)] = color;
-  }
 
   get primaryColor(): Color {
     return this.getColor(SelectedColorType.primary);
@@ -37,5 +22,41 @@ export class ColorsService {
 
   set secondaryColor(color: Color) {
     this.setColorByType(color, SelectedColorType.secondary);
+  }
+  static readonly MAX_HISTORY_LENGTH: number = 10;
+  private static COLOR_HISTORY: Color[] = new Array<Color>(ColorsService.MAX_HISTORY_LENGTH).fill(Color.WHITE);
+
+  private _colors: Color[] = [Color.WHITE, Color.BLACK];
+
+  static peekHistory(): Color | undefined {
+    return this.COLOR_HISTORY.length !== 0 ? this.COLOR_HISTORY[this.COLOR_HISTORY.length - 1] : undefined;
+  }
+
+  static pushHistory(color: Color): Color | undefined {
+    return this.COLOR_HISTORY.push(color) > this.MAX_HISTORY_LENGTH ? this.COLOR_HISTORY.shift() : undefined;
+  }
+  static getColorHistory(): Color[] {
+    return this.COLOR_HISTORY;
+  }
+
+  swapColors(): void {
+    const tempColor = this.secondaryColor;
+    this.secondaryColor = this.primaryColor;
+    this.primaryColor = tempColor;
+  }
+
+  getColor(index: SelectedColorType): Color {
+    return this._colors[MathUtil.fit(index)];
+  }
+
+  setColorByType(color: Color, type: SelectedColorType): void {
+    this._colors[MathUtil.fit(type)] = color;
+  }
+
+  setColorByTypeAndUpdateHistory(color: Color, type: SelectedColorType): void {
+    this.setColorByType(color, type);
+    if (ColorsService.peekHistory() !== color.opaqueColor) {
+      ColorsService.pushHistory(color.opaqueColor);
+    }
   }
 }

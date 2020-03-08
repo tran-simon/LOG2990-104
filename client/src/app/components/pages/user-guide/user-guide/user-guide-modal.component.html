@@ -314,10 +314,10 @@
 
       <div>
         <button mat-button id="prevButton" (click)="previousSubject()"
-          [disabled]='selectedSubject === subjects.Welcome'
+          [disabled]='disablePreviousButton'
         >précédent</button>
         <button mat-button id="nextButton" (click)="nextSubject()"
-          [disabled]='selectedSubject === subjects.Color'
+          [disabled]='disableNextButton'
         >suivant</button>
       </div>
 
