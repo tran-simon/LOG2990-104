@@ -16,9 +16,9 @@ import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/strok
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
 import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
@@ -45,7 +45,7 @@ export const keyUp = (key: string, shiftKey: boolean = false): KeyboardEvent => 
 describe('EditorComponent', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
-  let keyboardListener: KeyboardListener;
+  let keyboardListener: KeyboardListenerService;
   const modalDialogServiceSpy = createSpyObj('ModalDialogService', {
     openByName: {afterClosed: () => of(true)}
   });

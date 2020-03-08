@@ -1,10 +1,10 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class Tool<T = ToolProperties> {
-  protected keyboardListener: KeyboardListener;
+  protected keyboardListener: KeyboardListenerService;
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
@@ -12,7 +12,7 @@ export abstract class Tool<T = ToolProperties> {
   protected constructor(editorService: EditorService) {
     this.editorService = editorService;
     this._mousePosition = new Coordinate();
-    this.keyboardListener = new KeyboardListener();
+    this.keyboardListener = new KeyboardListenerService();
   }
   private _mousePosition: Coordinate;
   protected editorService: EditorService;

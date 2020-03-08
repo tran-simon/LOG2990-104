@@ -4,9 +4,9 @@ export type KeyboardEventAction = (event: KeyboardEvent) => boolean;
 export type KeyboardEventsHandlingMap = Map<string, KeyboardEventAction>;
 
 @Injectable()
-export class KeyboardListener {
-  constructor(){
-    this.keyboardEventsHandlingMap = new Map<string, KeyboardEventAction>()
+export class KeyboardListenerService {
+  constructor() {
+    this.keyboardEventsHandlingMap = new Map<string, KeyboardEventAction>();
   }
 
   defaultEventAction: KeyboardEventAction;
@@ -30,7 +30,7 @@ export class KeyboardListener {
   }
 
   handle(event: KeyboardEvent): boolean {
-    const func = this.keyboardEventsHandlingMap.get(KeyboardListener.getIdentifierFromKeyboardEvent(event));
+    const func = this.keyboardEventsHandlingMap.get(KeyboardListenerService.getIdentifierFromKeyboardEvent(event));
     const success = func ? func(event) : this.defaultEventAction ? this.defaultEventAction(event) : false;
 
     if (success) {

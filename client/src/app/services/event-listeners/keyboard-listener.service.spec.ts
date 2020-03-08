@@ -1,22 +1,22 @@
 /* tslint:disable:no-string-literal */
-import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardEventAction, KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
 import createSpy = jasmine.createSpy;
 import Spy = jasmine.Spy;
 import createSpyObj = jasmine.createSpyObj;
 
-describe('KeyboardListener', () => {
+describe('KeyboardListenerService', () => {
   let preventDefaultSpy: Spy;
   const preventDefault = () => {
     preventDefaultSpy();
   };
 
-  let keyboardListener: KeyboardListener;
+  let keyboardListener: KeyboardListenerService;
 
   beforeEach(() => {
     preventDefaultSpy = createSpy('preventDefaultSpy');
     preventDefaultSpy.calls.reset();
 
-    keyboardListener = new KeyboardListener();
+    keyboardListener = new KeyboardListenerService();
     keyboardListener['keyboardEventsHandlingMap'].set('c_keydown', () => false);
     keyboardListener['keyboardEventsHandlingMap'].set('x_keydown', () => true);
     keyboardListener['keyboardEventsHandlingMap'].set('z_keydown', () => false);
@@ -56,7 +56,7 @@ describe('KeyboardListener', () => {
       key: 'b',
       preventDefault,
     } as KeyboardEvent;
-    const identifier = KeyboardListener.getIdentifierFromKeyboardEvent(event);
+    const identifier = KeyboardListenerService.getIdentifierFromKeyboardEvent(event);
 
     expect(keyboardListener['keyboardEventsHandlingMap'].get(identifier)).toBeUndefined();
     expect(keyboardListener.handle(event)).toEqual(false);
@@ -68,7 +68,7 @@ describe('KeyboardListener', () => {
       key: 'c',
       preventDefault,
     } as KeyboardEvent;
-    const identifier = KeyboardListener.getIdentifierFromKeyboardEvent(event);
+    const identifier = KeyboardListenerService.getIdentifierFromKeyboardEvent(event);
 
     expect(keyboardListener['keyboardEventsHandlingMap'].get(identifier)).toBeDefined();
     expect(keyboardListener.handle(event)).toEqual(false);
@@ -105,8 +105,8 @@ describe('KeyboardListener', () => {
   });
 
   it('can get identifier', () => {
-    expect(KeyboardListener.getIdentifier('key', true, true, 'type')).toEqual('ctrl_shift_key_type');
-    expect(KeyboardListener.getIdentifier('key1')).toEqual('key1_keydown');
+    expect(KeyboardListenerService.getIdentifier('key', true, true, 'type')).toEqual('ctrl_shift_key_type');
+    expect(KeyboardListenerService.getIdentifier('key1')).toEqual('key1_keydown');
   });
 
   it('can get identifier from keyboard event', () => {
@@ -116,7 +116,7 @@ describe('KeyboardListener', () => {
       type: 'TYPE',
     } as KeyboardEvent;
 
-    expect(KeyboardListener.getIdentifierFromKeyboardEvent(event)).toEqual('ctrl_KEY_TYPE');
+    expect(KeyboardListenerService.getIdentifierFromKeyboardEvent(event)).toEqual('ctrl_KEY_TYPE');
   });
 
   it('can add event', () => {

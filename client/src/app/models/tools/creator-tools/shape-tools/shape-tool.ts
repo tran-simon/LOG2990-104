@@ -1,8 +1,8 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { ToolProperties } from '../../../tool-properties/tool-properties';
 
@@ -18,14 +18,14 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     this.forceEqualDimensions = false;
     this.keyboardListener.addEvents([
       [
-        KeyboardListener.getIdentifier('Shift', false, true),
+        KeyboardListenerService.getIdentifier('Shift', false, true),
         () => {
           this.setEqualDimensions(true);
           return false;
         },
       ],
       [
-        KeyboardListener.getIdentifier('Shift', false, false, 'keyup'),
+        KeyboardListenerService.getIdentifier('Shift', false, false, 'keyup'),
         () => {
           this.setEqualDimensions(false);
           return false;
