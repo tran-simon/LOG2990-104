@@ -23,9 +23,9 @@ import { ToolProperties } from '../../../../models/tool-properties/tool-properti
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
-import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
+import { EditorComponent } from './editor.component';
 
 export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
