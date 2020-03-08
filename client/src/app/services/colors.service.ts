@@ -7,7 +7,6 @@ import { MathUtil } from 'src/app/utils/math/math-util';
   providedIn: 'root',
 })
 export class ColorsService {
-
   get primaryColor(): Color {
     return this.getColor(SelectedColorType.primary);
   }

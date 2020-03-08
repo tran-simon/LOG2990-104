@@ -7,10 +7,9 @@ import { ConfirmModalComponent } from 'src/app/components/shared/abstract-modal/
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ModalDialogService extends MatDialog {
-
   openByName(dialogName: ModalType): MatDialogRef<AbstractModalComponent> | null {
     if (!this.modalIsOpened) {
       switch (dialogName) {

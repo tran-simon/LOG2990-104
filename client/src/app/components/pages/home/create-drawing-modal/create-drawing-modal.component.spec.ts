@@ -12,7 +12,9 @@ import createSpy = jasmine.createSpy;
 describe('CreateDrawingModalComponent', () => {
   const dialogRefCloseSpy = createSpy('close');
   const routerSpy = createSpyObj('Router', {
-    navigate: new Promise<boolean>(()=> {return;}),
+    navigate: new Promise<boolean>(() => {
+      return;
+    }),
   });
   let component: CreateDrawingModalComponent;
   let fixture: ComponentFixture<CreateDrawingModalComponent>;

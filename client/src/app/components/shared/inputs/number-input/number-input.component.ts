@@ -52,7 +52,7 @@ export class NumberInputComponent extends CustomInputComponent implements OnInit
   }
 
   makeValidators(): ValidatorFn[] {
-    const validators =  super.makeValidators();
+    const validators = super.makeValidators();
     if (this.min !== undefined) {
       validators.push(Validators.min(this.min));
     }

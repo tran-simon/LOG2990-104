@@ -16,21 +16,22 @@ describe('ModalDialogService', () => {
   let service: ModalDialogService;
   let openSpy: Spy;
 
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [SharedModule],
-    providers: [
-      Overlay,
-      Injector,
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [SharedModule],
+      providers: [Overlay, Injector],
+    }),
+  );
 
   beforeEach(() => {
     service = TestBed.get(ModalDialogService);
-    openSpy = spyOn(service, 'open').and.callFake((): MatDialogRef<any> => {
-      service.openDialogs.push({} as any);
-      return null as any;
-    });
-    spyOn(service, 'closeAll').and.callFake(()=> {
+    openSpy = spyOn(service, 'open').and.callFake(
+      (): MatDialogRef<any> => {
+        service.openDialogs.push({} as any);
+        return null as any;
+      },
+    );
+    spyOn(service, 'closeAll').and.callFake(() => {
       service.openDialogs.length = 0;
     });
   });

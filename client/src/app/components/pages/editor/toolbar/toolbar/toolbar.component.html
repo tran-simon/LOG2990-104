@@ -44,7 +44,7 @@
         <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
         <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>
         <app-line-toolbar *ngSwitchCase=ToolType.Line class='toolbar-tool-section'></app-line-toolbar>
-
+        <app-polygon-toolbar *ngSwitchCase=ToolType.Polygon class='toolbar-tool-section'></app-polygon-toolbar>
       </div>
       <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>

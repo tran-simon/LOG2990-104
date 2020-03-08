@@ -14,6 +14,7 @@ import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 
 describe('LineTool', () => {
@@ -68,6 +69,7 @@ describe('LineTool', () => {
         PenToolbarComponent,
         BrushToolbarComponent,
         RectangleToolbarComponent,
+        PolygonToolbarComponent,
         LineToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,

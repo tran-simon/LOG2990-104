@@ -21,14 +21,12 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
         KeyboardListenerService.getIdentifier('Shift', false, true),
         () => {
           this.setEqualDimensions(true);
-          return false;
         },
       ],
       [
         KeyboardListenerService.getIdentifier('Shift', false, false, 'keyup'),
         () => {
           this.setEqualDimensions(false);
-          return false;
         },
       ],
     ]);

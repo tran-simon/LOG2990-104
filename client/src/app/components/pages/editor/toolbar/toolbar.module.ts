@@ -4,11 +4,26 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { PolygonToolbarComponent } from './polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar.component';
 
 @NgModule({
-  declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+  declarations: [
+    ToolbarComponent,
+    PenToolbarComponent,
+    BrushToolbarComponent,
+    RectangleToolbarComponent,
+    LineToolbarComponent,
+    PolygonToolbarComponent,
+  ],
   imports: [SharedModule],
-  exports: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+  exports: [
+    ToolbarComponent,
+    PenToolbarComponent,
+    BrushToolbarComponent,
+    RectangleToolbarComponent,
+    LineToolbarComponent,
+    PolygonToolbarComponent,
+  ],
 })
 export class ToolbarModule {}

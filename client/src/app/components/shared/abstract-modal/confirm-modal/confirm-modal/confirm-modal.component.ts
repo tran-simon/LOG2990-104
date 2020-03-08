@@ -5,10 +5,9 @@ import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal
 @Component({
   selector: 'app-confirm-modal',
   templateUrl: './confirm-modal.component.html',
-  styleUrls: ['./confirm-modal.component.scss']
+  styleUrls: ['./confirm-modal.component.scss'],
 })
 export class ConfirmModalComponent extends AbstractModalComponent {
-
   constructor(dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
   }

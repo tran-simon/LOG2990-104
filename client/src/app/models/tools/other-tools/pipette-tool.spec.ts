@@ -14,6 +14,7 @@ import { EditorService } from 'src/app/services/editor.service';
 import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { PolygonToolbarComponent } from '../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 
 describe('PipetteTool', () => {
   let pipetteTool: PipetteTool;
@@ -27,6 +28,7 @@ describe('PipetteTool', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        PolygonToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],

@@ -13,6 +13,7 @@ import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/use
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { Color } from 'src/app/utils/color/color';
+import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -23,7 +24,14 @@ describe('ToolbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule, UserGuideModule],
-      declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+        PolygonToolbarComponent,
+      ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
       .compileComponents();
@@ -64,6 +72,14 @@ describe('ToolbarComponent', () => {
     fixture.detectChanges();
 
     expect(component.currentToolType).toBe(ToolType.Rectangle);
+  });
+
+  it('should select the polygon tool', () => {
+    const polygonButton = fixture.debugElement.nativeElement.querySelector('#btn-polygon-tool');
+    polygonButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentToolType).toBe(ToolType.Polygon);
   });
 
   it('should select the line tool', () => {

@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { PolygonToolbarComponent } from '../../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { mouseDown, mouseLeave, mouseMove, mouseUp } from '../stroke-tool.spec';
 import { PenTool } from './pen-tool';
@@ -25,6 +26,7 @@ describe('PenTool', () => {
         PenToolbarComponent,
         BrushToolbarComponent,
         RectangleToolbarComponent,
+        PolygonToolbarComponent,
         LineToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,

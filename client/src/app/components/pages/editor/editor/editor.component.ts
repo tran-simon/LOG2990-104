@@ -42,35 +42,36 @@ export class EditorComponent implements OnInit, AfterViewInit {
           KeyboardListenerService.getIdentifier('l'),
           () => {
             this.currentToolType = ToolType.Line;
-            return false;
           },
+        ],
+        [
+          KeyboardListenerService.getIdentifier('3'),
+          () => {
+            this.currentToolType = ToolType.Polygon;
+          }
         ],
         [
           KeyboardListenerService.getIdentifier('c'),
           () => {
             this.currentToolType = ToolType.Pen;
-            return false;
           },
         ],
         [
           KeyboardListenerService.getIdentifier('w'),
           () => {
             this.currentToolType = ToolType.Brush;
-            return false;
           },
         ],
         [
           KeyboardListenerService.getIdentifier('1'),
           () => {
             this.currentToolType = ToolType.Rectangle;
-            return false;
           },
         ],
         [
           KeyboardListenerService.getIdentifier('i'),
           () => {
             this.currentToolType = ToolType.Pipette;
-            return false;
           },
         ],
         [
