@@ -16,7 +16,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 export class EditorComponent implements OnInit, AfterViewInit {
   private readonly keyboardListener: KeyboardListener;
 
-  @ViewChild('drawingSurface', {static: false})
+  @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
   private _currentToolType: ToolType;
@@ -66,6 +66,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           KeyboardListener.getIdentifier('1'),
           () => {
             this.currentToolType = ToolType.Rectangle;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('i'),
+          () => {
+            this.currentToolType = ToolType.Pipette;
             return false;
           },
         ],
@@ -122,6 +129,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(e: MouseEvent): void {
+    this.handleMouseEvent(e);
     e.preventDefault();
   }
 

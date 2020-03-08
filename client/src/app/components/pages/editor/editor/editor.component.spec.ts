@@ -1,14 +1,17 @@
 /*tslint:disable:no-string-literal*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
+import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
@@ -20,9 +23,9 @@ import { ToolProperties } from '../../../../models/tool-properties/tool-properti
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
-import { EditorComponent } from './editor.component';
 
 export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
@@ -44,7 +47,9 @@ describe('EditorComponent', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
   let keyboardListener: KeyboardListener;
-  const modalDialogServiceSpy = createSpyObj('ModalDialogService', ['openByName']);
+  const modalDialogServiceSpy = createSpyObj('ModalDialogService', {
+    openByName: { afterClosed: () => of(true) },
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -77,6 +82,7 @@ describe('EditorComponent', () => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     keyboardListener = component['keyboardListener'];
+    modalDialogServiceSpy.openByName.calls.reset();
     fixture.detectChanges();
   });
 
@@ -134,6 +140,11 @@ describe('EditorComponent', () => {
   it('should select the line tool when typing l', () => {
     keyboardListener.handle(keyDown('l'));
     expect(component.currentToolType).toEqual(ToolType.Line);
+  });
+
+  it('should select the pipette tool when typing i', () => {
+    keyboardListener.handle(keyDown('i'));
+    expect(component.currentToolType).toEqual(ToolType.Pipette);
   });
 
   it('should select the line tool', () => {
@@ -194,10 +205,29 @@ describe('EditorComponent', () => {
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('can open create modal with keyboard shortcut', () => {
-    const openModalSpy = spyOn(component, 'openCreateModal');
+  it('can call openCreateModal with keyboard shortcut', () => {
+    const openModalSpy = spyOn(component, 'openCreateModal').and.callThrough();
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'o', ctrlKey: true }));
     expect(openModalSpy).toHaveBeenCalled();
+  });
+
+  it('can open create modal if user confirms', () => {
+    modalDialogServiceSpy.openByName.and.returnValue({
+      afterClosed: () => of(true),
+    } as MatDialogRef<AbstractModalComponent>);
+
+    component.openCreateModal();
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.CONFIRM);
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.CREATE);
+  });
+
+  it('does not open create modal if user cancels', () => {
+    modalDialogServiceSpy.openByName.and.returnValue({
+      afterClosed: () => of(false),
+    } as MatDialogRef<AbstractModalComponent>);
+    component.openCreateModal();
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.CONFIRM);
+    expect(modalDialogServiceSpy.openByName).not.toHaveBeenCalledWith(ModalTypes.CREATE);
   });
 
   it('opens dialog on openGuide', () => {
