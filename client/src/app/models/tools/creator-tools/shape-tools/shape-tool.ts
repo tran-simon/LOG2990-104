@@ -36,30 +36,32 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
 
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
-    // todo - make a proper mouse manager
-    const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
+  protected startShape(): void {
+    this.initialMouseCoord = this.mousePosition;
+    super.startShape();
+    this.updateCurrentCoord(this.mousePosition);
+    this.editorService.addPreviewShape(this.previewArea);
+  }
 
+  handleMouseMove(e: MouseEvent): boolean | void {
     if (this.isActive) {
-      switch (e.type) {
-        case 'mouseup':
-          this.applyShape();
-          break;
-        case 'mousemove':
-          this.updateCurrentCoord(mouseCoord);
-          break;
-      }
-    } else if (e.type === 'mousedown') {
-      this.isActive = true;
-      this.initialMouseCoord = mouseCoord;
-      this.shape = this.createShape();
-      this.updateProperties();
-      this.addShape();
-
-      this.updateCurrentCoord(mouseCoord);
-      this.editorService.addPreviewShape(this.previewArea);
+      this.updateCurrentCoord(this.mousePosition);
     }
+    return super.handleMouseMove(e);
+  }
+
+  handleMouseDown(e: MouseEvent): boolean | void {
+    if (!this.isActive) {
+      this.startShape();
+    }
+    return super.handleMouseDown(e);
+  }
+
+  handleMouseUp(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      this.applyShape();
+    }
+    return super.handleMouseUp(e);
   }
 
   setEqualDimensions(value: boolean): void {

@@ -1,5 +1,5 @@
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type';
+import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
 import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
@@ -16,24 +16,21 @@ export class LineTool extends CreatorTool<LineToolProperties> {
       if (this.isActive) {
         this.shape.removeLastPoint();
       }
-      return false;
     });
 
     this.keyboardListener.addEvent(KeyboardListenerService.getIdentifier('Shift', false, true), () => {
       this.lockMethod = this.determineLockMethod();
       this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-      return false;
     });
     this.keyboardListener.addEvent(KeyboardListenerService.getIdentifier('Shift', false, false, 'keyup'), () => {
       this.lockMethod = this.calculateNoLock;
       this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-      return false;
     });
     this.keyboardListener.addEvent(KeyboardListenerService.getIdentifier('Escape'), () => {
       this.cancel();
-      return false;
     });
   }
+
   // tslint:disable-next-line:no-magic-numbers
   static readonly MAX_HORIZONTAL_LOCK_ANGLE: number = Math.PI / 6;
   // tslint:disable-next-line:no-magic-numbers
@@ -42,6 +39,26 @@ export class LineTool extends CreatorTool<LineToolProperties> {
   shape: CompositeLine;
 
   private lockMethod: (c: Coordinate) => Coordinate;
+
+  handleDblClick(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      this.shape.endLine(this.mousePosition);
+      this.applyShape();
+    }
+    return super.handleDblClick(e);
+  }
+
+  handleMouseDown(e: MouseEvent): boolean | void {
+    this.isActive ? this.shape.confirmPoint() : this.startShape();
+    return super.handleMouseDown(e);
+  }
+
+  handleMouseMove(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+    }
+    return super.handleMouseMove(e);
+  }
 
   protected updateProperties(): void {
     if (this.shape) {
@@ -58,29 +75,6 @@ export class LineTool extends CreatorTool<LineToolProperties> {
 
   createShape(): CompositeLine {
     return new CompositeLine(this.mousePosition);
-  }
-
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
-    if (this.isActive) {
-      switch (e.type) {
-        case 'dblclick':
-          this.shape.endLine(this.mousePosition);
-          this.applyShape();
-          break;
-        case 'mousemove':
-          this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-          break;
-        case 'mousedown':
-          this.shape.confirmPoint();
-          break;
-      }
-    } else if (e.type === 'mousedown') {
-      this.shape = this.createShape();
-      this.isActive = true;
-      this.updateProperties();
-      this.addShape();
-    }
   }
 
   determineLockMethod(): (c: Coordinate) => Coordinate {

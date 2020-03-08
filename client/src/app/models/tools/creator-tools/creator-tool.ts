@@ -12,6 +12,13 @@ export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
     this.isActive = isActive;
   }
 
+  protected startShape(): void {
+    this.isActive = true;
+    this.shape = this.createShape();
+    this.updateProperties();
+    this.addShape();
+  }
+
   applyShape(): void {
     this.updateProperties();
     this.shape = undefined;

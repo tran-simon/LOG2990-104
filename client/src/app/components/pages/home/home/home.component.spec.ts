@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { SharedModule } from '../../../shared/shared.module';
 
 import { HomeComponent } from './home.component';
@@ -55,12 +56,12 @@ describe('HomeComponent', () => {
 
   it('should open modal when openModal is called', () => {
     component.openModal();
-    expect(component['dialog'].openByName).toHaveBeenCalledWith(ModalTypes.CREATE);
+    expect(component['dialog'].openByName).toHaveBeenCalledWith(ModalType.CREATE);
   });
 
   it('should open guide modal correctly', () => {
-    component.openModal(ModalTypes.GUIDE);
-    expect(component['dialog'].openByName).toHaveBeenCalledWith(ModalTypes.GUIDE);
+    component.openModal(ModalType.GUIDE);
+    expect(component['dialog'].openByName).toHaveBeenCalledWith(ModalType.GUIDE);
   });
 
   it('should call openModal on guide button clicked', () => {

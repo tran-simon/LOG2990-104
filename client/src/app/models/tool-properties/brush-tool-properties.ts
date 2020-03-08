@@ -1,6 +1,6 @@
-import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type.enum';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
 export class BrushToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS: number = 1;

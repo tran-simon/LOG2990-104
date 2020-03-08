@@ -4,25 +4,21 @@ import { CreateDrawingModalComponent } from 'src/app/components/pages/home/creat
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from 'src/app/components/shared/abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 
-export enum ModalTypes {
-  CREATE = 'create',
-  GUIDE = 'help',
-  CONFIRM = 'confirm',
-}
 @Injectable({
   providedIn: 'root'
 })
 export class ModalDialogService extends MatDialog {
 
-  openByName(dialogName: ModalTypes): MatDialogRef<AbstractModalComponent> | null {
+  openByName(dialogName: ModalType): MatDialogRef<AbstractModalComponent> | null {
     if (!this.modalIsOpened) {
       switch (dialogName) {
-        case ModalTypes.CREATE:
+        case ModalType.CREATE:
           return this.open(CreateDrawingModalComponent, {});
-        case ModalTypes.GUIDE:
+        case ModalType.GUIDE:
           return this.open(UserGuideModalComponent, {});
-        case ModalTypes.CONFIRM:
+        case ModalType.CONFIRM:
           return this.open(ConfirmModalComponent, {});
       }
     }

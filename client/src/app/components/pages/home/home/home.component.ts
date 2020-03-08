@@ -1,7 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
-import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 
 @Component({
   selector: 'app-home',
@@ -12,18 +13,18 @@ import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.se
 export class HomeComponent {
   previousDrawings: boolean;
   modalIsOpened: boolean;
-  guideModalType: ModalTypes;
+  guideModalType: ModalType;
 
   constructor(private router: Router, private dialog: ModalDialogService, private keyboardListener: KeyboardListenerService) {
     this.previousDrawings = false;
     this.modalIsOpened = false;
-    this.guideModalType = ModalTypes.GUIDE;
+    this.guideModalType = ModalType.GUIDE;
 
     this.keyboardListener.addEvents([
       [
         KeyboardListenerService.getIdentifier('o', true),
         () => {
-          this.openModal(ModalTypes.CREATE);
+          this.openModal(ModalType.CREATE);
           return true;
         },
       ],
@@ -37,7 +38,7 @@ export class HomeComponent {
     ]);
   }
 
-  openModal(link: ModalTypes = ModalTypes.CREATE): void {
+  openModal(link: ModalType = ModalType.CREATE): void {
     this.dialog.openByName(link);
   }
 

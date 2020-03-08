@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
-import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
+import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
@@ -12,7 +14,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
-  providers: [KeyboardListenerService],
+  providers: [KeyboardListenerService, MouseListenerService],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('drawingSurface', {static: false})
@@ -23,16 +25,17 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
-  modalTypes: typeof ModalTypes;
+  modalTypes: typeof ModalType;
 
   constructor(private router: ActivatedRoute,
               public editorService: EditorService,
               private dialog: ModalDialogService,
-              private keyboardListener: KeyboardListenerService) {
+              private keyboardListener: KeyboardListenerService,
+              private mouseListener: MouseListenerService) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
-    this.modalTypes = ModalTypes;
+    this.modalTypes = ModalType;
 
     this.keyboardListener.addEvents([
         [
@@ -83,6 +86,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
       return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
     };
 
+    this.mouseListener.defaultEventAction = (e) => {
+      return this.currentTool ? this.currentTool.handleMouseEvent(e) : false;
+    };
+
     this.currentToolType = ToolType.Pen;
   }
 
@@ -99,9 +106,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    if (this.currentTool) {
-      this.currentTool.handleMouseEvent(e);
-    }
+    this.mouseListener.handle(e);
   }
 
   changeBackground(color: Color): void {
@@ -114,22 +119,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.keyboardListener.handle(event);
   }
 
-  @HostListener('contextmenu', ['$event'])
-  onRightClick(e: MouseEvent): void {
-    this.handleMouseEvent(e);
-    e.preventDefault();
-  }
-
   openGuide(): void {
-    this.dialog.openByName(ModalTypes.GUIDE);
+    this.dialog.openByName(ModalType.GUIDE);
   }
 
   openCreateModal(): void {
-    const confirmDialog = this.dialog.openByName(ModalTypes.CONFIRM);
+    const confirmDialog = this.dialog.openByName(ModalType.CONFIRM);
     if (confirmDialog) {
       confirmDialog.afterClosed().subscribe((result) => {
         if (result) {
-          this.dialog.openByName(ModalTypes.CREATE);
+          this.dialog.openByName(ModalType.CREATE);
         }
       });
     }
