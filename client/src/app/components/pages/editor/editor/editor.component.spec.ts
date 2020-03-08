@@ -16,7 +16,7 @@ import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/strok
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
 import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';

@@ -1,9 +1,9 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export abstract class Tool<T = ToolProperties> {
+export abstract class Tool<T = ToolProperties> implements MouseListener {
   protected keyboardListener: KeyboardListenerService;
   get mousePosition(): Coordinate {
     return this._mousePosition;
@@ -34,5 +34,13 @@ export abstract class Tool<T = ToolProperties> {
   cancel(): void {
     this.isActive = false;
     this.editorService.clearShapesBuffer();
+  }
+
+  onMouseEvent(e: MouseEvent): void {
+    switch (e.type) {
+      case 'mouseup':
+        break;
+
+    }
   }
 }

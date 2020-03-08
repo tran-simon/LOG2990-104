@@ -3,7 +3,7 @@ import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-t
 import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class LineTool extends CreatorTool<LineToolProperties> {

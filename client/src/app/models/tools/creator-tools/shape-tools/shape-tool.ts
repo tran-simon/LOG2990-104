@@ -1,7 +1,7 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { ToolProperties } from '../../../tool-properties/tool-properties';
