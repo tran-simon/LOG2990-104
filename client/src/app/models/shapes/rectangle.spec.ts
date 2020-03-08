@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 

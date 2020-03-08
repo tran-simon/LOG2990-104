@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -8,12 +8,14 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { RectangleContourType, RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
+import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
+import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 
 describe('RectangleTool', () => {
@@ -29,6 +31,7 @@ describe('RectangleTool', () => {
         PenToolbarComponent,
         BrushToolbarComponent,
         RectangleToolbarComponent,
+        PolygonToolbarComponent,
         LineToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
@@ -73,9 +76,9 @@ describe('RectangleTool', () => {
   });
 
   it('can draw Rectangle contour and fill', () => {
-    properties.contourType = RectangleContourType.FILLEDCONTOUR;
+    properties.contourType = RectangleContourType.FILLED_CONTOUR;
     rectangleTool.toolProperties = properties;
-    rectangleTool['_mousePosition'] = new Coordinate(100, 100);
+    rectangleTool['_mousePosition'] = new Coordinate(50, 100);
     rectangleTool['shape'] = rectangleTool.createShape();
     const style = rectangleTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);

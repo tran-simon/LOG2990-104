@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { Ellipse } from 'src/app/models/shapes/ellipse';
 
 describe('Ellipse', () => {

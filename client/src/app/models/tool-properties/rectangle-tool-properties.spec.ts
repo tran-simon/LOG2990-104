@@ -1,5 +1,6 @@
-import { ToolType } from '../tools/tool';
-import { RectangleContourType, RectangleToolProperties } from './rectangle-tool-properties';
+import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
+import { ToolType } from 'src/app/models/tools/tool-type';
+import { RectangleToolProperties } from './rectangle-tool-properties';
 
 describe('Rectangle Tool Properties', () => {
   let rectangleProperties: RectangleToolProperties;
@@ -17,6 +18,6 @@ describe('Rectangle Tool Properties', () => {
   });
 
   it('should create with the default contour', () => {
-    expect(rectangleProperties.contourType).toBe(RectangleContourType.FILLEDCONTOUR);
+    expect(rectangleProperties.contourType).toBe(RectangleContourType.FILLED_CONTOUR);
   });
 });

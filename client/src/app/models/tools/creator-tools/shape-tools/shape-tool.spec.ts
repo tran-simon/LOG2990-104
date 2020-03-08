@@ -1,7 +1,8 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
+import { keyDown, keyUp } from 'src/app/components/pages/editor/editor/editor.component.spec';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
@@ -9,6 +10,7 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
@@ -63,22 +65,6 @@ describe('ShapeTool', () => {
     } as MouseEvent;
   };
 
-  const keyUp = (key: string, shiftKey: boolean = false): KeyboardEvent => {
-    return {
-      key,
-      type: 'keyup',
-      shiftKey,
-    } as KeyboardEvent;
-  };
-
-  const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
-    return {
-      key,
-      type: 'keydown',
-      shiftKey,
-    } as KeyboardEvent;
-  };
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -87,6 +73,7 @@ describe('ShapeTool', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        PolygonToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
@@ -137,14 +124,14 @@ describe('ShapeTool', () => {
     mockShapeTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(250, 200)));
     resizeShapeSpy.calls.reset();
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
   });
 
   it('can keep correct origin on shift down', () => {
     const resizeShapeSpy = spyOn(mockShapeTool, 'resizeShape');
     mockShapeTool.handleMouseEvent(mouseDown(new Coordinate(200, 200)));
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(50, 100)));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
   });
@@ -154,17 +141,16 @@ describe('ShapeTool', () => {
     mockShapeTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     mockShapeTool.handleMouseEvent(mouseMove(new Coordinate(250, 200)));
     resizeShapeSpy.calls.reset();
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
-    expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(100, 100), new Coordinate(100, 100));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
     resizeShapeSpy.calls.reset();
-    mockShapeTool.handleKeyboardEvent(keyUp('shift', false));
+    mockShapeTool.handleKeyboardEvent(keyUp('Shift', false));
     expect(resizeShapeSpy).toHaveBeenCalledWith(new Coordinate(150, 100), new Coordinate(100, 100));
   });
 
   it('does not update current coordinate on shift if not active', () => {
     const updateCurrentCoordSpy = spyOn(mockShapeTool, 'updateCurrentCoord');
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', true));
-    mockShapeTool.handleKeyboardEvent(keyDown('shift', false));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', true));
+    mockShapeTool.handleKeyboardEvent(keyDown('Shift', false));
     expect(updateCurrentCoordSpy).not.toHaveBeenCalled();
   });
 

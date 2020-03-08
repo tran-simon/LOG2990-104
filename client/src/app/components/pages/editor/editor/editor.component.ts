@@ -1,17 +1,12 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Tool, ToolType } from 'src/app/models/tools/tool';
+import { Tool } from 'src/app/models/tools/tool';
+import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
+import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-
-export interface EditorParams {
-  width: string;
-  height: string;
-  color: string;
-}
 
 @Component({
   selector: 'app-editor',
@@ -19,7 +14,7 @@ export interface EditorParams {
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  private readonly keyboardEventHandler: KeyboardEventHandler;
+  private readonly keyboardListener: KeyboardListener;
 
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
@@ -29,45 +24,87 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
+  modalTypes: typeof ModalTypes;
 
-  constructor(private router: ActivatedRoute, public editorService: EditorService) {
-    this.surfaceColor = Color.WHITE;
-    this.surfaceWidth = 0;
-    this.surfaceHeight = 0;
-    this.keyboardEventHandler = {
-      l: () => {
-        this.currentToolType = ToolType.Line;
-        return false;
-      },
-      c: () => {
-        this.currentToolType = ToolType.Pen;
-        return false;
-      },
-      w: () => {
-        this.currentToolType = ToolType.Brush;
-        return false;
-      },
-      1: () => {
-        this.currentToolType = ToolType.Rectangle;
-        return false; // todo - enable default behavior when typing in text field
-      },
-      s: () => {
-        this.currentToolType = ToolType.Select;
-        return false;
-      },
-      def: (e) => {
-        return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
-      },
-    } as KeyboardEventHandler;
+  constructor(private router: ActivatedRoute, public editorService: EditorService, private dialog: ModalDialogService) {
+    this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
+    this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
+    this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
+    this.modalTypes = ModalTypes;
+
+    this.keyboardListener = new KeyboardListener(
+      new Map<string, KeyboardEventAction>([
+        [
+          KeyboardListener.getIdentifier('l'),
+          () => {
+            this.currentToolType = ToolType.Line;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('3'),
+          () => {
+            this.currentToolType = ToolType.Polygon;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('c'),
+          () => {
+            this.currentToolType = ToolType.Pen;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('w'),
+          () => {
+            this.currentToolType = ToolType.Brush;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('1'),
+          () => {
+            this.currentToolType = ToolType.Rectangle;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('i'),
+          () => {
+            this.currentToolType = ToolType.Pipette;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('s'),
+          () => {
+            this.currentToolType = ToolType.Select;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('o', true),
+          () => {
+            this.openCreateModal();
+            return true;
+          },
+        ],
+      ]),
+    );
+
+    this.keyboardListener.defaultEventAction = (e) => {
+      return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
+    };
 
     this.currentToolType = ToolType.Pen;
   }
 
   ngOnInit(): void {
     this.router.params.subscribe((params) => {
-      this.surfaceWidth = params.width ? +params.width : 500;
-      this.surfaceHeight = params.height ? +params.height : 300;
-      this.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
+      this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
+      this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
+      this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
     });
   }
 
@@ -88,12 +125,28 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
+    this.keyboardListener.handle(event);
   }
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(e: MouseEvent): void {
+    this.handleMouseEvent(e);
     e.preventDefault();
+  }
+
+  openGuide(): void {
+    this.dialog.openByName(ModalTypes.GUIDE);
+  }
+
+  openCreateModal(): void {
+    const confirmDialog = this.dialog.openByName(ModalTypes.CONFIRM);
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        if (result) {
+          this.dialog.openByName(ModalTypes.CREATE);
+        }
+      });
+    }
   }
 
   get currentTool(): Tool | undefined {

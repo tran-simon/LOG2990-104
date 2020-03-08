@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { PolygonToolbarComponent } from '../../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { mouseDown, mouseLeave, mouseMove, mouseUp } from '../stroke-tool.spec';
 import { PenTool } from './pen-tool';
@@ -25,6 +26,7 @@ describe('PenTool', () => {
         PenToolbarComponent,
         BrushToolbarComponent,
         RectangleToolbarComponent,
+        PolygonToolbarComponent,
         LineToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
@@ -46,7 +48,7 @@ describe('PenTool', () => {
     expect(addShapeSpy).toHaveBeenCalled();
   });
 
-  it('Should not addshape on mousedown if isActive', () => {
+  it('Should not add shape on mousedown if isActive', () => {
     const addShapeSpy = spyOn(penTool, 'addShape');
     penTool['isActive'] = true;
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));

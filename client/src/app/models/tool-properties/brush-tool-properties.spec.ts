@@ -1,5 +1,6 @@
-import { BrushTextureType, BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
-import { ToolType } from '../tools/tool';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type';
+import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
+import { ToolType } from 'src/app/models/tools/tool-type';
 
 describe('Brush Tool Properties', () => {
   let brushProperties: BrushToolProperties;

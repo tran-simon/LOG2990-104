@@ -45,7 +45,7 @@ export class Line extends BaseShape {
     return new Coordinate((this._startCoord.x + this._endCoord.x) / 2, (this._startCoord.y + this._endCoord.y) / 2);
   }
 
-  constructor(startCoord = new Coordinate(), endCoord = startCoord) {
+  constructor(startCoord: Coordinate = new Coordinate(), endCoord: Coordinate = startCoord) {
     super('line');
     this.startCoord = startCoord;
     this.endCoord = endCoord;

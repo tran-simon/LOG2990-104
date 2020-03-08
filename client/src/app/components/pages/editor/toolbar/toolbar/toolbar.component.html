@@ -5,7 +5,8 @@
     </button>
     <div class="toolbar-section-divider"></div>
     <div *ngFor='let tool of toolTypeKeys'>
-      <button id='{{"btn-" + tool}}' mat-icon-button [ngClass]="{'selected-tool': currentToolType === tool}"
+      <button id='{{toolButtonId(tool)}}' mat-icon-button
+              [ngClass]="{'selected-tool': currentToolType === tool}"
               (click)="selectTool(tool)">
         <mat-icon>{{toolbarIcons.get(tool)}}</mat-icon>
       </button>
@@ -24,7 +25,7 @@
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
-    <button id="help-button" mat-icon-button (click)="openModal()">
+    <button id="help-button" mat-icon-button (click)="openGuide()">
       <mat-icon>help</mat-icon>
     </button>
     <button mat-icon-button>
@@ -43,7 +44,7 @@
         <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
         <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>
         <app-line-toolbar *ngSwitchCase=ToolType.Line class='toolbar-tool-section'></app-line-toolbar>
-
+        <app-polygon-toolbar *ngSwitchCase=ToolType.Polygon class='toolbar-tool-section'></app-polygon-toolbar>
       </div>
       <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>
