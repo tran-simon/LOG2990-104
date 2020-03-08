@@ -11,6 +11,7 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
 import { ShapeTool } from './shape-tool';
@@ -72,6 +73,7 @@ describe('ShapeTool', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],

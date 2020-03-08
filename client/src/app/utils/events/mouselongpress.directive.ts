@@ -4,7 +4,8 @@ import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
   selector: 'app-drawing-surface',
 })
 export class MouselongpressDirective {
-  interval: number;
+  // tslint:disable-next-line:no-any
+  interval: any; // Type NODEJS.Timer not found at runtime :(
 
   @Output() longPressed: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output() dragged: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();

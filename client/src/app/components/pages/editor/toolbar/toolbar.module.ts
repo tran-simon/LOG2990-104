@@ -5,10 +5,25 @@ import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
 
 @NgModule({
-  declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+  declarations: [
+    ToolbarComponent,
+    PenToolbarComponent,
+    BrushToolbarComponent,
+    RectangleToolbarComponent,
+    LineToolbarComponent,
+    SprayToolbarComponent,
+  ],
   imports: [SharedModule],
-  exports: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+  exports: [
+    ToolbarComponent,
+    PenToolbarComponent,
+    BrushToolbarComponent,
+    RectangleToolbarComponent,
+    LineToolbarComponent,
+    SprayToolbarComponent,
+  ],
 })
 export class ToolbarModule {}

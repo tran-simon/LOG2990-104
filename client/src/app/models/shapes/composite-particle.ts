@@ -5,7 +5,9 @@ import { Particle } from './particle';
 export class CompositeParticle extends BaseShape {
   particles: Particle[];
   isTimeOut: boolean;
-  private timeout: number;
+
+  // tslint:disable-next-line:no-any
+  private timeout: any; // Type NODEJS.Timer not found at runtime :(
 
   private _radius: number;
   get radius(): number {

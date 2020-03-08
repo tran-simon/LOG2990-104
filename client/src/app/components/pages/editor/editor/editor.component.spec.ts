@@ -20,8 +20,9 @@ import { ToolProperties } from '../../../../models/tool-properties/tool-properti
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
-import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
+import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
+import { EditorComponent } from './editor.component';
 
 export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
@@ -57,16 +58,18 @@ describe('EditorComponent', () => {
         BrushToolbarComponent,
         LineToolbarComponent,
         CreateDrawingModalComponent,
-        UserGuideModalComponent
+        UserGuideModalComponent,
+        SprayToolbarComponent,
       ],
-      providers: [EditorService,
+      providers: [
+        EditorService,
         {
           provide: ModalDialogService,
-          useValue: modalDialogServiceSpy
-        }
+          useValue: modalDialogServiceSpy,
+        },
       ],
     })
-      .overrideModule(BrowserDynamicTestingModule, {set: {entryComponents: [CreateDrawingModalComponent, UserGuideModalComponent]}})
+      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [CreateDrawingModalComponent, UserGuideModalComponent] } })
       .compileComponents();
   }));
 
@@ -162,7 +165,7 @@ describe('EditorComponent', () => {
   });
 
   it('can get current tool', () => {
-    const tool: Tool = {toolProperties: {type: 'toolMock' as ToolType} as ToolProperties} as Tool;
+    const tool: Tool = { toolProperties: { type: 'toolMock' as ToolType } as ToolProperties } as Tool;
     component.editorService.tools.set('toolMock' as ToolType, tool);
 
     component.currentToolType = 'toolMock' as ToolType;
@@ -193,7 +196,7 @@ describe('EditorComponent', () => {
 
   it('can open create modal with keyboard shortcut', () => {
     const openModalSpy = spyOn(component, 'openCreateModal');
-    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'o', ctrlKey: true}));
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'o', ctrlKey: true }));
     expect(openModalSpy).toHaveBeenCalled();
   });
 

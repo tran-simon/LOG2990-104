@@ -13,6 +13,7 @@ import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/use
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { Color } from 'src/app/utils/color/color';
+import { SprayToolbarComponent } from '../spray-toolbar/spray-toolbar.component';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -23,7 +24,14 @@ describe('ToolbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule, UserGuideModule],
-      declarations: [ToolbarComponent, PenToolbarComponent, BrushToolbarComponent, RectangleToolbarComponent, LineToolbarComponent],
+      declarations: [
+        ToolbarComponent,
+        PenToolbarComponent,
+        BrushToolbarComponent,
+        RectangleToolbarComponent,
+        LineToolbarComponent,
+        SprayToolbarComponent,
+      ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
       .compileComponents();
@@ -80,6 +88,14 @@ describe('ToolbarComponent', () => {
     fixture.detectChanges();
 
     expect(component.currentToolType).toBe(ToolType.Brush);
+  });
+
+  it('should select the spray tool', () => {
+    const brushButton = fixture.debugElement.nativeElement.querySelector('#btn-spray-tool');
+    brushButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentToolType).toBe(ToolType.Spray);
   });
 
   it('should select the primary color and the secondary color when clicking associated squares', () => {

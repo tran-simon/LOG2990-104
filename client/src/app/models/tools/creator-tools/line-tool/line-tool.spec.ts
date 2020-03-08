@@ -15,6 +15,7 @@ import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 
 describe('LineTool', () => {
   let lineTool: LineTool;
@@ -69,6 +70,7 @@ describe('LineTool', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
