@@ -1,5 +1,5 @@
 /* tslint:disable:no-string-literal */
-import { KeyboardEventAction, KeyboardEventsHandlingMap, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import createSpy = jasmine.createSpy;
 import Spy = jasmine.Spy;
 import createSpyObj = jasmine.createSpyObj;
@@ -26,20 +26,6 @@ describe('KeyboardListener', () => {
 
   it('should create', () => {
     expect(keyboardListener).toBeTruthy();
-  });
-
-  it('can create keyboard listener with keyboardEventsHandlingMap', () => {
-    const map: KeyboardEventsHandlingMap = new Map<string, KeyboardEventAction>([
-      ['ID1', () => false],
-      ['ID2', () => true],
-    ]);
-
-    const keyboardListener1 = new KeyboardListener(map);
-    const func: KeyboardEventAction = keyboardListener1['keyboardEventsHandlingMap'].get('ID1') as KeyboardEventAction;
-
-    expect(keyboardListener1).toBeDefined();
-    expect(keyboardListener1['keyboardEventsHandlingMap']).toBeDefined();
-    expect(func({} as KeyboardEvent)).toEqual(false);
   });
 
   it('can call right function on keydown', () => {
@@ -145,5 +131,7 @@ describe('KeyboardListener', () => {
     ]);
     expect(keyboardListener['keyboardEventsHandlingMap'].get('ID1')).toBeDefined();
     expect(keyboardListener['keyboardEventsHandlingMap'].get('ID2')).toBeDefined();
+    const func: KeyboardEventAction = keyboardListener['keyboardEventsHandlingMap'].get('ID1') as KeyboardEventAction;
+    expect(func({} as KeyboardEvent)).toEqual(false);
   });
 });

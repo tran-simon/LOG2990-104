@@ -1,8 +1,12 @@
+import { Injectable } from '@angular/core';
+
 export type KeyboardEventAction = (event: KeyboardEvent) => boolean;
 export type KeyboardEventsHandlingMap = Map<string, KeyboardEventAction>;
+
+@Injectable()
 export class KeyboardListener {
-  constructor(keyboardEventsHandlingMap?: KeyboardEventsHandlingMap) {
-    this.keyboardEventsHandlingMap = keyboardEventsHandlingMap ? keyboardEventsHandlingMap : new Map<string, KeyboardEventAction>();
+  constructor(){
+    this.keyboardEventsHandlingMap = new Map<string, KeyboardEventAction>()
   }
 
   defaultEventAction: KeyboardEventAction;

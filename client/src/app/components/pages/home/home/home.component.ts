@@ -1,42 +1,40 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
-import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  providers: [KeyboardListener]
 })
 export class HomeComponent {
-  private readonly keyboardListener: KeyboardListener;
   previousDrawings: boolean;
   modalIsOpened: boolean;
   guideModalType: ModalTypes;
 
-  constructor(private router: Router, private dialog: ModalDialogService) {
+  constructor(private router: Router, private dialog: ModalDialogService, private keyboardListener: KeyboardListener) {
     this.previousDrawings = false;
     this.modalIsOpened = false;
     this.guideModalType = ModalTypes.GUIDE;
 
-    this.keyboardListener = new KeyboardListener(
-      new Map<string, KeyboardEventAction>([
-        [
-          KeyboardListener.getIdentifier('o', true),
-          () => {
-            this.openModal(ModalTypes.CREATE);
-            return true;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('g', true),
-          () => {
-            this.openGallery();
-            return true;
-          },
-        ],
-      ]),
-    );
+    this.keyboardListener.addEvents([
+      [
+        KeyboardListener.getIdentifier('o', true),
+        () => {
+          this.openModal(ModalTypes.CREATE);
+          return true;
+        },
+      ],
+      [
+        KeyboardListener.getIdentifier('g', true),
+        () => {
+          this.openGallery();
+          return true;
+        },
+      ],
+    ]);
   }
 
   openModal(link: ModalTypes = ModalTypes.CREATE): void {

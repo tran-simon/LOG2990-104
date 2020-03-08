@@ -5,17 +5,16 @@ import { ToolType } from 'src/app/models/tools/tool-type';
 import { EditorService } from 'src/app/services/editor.service';
 import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
+  providers: [KeyboardListener],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  private readonly keyboardListener: KeyboardListener;
-
   @ViewChild('drawingSurface', {static: false})
   drawingSurface: DrawingSurfaceComponent;
 
@@ -26,14 +25,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceHeight: number;
   modalTypes: typeof ModalTypes;
 
-  constructor(private router: ActivatedRoute, public editorService: EditorService, private dialog: ModalDialogService) {
+  constructor(private router: ActivatedRoute,
+              public editorService: EditorService,
+              private dialog: ModalDialogService,
+              private keyboardListener: KeyboardListener) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
     this.modalTypes = ModalTypes;
 
-    this.keyboardListener = new KeyboardListener(
-      new Map<string, KeyboardEventAction>([
+    this.keyboardListener.addEvents([
         [
           KeyboardListener.getIdentifier('l'),
           () => {
@@ -76,8 +77,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
             return true;
           },
         ],
-      ]),
-    );
+    ]);
 
     this.keyboardListener.defaultEventAction = (e) => {
       return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
