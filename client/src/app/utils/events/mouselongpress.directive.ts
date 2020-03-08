@@ -10,7 +10,7 @@ export class MouselongpressDirective {
   @Output() dragged: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   @HostListener('mousedown', ['$event'])
-  protected onmousedown(e: MouseEvent): void {
+  onmousedown(e: MouseEvent): void {
     this.interval = setInterval(() => {
       this.longPressed.emit(e);
     }, 0);
