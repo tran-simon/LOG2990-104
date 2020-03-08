@@ -24,6 +24,7 @@ export class ToolbarComponent {
 
   @Output() editorBackgroundChanged: EventEmitter<Color>;
   @Output() guideButtonClicked: EventEmitter<boolean>;
+  @Output() saveButtonClicked: EventEmitter<boolean>;
 
   ToolType: typeof ToolType = ToolType;
   toolTypeKeys: string[] = Object.values(ToolType);
@@ -47,6 +48,7 @@ export class ToolbarComponent {
     this.showColorPicker = false;
     this.selectedColor = SelectedColorType.primary;
     this.guideButtonClicked = new EventEmitter<boolean>();
+    this.saveButtonClicked = new EventEmitter<boolean>();
 
     this.toolbarIcons = new Map<ToolType | string, string>([
       [ToolType.Pen, 'edit'],
@@ -73,6 +75,10 @@ export class ToolbarComponent {
     this.color = eventColor;
     this.showColorPicker = false;
     this.close();
+  }
+
+  openSave(): void {
+    this.saveButtonClicked.emit(true);
   }
 
   openGuide(): void {
