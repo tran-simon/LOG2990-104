@@ -4,7 +4,7 @@ import { CompositeParticle } from '../../../shapes/composite-particle';
 import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
 import { CreatorTool } from '../creator-tool';
 
-export const NB_FRAME_BUFFER = 5;
+export const NB_FRAME_BUFFER = 1;
 
 export class SprayTool extends CreatorTool<SprayToolProperties> {
   shape: CompositeParticle;
@@ -30,12 +30,12 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
         case 'mousemove': {
           this.noMovementFrames = 0;
           this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
-          this.shape.addParticle(this.mousePosition);
+          this.shape.addParticle(this.mousePosition, this.toolProperties.frequency);
           break;
         }
         case 'mousedown': {
           if (this.noMovementFrames >= NB_FRAME_BUFFER) {
-            this.shape.addParticle(this.lastMovePosition);
+            this.shape.addParticle(this.lastMovePosition, this.toolProperties.frequency);
           }
           this.noMovementFrames++;
           break;
