@@ -1,9 +1,10 @@
 <div id="editor-container" (mouseup)='handleMouseEvent($event)'>
   <app-toolbar #toolbar id='toolbar'
-               [(currentToolType)]=currentToolType
-  (editorBackgroundChanged)="changeBackground($event)"
-  (mouseleave)="toolbar.drawer.close()"
-               (mouseenter)='toolbar.drawer.open()'
+    [(currentToolType)]=currentToolType
+    (editorBackgroundChanged)="changeBackground($event)"
+    (mouseleave)="toolbar.close()"
+    (guideButtonClicked)="openGuide()"
+    (mouseenter)='toolbar.open()'
   ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
     (dblclick)="handleMouseEvent($event)"

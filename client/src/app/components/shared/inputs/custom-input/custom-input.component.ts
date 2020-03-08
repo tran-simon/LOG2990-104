@@ -125,4 +125,9 @@ export class CustomInputComponent implements OnInit, OnChanges {
   get focused(): boolean {
     return this._focused;
   }
+
+  get invalid(): boolean {
+    const dirty = this.formControl.dirty || this.formControl.touched;
+    return !!this.formControl.errors && this.formControl.invalid && dirty;
+  }
 }
