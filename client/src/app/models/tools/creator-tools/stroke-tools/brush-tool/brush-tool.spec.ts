@@ -11,6 +11,7 @@ import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../../components/pages/editor/drawing-surface/drawing-surface.component';
+import { PolygonToolbarComponent } from '../../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { mouseDown } from '../stroke-tool.spec';
 
@@ -25,6 +26,7 @@ describe('BrushTool', () => {
         PenToolbarComponent,
         BrushToolbarComponent,
         RectangleToolbarComponent,
+        PolygonToolbarComponent,
         LineToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,

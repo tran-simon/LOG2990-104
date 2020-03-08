@@ -13,6 +13,7 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { SelectedColorType } from 'src/app/services/selected-color-type';
 import { Color } from 'src/app/utils/color/color';
+import { PolygonToolbarComponent } from '../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 
 describe('PipetteTool', () => {
   let pipetteTool: PipetteTool;
@@ -26,6 +27,7 @@ describe('PipetteTool', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        PolygonToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
@@ -42,13 +44,13 @@ describe('PipetteTool', () => {
 
   it('picks primary color on left click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
-    pipetteTool.handleMouseEvent({type: 'click', offsetX: 0, offsetY: 0} as MouseEvent);
+    pipetteTool.handleMouseEvent({ type: 'click', offsetX: 0, offsetY: 0 } as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(0, 0, SelectedColorType.primary);
   });
 
   it('picks secondary color on right click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
-    pipetteTool.handleMouseEvent({type: 'contextmenu', offsetX: 0, offsetY: 0} as MouseEvent);
+    pipetteTool.handleMouseEvent({ type: 'contextmenu', offsetX: 0, offsetY: 0 } as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(0, 0, SelectedColorType.secondary);
   });
 

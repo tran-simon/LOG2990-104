@@ -28,8 +28,8 @@ describe('HomeComponent', () => {
         },
         {
           provide: ModalDialogService,
-          useValue: modalDialogServiceSpy
-        }
+          useValue: modalDialogServiceSpy,
+        },
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [CreateDrawingModalComponent, UserGuideModalComponent] } })

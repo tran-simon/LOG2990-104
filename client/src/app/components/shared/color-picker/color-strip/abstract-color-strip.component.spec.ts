@@ -7,7 +7,6 @@ import createSpyObj = jasmine.createSpyObj;
 
 describe('AbstractColorStripComponent', () => {
   class AbstractColorStripComponentImpl extends AbstractColorStripComponent {
-
     get value(): number {
       return 0;
     }

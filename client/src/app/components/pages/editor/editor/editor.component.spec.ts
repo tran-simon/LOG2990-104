@@ -22,6 +22,7 @@ import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
+import { PolygonToolbarComponent } from '../toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
@@ -47,7 +48,7 @@ describe('EditorComponent', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let keyboardListener: KeyboardListener;
   const modalDialogServiceSpy = createSpyObj('ModalDialogService', {
-    openByName: {afterClosed: () => of(true)}
+    openByName: { afterClosed: () => of(true) },
   });
 
   beforeEach(async(() => {
@@ -62,16 +63,18 @@ describe('EditorComponent', () => {
         BrushToolbarComponent,
         LineToolbarComponent,
         CreateDrawingModalComponent,
-        UserGuideModalComponent
+        UserGuideModalComponent,
+        PolygonToolbarComponent,
       ],
-      providers: [EditorService,
+      providers: [
+        EditorService,
         {
           provide: ModalDialogService,
-          useValue: modalDialogServiceSpy
-        }
+          useValue: modalDialogServiceSpy,
+        },
       ],
     })
-      .overrideModule(BrowserDynamicTestingModule, {set: {entryComponents: [CreateDrawingModalComponent, UserGuideModalComponent]}})
+      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [CreateDrawingModalComponent, UserGuideModalComponent] } })
       .compileComponents();
   }));
 
@@ -144,6 +147,11 @@ describe('EditorComponent', () => {
     expect(component.currentToolType).toEqual(ToolType.Pipette);
   });
 
+  it('should select the polygon tool when typing 3', () => {
+    keyboardListener.handle(keyDown('3'));
+    expect(component.currentToolType).toEqual(ToolType.Polygon);
+  });
+
   it('should select the line tool', () => {
     component.currentToolType = ToolType.Line;
     const currentTool = component.currentTool as Tool;
@@ -173,7 +181,7 @@ describe('EditorComponent', () => {
   });
 
   it('can get current tool', () => {
-    const tool: Tool = {toolProperties: {type: 'toolMock' as ToolType} as ToolProperties} as Tool;
+    const tool: Tool = { toolProperties: { type: 'toolMock' as ToolType } as ToolProperties } as Tool;
     component.editorService.tools.set('toolMock' as ToolType, tool);
 
     component.currentToolType = 'toolMock' as ToolType;
@@ -204,13 +212,13 @@ describe('EditorComponent', () => {
 
   it('can call openCreateModal with keyboard shortcut', () => {
     const openModalSpy = spyOn(component, 'openCreateModal').and.callThrough();
-    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'o', ctrlKey: true}));
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'o', ctrlKey: true }));
     expect(openModalSpy).toHaveBeenCalled();
   });
 
   it('can open create modal if user confirms', () => {
     modalDialogServiceSpy.openByName.and.returnValue({
-      afterClosed: () => of(true)
+      afterClosed: () => of(true),
     } as MatDialogRef<AbstractModalComponent>);
 
     component.openCreateModal();
@@ -220,7 +228,7 @@ describe('EditorComponent', () => {
 
   it('does not open create modal if user cancels', () => {
     modalDialogServiceSpy.openByName.and.returnValue({
-      afterClosed: () => of(false)
+      afterClosed: () => of(false),
     } as MatDialogRef<AbstractModalComponent>);
     component.openCreateModal();
     expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.CONFIRM);

@@ -54,6 +54,7 @@ export class ToolbarComponent {
       [ToolType.Rectangle, 'crop_square'],
       [ToolType.Line, 'show_chart'],
       [ToolType.Pipette, 'colorize'],
+      [ToolType.Polygon, 'category'],
     ]);
   }
 

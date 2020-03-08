@@ -15,7 +15,7 @@ export class PipetteTool extends Tool {
   }
 
   private pickColor(x: number, y: number, selectedColorType: SelectedColorType): void {
-    const {width, height, svg} = this.editorService.view;
+    const { width, height, svg } = this.editorService.view;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.canvas.width = width;
@@ -39,9 +39,7 @@ export class PipetteTool extends Tool {
     super.handleMouseEvent(e);
     if (e.type === 'click' || e.type === 'contextmenu') {
       if (this.editorService.view) {
-        this.pickColor(e.offsetX, e.offsetY,
-          e.type === 'contextmenu' ?
-            SelectedColorType.secondary : SelectedColorType.primary);
+        this.pickColor(e.offsetX, e.offsetY, e.type === 'contextmenu' ? SelectedColorType.secondary : SelectedColorType.primary);
       }
     }
   }

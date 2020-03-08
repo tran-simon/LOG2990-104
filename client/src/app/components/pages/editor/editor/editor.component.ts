@@ -16,7 +16,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 export class EditorComponent implements OnInit, AfterViewInit {
   private readonly keyboardListener: KeyboardListener;
 
-  @ViewChild('drawingSurface', {static: false})
+  @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
   private _currentToolType: ToolType;
@@ -38,6 +38,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           KeyboardListener.getIdentifier('l'),
           () => {
             this.currentToolType = ToolType.Line;
+            return false;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('3'),
+          () => {
+            this.currentToolType = ToolType.Polygon;
             return false;
           },
         ],
