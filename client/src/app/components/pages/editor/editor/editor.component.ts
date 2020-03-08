@@ -63,6 +63,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           },
         ],
         [
+          KeyboardListener.getIdentifier('i'),
+          () => {
+            this.currentToolType = ToolType.Pipette;
+            return false;
+          },
+        ],
+        [
           KeyboardListener.getIdentifier('o', true),
           () => {
             this.openCreateModal();
@@ -109,6 +116,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(e: MouseEvent): void {
+    this.handleMouseEvent(e);
     e.preventDefault();
   }
 
