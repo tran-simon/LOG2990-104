@@ -4,8 +4,8 @@ import { CreateDrawingModalComponent } from 'src/app/components/pages/home/creat
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from 'src/app/components/shared/abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
-import { SaveDrawingModalComponent } from '../components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 import { ExportModalComponent } from '../components/pages/editor/export-modal/export-modal.component';
+import { SaveDrawingModalComponent } from '../components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 
 export enum ModalTypes {
   CREATE = 'create',

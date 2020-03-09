@@ -74,12 +74,12 @@ export class EditorService {
     }
   }
   createDataURL(surface: DrawingSurfaceComponent): string {
-    let xmlSerializer = new XMLSerializer();
-    let svgString = xmlSerializer.serializeToString(surface.svg.nativeElement);
+    const xmlSerializer = new XMLSerializer();
+    const svgString = xmlSerializer.serializeToString(surface.svg.nativeElement);
     return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
-  exportSVGElement(name: string, surface: DrawingSurfaceComponent) {
-    let download = document.createElement('a');
+  exportSVGElement(name: string, surface: DrawingSurfaceComponent): void {
+    const download = document.createElement('a');
     download.setAttribute('href', this.createDataURL(surface));
     download.setAttribute('download', name);
     download.click();

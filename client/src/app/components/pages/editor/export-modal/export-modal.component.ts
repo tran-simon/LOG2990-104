@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { EditorService } from '../../../../services/editor.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 @Component({
   selector: 'app-export-modal',
@@ -28,7 +28,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
   // addFilter(): void {
   // }
-  submit(cancel: boolean) {
+  submit(cancel: boolean): void {
     if (!cancel) {
       this.fullName = this.name + '.' + this.selectedExtension;
       console.log(this.fullName);

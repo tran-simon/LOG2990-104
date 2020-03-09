@@ -5,13 +5,13 @@ import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/use
 import { AppComponent } from './app.component';
 import { EditorModule } from './components/pages/editor/editor.module';
 import { EditorComponent } from './components/pages/editor/editor/editor.component';
+import { ExportModalComponent } from './components/pages/editor/export-modal/export-modal.component';
 import { HomeModule } from './components/pages/home/home.module';
 import { HomeComponent } from './components/pages/home/home/home.component';
 import { SaveDrawingModule } from './components/pages/save-drawing/save-drawing.module';
 import { SaveDrawingModalComponent } from './components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 import { UserGuideModule } from './components/pages/user-guide/user-guide.module';
 import { SharedModule } from './components/shared/shared.module';
-import { ExportModalComponent } from './components/pages/editor/export-modal/export-modal.component';
 
 @NgModule({
   imports: [
