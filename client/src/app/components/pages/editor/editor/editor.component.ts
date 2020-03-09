@@ -84,9 +84,23 @@ export class EditorComponent implements OnInit, AfterViewInit {
           },
         ],
         [
+          KeyboardListener.getIdentifier('z', true),
+          () => {
+            this.editorService.commandReceiver.undo();
+            return true;
+          },
+        ],
+        [
           KeyboardListener.getIdentifier('e', true),
           () => {
             this.dialog.openByName(ModalTypes.EXPORT);
+            return true;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('z', true, true),
+          () => {
+            this.editorService.commandReceiver.redo();
             return true;
           },
         ],
@@ -149,9 +163,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     const confirmDialog = this.dialog.openByName(ModalTypes.CHOOSE_EXPORT_SAVE);
     if (confirmDialog) {
       confirmDialog.afterClosed().subscribe((nextDialog) => {
-        if (nextDialog) {
-          this.dialog.openByName(nextDialog);
-        }
+        this.dialog.openByName(nextDialog);
       });
     }
   }

@@ -21,7 +21,7 @@ export class PipetteTool extends Tool {
     ctx.canvas.width = width;
     ctx.canvas.height = height;
 
-    const xml = new XMLSerializer().serializeToString(svg.nativeElement);
+    const xml = new XMLSerializer().serializeToString(svg);
     this.image.onload = () => {
       ctx.drawImage(this.image, 0, 0);
 

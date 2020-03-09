@@ -52,7 +52,7 @@ describe('PolygonTool', () => {
   it('can initialize new Polygon', () => {
     polygonTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(polygonTool.shape.origin).toEqual(new Coordinate(100, 100));
-    expect(fixture.componentInstance.drawingSurface.svg.nativeElement.querySelector('polygon')).toBeTruthy();
+    expect(fixture.componentInstance.drawingSurface.svg.querySelector('polygon')).toBeTruthy();
   });
 
   it('can resize Polygon', () => {
