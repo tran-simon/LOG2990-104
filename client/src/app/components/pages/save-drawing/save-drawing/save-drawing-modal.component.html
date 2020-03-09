@@ -2,9 +2,11 @@
   <div content>
     <div id="main-container">
       <div id="form-container">
-        <app-name-input [(value)]="name" required=true>Nom du dessin</app-name-input>
+        <img id="preview" [src]="previewURL()">
+        <form [formGroup]="formGroup"></form>
+        <app-name-input [formGroup]="formGroup" [(value)]="name" required=true>Nom du dessin</app-name-input>
         <div id="tag-container" *ngFor="let tag of tags; index as i">
-          <app-tag-input [(value)]="tags[i].value" required=true>Tag</app-tag-input>
+          <app-tag-input [formGroup]="formGroup" [(value)]="tags[i].value" required=true>Tag</app-tag-input>
         </div>
         <div id="tag-button-container">
           <button mat-icon-button (click)="removeTag()">
@@ -18,7 +20,7 @@
     </div>
   </div>
   <div actions>
-    <button id="btn-save" mat-stroked-button (click)="saveDrawing()">
+    <button [disabled]="formGroup.invalid" id="btn-save" mat-stroked-button (click)="saveDrawing()">
       Sauvegarder
     </button>
   </div>

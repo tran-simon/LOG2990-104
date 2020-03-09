@@ -47,13 +47,13 @@ describe('PipetteTool', () => {
 
   it('picks primary color on left click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
-    pipetteTool.handleMouseEvent({type: 'click', offsetX: 10, offsetY: 20} as MouseEvent);
+    pipetteTool.handleMouseEvent({ type: 'click', offsetX: 10, offsetY: 20 } as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(new Coordinate(10, 20), SelectedColorType.primary);
   });
 
   it('picks secondary color on right click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
-    pipetteTool.handleMouseEvent({type: 'contextmenu', offsetX: 10, offsetY: 20, preventDefault: ()=> {}} as MouseEvent);
+    pipetteTool.handleMouseEvent({ type: 'contextmenu', offsetX: 10, offsetY: 20, preventDefault: () => {} } as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(new Coordinate(10, 20), SelectedColorType.secondary);
   });
 

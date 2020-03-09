@@ -1,4 +1,3 @@
-
 export type EventAction<T> = (event: T) => boolean | void;
 export type EventsHandlingMap<T> = Map<string, EventAction<T>>;
 export abstract class AbstractEventListenerService<T extends Event> {

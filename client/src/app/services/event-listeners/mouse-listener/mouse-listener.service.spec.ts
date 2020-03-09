@@ -5,23 +5,25 @@ import { MouseListenerService } from 'src/app/services/event-listeners/mouse-lis
 import createSpy = jasmine.createSpy;
 
 describe('MouseListenerService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [MouseListenerService]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      providers: [MouseListenerService],
+    }),
+  );
 
   it('should be created', () => {
     const service: MouseListenerService = TestBed.get(MouseListenerService);
     expect(service).toBeTruthy();
   });
 
-  it('can create default mouse listener', ()=> {
+  it('can create default mouse listener', () => {
     const handleClick: (e: MouseEvent) => boolean = createSpy();
     const handler = {
       handleClick,
     } as MouseHandler;
     const mouseListener = MouseListenerService.defaultMouseListener(handler);
 
-    mouseListener.handle({type: 'click'} as MouseEvent);
+    mouseListener.handle({ type: 'click' } as MouseEvent);
     expect(handleClick).toHaveBeenCalled();
   });
 });

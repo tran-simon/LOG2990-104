@@ -32,14 +32,14 @@ describe('AbstractEventListenerService', () => {
   });
 
   it('can call right function', () => {
-    const event = {type: 'b', preventDefault} as Event;
+    const event = { type: 'b', preventDefault } as Event;
 
     expect(eventListenerService.handle(event)).toEqual(true);
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
   it('can call right function and not prevent default', () => {
-    const event = {type: 'a', preventDefault} as Event;
+    const event = { type: 'a', preventDefault } as Event;
 
     expect(eventListenerService.handle(event)).toEqual(false);
     expect(preventDefaultSpy).not.toHaveBeenCalled();
@@ -99,5 +99,4 @@ describe('AbstractEventListenerService', () => {
     const func: EventAction<Event> = eventListenerService['eventsHandlingMap'].get('ID1') as EventAction<Event>;
     expect(func({} as Event)).toEqual(false);
   });
-
 });

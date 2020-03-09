@@ -32,7 +32,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     public editorService: EditorService,
     private dialog: ModalDialogService,
     private keyboardListener: KeyboardListenerService,
-    private mouseListener: MouseListenerService) {
+    private mouseListener: MouseListenerService,
+  ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
@@ -49,7 +50,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('3'),
         () => {
           this.currentToolType = ToolType.Polygon;
-        }
+        },
       ],
       [
         KeyboardListenerService.getIdentifier('c'),
@@ -96,6 +97,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
           return true;
         },
       ],
+      [
+        KeyboardListenerService.getIdentifier('e', true),
+        () => {
+          this.dialog.openByName(ModalType.EXPORT);
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('s', true),
+        () => {
+          this.dialog.openByName(ModalType.SAVE);
+          return true;
+        },
+      ],
     ]);
 
     this.keyboardListener.defaultEventAction = (e) => {
@@ -138,8 +153,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.dialog.openByName(ModalType.GUIDE);
   }
 
-  openSave(): void {
-    this.dialog.openByName(ModalType.SAVE);
+  openChooseExportSave(): void {
+    const confirmDialog = this.dialog.openByName(ModalType.CHOOSE_EXPORT_SAVE);
+
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        this.dialog.openByName(result);
+      });
+    }
   }
 
   openCreateModal(): void {

@@ -15,6 +15,7 @@ import {
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
@@ -47,6 +48,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     MatDividerModule,
     MatListModule,
     HttpClientModule,
+    MatSelectModule,
   ],
   declarations: [
     AbstractModalComponent,
@@ -87,6 +89,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     MatExpansionModule,
     MatDividerModule,
     MatListModule,
+    MatSelectModule,
   ],
 })
 export class SharedModule {}

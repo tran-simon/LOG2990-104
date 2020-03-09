@@ -16,7 +16,7 @@ export class PipetteTool extends Tool {
   }
 
   private pickColor(position: Coordinate, selectedColorType: SelectedColorType): void {
-    const {width, height, svg} = this.editorService.view;
+    const { width, height, svg } = this.editorService.view;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.canvas.width = width;
@@ -38,8 +38,7 @@ export class PipetteTool extends Tool {
 
   private handleLeftOrRightClick(selectedColorType: SelectedColorType): void {
     if (this.editorService.view) {
-      this.pickColor(this.mousePosition,
-        selectedColorType);
+      this.pickColor(this.mousePosition, selectedColorType);
     }
   }
 

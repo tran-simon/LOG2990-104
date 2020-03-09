@@ -15,27 +15,13 @@ export class MouseListenerService extends AbstractEventListenerService<MouseEven
   static defaultMouseListener(handler: MouseHandler): MouseListenerService {
     const mouseListenerService = new MouseListenerService();
     mouseListenerService.addEvents([
-      [
-        this.EVENT_DBLCLICK, (e) => handler.handleDblClick(e)
-      ],
-      [
-        this.EVENT_MOUSEMOVE, (e) => handler.handleMouseMove(e)
-      ],
-      [
-        this.EVENT_MOUSEDOWN, (e) => handler.handleMouseDown(e)
-      ],
-      [
-        this.EVENT_MOUSEUP, (e) => handler.handleMouseUp(e)
-      ],
-      [
-        this.EVENT_MOUSELEAVE, (e) => handler.handleMouseLeave(e)
-      ],
-      [
-        this.EVENT_CLICK, (e) => handler.handleClick(e)
-      ],
-      [
-        this.EVENT_CONTEXTMENU, (e) => handler.handleContextMenu(e)
-      ],
+      [this.EVENT_DBLCLICK, (e) => handler.handleDblClick(e)],
+      [this.EVENT_MOUSEMOVE, (e) => handler.handleMouseMove(e)],
+      [this.EVENT_MOUSEDOWN, (e) => handler.handleMouseDown(e)],
+      [this.EVENT_MOUSEUP, (e) => handler.handleMouseUp(e)],
+      [this.EVENT_MOUSELEAVE, (e) => handler.handleMouseLeave(e)],
+      [this.EVENT_CLICK, (e) => handler.handleClick(e)],
+      [this.EVENT_CONTEXTMENU, (e) => handler.handleContextMenu(e)],
     ]);
 
     return mouseListenerService;

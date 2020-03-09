@@ -207,9 +207,9 @@ describe('EditorComponent', () => {
   it('prevents default on right click', () => {
     const handleMouseEventSpy = spyOn(component, 'handleMouseEvent').and.callThrough();
     const event = createSpyObj<MouseEvent>('event', ['preventDefault']);
-    component.handleMouseEvent({...event, type:'contextmenu'});
+    component.handleMouseEvent({ ...event, type: 'contextmenu' });
 
-    expect(handleMouseEventSpy).toHaveBeenCalledWith({...event, type:'contextmenu'});
+    expect(handleMouseEventSpy).toHaveBeenCalledWith({ ...event, type: 'contextmenu' });
     expect(event.preventDefault).toHaveBeenCalled();
   });
 

@@ -1,0 +1,24 @@
+<app-abstract-modal>
+  <div content>
+    <img id="preview" [src]="previewURL()">
+    <form [formGroup]="formGroup">
+      <app-name-input [formGroup]="formGroup" [(value)]="name" required=true>Nom du fichier
+      </app-name-input>
+      <mat-form-field [formGroup]="formGroup">
+        <mat-label>Extension</mat-label>
+        <mat-select [(value)]="selectedExtension" name="extensions" (selectionChange)="changeExtension()">
+          <mat-option *ngFor="let ext of extensions" [value]="ext">
+            {{ext}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+  <div actions>
+    <button mat-button>
+      Ajouter le filtre
+    </button>
+    <a mat-stroked-button id="save-button" [href]="href" [download]="fullName" [disabled]="formGroup.invalid"
+      (click)="submit()">Sauvegarder</a>
+  </div>
+</app-abstract-modal>

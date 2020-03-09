@@ -46,7 +46,7 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
   }
 
   handleClick(e: MouseEvent): boolean | void {
-    return ;
+    return;
   }
 
   handleContextMenu(e: MouseEvent): boolean | void {

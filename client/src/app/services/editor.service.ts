@@ -82,6 +82,15 @@ export class EditorService {
     }
   }
 
+  /**
+   * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
+   */
+  createDataURL(surface: DrawingSurfaceComponent): string {
+    const xmlSerializer = new XMLSerializer();
+    const svgString = xmlSerializer.serializeToString(surface.svg);
+    return 'data:image/svg+xml,' + encodeURIComponent(svgString);
+  }
+
   removeShape(shape: BaseShape): void {
     const index = this.shapes.findIndex((s) => s === shape);
     if (index !== -1) {

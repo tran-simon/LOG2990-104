@@ -8,7 +8,7 @@ import { ModalType } from 'src/app/services/modal/modal-type.enum';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [KeyboardListenerService]
+  providers: [KeyboardListenerService],
 })
 export class HomeComponent {
   previousDrawings: boolean;
