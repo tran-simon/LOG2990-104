@@ -15,6 +15,7 @@ import { EditorService } from 'src/app/services/editor.service';
 export class SaveDrawingModalComponent extends AbstractModalComponent {
   tags: TagInputComponent[];
   name: string;
+  errorMessage: string;
 
   constructor(
     private apiService: APIService,
@@ -25,21 +26,42 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
     this.name = '';
+    this.errorMessage = '';
   }
 
   saveDrawing(): void {
-    const tagValues: string[] = [];
+    if (this.name !== '' && this.validateTags()) {
+      const tagValues: string[] = [];
 
-    this.tags.forEach((tag: TagInputComponent) => {
-      tagValues.push(tag.value);
+      this.tags.forEach((tag: TagInputComponent) => {
+        tagValues.push(tag.value);
+      });
+
+      const data = JSON.stringify(this.editorService.shapes);
+      const drawing = new Drawing(this.name, tagValues, data);
+
+      this.apiService.uploadDrawing(drawing);
+
+      this.dialogRef.close();
+    } else if (this.name === '') {
+      this.errorMessage = 'Le nom du dessin est vide.';
+    }
+  }
+
+  validateTags(): boolean {
+    let valid = true;
+
+    this.tags.forEach((tag) => {
+      if (tag.value === '') {
+        valid = false;
+      }
     });
 
-    const data = JSON.stringify(this.editorService.shapes);
-    const drawing = new Drawing(this.name, tagValues, data);
+    if (!valid) {
+      this.errorMessage = 'Un des tags est vide.';
+    }
 
-    this.apiService.uploadDrawing(drawing);
-
-    this.dialogRef.close();
+    return valid;
   }
 
   addTag(): void {
