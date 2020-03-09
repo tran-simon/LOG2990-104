@@ -12,7 +12,7 @@ export abstract class AbstractToolbarEntry<T extends ToolProperties> {
     this.thicknessSliderStep = ToolbarComponent.SLIDER_STEP;
   }
 
-  get toolProperties(): T | undefined {
+  get toolProperties(): T {
     const tool = this.editorService.tools.get(this.type);
     if (!tool) {
       throw new Error('Tool not found error: ' + this.type);
@@ -20,7 +20,7 @@ export abstract class AbstractToolbarEntry<T extends ToolProperties> {
     if (tool instanceof CreatorTool) {
       return tool.toolProperties as T;
     } else {
-      return undefined;
+      return {} as T;
     }
   }
 }

@@ -25,11 +25,11 @@ describe('AbstractToolbarEntry', () => {
   });
 
   it('can get tool properties', () => {
-    if (editorService.tools.get(type) instanceof CreatorTool) {
-      expect(toolbarEntry.toolProperties).toEqual(toolProperties);
+    expect(toolbarEntry.toolProperties).toEqual(toolProperties);
+    /*if (editorService.tools.get(type) instanceof CreatorTool) {
     } else {
       expect(toolbarEntry.toolProperties).toBeUndefined();
-    }
+    }*/
   });
 
   it('throws error if tool does not exist', () => {
