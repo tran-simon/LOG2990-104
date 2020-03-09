@@ -1,9 +1,7 @@
-<h1 mat-dialog-title>Save drawing</h1>
-<div mat-dialog-content id="#saver">
-  <mat-form-field appearance="fill">
-    <input matInput placeholder="Name" [(ngModel)]="name">
-  </mat-form-field>
-  <form>
+<app-abstract-modal>
+  <div content>
+    <img [src]="previewURL()" height="300" width="500" />
+    <app-name-input [(value)]="name">Nom du fichier</app-name-input>
     <mat-form-field>
       <mat-label>Extension</mat-label>
       <mat-select [(ngModel)]="selectedExtension" name="extensions">
@@ -12,13 +10,10 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </form>
-  <!-- <button mat-button (click)="addFilter()">
-    add filter
-  </button> -->
-</div>
-<img [src]="previewURL()" height="300" width="500" />
-<mat-dialog-actions>
-  <button mat-button id="saveButton" (click)="submit(false)">Save</button>
-  <button mat-button id="cancelButton" (click)="submit(true)">Cancel</button>
-</mat-dialog-actions>
+  </div>
+  <div actions>
+    <button mat-button id="saveButton" (click)="submit()">
+      Save
+    </button>
+  </div>
+</app-abstract-modal>

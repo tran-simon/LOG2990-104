@@ -15,6 +15,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   name: string;
   extensions: string[] = ['svg', 'png', 'jpg'];
   previewImage: DrawingSurfaceComponent;
+
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
     public editorService: EditorService,
@@ -23,22 +24,18 @@ export class ExportModalComponent extends AbstractModalComponent {
     super(dialogRef);
     this.previewImage = this.editorService.view;
   }
+
   previewURL(): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.previewImage));
   }
-  // addFilter(): void {
-  // }
-  submit(cancel: boolean): void {
-    if (!cancel) {
-      this.fullName = this.name + '.' + this.selectedExtension;
-      console.log(this.fullName);
-      if (this.name !== 'undefined' && this.selectedExtension !== 'undefined') {
-        console.log(this.selectedExtension);
-        this.editorService.exportSVGElement(this.fullName, this.previewImage);
-      }
-      this.dialogRef.close();
-    } else {
-      this.dialogRef.close();
+
+  submit(): void {
+    this.fullName = this.name + '.' + this.selectedExtension;
+    console.log(this.fullName);
+    if (this.name !== 'undefined' && this.selectedExtension !== 'undefined') {
+      console.log(this.selectedExtension);
+      this.editorService.exportSVGElement(this.fullName, this.previewImage);
     }
+    this.dialogRef.close();
   }
 }
