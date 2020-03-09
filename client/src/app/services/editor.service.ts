@@ -23,7 +23,7 @@ export class EditorService {
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
   private previewShapes: BaseShape[];
-  private _commandReceiver: CommandReceiver;
+  private readonly _commandReceiver: CommandReceiver;
 
   view: DrawingSurfaceComponent;
 

@@ -36,4 +36,9 @@ describe('BaseShape', () => {
     expect(component.svgNode.style.fill).toEqual(component.shapeProperties.fillColor.rgbString);
     expect(component.svgNode.style.visibility).toEqual(component.shapeProperties.visibility);
   });
+
+  it('can get end', ()=>{
+    const end = new Coordinate(10, 10);
+    expect(component.end).toEqual(end);
+  })
 });

@@ -17,6 +17,7 @@ import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/re
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
+import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
@@ -186,6 +187,13 @@ describe('EditorComponent', () => {
     expect(currentTool.constructor.name).toEqual(PenTool.name);
   });
 
+  it('should select selection tool on typing s', () => {
+    keyboardListener.handle(keyDown('s'));
+    expect(component.currentToolType).toEqual(ToolType.Select);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.constructor.name).toEqual(SelectionTool.name);
+  });
+
   it('can get current tool', () => {
     class ToolImpl extends Tool {
       type: string;
@@ -253,5 +261,19 @@ describe('EditorComponent', () => {
   it('opens dialog on openGuide', () => {
     component.openGuide();
     expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalType.GUIDE);
+  });
+
+  it('should undo on ctrl z', () => {
+    const undoSpy = spyOn(component.editorService.commandReceiver, 'undo');
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'z', ctrlKey: true}));
+    expect(undoSpy).toHaveBeenCalled();
+  });
+
+  it('should redo on ctrl shift z', () => {
+    const undoSpy = spyOn(component.editorService.commandReceiver, 'redo');
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'z', ctrlKey: true, shiftKey: true}));
+    expect(undoSpy).toHaveBeenCalled();
   });
 });

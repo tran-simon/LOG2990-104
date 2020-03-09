@@ -77,7 +77,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
-        KeyboardListenerService.getIdentifier('s', true),
+        KeyboardListenerService.getIdentifier('s'),
         () => {
           this.currentToolType = ToolType.Select;
           return false;
