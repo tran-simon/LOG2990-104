@@ -1,11 +1,7 @@
 import { Component, HostListener } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
-import { CreateDrawingModalComponent } from '../create-drawing-modal/create-drawing-modal.component';
+import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
+import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 
 @Component({
   selector: 'app-home',
@@ -13,44 +9,38 @@ import { CreateDrawingModalComponent } from '../create-drawing-modal/create-draw
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  keyboardEventHandler: KeyboardEventHandler;
+  private readonly keyboardListener: KeyboardListener;
   previousDrawings: boolean;
   modalIsOpened: boolean;
-  dialogRef: MatDialogRef<AbstractModalComponent>;
+  guideModalType: ModalTypes;
 
-  constructor(private router: Router, public dialog: MatDialog) {
+  constructor(private router: Router, private dialog: ModalDialogService) {
     this.previousDrawings = false;
     this.modalIsOpened = false;
-    this.keyboardEventHandler = {
-      ctrl_o: () => {
-        this.openModal('create');
-        return true;
-      },
-      ctrl_g: () => {
-        this.openGallery();
-        return true;
-      },
-    } as KeyboardEventHandler;
+    this.guideModalType = ModalTypes.GUIDE;
+
+    this.keyboardListener = new KeyboardListener(
+      new Map<string, KeyboardEventAction>([
+        [
+          KeyboardListener.getIdentifier('o', true),
+          () => {
+            this.openModal(ModalTypes.CREATE);
+            return true;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('g', true),
+          () => {
+            this.openGallery();
+            return true;
+          },
+        ],
+      ]),
+    );
   }
 
-  openModal(link = 'create'): void {
-    if (!this.modalIsOpened) {
-      switch (link) {
-        case 'create':
-          this.dialogRef = this.dialog.open(CreateDrawingModalComponent, {});
-          break;
-        case 'help':
-          this.dialogRef = this.dialog.open(UserGuideModalComponent, {});
-          break;
-        default:
-          return;
-      }
-
-      this.dialogRef.afterClosed().subscribe(() => {
-        this.modalIsOpened = false;
-      });
-      this.modalIsOpened = true;
-    }
+  openModal(link: ModalTypes = ModalTypes.CREATE): void {
+    this.dialog.openByName(link);
   }
 
   openPage(nextLink: string): void {
@@ -63,6 +53,6 @@ export class HomeComponent {
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
+    this.keyboardListener.handle(event);
   }
 }

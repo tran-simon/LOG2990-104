@@ -1,8 +1,9 @@
 /* tslint:disable:no-string-literal */
 import { TestBed } from '@angular/core/testing';
+import { SelectedColorType } from 'src/app/services/selected-color-type';
 import { Color } from 'src/app/utils/color/color';
 
-import { ColorsService, SelectedColorType } from 'src/app/services/colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
 
 describe('ColorsService', () => {
   let service: ColorsService;

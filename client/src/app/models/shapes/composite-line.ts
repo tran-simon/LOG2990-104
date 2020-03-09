@@ -5,7 +5,7 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class CompositeLine extends BaseShape {
-  readonly MAX_FINAL_SNAP_DISTANCE = 3;
+  static readonly MAX_FINAL_SNAP_DISTANCE: number = 3;
 
   lineArray: Line[];
   junctionArray: Ellipse[];
@@ -85,7 +85,8 @@ export class CompositeLine extends BaseShape {
     this.removeLastPoint(); // todo - add double click timeout to avoid deleting shapes
     this.removeLastPoint();
 
-    if (Coordinate.maxXYDistance(c, this.lineArray[0].startCoord) < this.MAX_FINAL_SNAP_DISTANCE) {
+    const shouldClose = Coordinate.maxXYDistance(c, this.lineArray[0].startCoord) < CompositeLine.MAX_FINAL_SNAP_DISTANCE;
+    if (shouldClose) {
       this.updateCurrentCoord(this.lineArray[0].startCoord);
     } else {
       this.addJunction(this.currentLine.endCoord);

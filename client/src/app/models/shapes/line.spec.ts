@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { Line } from 'src/app/models/shapes/line';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 

@@ -8,7 +8,7 @@ export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
   abstract shape: BaseShape | undefined;
   abstract createShape(): BaseShape;
 
-  protected constructor(editorService: EditorService, isActive = false) {
+  protected constructor(editorService: EditorService, isActive: boolean = false) {
     super(editorService);
     this.isActive = isActive;
   }

@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/*tslint:disable:no-string-literal no-any */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { Rectangle } from 'src/app/models/shapes/rectangle';

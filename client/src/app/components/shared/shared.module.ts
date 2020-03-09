@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { HttpClientModule } from '@angular/common/http';
 import {
   MatButtonModule,
   MatDialogModule,
@@ -22,8 +23,11 @@ import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-in
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
+import { ConfirmModalComponent } from './abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
 import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { NameInputComponent } from './inputs/name-input/name-input.component';
+import { TagInputComponent } from './inputs/tag-input/tag-input.component';
 
 @NgModule({
   imports: [
@@ -42,6 +46,7 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     MatExpansionModule,
     MatDividerModule,
     MatListModule,
+    HttpClientModule,
   ],
   declarations: [
     AbstractModalComponent,
@@ -51,10 +56,13 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
+    TagInputComponent,
+    NameInputComponent,
     ColorHistoryComponent,
+    ConfirmModalComponent,
   ],
 
-  entryComponents: [AbstractModalComponent],
+  entryComponents: [AbstractModalComponent, ConfirmModalComponent],
   exports: [
     AbstractModalComponent,
     ReactiveFormsModule,
@@ -72,6 +80,8 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
+    TagInputComponent,
+    NameInputComponent,
     ColorHistoryComponent,
     AlphaComponent,
     MatExpansionModule,

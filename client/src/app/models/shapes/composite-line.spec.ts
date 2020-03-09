@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { Line } from 'src/app/models/shapes/line';
 import { Color } from 'src/app/utils/color/color';
@@ -32,7 +33,7 @@ describe('CompositeLine', () => {
     expect(cLine.lineArray.pop()).toEqual(new Line(coord1));
     expect(cLine.svgNode.querySelector('line')).toBeTruthy();
   });
-  it('Should add junction at the end of junctionArray and add propreties to the new junction', () => {
+  it('Should add junction at the end of junctionArray and add properties to the new junction', () => {
     cLine.addJunction(coord1);
     expect(cLine.currentJunction.svgNode.style.fill).toEqual(Color.BLACK.rgbString);
     expect(cLine.svgNode.querySelector('ellipse')).toBeTruthy();
@@ -81,7 +82,7 @@ describe('CompositeLine', () => {
     expect(removeChildSpy).toHaveBeenCalledWith(lastJunction.svgNode);
     expect(cLine.removeLastPoint).toBeTruthy();
   });
-  it('Should set origin to given cooridinate', () => {
+  it('Should set origin to given coordinate', () => {
     cLine.origin = coord2;
     expect(cLine.lineArray[0].startCoord).toEqual(coord2);
   });

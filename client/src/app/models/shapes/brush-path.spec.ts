@@ -1,5 +1,5 @@
 import { BrushPath } from 'src/app/models/shapes/brush-path';
-import { BrushTextureType } from 'src/app/models/tool-properties/brush-tool-properties';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 describe('Path', () => {
