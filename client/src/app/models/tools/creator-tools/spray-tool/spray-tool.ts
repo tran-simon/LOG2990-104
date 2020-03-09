@@ -16,7 +16,8 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
     this.toolProperties = new SprayToolProperties();
     this.lastMovePosition = new Coordinate();
   }
-  protected startShape(): void {
+
+  startShape(): void {
     super.startShape();
     this.lastMovePosition = this.mousePosition;
     this.interval = window.setInterval(() => {

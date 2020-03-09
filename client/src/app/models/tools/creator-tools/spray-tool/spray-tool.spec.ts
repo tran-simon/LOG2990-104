@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from '../../../../components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from '../../../../components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from '../../../../components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from '../../../../components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from '../../../../components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
@@ -13,11 +14,12 @@ import { ToolbarComponent } from '../../../../components/pages/editor/toolbar/to
 import { SharedModule } from '../../../../components/shared/shared.module';
 import { ColorsService } from '../../../../services/colors.service';
 import { EditorService } from '../../../../services/editor.service';
+import { Coordinate } from '../../../../utils/math/coordinate';
 import { CompositeParticle } from '../../../shapes/composite-particle';
 import { mouseDown, mouseLeave, mouseMove, mouseUp } from '../stroke-tools/stroke-tool.spec';
 import { SprayTool } from './spray-tool';
 
-describe('SprayTool', () => {
+fdescribe('SprayTool', () => {
   let sprayTool: SprayTool;
   let fixture: ComponentFixture<EditorComponent>;
   // @ts-ignore
@@ -35,6 +37,7 @@ describe('SprayTool', () => {
         SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
+        EllipseToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],
@@ -47,6 +50,13 @@ describe('SprayTool', () => {
     colorService = fixture.componentInstance.editorService.colorsService;
     sprayTool = new SprayTool(fixture.componentInstance.editorService);
     sprayTool.shape = new CompositeParticle();
+  });
+
+  it('should call startShape onmousedown if not active', () => {
+    const startShapeSpy = spyOn(sprayTool, 'startShape');
+    sprayTool['isActive'] = false;
+    sprayTool.handleMouseDown(mouseDown());
+    expect(startShapeSpy).toHaveBeenCalled();
   });
 
   it('should create a new shape onmousedown if not active', () => {
@@ -63,24 +73,24 @@ describe('SprayTool', () => {
     expect(addShapeSpy).toHaveBeenCalled();
   });
 
-  it('should call addParticle with new coord onmousemove', () => {
-    const shapeSpy = spyOn(sprayTool.shape, 'addParticle');
-    sprayTool['isActive'] = true;
-    sprayTool.handleMouseEvent(mouseMove());
-    expect(shapeSpy).toHaveBeenCalled();
+  it('should update lastMovePosition onmousemove', () => {
+    sprayTool.handleMouseDown(mouseDown(new Coordinate(100, 100)));
+    sprayTool.handleMouseEvent(mouseMove(new Coordinate(150, 150)));
+    expect(sprayTool['lastMovePosition']).toEqual(new Coordinate(150, 150));
   });
 
   it('should call applyShape onmouseup if active', () => {
     const applyShapeSpy = spyOn(sprayTool, 'applyShape');
     sprayTool['isActive'] = true;
-    sprayTool.handleMouseEvent(mouseUp());
+    sprayTool.startShape();
+    sprayTool.handleMouseUp(mouseUp());
     expect(applyShapeSpy).toHaveBeenCalled();
   });
 
   it('should call applyShape onmouseleave if active', () => {
     const applyShapeSpy = spyOn(sprayTool, 'applyShape');
     sprayTool['isActive'] = true;
-    sprayTool.handleMouseEvent(mouseLeave());
+    sprayTool.handleMouseLeave(mouseLeave());
     expect(applyShapeSpy).toHaveBeenCalled();
   });
 });
