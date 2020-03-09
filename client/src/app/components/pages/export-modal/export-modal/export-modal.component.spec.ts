@@ -20,6 +20,7 @@ describe('ExportModalComponent', () => {
   const dialogRefCloseSpy = createSpy('close');
   let createDataURLSpy: Spy;
   let exportSVGElementSpy: Spy;
+  let exportImageElement: Spy;
   let domSanitizer: SpyObj<DomSanitizer>;
 
   beforeEach(async(() => {
@@ -30,6 +31,7 @@ describe('ExportModalComponent', () => {
 
     createDataURLSpy = spyOn(editorService, 'createDataURL');
     exportSVGElementSpy = spyOn(editorService, 'exportSVGElement');
+    exportImageElement = spyOn(editorService, 'exportImageElement');
 
     domSanitizer = createSpyObj<DomSanitizer>('domSanitizer', ['bypassSecurityTrustResourceUrl', 'sanitize']);
 
@@ -63,8 +65,17 @@ describe('ExportModalComponent', () => {
     expect(createDataURLSpy).toHaveBeenCalled();
   });
 
-  it('should call export svg element on submit', ()=>{
+  it('should call export svg element on submit with svg extension', () => {
+    component.name = 'NAME';
+    component.selectedExtension = 'svg';
     component.submit();
     expect(exportSVGElementSpy).toHaveBeenCalled();
-  })
+  });
+
+  it('should call export image element on submit with other extension', () => {
+    component.name = 'NAME';
+    component.selectedExtension = 'EXTENsION';
+    component.submit();
+    expect(exportImageElement).toHaveBeenCalled();
+  });
 });
