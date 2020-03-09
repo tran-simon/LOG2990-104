@@ -13,43 +13,15 @@ import { ToolbarComponent } from '../../../../components/pages/editor/toolbar/to
 import { SharedModule } from '../../../../components/shared/shared.module';
 import { ColorsService } from '../../../../services/colors.service';
 import { EditorService } from '../../../../services/editor.service';
-import { Coordinate } from '../../../../utils/math/coordinate';
 import { CompositeParticle } from '../../../shapes/composite-particle';
-import { NB_FRAME_BUFFER, SprayTool } from './spray-tool';
+import { mouseDown, mouseLeave, mouseMove, mouseUp } from '../stroke-tools/stroke-tool.spec';
+import { SprayTool } from './spray-tool';
 
 describe('SprayTool', () => {
   let sprayTool: SprayTool;
   let fixture: ComponentFixture<EditorComponent>;
   // @ts-ignore
   let colorService: ColorsService;
-
-  const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
-    return {
-      type: 'mousedown',
-      offsetX: c.x,
-      offsetY: c.y,
-    } as MouseEvent;
-  };
-
-  const mouseMove = (c: Coordinate = new Coordinate()): MouseEvent => {
-    return {
-      type: 'mousemove',
-      offsetX: c.x,
-      offsetY: c.y,
-    } as MouseEvent;
-  };
-
-  const mouseUp = (): MouseEvent => {
-    return {
-      type: 'mouseup',
-    } as MouseEvent;
-  };
-
-  const mouseLeave = (): MouseEvent => {
-    return {
-      type: 'mouseup',
-    } as MouseEvent;
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -91,18 +63,7 @@ describe('SprayTool', () => {
     expect(addShapeSpy).toHaveBeenCalled();
   });
 
-  it('should wait NB_FRAME_BUFFER ticks before addParticle is called onmousedown', () => {
-    const shapeSpy = spyOn(sprayTool.shape, 'addParticle');
-    sprayTool['isActive'] = true;
-    for (let i = 0; i < NB_FRAME_BUFFER; i++) {
-      sprayTool.handleMouseEvent(mouseDown());
-    }
-    expect(shapeSpy).toHaveBeenCalledTimes(0);
-    sprayTool.handleMouseEvent(mouseDown());
-    expect(shapeSpy).toHaveBeenCalled();
-  });
-
-  it('should call addParticle onmousemove if active', () => {
+  it('should call addParticle with new coord onmousemove', () => {
     const shapeSpy = spyOn(sprayTool.shape, 'addParticle');
     sprayTool['isActive'] = true;
     sprayTool.handleMouseEvent(mouseMove());

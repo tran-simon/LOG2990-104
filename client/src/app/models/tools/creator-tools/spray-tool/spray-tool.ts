@@ -4,17 +4,16 @@ import { CompositeParticle } from '../../../shapes/composite-particle';
 import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
 import { CreatorTool } from '../creator-tool';
 
-export const NB_FRAME_BUFFER = 1;
-
 export class SprayTool extends CreatorTool<SprayToolProperties> {
+  static readonly INTERVAL_REFRESH_VALUE: number = 15;
+
   shape: CompositeParticle;
-  private noMovementFrames: number;
   private lastMovePosition: Coordinate;
+  private interval: number;
 
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new SprayToolProperties();
-    this.noMovementFrames = 0;
     this.lastMovePosition = new Coordinate();
   }
 
@@ -23,30 +22,24 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
     if (this.isActive) {
       switch (e.type) {
         case 'mouseup' || 'mouseleave': {
-          this.noMovementFrames = 0;
+          window.clearInterval(this.interval);
           this.applyShape();
           break;
         }
         case 'mousemove': {
-          this.noMovementFrames = 0;
           this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
-          this.shape.addParticle(this.mousePosition, this.toolProperties.frequency);
-          break;
-        }
-        case 'mousedown': {
-          if (this.noMovementFrames >= NB_FRAME_BUFFER) {
-            this.shape.addParticle(this.lastMovePosition, this.toolProperties.frequency);
-          }
-          this.noMovementFrames++;
           break;
         }
       }
     } else if (e.type === 'mousedown') {
-      this.shape = this.createShape();
       this.isActive = true;
-      this.lastMovePosition = this.mousePosition;
+      this.shape = this.createShape();
       this.updateProperties();
       this.addShape();
+      this.lastMovePosition = this.mousePosition;
+      this.interval = window.setInterval(() => {
+        this.shape.addParticle(this.lastMovePosition, this.toolProperties.frequency);
+      }, SprayTool.INTERVAL_REFRESH_VALUE);
     }
   }
 
