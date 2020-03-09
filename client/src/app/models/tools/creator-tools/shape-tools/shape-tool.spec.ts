@@ -4,10 +4,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { keyDown, keyUp } from 'src/app/components/pages/editor/editor/editor.component.spec';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
@@ -17,7 +19,7 @@ import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
 import { ShapeTool } from './shape-tool';
 
-export class MockShapeTool extends ShapeTool {
+export class MockShapeTool extends ShapeTool<ShapeToolProperties> {
   shape: Rectangle;
 
   constructor(editorService: EditorService) {
@@ -38,7 +40,7 @@ export class MockShapeTool extends ShapeTool {
 }
 
 describe('ShapeTool', () => {
-  let mockShapeTool: ShapeTool;
+  let mockShapeTool: ShapeTool<ShapeToolProperties>;
   let fixture: ComponentFixture<EditorComponent>;
   let surface: DrawingSurfaceComponent;
 
@@ -74,6 +76,7 @@ describe('ShapeTool', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        EllipseToolbarComponent,
         PolygonToolbarComponent,
         SprayToolbarComponent,
         EditorComponent,
@@ -97,7 +100,7 @@ describe('ShapeTool', () => {
 
   it('can draw preview area', () => {
     mockShapeTool.handleMouseEvent(mouseDown());
-    expect(surface.svg.nativeElement.querySelector('rect')).toBeTruthy();
+    expect(surface.svg.querySelector('rect')).toBeTruthy();
   });
 
   it('can remove preview area', () => {

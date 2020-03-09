@@ -3,9 +3,9 @@ import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
-import { SelectedColorType } from 'src/app/services/selected-color-type';
+import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -24,6 +24,7 @@ export class ToolbarComponent {
 
   @Output() editorBackgroundChanged: EventEmitter<Color>;
   @Output() guideButtonClicked: EventEmitter<boolean>;
+  @Output() saveButtonClicked: EventEmitter<boolean>;
 
   ToolType: typeof ToolType = ToolType;
   toolTypeKeys: string[] = Object.values(ToolType);
@@ -47,12 +48,14 @@ export class ToolbarComponent {
     this.showColorPicker = false;
     this.selectedColor = SelectedColorType.primary;
     this.guideButtonClicked = new EventEmitter<boolean>();
+    this.saveButtonClicked = new EventEmitter<boolean>();
 
     this.toolbarIcons = new Map<ToolType | string, string>([
       [ToolType.Pen, 'edit'],
       [ToolType.Brush, 'brush'],
       [ToolType.Rectangle, 'crop_square'],
       [ToolType.Line, 'show_chart'],
+      [ToolType.Ellipse, 'panorama_fish_eye'],
       [ToolType.Pipette, 'colorize'],
       [ToolType.Polygon, 'category'],
       [ToolType.Spray, 'blur_on'],
@@ -75,6 +78,10 @@ export class ToolbarComponent {
     this.color = eventColor;
     this.showColorPicker = false;
     this.close();
+  }
+
+  openSave(): void {
+    this.saveButtonClicked.emit(true);
   }
 
   openGuide(): void {

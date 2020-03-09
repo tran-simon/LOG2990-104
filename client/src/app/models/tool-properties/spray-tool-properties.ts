@@ -1,4 +1,4 @@
-import { ToolType } from '../tools/tool-type';
+import { ToolType } from '../tools/tool-type.enum';
 import { ToolProperties } from './tool-properties';
 
 export class SprayToolProperties extends ToolProperties {

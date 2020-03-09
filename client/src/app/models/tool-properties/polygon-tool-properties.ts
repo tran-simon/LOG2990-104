@@ -1,33 +1,14 @@
-import { MAX_POLY_EDGES, MIN_POLY_EDGES } from '../shapes/polygon';
-import { ToolType } from '../tools/tool-type';
-import { ToolProperties } from './tool-properties';
+import { Polygon } from 'src/app/models/shapes/polygon';
+import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
-export enum PolygonContourType {
-  FILLED_CONTOUR = 'Plein avec contour',
-  FILLED = 'Plein',
-  CONTOUR = 'Contour',
-}
-
-export class PolygonToolProperties extends ToolProperties {
-  static readonly MIN_THICKNESS: number = 1;
-  static readonly MAX_THICKNESS: number = 10;
-
-  minPolyEdges: number = MIN_POLY_EDGES;
-  maxPolyEdges: number = MAX_POLY_EDGES;
-
-  minThickness: number = PolygonToolProperties.MIN_THICKNESS;
-  maxThickness: number = PolygonToolProperties.MAX_THICKNESS;
-
-  contourType: PolygonContourType;
+export class PolygonToolProperties extends ShapeToolProperties {
+  minPolyEdges: number = Polygon.MIN_POLY_EDGES;
+  maxPolyEdges: number = Polygon.MAX_POLY_EDGES;
   nEdges: number;
-  constructor(
-    thickness: number = PolygonToolProperties.MIN_THICKNESS,
-    contourType: PolygonContourType = PolygonContourType.FILLED_CONTOUR,
-    nEdge: number = MIN_POLY_EDGES,
-  ) {
+
+  constructor(nEdge: number = Polygon.MIN_POLY_EDGES) {
     super(ToolType.Polygon);
-    this.strokeWidth = thickness;
-    this.contourType = contourType;
     this.nEdges = nEdge;
   }
 }

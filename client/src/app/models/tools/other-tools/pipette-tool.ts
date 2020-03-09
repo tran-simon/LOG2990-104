@@ -1,7 +1,8 @@
 import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { SelectedColorType } from 'src/app/services/selected-color-type';
+import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
 import { Color } from 'src/app/utils/color/color';
+import { Coordinate } from 'src/app/utils/math/coordinate';
 
 /**
  * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
@@ -14,18 +15,18 @@ export class PipetteTool extends Tool {
     this.image = new Image();
   }
 
-  private pickColor(x: number, y: number, selectedColorType: SelectedColorType): void {
+  private pickColor(position: Coordinate, selectedColorType: SelectedColorType): void {
     const { width, height, svg } = this.editorService.view;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.canvas.width = width;
     ctx.canvas.height = height;
 
-    const xml = new XMLSerializer().serializeToString(svg.nativeElement);
+    const xml = new XMLSerializer().serializeToString(svg);
     this.image.onload = () => {
       ctx.drawImage(this.image, 0, 0);
 
-      const data = ctx.getImageData(x, y, 1, 1).data;
+      const data = ctx.getImageData(position.x, position.y, 1, 1).data;
       const color = Color.rgb255(data[0], data[1], data[2]);
 
       this.editorService.colorsService.setColorByTypeAndUpdateHistory(color, selectedColorType);
@@ -35,13 +36,20 @@ export class PipetteTool extends Tool {
     this.image.style.display = 'none';
   }
 
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
-    if (e.type === 'click' || e.type === 'contextmenu') {
-      if (this.editorService.view) {
-        this.pickColor(e.offsetX, e.offsetY, e.type === 'contextmenu' ? SelectedColorType.secondary : SelectedColorType.primary);
-      }
+  private handleLeftOrRightClick(selectedColorType: SelectedColorType): void {
+    if (this.editorService.view) {
+      this.pickColor(this.mousePosition, selectedColorType);
     }
+  }
+
+  handleClick(e: MouseEvent): boolean | void {
+    this.handleLeftOrRightClick(SelectedColorType.primary);
+    return super.handleClick(e);
+  }
+
+  handleContextMenu(e: MouseEvent): boolean | void {
+    this.handleLeftOrRightClick(SelectedColorType.secondary);
+    return super.handleContextMenu(e);
   }
 
   protected updateProperties(): void {

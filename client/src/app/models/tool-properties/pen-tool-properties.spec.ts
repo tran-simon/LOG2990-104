@@ -1,4 +1,4 @@
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { PenToolProperties } from './pen-tool-properties';
 
 describe('Pen Tool Properties', () => {

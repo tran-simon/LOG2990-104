@@ -16,31 +16,42 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
     this.toolProperties = new SprayToolProperties();
     this.lastMovePosition = new Coordinate();
   }
+  protected startShape(): void {
+    super.startShape();
+    this.lastMovePosition = this.mousePosition;
+    this.interval = window.setInterval(() => {
+      this.shape.addParticle(this.lastMovePosition, this.toolProperties.frequency);
+    }, SprayTool.INTERVAL_REFRESH_VALUE);
+  }
 
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
-    if (this.isActive) {
-      switch (e.type) {
-        case 'mouseup' || 'mouseleave': {
-          window.clearInterval(this.interval);
-          this.applyShape();
-          break;
-        }
-        case 'mousemove': {
-          this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
-          break;
-        }
-      }
-    } else if (e.type === 'mousedown') {
-      this.isActive = true;
-      this.shape = this.createShape();
-      this.updateProperties();
-      this.addShape();
-      this.lastMovePosition = this.mousePosition;
-      this.interval = window.setInterval(() => {
-        this.shape.addParticle(this.lastMovePosition, this.toolProperties.frequency);
-      }, SprayTool.INTERVAL_REFRESH_VALUE);
+  handleMouseDown(e: MouseEvent): boolean | void {
+    if (!this.isActive) {
+      this.startShape();
     }
+    return super.handleMouseDown(e);
+  }
+
+  handleMouseUp(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      window.clearInterval(this.interval);
+      this.applyShape();
+    }
+    return super.handleMouseUp(e);
+  }
+
+  handleMouseLeave(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      window.clearInterval(this.interval);
+      this.applyShape();
+    }
+    return super.handleMouseUp(e);
+  }
+
+  handleMouseMove(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
+    }
+    return super.handleMouseMove(e);
   }
 
   protected updateProperties(): void {

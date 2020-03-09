@@ -9,10 +9,10 @@
     [value]='value' [formControl]="formControl" id="{{id}}">
   <span *ngIf="suffix" matSuffix>{{suffix}}</span>
 
-  <div *ngIf="invalid"
-    class="alert alert-danger">
+  <div *ngIf="invalid" class="alert alert-danger">
     <mat-error *ngFor="let error of errors">
       {{getErrorMessage(error)}}
     </mat-error>
   </div>
+  <mat-hint>{{hintLabel}}</mat-hint>
 </mat-form-field>

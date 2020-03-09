@@ -22,6 +22,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
   @Input() prefix: string;
   @Input() suffix: string;
   @Input() allowExternalUpdatesWhenFocused: boolean;
+  @Input() hintLabel: string;
 
   formControl: FormControl;
 
@@ -46,6 +47,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
     this.formGroup = new FormGroup({});
     this.required = false;
     this.allowExternalUpdatesWhenFocused = false;
+    this.hintLabel = '';
     this._focused = false;
     this.format = (v: string) => v;
   }

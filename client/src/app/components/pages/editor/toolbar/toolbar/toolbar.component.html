@@ -5,9 +5,8 @@
     </button>
     <div class="toolbar-section-divider"></div>
     <div *ngFor='let tool of toolTypeKeys'>
-      <button id='{{toolButtonId(tool)}}' mat-icon-button
-              [ngClass]="{'selected-tool': currentToolType === tool}"
-              (click)="selectTool(tool)">
+      <button id='{{toolButtonId(tool)}}' mat-icon-button [ngClass]="{'selected-tool': currentToolType === tool}"
+        (click)="selectTool(tool)">
         <mat-icon>{{toolbarIcons.get(tool)}}</mat-icon>
       </button>
     </div>
@@ -17,18 +16,17 @@
       <mat-icon>swap_horiz</mat-icon>
     </button>
     <div id="toolbar-primary-color" [style.background-color]="primaryColor.hexString"
-         (click)="editColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 1}">
+      (click)="editColor(SelectedColorType.primary)" [ngStyle]="{'z-index': 1}">
     </div>
     <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
-         (click)="editColor(SelectedColorType.secondary)"
-         [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
+      (click)="editColor(SelectedColorType.secondary)" [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
     </div>
   </div>
   <div id="toolbar-bottom-buttons">
     <button id="help-button" mat-icon-button (click)="openGuide()">
       <mat-icon>help</mat-icon>
     </button>
-    <button mat-icon-button>
+    <button id="save-button" mat-icon-button (click)="openSave()">
       <mat-icon>save</mat-icon>
     </button>
     <button mat-icon-button>
@@ -43,8 +41,9 @@
         <app-pen-toolbar *ngSwitchCase='ToolType.Pen' class='toolbar-tool-section'></app-pen-toolbar>
         <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
         <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>
-        <app-line-toolbar *ngSwitchCase=ToolType.Line class='toolbar-tool-section'></app-line-toolbar>
-        <app-polygon-toolbar *ngSwitchCase=ToolType.Polygon class='toolbar-tool-section'></app-polygon-toolbar>
+        <app-ellipse-toolbar *ngSwitchCase='ToolType.Ellipse' class='toolbar-tool-section'></app-ellipse-toolbar>
+        <app-line-toolbar *ngSwitchCase='ToolType.Line' class='toolbar-tool-section'></app-line-toolbar>
+        <app-polygon-toolbar *ngSwitchCase='ToolType.Polygon' class='toolbar-tool-section'></app-polygon-toolbar>
         <app-spray-toolbar *ngSwitchCase='ToolType.Spray' class='toolbar-tool-section'></app-spray-toolbar>
       </div>
       <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType" class="toolbar-tool-section">
@@ -52,7 +51,7 @@
         <label *ngSwitchCase="SelectedColorType.primary">Couleur primaire</label>
         <label *ngSwitchCase="SelectedColorType.secondary">Couleur secondaire</label>
         <app-color-picker [showHistory]=true #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"
-                          (closed)='drawer.close()'></app-color-picker>
+          (closed)='drawer.close()'></app-color-picker>
         <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme
           couleur de fond
         </button>

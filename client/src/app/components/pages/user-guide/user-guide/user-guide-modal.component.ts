@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { MatSidenav } from '@angular/material/sidenav';
-import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject';
+import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject.enum';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 
 @Component({
