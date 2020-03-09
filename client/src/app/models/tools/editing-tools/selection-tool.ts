@@ -6,6 +6,9 @@ import { Rectangle } from '../../shapes/rectangle';
 import { Tool } from '../tool';
 
 export class SelectionTool extends Tool {
+  // tslint:disable-next-line:no-magic-numbers
+  static BOUNDING_BOX_COLOR: Color = Color.rgb255(80, 80, 255, 0.1);
+
   private boundingBox: Rectangle;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
@@ -57,8 +60,8 @@ export class SelectionTool extends Tool {
     this.editorService.addPreviewShape(this.selectArea);
 
     this.boundingBox = new Rectangle(this.initialMouseCoord);
-    this.boundingBox.shapeProperties.fillColor = Color.rgb255(80, 80, 255, 0.1);
-    this.boundingBox.shapeProperties.strokeColor = Color.rgb255(80, 80, 255);
+    this.boundingBox.shapeProperties.fillColor = SelectionTool.BOUNDING_BOX_COLOR;
+    this.boundingBox.shapeProperties.strokeColor = SelectionTool.BOUNDING_BOX_COLOR;
     this.boundingBox.updateProperties();
     this.editorService.addPreviewShape(this.boundingBox);
   }

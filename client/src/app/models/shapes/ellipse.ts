@@ -33,11 +33,11 @@ export class Ellipse extends BaseShape {
     this.svgNode.setAttribute('cy', this._origin.y.toString());
   }
 
-  get width() {
+  get width(): number {
     return 0; // todo
   }
 
-  get height() {
+  get height(): number {
     return 0; // todo
   }
 

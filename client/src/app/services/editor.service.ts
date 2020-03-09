@@ -9,8 +9,8 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type';
 import { ColorsService } from 'src/app/services/colors.service';
-import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
+import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 
 @Injectable({
   providedIn: 'root',

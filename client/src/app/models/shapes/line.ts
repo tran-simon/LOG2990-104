@@ -33,11 +33,11 @@ export class Line extends BaseShape {
     this._origin = c;
   }
 
-  get width() {
+  get width(): number {
     return 0; // todo
   }
 
-  get height() {
+  get height(): number {
     return 0; // todo
   }
 

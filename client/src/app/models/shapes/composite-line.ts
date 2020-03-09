@@ -26,11 +26,11 @@ export class CompositeLine extends BaseShape {
     this.lineArray[0].startCoord = c;
   }
 
-  get width() {
+  get width(): number {
     return 0; // todo
   }
 
-  get height() {
+  get height(): number {
     return 0; // todo
   }
 
