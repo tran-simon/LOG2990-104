@@ -9,6 +9,7 @@ export class AddShapeCommand extends ShapeCommand {
 
   execute(): void {
     if (!this.editorService.view.svg.contains(this._shape.svgNode)) {
+      // todo - move logic to view
       this.editorService.addShapeToBuffer(this._shape);
     }
     this.editorService.applyShapesBuffer();
