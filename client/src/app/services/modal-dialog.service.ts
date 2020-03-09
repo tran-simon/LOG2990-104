@@ -9,6 +9,7 @@ import { SaveDrawingModalComponent } from 'src/app/components/pages/save-drawing
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from 'src/app/components/shared/abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
+
 export enum ModalTypes {
   CREATE = 'create',
   GUIDE = 'help',
@@ -17,6 +18,7 @@ export enum ModalTypes {
   EXPORT = 'export',
   CHOOSE_EXPORT_SAVE = 'choose-export-save'
 }
+
 @Injectable({
   providedIn: 'root',
 })
