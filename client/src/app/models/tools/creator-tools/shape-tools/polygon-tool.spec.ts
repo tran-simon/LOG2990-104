@@ -9,7 +9,7 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { PolygonContourType } from 'src/app/models/tool-properties/polygon-contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type';
 import { PolygonToolProperties } from 'src/app/models/tool-properties/polygon-tool-properties';
 import { PolygonTool } from 'src/app/models/tools/creator-tools/shape-tools/polygon-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
@@ -77,7 +77,7 @@ describe('RectangleTool', () => {
 
   it('can draw Polygon contour and fill', () => {
     polygonTool['_mousePosition'] = new Coordinate(50, 100);
-    properties.contourType = PolygonContourType.FILLED_CONTOUR;
+    properties.contourType = ContourType.FILLED_CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     const style = polygonTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
@@ -86,7 +86,7 @@ describe('RectangleTool', () => {
 
   it('can draw Polygon fill only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = PolygonContourType.FILLED;
+    properties.contourType = ContourType.FILLED;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;
@@ -97,7 +97,7 @@ describe('RectangleTool', () => {
 
   it('can draw Polygon contour only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = PolygonContourType.CONTOUR;
+    properties.contourType = ContourType.CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;

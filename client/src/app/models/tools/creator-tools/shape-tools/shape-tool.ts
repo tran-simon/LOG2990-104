@@ -1,12 +1,13 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
+import { ContourType } from 'src/app/models/tool-properties/contour-type';
+import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { ToolProperties } from '../../../tool-properties/tool-properties';
 
-export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
+export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTool<T> {
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
   protected initialMouseCoord: Coordinate;
@@ -95,5 +96,30 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     this.previewArea.updateProperties();
 
     this.resizeShape(dimensions, origin);
+  }
+
+  protected updateProperties(): void {
+    if (this.shape) {
+      const {contourType, strokeWidth} = this.toolProperties;
+      const {primaryColor, secondaryColor} = this.editorService.colorsService;
+
+      this.shape.shapeProperties.strokeWidth = this.getStrokeWidth(contourType, strokeWidth);
+      this.shape.shapeProperties.fillColor = this.getFillColor(contourType, primaryColor);
+      this.shape.shapeProperties.strokeColor = this.getStrokeColor(contourType, secondaryColor);
+      this.shape.updateProperties();
+
+    }
+  }
+
+  protected getStrokeWidth(contourType: ContourType, width: number): number {
+    return contourType === ContourType.FILLED ? 0 : width;
+  }
+
+  protected getFillColor(contourType: ContourType, color: Color): Color {
+    return contourType === ContourType.CONTOUR ? Color.TRANSPARENT : color;
+  }
+
+  protected getStrokeColor(contourType: ContourType, color: Color): Color {
+    return contourType === ContourType.FILLED ? Color.TRANSPARENT : color;
   }
 }

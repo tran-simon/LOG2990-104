@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/abstract-toolbar-entry/abstract-toolbar-entry';
-import { EllipseContourType } from 'src/app/models/tool-properties/ellipse-contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type';
 import { EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
 
 import { ToolType } from 'src/app/models/tools/tool-type';
@@ -12,7 +12,7 @@ import { EditorService } from '../../../../../services/editor.service';
   styleUrls: ['../toolbar/toolbar.component.scss'],
 })
 export class EllipseToolbarComponent extends AbstractToolbarEntry<EllipseToolProperties> {
-  ellipseContourTypes: typeof EllipseContourType = EllipseContourType;
+  ellipseContourTypes: typeof ContourType = ContourType;
   ellipseContourNames: string[] = Object.values(this.ellipseContourTypes);
 
   constructor(protected editorService: EditorService) {

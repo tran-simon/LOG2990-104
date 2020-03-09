@@ -10,7 +10,7 @@ import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen
 import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { EllipseContourType } from 'src/app/models/tool-properties/ellipse-contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type';
 import { EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
 import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
@@ -78,7 +78,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse contour and fill', () => {
-    properties.contourType = EllipseContourType.FILLED_CONTOUR;
+    properties.contourType = ContourType.FILLED_CONTOUR;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();
@@ -88,7 +88,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse fill only', () => {
-    properties.contourType = EllipseContourType.FILLED;
+    properties.contourType = ContourType.FILLED;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();
@@ -100,7 +100,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse contour only', () => {
-    properties.contourType = EllipseContourType.CONTOUR;
+    properties.contourType = ContourType.CONTOUR;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();

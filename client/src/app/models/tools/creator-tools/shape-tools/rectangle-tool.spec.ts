@@ -9,7 +9,7 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type';
 import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
@@ -78,7 +78,7 @@ describe('RectangleTool', () => {
   });
 
   it('can draw Rectangle contour and fill', () => {
-    properties.contourType = RectangleContourType.FILLED_CONTOUR;
+    properties.contourType = ContourType.FILLED_CONTOUR;
     rectangleTool.toolProperties = properties;
     rectangleTool['_mousePosition'] = new Coordinate(50, 100);
     rectangleTool['shape'] = rectangleTool.createShape();
@@ -88,7 +88,7 @@ describe('RectangleTool', () => {
   });
 
   it('can draw Rectangle fill only', () => {
-    properties.contourType = RectangleContourType.FILLED;
+    properties.contourType = ContourType.FILLED;
     rectangleTool.toolProperties = properties;
     rectangleTool['_mousePosition'] = new Coordinate(100, 100);
     rectangleTool['shape'] = rectangleTool.createShape();
@@ -100,7 +100,7 @@ describe('RectangleTool', () => {
   });
 
   it('can draw Rectangle contour only', () => {
-    properties.contourType = RectangleContourType.CONTOUR;
+    properties.contourType = ContourType.CONTOUR;
     rectangleTool.toolProperties = properties;
     rectangleTool['_mousePosition'] = new Coordinate(100, 100);
     rectangleTool['shape'] = rectangleTool.createShape();
