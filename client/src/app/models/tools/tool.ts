@@ -4,7 +4,6 @@ import { MouseHandler } from 'src/app/services/event-listeners/mouse-listener/mo
 import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { ToolProperties } from '../tool-properties/tool-properties';
-import { ToolType } from './tool-type.enum';
 
 export abstract class Tool<T = ToolProperties> implements MouseHandler {
   toolProperties: T;
@@ -25,7 +24,6 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
   private _mousePosition: Coordinate;
   protected editorService: EditorService;
   protected isActive: boolean;
-  type: ToolType; // todo - add getter and make protected
 
   handleDblClick(e: MouseEvent): boolean | void {
     return;
@@ -57,8 +55,7 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
 
   handleMouseEvent(e: MouseEvent): boolean {
     this._mousePosition = new Coordinate(e.offsetX, e.offsetY);
-    const result = this.mouseListener.handle(e);
-    return result;
+    return this.mouseListener.handle(e);
   }
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {

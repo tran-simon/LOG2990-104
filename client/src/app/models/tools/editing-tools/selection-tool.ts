@@ -4,7 +4,6 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
 import { Rectangle } from '../../shapes/rectangle';
 import { Tool } from '../tool';
-import { ToolType } from '../tool-type.enum';
 
 export class SelectionTool extends Tool {
   // tslint:disable-next-line:no-magic-numbers
@@ -16,7 +15,6 @@ export class SelectionTool extends Tool {
 
   constructor(public editorService: EditorService) {
     super(editorService);
-    this.type = ToolType.Select;
     this.editorService.selectedShapes = new Array<BaseShape>();
   }
 
@@ -51,7 +49,7 @@ export class SelectionTool extends Tool {
     this.editorService.shapes.forEach((shape) => {
       const inBoundsX = shape.end.x >= c.x && shape.origin.x <= c.x;
       const inBoundsY = shape.end.y >= c.y && shape.origin.y <= c.y;
-      if (inBoundsX && inBoundsY){
+      if (inBoundsX && inBoundsY) {
         // todo - proper method to determine if inside area
         selectedShape = shape;
       }

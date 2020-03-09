@@ -5,13 +5,11 @@ import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { ToolType } from '../../tool-type.enum';
 
 export class LineTool extends CreatorTool<LineToolProperties> {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new LineToolProperties();
-    this.type = ToolType.Line;
     this.lockMethod = this.calculateNoLock;
 
     this.keyboardListener.addEvent(KeyboardListenerService.getIdentifier('Backspace'), () => {

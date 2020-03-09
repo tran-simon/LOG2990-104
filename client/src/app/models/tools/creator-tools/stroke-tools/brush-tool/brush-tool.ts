@@ -1,7 +1,6 @@
 import { BrushPath } from 'src/app/models/shapes/brush-path';
 import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
-import { ToolType } from '../../../tool-type.enum';
 import { StrokeTool } from '../stroke-tool';
 
 export class BrushTool extends StrokeTool<BrushToolProperties> {
@@ -10,7 +9,6 @@ export class BrushTool extends StrokeTool<BrushToolProperties> {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new BrushToolProperties();
-    this.type = ToolType.Brush;
   }
 
   protected updateProperties(): void {

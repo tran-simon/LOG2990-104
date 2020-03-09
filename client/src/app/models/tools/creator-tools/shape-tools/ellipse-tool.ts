@@ -3,7 +3,6 @@ import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { Ellipse } from '../../../shapes/ellipse';
 import { EllipseToolProperties } from '../../../tool-properties/ellipse-tool-properties';
-import { ToolType } from '../../tool-type.enum';
 
 export class EllipseTool extends ShapeTool<EllipseToolProperties> {
   shape: Ellipse;
@@ -11,7 +10,6 @@ export class EllipseTool extends ShapeTool<EllipseToolProperties> {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new EllipseToolProperties();
-    this.type = ToolType.Ellipse;
   }
 
   createShape(): Ellipse {
