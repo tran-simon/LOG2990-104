@@ -1,15 +1,10 @@
+import { EllipseContourType } from 'src/app/models/tool-properties/ellipse-contour-type';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from '../tools/tool-type';
-
-export enum EllipseContourType {
-  FILLED_CONTOUR = 'Plein avec contour',
-  FILLED = 'Plein',
-  CONTOUR = 'Contour',
-}
+import { ToolType } from 'src/app/models/tools/tool-type';
 
 export class EllipseToolProperties extends ToolProperties {
-  static readonly MIN_THICKNESS = 1;
-  static readonly MAX_THICKNESS = 10;
+  static readonly MIN_THICKNESS: number = 1;
+  static readonly MAX_THICKNESS: number = 10;
 
   minThickness: number = EllipseToolProperties.MIN_THICKNESS;
   maxThickness: number = EllipseToolProperties.MAX_THICKNESS;

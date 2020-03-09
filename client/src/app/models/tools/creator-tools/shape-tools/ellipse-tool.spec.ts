@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/*tslint:disable:no-string-literal no-magic-numbers*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -9,7 +9,8 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { EllipseContourType, EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
+import { EllipseContourType } from 'src/app/models/tool-properties/ellipse-contour-type';
+import { EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
 import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';
@@ -75,7 +76,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse contour and fill', () => {
-    properties.contourType = EllipseContourType.FILLEDCONTOUR;
+    properties.contourType = EllipseContourType.FILLED_CONTOUR;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();
