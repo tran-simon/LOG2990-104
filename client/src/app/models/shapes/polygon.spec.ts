@@ -1,5 +1,5 @@
 /* tslint:disable: no-magic-numbers */
-import { MAX_POLY_EDGES, MIN_POLY_EDGES, Polygon } from './polygon';
+import { Polygon } from './polygon';
 
 describe('Polygon', () => {
   let polygon: Polygon;
@@ -11,15 +11,15 @@ describe('Polygon', () => {
   });
   it('should be at MIN_POLY_EDGE in lower edge case', () => {
     polygon.nEdges = 2;
-    expect(polygon.nEdges).toBe(MIN_POLY_EDGES);
+    expect(polygon.nEdges).toBe(Polygon.MIN_POLY_EDGES);
   });
   it('should be at MAX_POLY_EDGE in higher edge case', () => {
-    polygon.nEdges = MAX_POLY_EDGES + 1;
-    expect(polygon.nEdges).toBe(MAX_POLY_EDGES);
+    polygon.nEdges = Polygon.MAX_POLY_EDGES + 1;
+    expect(polygon.nEdges).toBe(Polygon.MAX_POLY_EDGES);
   });
   it('should be at MIN_POLY_EDGE in unexpected cases', () => {
     polygon.nEdges = NaN;
-    expect(polygon.nEdges).toBe(MIN_POLY_EDGES);
+    expect(polygon.nEdges).toBe(Polygon.MIN_POLY_EDGES);
   });
   it('Should init with interiorAngle at 2Pi/ nEdges', () => {
     expect(polygon.interiorAngle).toBe((2 * Math.PI) / polygon.nEdges);
