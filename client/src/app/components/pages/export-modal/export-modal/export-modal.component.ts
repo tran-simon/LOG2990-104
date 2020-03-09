@@ -25,6 +25,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     editorService.clearShapesBuffer();
     this.previewImage = this.editorService.view;
     this.name = '';
+    this.selectedExtension = '';
   }
 
   previewURL(): SafeResourceUrl {
@@ -34,9 +35,13 @@ export class ExportModalComponent extends AbstractModalComponent {
   submit(): void {
     this.fullName = this.name + '.' + this.selectedExtension;
     console.log(this.fullName);
-    if (this.name !== '' && this.selectedExtension !== 'undefined') {
+    if (this.name !== '' && this.selectedExtension !== '') {
       console.log(this.selectedExtension);
-      this.editorService.exportSVGElement(this.fullName, this.previewImage);
+      if (this.selectedExtension === 'svg') {
+        this.editorService.exportSVGElement(this.fullName, this.previewImage);
+      } else {
+        this.editorService.exportImageElement(this.fullName, this.selectedExtension, this.previewImage);
+      }
     }
     this.dialogRef.close();
   }

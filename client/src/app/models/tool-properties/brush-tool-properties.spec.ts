@@ -1,6 +1,6 @@
-import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type.enum';
 import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
 describe('Brush Tool Properties', () => {
   let brushProperties: BrushToolProperties;

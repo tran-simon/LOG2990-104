@@ -7,7 +7,7 @@ import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
 import { CommandReceiver } from '../models/commands/command-receiver';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
@@ -94,6 +94,21 @@ export class EditorService {
     download.setAttribute('href', this.createDataURL(surface));
     download.setAttribute('download', name);
     download.click();
+  }
+  exportImageElement(name: string, extension: string, surface: DrawingSurfaceComponent): void {
+    const image = new Image();
+    const canvas = document.createElement('canvas');
+    image.src = this.createDataURL(surface);
+    const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
+    image.onload = () => {
+      canvas.width = surface.width;
+      canvas.height = surface.height;
+      ctx.drawImage(image, 0, 0);
+      const download = document.createElement('a');
+      download.href = canvas.toDataURL(`image/${extension}`);
+      download.download = name;
+      download.click();
+    };
   }
 
   removeShape(shape: BaseShape): void {

@@ -4,9 +4,8 @@ import { RouterModule } from '@angular/router';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AppComponent } from './app.component';
 import { ChooseExportSaveModule } from './components/pages/choose-export-save/choose-export-save.module';
-import {
-  ChooseExportSaveModalComponent
-} from './components/pages/choose-export-save/choose-export-save/choose-export-save-modal.component';
+// tslint:disable-next-line: max-line-length
+import { ChooseExportSaveModalComponent } from './components/pages/choose-export-save/choose-export-save/choose-export-save-modal.component';
 import { EditorModule } from './components/pages/editor/editor.module';
 import { EditorComponent } from './components/pages/editor/editor/editor.component';
 import { ExportDrawingModule } from './components/pages/export-modal/export-modal.module';
@@ -37,4 +36,4 @@ import { SharedModule } from './components/shared/shared.module';
   bootstrap: [AppComponent],
   entryComponents: [UserGuideModalComponent, SaveDrawingModalComponent, ExportModalComponent, ChooseExportSaveModalComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -9,4 +9,4 @@ import { EditorComponent } from './editor/editor.component';
   declarations: [DrawingSurfaceComponent, EditorComponent],
   exports: [EditorComponent],
 })
-export class EditorModule { }
+export class EditorModule {}

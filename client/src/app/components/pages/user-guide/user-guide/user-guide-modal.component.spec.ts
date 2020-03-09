@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 import { Router } from '@angular/router';
-import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject';
+import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject.enum';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { SharedModule } from '../../../shared/shared.module';
 import createSpyObj = jasmine.createSpyObj;

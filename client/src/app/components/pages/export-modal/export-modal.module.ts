@@ -7,4 +7,4 @@ import { ExportModalComponent } from './export-modal/export-modal.component';
   declarations: [ExportModalComponent],
   entryComponents: [ExportModalComponent],
 })
-export class ExportDrawingModule { }
+export class ExportDrawingModule {}

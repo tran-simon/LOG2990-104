@@ -14,11 +14,12 @@ import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/use
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
-import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
@@ -46,7 +47,7 @@ export const keyUp = (key: string, shiftKey: boolean = false): KeyboardEvent => 
 describe('EditorComponent', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
-  let keyboardListener: KeyboardListener;
+  let keyboardListener: KeyboardListenerService;
   const modalDialogServiceSpy = createSpyObj('ModalDialogService', {
     openByName: { afterClosed: () => of(true) },
   });
@@ -202,11 +203,11 @@ describe('EditorComponent', () => {
   });
 
   it('prevents default on right click', () => {
-    const rightClickSpy = spyOn(component, 'onRightClick').and.callThrough();
-    const event = createSpyObj('event', ['preventDefault']);
-    fixture.debugElement.triggerEventHandler('contextmenu', event);
+    const handleMouseEventSpy = spyOn(component, 'handleMouseEvent').and.callThrough();
+    const event = createSpyObj<MouseEvent>('event', ['preventDefault']);
+    component.handleMouseEvent({ ...event, type: 'contextmenu' });
 
-    expect(rightClickSpy).toHaveBeenCalledWith(event);
+    expect(handleMouseEventSpy).toHaveBeenCalledWith({ ...event, type: 'contextmenu' });
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
@@ -222,8 +223,8 @@ describe('EditorComponent', () => {
     } as MatDialogRef<AbstractModalComponent>);
 
     component.openCreateModal();
-    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.CONFIRM);
-    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.CREATE);
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalType.CONFIRM);
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalType.CREATE);
   });
 
   it('does not open create modal if user cancels', () => {
@@ -231,12 +232,12 @@ describe('EditorComponent', () => {
       afterClosed: () => of(false),
     } as MatDialogRef<AbstractModalComponent>);
     component.openCreateModal();
-    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.CONFIRM);
-    expect(modalDialogServiceSpy.openByName).not.toHaveBeenCalledWith(ModalTypes.CREATE);
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalType.CONFIRM);
+    expect(modalDialogServiceSpy.openByName).not.toHaveBeenCalledWith(ModalType.CREATE);
   });
 
   it('opens dialog on openGuide', () => {
     component.openGuide();
-    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalTypes.GUIDE);
+    expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalType.GUIDE);
   });
 });

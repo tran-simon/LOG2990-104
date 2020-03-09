@@ -50,6 +50,7 @@ describe('PenTool', () => {
 
   it('Should not add shape on mousedown if isActive', () => {
     const addShapeSpy = spyOn(penTool, 'addShape');
+    penTool.shape = penTool.createShape();
     penTool['isActive'] = true;
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(addShapeSpy).not.toHaveBeenCalled();
@@ -57,12 +58,14 @@ describe('PenTool', () => {
 
   it('Should end line on mouseup', () => {
     penTool['isActive'] = true;
+    penTool.shape = penTool.createShape();
     penTool.handleMouseEvent(mouseUp());
     expect(penTool['isActive']).toBeFalsy();
   });
 
   it('Should end line on mouseleave', () => {
     penTool['isActive'] = true;
+    penTool.shape = penTool.createShape();
     penTool.handleMouseEvent(mouseLeave());
     expect(penTool['isActive']).toBeFalsy();
   });

@@ -1,5 +1,5 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
+import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type.enum';
 import { RectangleToolProperties } from 'src/app/models/tool-properties/rectangle-tool-properties';
 import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
 import { EditorService } from 'src/app/services/editor.service';
