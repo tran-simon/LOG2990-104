@@ -18,11 +18,11 @@ describe('KeyboardListenerService', () => {
     preventDefaultSpy.calls.reset();
 
     keyboardListener = new KeyboardListenerService();
-    keyboardListener['eventsHandlingMap'].set('c_keydown', () => false);
-    keyboardListener['eventsHandlingMap'].set('x_keydown', () => true);
-    keyboardListener['eventsHandlingMap'].set('z_keydown', () => false);
-    keyboardListener['eventsHandlingMap'].set('z_keyup', () => true);
-    keyboardListener['eventsHandlingMap'].set('ctrl_shift_a_keydown', () => true);
+    keyboardListener['eventsHandlingMap'].set('C_keydown', () => false);
+    keyboardListener['eventsHandlingMap'].set('X_keydown', () => true);
+    keyboardListener['eventsHandlingMap'].set('Z_keydown', () => false);
+    keyboardListener['eventsHandlingMap'].set('Z_keyup', () => true);
+    keyboardListener['eventsHandlingMap'].set('ctrl_shift_A_keydown', () => true);
   });
 
   it('should create', () => {
@@ -106,8 +106,8 @@ describe('KeyboardListenerService', () => {
   });
 
   it('can get identifier', () => {
-    expect(KeyboardListenerService.getIdentifier('key', true, true, 'type')).toEqual('ctrl_shift_key_type');
-    expect(KeyboardListenerService.getIdentifier('key1')).toEqual('key1_keydown');
+    expect(KeyboardListenerService.getIdentifier('key', true, true, 'type')).toEqual('ctrl_shift_KEY_type');
+    expect(KeyboardListenerService.getIdentifier('key1')).toEqual('KEY1_keydown');
   });
 
   it('can get same identifier for keys in lower or upper case', () => {
@@ -117,10 +117,6 @@ describe('KeyboardListenerService', () => {
     const id4 = KeyboardListenerService.getIdentifier('key', false, false);
 
     expect(id1).toEqual(id2);
-    expect(id1).toEqual(id3);
-    expect(id1).toEqual(id4);
-    expect(id2).toEqual(id3);
-    expect(id2).toEqual(id4);
     expect(id3).toEqual(id4);
   });
 
