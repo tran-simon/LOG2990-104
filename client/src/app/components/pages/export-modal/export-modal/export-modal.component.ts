@@ -18,10 +18,11 @@ export class ExportModalComponent extends AbstractModalComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
-    public editorService: EditorService,
+    private editorService: EditorService,
     private sanitizer: DomSanitizer,
   ) {
     super(dialogRef);
+    editorService.clearShapesBuffer();
     this.previewImage = this.editorService.view;
     this.name = '';
   }
