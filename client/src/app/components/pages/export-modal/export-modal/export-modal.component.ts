@@ -4,16 +4,18 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { EditorService } from 'src/app//services/editor.service';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import { ExtensionType } from '../extension-type.enum';
+
 @Component({
   selector: 'app-export-modal',
   templateUrl: './export-modal.component.html',
   styleUrls: ['./export-modal.component.scss'],
 })
 export class ExportModalComponent extends AbstractModalComponent {
-  selectedExtension: string;
+  selectedExtension: ExtensionType;
+  extensions: string[] = Object.values(ExtensionType);
   fullName: string;
   name: string;
-  extensions: string[] = ['svg', 'png', 'jpg'];
   previewImage: DrawingSurfaceComponent;
 
   constructor(
@@ -25,7 +27,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     editorService.clearShapesBuffer();
     this.previewImage = this.editorService.view;
     this.name = '';
-    this.selectedExtension = '';
+    this.selectedExtension = ExtensionType.SVG;
   }
 
   previewURL(): SafeResourceUrl {
@@ -34,13 +36,11 @@ export class ExportModalComponent extends AbstractModalComponent {
 
   submit(): void {
     this.fullName = this.name + '.' + this.selectedExtension;
-    if (this.name !== '' && this.selectedExtension !== '') {
-      if (this.selectedExtension === 'svg') {
-        this.editorService.exportSVGElement(this.fullName, this.previewImage);
-      } else {
+    if (this.name !== '') {
+      this.selectedExtension === ExtensionType.SVG ?
+        this.editorService.exportSVGElement(this.fullName, this.previewImage) :
         this.editorService.exportImageElement(this.fullName, this.selectedExtension, this.previewImage);
-      }
+      this.dialogRef.close();
     }
-    this.dialogRef.close();
   }
 }

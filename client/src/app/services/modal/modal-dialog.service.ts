@@ -28,6 +28,8 @@ export class ModalDialogService extends MatDialog {
         case ModalType.EXPORT:
           return this.open(ExportModalComponent, {});
         case ModalType.SAVE:
+          return this.open(SaveDrawingModalComponent, {});
+        case ModalType.CHOOSE_EXPORT_SAVE:
           return this.open(ChooseExportSaveModalComponent, {});
       }
     }

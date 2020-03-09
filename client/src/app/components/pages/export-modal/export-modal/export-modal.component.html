@@ -5,8 +5,8 @@
     <mat-form-field>
       <mat-label>Extension</mat-label>
       <mat-select [(ngModel)]="selectedExtension" name="extensions">
-        <mat-option *ngFor="let Ext of extensions" [value]="Ext">
-          {{Ext}}
+        <mat-option *ngFor="let ext of extensions" [value]="ext">
+          {{ext}}
         </mat-option>
       </mat-select>
     </mat-form-field>

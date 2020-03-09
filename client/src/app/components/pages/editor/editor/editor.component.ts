@@ -146,8 +146,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.dialog.openByName(ModalType.GUIDE);
   }
 
-  openSave(): void {
-    this.dialog.openByName(ModalType.SAVE);
+  openChooseExportSave(): void {
+    const confirmDialog = this.dialog.openByName(ModalType.CHOOSE_EXPORT_SAVE);
+
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        this.dialog.openByName(result);
+      });
+    }
   }
 
   openCreateModal(): void {
