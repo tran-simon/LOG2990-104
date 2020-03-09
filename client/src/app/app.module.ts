@@ -3,9 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AppComponent } from './app.component';
+import { ChooseExportSaveModule } from './components/pages/choose-export-save/choose-export-save.module';
+import {
+  ChooseExportSaveModalComponent
+} from './components/pages/choose-export-save/choose-export-save/choose-export-save-modal.component';
 import { EditorModule } from './components/pages/editor/editor.module';
 import { EditorComponent } from './components/pages/editor/editor/editor.component';
-import { ExportModalComponent } from './components/pages/editor/export-modal/export-modal.component';
+import { ExportModalComponent } from './components/pages/export-modal/export-modal.component';
 import { HomeModule } from './components/pages/home/home.module';
 import { HomeComponent } from './components/pages/home/home/home.component';
 import { SaveDrawingModule } from './components/pages/save-drawing/save-drawing.module';
@@ -21,6 +25,7 @@ import { SharedModule } from './components/shared/shared.module';
     EditorModule,
     UserGuideModule,
     SaveDrawingModule,
+    ChooseExportSaveModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'edit', component: EditorComponent },
@@ -28,6 +33,6 @@ import { SharedModule } from './components/shared/shared.module';
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
-  entryComponents: [UserGuideModalComponent, SaveDrawingModalComponent, ExportModalComponent],
+  entryComponents: [UserGuideModalComponent, SaveDrawingModalComponent, ExportModalComponent, ChooseExportSaveModalComponent],
 })
-export class AppModule {}
+export class AppModule { }

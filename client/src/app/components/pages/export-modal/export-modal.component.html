@@ -1,0 +1,19 @@
+<app-abstract-modal>
+  <div content>
+    <img [src]="previewURL()" height="300" width="500" />
+    <app-name-input [(value)]="name">Nom du fichier</app-name-input>
+    <mat-form-field>
+      <mat-label>Extension</mat-label>
+      <mat-select [(ngModel)]="selectedExtension" name="extensions">
+        <mat-option *ngFor="let Ext of extensions" [value]="Ext">
+          {{Ext}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div actions>
+    <button mat-button id="saveButton" (click)="submit()">
+      Save
+    </button>
+  </div>
+</app-abstract-modal>
