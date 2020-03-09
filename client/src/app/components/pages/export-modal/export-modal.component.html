@@ -1,7 +1,7 @@
 <app-abstract-modal>
   <div content>
-    <img [src]="previewURL()" height="300" width="500" />
-    <app-name-input [(value)]="name">Nom du fichier</app-name-input>
+    <img id="preview" [src]="previewURL()">
+    <app-name-input [(value)]="name" required=true>Nom du fichier</app-name-input>
     <mat-form-field>
       <mat-label>Extension</mat-label>
       <mat-select [(ngModel)]="selectedExtension" name="extensions">

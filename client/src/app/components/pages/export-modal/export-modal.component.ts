@@ -23,6 +23,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   ) {
     super(dialogRef);
     this.previewImage = this.editorService.view;
+    this.name = '';
   }
 
   previewURL(): SafeResourceUrl {
@@ -32,7 +33,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   submit(): void {
     this.fullName = this.name + '.' + this.selectedExtension;
     console.log(this.fullName);
-    if (this.name !== 'undefined' && this.selectedExtension !== 'undefined') {
+    if (this.name !== '' && this.selectedExtension !== 'undefined') {
       console.log(this.selectedExtension);
       this.editorService.exportSVGElement(this.fullName, this.previewImage);
     }

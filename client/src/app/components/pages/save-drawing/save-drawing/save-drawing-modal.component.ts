@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/tag-input.component';
 import { Drawing } from 'src/app/models/drawing';
@@ -19,6 +20,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     private apiService: APIService,
     private editorService: EditorService,
     public dialogRef: MatDialogRef<AbstractModalComponent>,
+    private sanitizer: DomSanitizer,
   ) {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
@@ -46,5 +48,9 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
 
   removeTag(): void {
     this.tags.pop();
+  }
+
+  previewURL(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.editorService.view));
   }
 }
