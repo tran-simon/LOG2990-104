@@ -1,4 +1,4 @@
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ToolProperties } from './tool-properties';
 
 class MockToolProperties extends ToolProperties {

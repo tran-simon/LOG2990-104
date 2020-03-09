@@ -7,7 +7,7 @@ import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
 import { CommandReceiver } from '../models/commands/command-receiver';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';

@@ -1,6 +1,6 @@
-import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
+import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type.enum';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
 export class RectangleToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS: number = 1;

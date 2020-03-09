@@ -1,7 +1,6 @@
-import { injectable } from 'inversify';
-
 import * as express from 'express';
 import * as httpStatus from 'http-status-codes';
+import { injectable } from 'inversify';
 
 import * as mongoose from 'mongoose';
 import drawingModel, { Drawing } from '../../models/drawing';
@@ -19,10 +18,8 @@ export class DatabaseService {
   }
 
   private static determineStatus(err: Error, results: Drawing | Drawing[]): number {
-    const status = err ? httpStatus.INTERNAL_SERVER_ERROR :
-      results ? httpStatus.OK : httpStatus.NOT_FOUND;
-
-    return status;
+      return err ? httpStatus.INTERNAL_SERVER_ERROR :
+        results ? httpStatus.OK : httpStatus.NOT_FOUND;
   }
 
   getAllDrawings(res: express.Response): void {

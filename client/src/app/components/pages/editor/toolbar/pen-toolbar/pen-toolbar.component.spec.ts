@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
 
 describe('PenToolbarComponent', () => {

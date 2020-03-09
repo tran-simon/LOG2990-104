@@ -1,45 +1,32 @@
 /* tslint:disable:no-string-literal */
-import { KeyboardEventAction, KeyboardEventsHandlingMap, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { EventAction } from 'src/app/services/event-listeners/abstract-event-listener.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import createSpy = jasmine.createSpy;
 import Spy = jasmine.Spy;
 import createSpyObj = jasmine.createSpyObj;
 
-describe('KeyboardListener', () => {
+describe('KeyboardListenerService', () => {
   let preventDefaultSpy: Spy;
   const preventDefault = () => {
     preventDefaultSpy();
   };
 
-  let keyboardListener: KeyboardListener;
+  let keyboardListener: KeyboardListenerService;
 
   beforeEach(() => {
     preventDefaultSpy = createSpy('preventDefaultSpy');
     preventDefaultSpy.calls.reset();
 
-    keyboardListener = new KeyboardListener();
-    keyboardListener['keyboardEventsHandlingMap'].set('c_keydown', () => false);
-    keyboardListener['keyboardEventsHandlingMap'].set('x_keydown', () => true);
-    keyboardListener['keyboardEventsHandlingMap'].set('z_keydown', () => false);
-    keyboardListener['keyboardEventsHandlingMap'].set('z_keyup', () => true);
-    keyboardListener['keyboardEventsHandlingMap'].set('ctrl_shift_a_keydown', () => true);
+    keyboardListener = new KeyboardListenerService();
+    keyboardListener['eventsHandlingMap'].set('c_keydown', () => false);
+    keyboardListener['eventsHandlingMap'].set('x_keydown', () => true);
+    keyboardListener['eventsHandlingMap'].set('z_keydown', () => false);
+    keyboardListener['eventsHandlingMap'].set('z_keyup', () => true);
+    keyboardListener['eventsHandlingMap'].set('ctrl_shift_a_keydown', () => true);
   });
 
   it('should create', () => {
     expect(keyboardListener).toBeTruthy();
-  });
-
-  it('can create keyboard listener with keyboardEventsHandlingMap', () => {
-    const map: KeyboardEventsHandlingMap = new Map<string, KeyboardEventAction>([
-      ['ID1', () => false],
-      ['ID2', () => true],
-    ]);
-
-    const keyboardListener1 = new KeyboardListener(map);
-    const func: KeyboardEventAction = keyboardListener1['keyboardEventsHandlingMap'].get('ID1') as KeyboardEventAction;
-
-    expect(keyboardListener1).toBeDefined();
-    expect(keyboardListener1['keyboardEventsHandlingMap']).toBeDefined();
-    expect(func({} as KeyboardEvent)).toEqual(false);
   });
 
   it('can call right function on keydown', () => {
@@ -70,9 +57,9 @@ describe('KeyboardListener', () => {
       key: 'b',
       preventDefault,
     } as KeyboardEvent;
-    const identifier = KeyboardListener.getIdentifierFromKeyboardEvent(event);
+    const identifier = keyboardListener.getIdentifierFromEvent(event);
 
-    expect(keyboardListener['keyboardEventsHandlingMap'].get(identifier)).toBeUndefined();
+    expect(keyboardListener['eventsHandlingMap'].get(identifier)).toBeUndefined();
     expect(keyboardListener.handle(event)).toEqual(false);
     expect(preventDefaultSpy).not.toHaveBeenCalled();
   });
@@ -82,9 +69,9 @@ describe('KeyboardListener', () => {
       key: 'c',
       preventDefault,
     } as KeyboardEvent;
-    const identifier = KeyboardListener.getIdentifierFromKeyboardEvent(event);
+    const identifier = keyboardListener.getIdentifierFromEvent(event);
 
-    expect(keyboardListener['keyboardEventsHandlingMap'].get(identifier)).toBeDefined();
+    expect(keyboardListener['eventsHandlingMap'].get(identifier)).toBeDefined();
     expect(keyboardListener.handle(event)).toEqual(false);
     expect(preventDefaultSpy).not.toHaveBeenCalled();
   });
@@ -119,8 +106,8 @@ describe('KeyboardListener', () => {
   });
 
   it('can get identifier', () => {
-    expect(KeyboardListener.getIdentifier('key', true, true, 'type')).toEqual('ctrl_shift_key_type');
-    expect(KeyboardListener.getIdentifier('key1')).toEqual('key1_keydown');
+    expect(KeyboardListenerService.getIdentifier('key', true, true, 'type')).toEqual('ctrl_shift_key_type');
+    expect(KeyboardListenerService.getIdentifier('key1')).toEqual('key1_keydown');
   });
 
   it('can get identifier from keyboard event', () => {
@@ -130,12 +117,12 @@ describe('KeyboardListener', () => {
       type: 'TYPE',
     } as KeyboardEvent;
 
-    expect(KeyboardListener.getIdentifierFromKeyboardEvent(event)).toEqual('ctrl_KEY_TYPE');
+    expect(keyboardListener.getIdentifierFromEvent(event)).toEqual('ctrl_KEY_TYPE');
   });
 
   it('can add event', () => {
     keyboardListener.addEvent('ID', () => false);
-    expect(keyboardListener['keyboardEventsHandlingMap'].get('ID')).toBeDefined();
+    expect(keyboardListener['eventsHandlingMap'].get('ID')).toBeDefined();
   });
 
   it('can add multiple events', () => {
@@ -143,7 +130,9 @@ describe('KeyboardListener', () => {
       ['ID1', () => false],
       ['ID2', () => false],
     ]);
-    expect(keyboardListener['keyboardEventsHandlingMap'].get('ID1')).toBeDefined();
-    expect(keyboardListener['keyboardEventsHandlingMap'].get('ID2')).toBeDefined();
+    expect(keyboardListener['eventsHandlingMap'].get('ID1')).toBeDefined();
+    expect(keyboardListener['eventsHandlingMap'].get('ID2')).toBeDefined();
+    const func: EventAction<KeyboardEvent> = keyboardListener['eventsHandlingMap'].get('ID1') as EventAction<KeyboardEvent>;
+    expect(func({} as KeyboardEvent)).toEqual(false);
   });
 });
