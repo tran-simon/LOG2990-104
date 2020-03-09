@@ -3,7 +3,8 @@ import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { ToolProperties } from '../../tool-properties/tool-properties';
 
-export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
+export abstract class CreatorTool<T = ToolProperties> extends Tool {
+  toolProperties: T;
   abstract shape: BaseShape | undefined;
   abstract createShape(): BaseShape;
 
