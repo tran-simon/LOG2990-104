@@ -40,7 +40,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   exportSVGElement(): void {
-    this.href = this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.previewImage));
+    this.href = this.previewURL();
   }
 
   exportImageElement(): void {
