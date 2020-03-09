@@ -16,17 +16,21 @@ export class DrawingSurfaceComponent {
   @Input() color: Color;
 
   @ViewChild('svg', { static: false })
-  svg: ElementRef;
+  private _svg: ElementRef;
+
+  get svg(): SVGElement {
+    return this._svg.nativeElement;
+  }
 
   constructor() {
     this.color = Color.WHITE;
   }
 
   addShape(shape: BaseShape): void {
-    this.svg.nativeElement.appendChild(shape.svgNode);
+    this.svg.appendChild(shape.svgNode);
   }
 
   removeShape(shape: BaseShape): void {
-    this.svg.nativeElement.removeChild(shape.svgNode);
+    this.svg.removeChild(shape.svgNode);
   }
 }

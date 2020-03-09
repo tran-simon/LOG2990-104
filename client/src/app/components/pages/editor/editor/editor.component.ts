@@ -83,6 +83,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
             return true;
           },
         ],
+        [
+          KeyboardListener.getIdentifier('z', true),
+          () => {
+            this.editorService.commandReceiver.undo();
+            return true;
+          },
+        ],
+        [
+          KeyboardListener.getIdentifier('z', true, true),
+          () => {
+            this.editorService.commandReceiver.redo();
+            return true;
+          },
+        ],
       ]),
     );
 
