@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
@@ -6,7 +7,6 @@ import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/ta
 import { Drawing } from 'src/app/models/drawing';
 import { APIService } from 'src/app/services/api.service';
 import { EditorService } from 'src/app/services/editor.service';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-save-drawing-modal',
