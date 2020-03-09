@@ -4,7 +4,7 @@
     (editorBackgroundChanged)="changeBackground($event)"
     (mouseleave)="toolbar.close()"
     (guideButtonClicked)="openGuide()"
-    (chooseExportSaveButtonClicked)="openChooseExportSave()"
+    (chooseExportSaveButtonClicked)="openSave()"
     (mouseenter)='toolbar.open()'
   ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"

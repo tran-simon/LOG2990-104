@@ -5,7 +5,7 @@ import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
-import { ModalDialogService, ModalTypes } from 'src/app/services/modal/modal-dialog.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
@@ -100,7 +100,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [
         KeyboardListenerService.getIdentifier('e', true),
         () => {
-          this.dialog.openByName(ModalTypes.EXPORT);
+          this.dialog.openByName(ModalType.EXPORT);
           return true;
         },
       ],

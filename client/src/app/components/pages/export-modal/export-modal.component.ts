@@ -36,7 +36,11 @@ export class ExportModalComponent extends AbstractModalComponent {
     console.log(this.fullName);
     if (this.name !== '' && this.selectedExtension !== '') {
       console.log(this.selectedExtension);
-      this.editorService.exportSVGElement(this.fullName, this.previewImage);
+      if (this.selectedExtension === 'svg') {
+        this.editorService.exportSVGElement(this.fullName, this.previewImage);
+      } else {
+        this.editorService.exportImageElement(this.fullName, this.selectedExtension, this.previewImage);
+      }
     }
     this.dialogRef.close();
   }
