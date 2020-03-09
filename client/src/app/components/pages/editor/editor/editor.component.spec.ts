@@ -12,6 +12,10 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
+import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -157,21 +161,21 @@ describe('EditorComponent', () => {
   it('should select the line tool', () => {
     component.currentToolType = ToolType.Line;
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.type).toEqual(ToolType.Line);
+    expect(currentTool.constructor.name).toEqual(LineTool.name);
   });
 
   it('should select the rectangle tool', () => {
     component.currentToolType = ToolType.Rectangle;
 
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.type).toEqual(ToolType.Rectangle);
+    expect(currentTool.constructor.name).toEqual(RectangleTool.name);
   });
 
   it('should select the brush tool', () => {
     component.currentToolType = ToolType.Brush;
 
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.type).toEqual(ToolType.Brush);
+    expect(currentTool.constructor.name).toEqual(BrushTool.name);
   });
 
   it('should select the pen tool after selecting the brush tool', () => {
@@ -179,18 +183,27 @@ describe('EditorComponent', () => {
     component.currentToolType = ToolType.Pen;
 
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.type).toEqual(ToolType.Pen);
+    expect(currentTool.constructor.name).toEqual(PenTool.name);
   });
 
   it('can get current tool', () => {
-    const tool: Tool = { type: 'toolMock' as ToolType } as Tool;
+    class ToolImpl extends Tool {
+      type: string;
+      constructor(editorService: EditorService, type: string) {
+        super(editorService);
+        this.type = type;
+      }
+    }
+
+    const tool: ToolImpl = new ToolImpl({} as EditorService, 'toolMock');
     component.editorService.tools.set('toolMock' as ToolType, tool);
 
     component.currentToolType = 'toolMock' as ToolType;
 
     const currentTool = component.currentTool as Tool;
     expect(currentTool).toEqual(tool);
-    expect(currentTool.type).toEqual('toolMock');
+    expect(currentTool.constructor.name).toEqual(ToolImpl.name);
+    expect((currentTool as ToolImpl).type).toEqual('toolMock');
   });
 
   it('handles mouse event', () => {

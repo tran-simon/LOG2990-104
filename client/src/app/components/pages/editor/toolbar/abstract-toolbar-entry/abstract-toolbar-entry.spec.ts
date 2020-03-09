@@ -20,7 +20,7 @@ describe('AbstractToolbarEntry', () => {
 
   beforeEach(() => {
     editorService = new EditorService(new ColorsService());
-    editorService.tools.set(type, { type, toolProperties } as CreatorTool);
+    editorService.tools.set(type, { toolProperties } as CreatorTool);
     toolbarEntry = new AbstractToolbarEntryMock(editorService);
   });
 

@@ -43,9 +43,6 @@ describe('EditorService', () => {
     for (const key of Object.values(ToolType)) {
       const tool = service.tools.get(key);
       expect(tool).toBeDefined();
-      if (tool) {
-        expect(tool.type).toEqual(key);
-      }
     }
   });
 
