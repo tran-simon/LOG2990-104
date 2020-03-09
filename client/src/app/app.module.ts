@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AppComponent } from './app.component';
-import { ChooseExportSaveModule } from './components/pages/editor/choose-export-save/choose-export-save.module';
+import { ChooseExportSaveModule } from './components/pages/choose-export-save/choose-export-save.module';
 import {
   ChooseExportSaveModalComponent
-} from './components/pages/editor/choose-export-save/choose-export-save/choose-export-save-modal.component';
+} from './components/pages/choose-export-save/choose-export-save/choose-export-save-modal.component';
 import { EditorModule } from './components/pages/editor/editor.module';
 import { EditorComponent } from './components/pages/editor/editor/editor.component';
 import { ExportModalComponent } from './components/pages/export-modal/export-modal.component';
