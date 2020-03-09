@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 
 @Component({
   selector: 'app-choose-export-save-modal',
@@ -19,10 +20,10 @@ export class ChooseExportSaveModalComponent extends AbstractModalComponent {
   }
 
   openSave(): void {
-    this.dialogRef.close('save');
+    this.dialogRef.close(ModalType.SAVE);
   }
 
   openExport(): void {
-    this.dialogRef.close('export');
+    this.dialogRef.close(ModalType.EXPORT);
   }
 }
