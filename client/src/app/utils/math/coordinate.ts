@@ -24,10 +24,22 @@ export class Coordinate {
   }
 
   static minXYCoord(c1: Coordinate, c2: Coordinate): Coordinate {
+    if (!c1) {
+      return c2;
+    }
+    if (!c2) {
+      return c1;
+    }
     return new Coordinate(Math.min(c1.x, c2.x), Math.min(c1.y, c2.y));
   }
 
   static maxXYCoord(c1: Coordinate, c2: Coordinate): Coordinate {
+    if (!c1) {
+      return c2;
+    }
+    if (!c2) {
+      return c1;
+    }
     return new Coordinate(Math.max(c1.x, c2.x), Math.max(c1.y, c2.y));
   }
 

@@ -49,7 +49,9 @@ export class SelectionTool extends Tool {
     this.resetSelection();
 
     this.editorService.shapes.forEach((shape) => {
-      if (shape.end.x >= c.x && shape.end.y >= c.y && shape.origin.x <= c.x && shape.origin.y <= c.y) {
+      const inBoundsX = shape.end.x >= c.x && shape.origin.x <= c.x;
+      const inBoundsY = shape.end.y >= c.y && shape.origin.y <= c.y;
+      if (inBoundsX && inBoundsY){
         // todo - proper method to determine if inside area
         selectedShape = shape;
       }
@@ -98,13 +100,8 @@ export class SelectionTool extends Tool {
     this.editorService.shapes.forEach((shape) => {
       if (this.detectBoundingBoxCollision(this.selectArea, shape)) {
         this.editorService.selectedShapes.push(shape);
-        if (boundingBoxMin && boundingBoxMax) {
-          boundingBoxMin = Coordinate.minXYCoord(boundingBoxMin, shape.origin);
-          boundingBoxMax = Coordinate.maxXYCoord(boundingBoxMax, shape.end);
-        } else {
-          boundingBoxMin = shape.origin;
-          boundingBoxMax = shape.end;
-        }
+        boundingBoxMin = Coordinate.minXYCoord(boundingBoxMin, shape.origin);
+        boundingBoxMax = Coordinate.maxXYCoord(boundingBoxMax, shape.end);
         this.boundingBox.origin = boundingBoxMin;
         this.boundingBox.width = boundingBoxMax.x - boundingBoxMin.x;
         this.boundingBox.height = boundingBoxMax.y - boundingBoxMin.y;
@@ -127,9 +124,7 @@ export class SelectionTool extends Tool {
 
   resizeSelectArea(): void {
     const dimensions = Coordinate.abs(Coordinate.substract(this.mousePosition, this.initialMouseCoord));
-    const origin = Coordinate.minXYCoord(this.mousePosition, this.initialMouseCoord);
-
-    this.selectArea.origin = origin;
+    this.selectArea.origin = Coordinate.minXYCoord(this.mousePosition, this.initialMouseCoord);
     this.selectArea.width = dimensions.x;
     this.selectArea.height = dimensions.y;
   }
