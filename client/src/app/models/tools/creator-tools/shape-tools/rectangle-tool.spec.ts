@@ -53,7 +53,7 @@ describe('RectangleTool', () => {
     rectangleTool.toolProperties = properties;
     rectangleTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(rectangleTool.shape.origin).toEqual(new Coordinate(100, 100));
-    expect(fixture.componentInstance.drawingSurface.svg.nativeElement.querySelector('rect')).toBeTruthy();
+    expect(fixture.componentInstance.drawingSurface.svg.querySelector('rect')).toBeTruthy();
   });
 
   it('can resize Rectangle', () => {
