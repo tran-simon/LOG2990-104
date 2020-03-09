@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { EditorService } from 'src/app//services/editor.service';
+import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
-import { EditorService } from '../../../../services/editor.service';
-import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 @Component({
   selector: 'app-export-modal',
   templateUrl: './export-modal.component.html',
