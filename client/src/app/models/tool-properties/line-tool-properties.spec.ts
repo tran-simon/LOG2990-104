@@ -1,4 +1,3 @@
-import { ToolType } from 'src/app/models/tools/tool-type';
 import { LineToolProperties } from './line-tool-properties';
 
 describe('Line Tool Properties', () => {
@@ -6,10 +5,6 @@ describe('Line Tool Properties', () => {
 
   beforeEach(() => {
     lineProperties = new LineToolProperties();
-  });
-
-  it('should create with the correct tool type', () => {
-    expect(lineProperties.type).toBe(ToolType.Line);
   });
 
   it('should create with the default thickness', () => {

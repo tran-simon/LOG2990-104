@@ -8,7 +8,7 @@ import { ToolType } from '../tool-type';
 
 export class SelectionTool extends Tool {
   // tslint:disable-next-line:no-magic-numbers
-  static BOUNDING_BOX_COLOR: Color = Color.rgb255(80, 80, 255, 0.1);
+  static readonly BOUNDING_BOX_COLOR: Color = Color.rgb255(80, 80, 255, 0.1);
 
   private boundingBox: Rectangle;
   private selectArea: Rectangle;
@@ -91,12 +91,12 @@ export class SelectionTool extends Tool {
     this.editorService.shapes.forEach((shape) => {
       if (this.detectBoundingBoxCollision(this.selectArea, shape)) {
         this.editorService.selectedShapes.push(shape);
-        if (!(boundingBoxMin && boundingBoxMax)) {
-          boundingBoxMin = shape.origin;
-          boundingBoxMax = shape.end;
-        } else {
+        if (boundingBoxMin && boundingBoxMax) {
           boundingBoxMin = Coordinate.minXYCoord(boundingBoxMin, shape.origin);
           boundingBoxMax = Coordinate.maxXYCoord(boundingBoxMax, shape.end);
+        } else {
+          boundingBoxMin = shape.origin;
+          boundingBoxMax = shape.end;
         }
         this.boundingBox.origin = boundingBoxMin;
         this.boundingBox.width = boundingBoxMax.x - boundingBoxMin.x;
@@ -107,11 +107,14 @@ export class SelectionTool extends Tool {
 
   detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
     return !(
-      (area.origin.x > shape.origin.x && area.origin.y > shape.origin.y && area.end.x < shape.end.x && area.end.y < shape.end.y) ||
-      area.end.x < shape.origin.x ||
-      area.end.y < shape.origin.y ||
-      area.origin.x > shape.end.x ||
-      area.origin.y > shape.end.y
+      // todo - proper method to determine if inside area
+      (
+        (area.origin.x > shape.origin.x && area.origin.y > shape.origin.y && area.end.x < shape.end.x && area.end.y < shape.end.y) ||
+        area.end.x < shape.origin.x ||
+        area.end.y < shape.origin.y ||
+        area.origin.x > shape.end.x ||
+        area.origin.y > shape.end.y
+      )
     );
   }
 

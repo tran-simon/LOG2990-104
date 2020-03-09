@@ -1,6 +1,5 @@
 import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
 
 export class BrushToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS: number = 1;
@@ -12,7 +11,7 @@ export class BrushToolProperties extends ToolProperties {
   texture: BrushTextureType;
 
   constructor(thickness: number = BrushToolProperties.MIN_THICKNESS, texture: BrushTextureType = BrushTextureType.TEXTURE_1) {
-    super(ToolType.Brush);
+    super();
 
     this.strokeWidth = thickness;
     this.texture = texture;

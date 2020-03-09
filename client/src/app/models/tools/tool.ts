@@ -1,10 +1,12 @@
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { ToolProperties } from '../tool-properties/tool-properties';
 import { ToolType } from './tool-type';
 
-export abstract class Tool {
+export abstract class Tool<T = ToolProperties> {
   protected keyboardListener: KeyboardListener;
+  toolProperties: T;
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }

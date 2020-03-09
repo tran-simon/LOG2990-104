@@ -1,6 +1,5 @@
 import { RectangleContourType } from 'src/app/models/tool-properties/rectangle-contour-type';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
 
 export class RectangleToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS: number = 1;
@@ -15,7 +14,7 @@ export class RectangleToolProperties extends ToolProperties {
     thickness: number = RectangleToolProperties.MIN_THICKNESS,
     contourType: RectangleContourType = RectangleContourType.FILLED_CONTOUR,
   ) {
-    super(ToolType.Rectangle);
+    super();
 
     this.strokeWidth = thickness;
     this.contourType = contourType;

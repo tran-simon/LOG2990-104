@@ -1,5 +1,4 @@
 import { MAX_POLY_EDGES, MIN_POLY_EDGES } from '../shapes/polygon';
-import { ToolType } from '../tools/tool-type';
 import { ToolProperties } from './tool-properties';
 
 export enum PolygonContourType {
@@ -25,7 +24,7 @@ export class PolygonToolProperties extends ToolProperties {
     contourType: PolygonContourType = PolygonContourType.FILLED_CONTOUR,
     nEdge: number = MIN_POLY_EDGES,
   ) {
-    super(ToolType.Polygon);
+    super();
     this.strokeWidth = thickness;
     this.contourType = contourType;
     this.nEdges = nEdge;

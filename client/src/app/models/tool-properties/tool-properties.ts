@@ -14,9 +14,7 @@ export abstract class ToolProperties {
   strokeColor: SelectedColorType;
   strokeOpacity: number;
 
-  protected constructor(type: ToolType) {
-    this.type = type;
-
+  protected constructor() {
     this.fillOpacity = 1;
     this.strokeOpacity = 1;
   }

@@ -1,4 +1,3 @@
-import { ToolType } from 'src/app/models/tools/tool-type';
 import { PenToolProperties } from './pen-tool-properties';
 
 describe('Pen Tool Properties', () => {
@@ -6,10 +5,6 @@ describe('Pen Tool Properties', () => {
 
   beforeEach(() => {
     penProperties = new PenToolProperties();
-  });
-
-  it('should have the correct tool type', () => {
-    expect(penProperties.type).toBe(ToolType.Pen);
   });
 
   it('should create with the default thickness', () => {
