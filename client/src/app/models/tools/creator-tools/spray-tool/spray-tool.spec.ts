@@ -15,15 +15,16 @@ import { SharedModule } from '../../../../components/shared/shared.module';
 import { ColorsService } from '../../../../services/colors.service';
 import { EditorService } from '../../../../services/editor.service';
 import { Coordinate } from '../../../../utils/math/coordinate';
-import { CompositeParticle } from '../../../shapes/composite-particle';
+import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
 import { mouseDown, mouseLeave, mouseMove, mouseUp } from '../stroke-tools/stroke-tool.spec';
 import { SprayTool } from './spray-tool';
 
 fdescribe('SprayTool', () => {
   let sprayTool: SprayTool;
   let fixture: ComponentFixture<EditorComponent>;
+  let properties: SprayToolProperties;
   // @ts-ignore
-  let colorService: ColorsService;
+  let selectedColorsService: ColorsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,9 +48,10 @@ fdescribe('SprayTool', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     fixture.detectChanges();
-    colorService = fixture.componentInstance.editorService.colorsService;
+    properties = new SprayToolProperties();
     sprayTool = new SprayTool(fixture.componentInstance.editorService);
-    sprayTool.shape = new CompositeParticle();
+    sprayTool.toolProperties = properties;
+    selectedColorsService = new ColorsService();
   });
 
   it('should call startShape onmousedown if not active', () => {
@@ -59,30 +61,26 @@ fdescribe('SprayTool', () => {
     expect(startShapeSpy).toHaveBeenCalled();
   });
 
-  it('should create a new shape onmousedown if not active', () => {
-    const createShapeSpy = spyOn(sprayTool, 'createShape');
-    sprayTool['isActive'] = false;
-    sprayTool.handleMouseEvent(mouseDown());
-    expect(createShapeSpy).toHaveBeenCalled();
+  it('should change lastMovePosition onmousemove if active', () => {
+    sprayTool['isActive'] = true;
+    sprayTool['lastMovePosition'] = new Coordinate(50, 50);
+    const newCoord = new Coordinate(100, 100);
+    sprayTool.handleMouseMove(mouseMove(newCoord));
+    expect(sprayTool['lastMovePosition']).toEqual(newCoord);
   });
 
-  it('should addShape onmousedown if not active', () => {
-    const addShapeSpy = spyOn(sprayTool, 'addShape');
-    sprayTool['isActive'] = false;
-    sprayTool.handleMouseEvent(mouseDown());
-    expect(addShapeSpy).toHaveBeenCalled();
-  });
-
-  it('should update lastMovePosition onmousemove', () => {
-    sprayTool.handleMouseDown(mouseDown(new Coordinate(100, 100)));
-    sprayTool.handleMouseEvent(mouseMove(new Coordinate(150, 150)));
-    expect(sprayTool['lastMovePosition']).toEqual(new Coordinate(150, 150));
+  it('should call addParticle after interval if active', () => {
+    jasmine.clock().install();
+    sprayTool['isActive'] = true;
+    sprayTool.startShape();
+    jasmine.clock().tick(SprayTool.INTERVAL_REFRESH_VALUE + 1);
+    expect(sprayTool.shape.particles.length).toEqual(1);
+    jasmine.clock().uninstall();
   });
 
   it('should call applyShape onmouseup if active', () => {
     const applyShapeSpy = spyOn(sprayTool, 'applyShape');
     sprayTool['isActive'] = true;
-    sprayTool.startShape();
     sprayTool.handleMouseUp(mouseUp());
     expect(applyShapeSpy).toHaveBeenCalled();
   });
