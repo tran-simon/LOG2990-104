@@ -110,6 +110,20 @@ describe('KeyboardListenerService', () => {
     expect(KeyboardListenerService.getIdentifier('key1')).toEqual('key1_keydown');
   });
 
+  it('can get same identifier for keys in lower or upper case', () => {
+    const id1 = KeyboardListenerService.getIdentifier('key', false, true);
+    const id2 = KeyboardListenerService.getIdentifier('Key', false, true);
+    const id3 = KeyboardListenerService.getIdentifier('Key', false, false);
+    const id4 = KeyboardListenerService.getIdentifier('key', false, false);
+
+    expect(id1).toEqual(id2);
+    expect(id1).toEqual(id3);
+    expect(id1).toEqual(id4);
+    expect(id2).toEqual(id3);
+    expect(id2).toEqual(id4);
+    expect(id3).toEqual(id4);
+  });
+
   it('can get identifier from keyboard event', () => {
     const event = {
       key: 'KEY',
