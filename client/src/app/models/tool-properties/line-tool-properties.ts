@@ -1,4 +1,4 @@
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type';
+import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { MathUtil } from '../../utils/math/math-util';
 

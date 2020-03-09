@@ -1,4 +1,4 @@
-import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type';
+import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type.enum';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 
 export class BrushToolProperties extends ToolProperties {

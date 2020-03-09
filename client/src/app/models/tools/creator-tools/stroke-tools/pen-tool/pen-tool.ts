@@ -1,7 +1,7 @@
 import { Path } from 'src/app/models/shapes/path';
 import { PenToolProperties } from 'src/app/models/tool-properties/pen-tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
-import { ToolType } from '../../../tool-type';
+import { ToolType } from '../../../tool-type.enum';
 import { StrokeTool } from '../stroke-tool';
 
 export class PenTool extends StrokeTool<PenToolProperties> {

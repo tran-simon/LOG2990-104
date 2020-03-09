@@ -2,7 +2,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { Ellipse } from '../models/shapes/ellipse';
 import { Line } from '../models/shapes/line';
 import { Rectangle } from '../models/shapes/rectangle';

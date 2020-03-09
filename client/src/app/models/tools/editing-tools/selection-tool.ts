@@ -4,7 +4,7 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
 import { Rectangle } from '../../shapes/rectangle';
 import { Tool } from '../tool';
-import { ToolType } from '../tool-type';
+import { ToolType } from '../tool-type.enum';
 
 export class SelectionTool extends Tool {
   // tslint:disable-next-line:no-magic-numbers
@@ -20,21 +20,28 @@ export class SelectionTool extends Tool {
     this.editorService.selectedShapes = new Array<BaseShape>();
   }
 
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
-
+  handleMouseMove(e: MouseEvent): boolean | void {
     if (this.isActive) {
-      if (e.type === 'mousemove') {
-        this.updateSelection();
-      } else if (e.type === 'mouseup') {
-        this.isActive = false;
-        this.applySelectArea();
-      }
-    } else if (e.type === 'mousedown') {
+      this.updateSelection();
+    }
+    return super.handleMouseMove(e);
+  }
+
+  handleMouseUp(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      this.isActive = false;
+      this.applySelectArea();
+    }
+    return super.handleMouseUp(e);
+  }
+
+  handleMouseDown(e: MouseEvent): boolean | void {
+    if (!this.isActive) {
       this.isActive = true;
       this.initialMouseCoord = Coordinate.copy(this.mousePosition);
       this.initSelectArea();
     }
+    return super.handleMouseUp(e);
   }
 
   selectSingleItem(c: Coordinate): void {

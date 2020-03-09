@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
@@ -28,6 +29,7 @@ describe('PenTool', () => {
         RectangleToolbarComponent,
         PolygonToolbarComponent,
         LineToolbarComponent,
+        EllipseToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
@@ -50,6 +52,7 @@ describe('PenTool', () => {
 
   it('Should not add shape on mousedown if isActive', () => {
     const addShapeSpy = spyOn(penTool, 'addShape');
+    penTool.shape = penTool.createShape();
     penTool['isActive'] = true;
     penTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(addShapeSpy).not.toHaveBeenCalled();
@@ -57,12 +60,14 @@ describe('PenTool', () => {
 
   it('Should end line on mouseup', () => {
     penTool['isActive'] = true;
+    penTool.shape = penTool.createShape();
     penTool.handleMouseEvent(mouseUp());
     expect(penTool['isActive']).toBeFalsy();
   });
 
   it('Should end line on mouseleave', () => {
     penTool['isActive'] = true;
+    penTool.shape = penTool.createShape();
     penTool.handleMouseEvent(mouseLeave());
     expect(penTool['isActive']).toBeFalsy();
   });

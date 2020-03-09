@@ -1,5 +1,5 @@
-import { ToolType } from 'src/app/models/tools/tool-type';
-import { SelectedColorType } from 'src/app/services/selected-color-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
+import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
 import { MathUtil } from 'src/app/utils/math/math-util';
 
 export abstract class ToolProperties {

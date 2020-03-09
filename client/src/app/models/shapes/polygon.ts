@@ -2,10 +2,10 @@ import { Coordinate } from '../../utils/math/coordinate';
 import { MathUtil } from '../../utils/math/math-util';
 import { BaseShape } from './base-shape';
 
-export const MIN_POLY_EDGES = 3;
-export const MAX_POLY_EDGES = 12;
-
 export class Polygon extends BaseShape {
+  static readonly MIN_POLY_EDGES: number = 3;
+  static readonly MAX_POLY_EDGES: number = 12;
+
   points: Coordinate[];
   private _interiorAngle: number;
 
@@ -18,7 +18,7 @@ export class Polygon extends BaseShape {
     return this._nEdges;
   }
   set nEdges(nEdges: number) {
-    this._nEdges = nEdges ? MathUtil.fit(nEdges, MIN_POLY_EDGES, MAX_POLY_EDGES) : MIN_POLY_EDGES;
+    this._nEdges = nEdges ? MathUtil.fit(nEdges, Polygon.MIN_POLY_EDGES, Polygon.MAX_POLY_EDGES) : Polygon.MIN_POLY_EDGES;
     this._interiorAngle = (2 * Math.PI) / this.nEdges;
   }
 
@@ -51,7 +51,7 @@ export class Polygon extends BaseShape {
     return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
-  constructor(origin: Coordinate = new Coordinate(), nEdges: number = MIN_POLY_EDGES) {
+  constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
     super('polygon');
     this.origin = origin;
     this.nEdges = nEdges;

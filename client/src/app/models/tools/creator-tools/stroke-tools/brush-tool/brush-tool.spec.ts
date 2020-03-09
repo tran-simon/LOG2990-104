@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
@@ -28,6 +29,7 @@ describe('BrushTool', () => {
         RectangleToolbarComponent,
         PolygonToolbarComponent,
         LineToolbarComponent,
+        EllipseToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
@@ -45,6 +47,7 @@ describe('BrushTool', () => {
   it('Should not add shape on mousedown event if already active', () => {
     const addShapeSpy = spyOn(brushTool, 'addShape');
     brushTool['isActive'] = true;
+    brushTool.shape = brushTool.createShape();
     brushTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(addShapeSpy).not.toHaveBeenCalled();
   });

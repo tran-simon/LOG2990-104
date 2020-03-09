@@ -4,20 +4,22 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
+import { PolygonToolProperties } from 'src/app/models/tool-properties/polygon-tool-properties';
+import { PolygonTool } from 'src/app/models/tools/creator-tools/shape-tools/polygon-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
-import { PolygonContourType, PolygonToolProperties } from '../../../tool-properties/polygon-tool-properties';
-import { PolygonTool } from './polygon-tool';
 
-describe('PolygonTool', () => {
+describe('RectangleTool', () => {
   let polygonTool: PolygonTool;
   let fixture: ComponentFixture<EditorComponent>;
   let properties: PolygonToolProperties;
@@ -32,6 +34,7 @@ describe('PolygonTool', () => {
         RectangleToolbarComponent,
         PolygonToolbarComponent,
         LineToolbarComponent,
+        EllipseToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
@@ -52,7 +55,7 @@ describe('PolygonTool', () => {
   it('can initialize new Polygon', () => {
     polygonTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(polygonTool.shape.origin).toEqual(new Coordinate(100, 100));
-    expect(fixture.componentInstance.drawingSurface.svg.nativeElement.querySelector('polygon')).toBeTruthy();
+    expect(fixture.componentInstance.drawingSurface.svg.querySelector('polygon')).toBeTruthy();
   });
 
   it('can resize Polygon', () => {
@@ -74,7 +77,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon contour and fill', () => {
     polygonTool['_mousePosition'] = new Coordinate(50, 100);
-    properties.contourType = PolygonContourType.FILLED_CONTOUR;
+    properties.contourType = ContourType.FILLED_CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     const style = polygonTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
@@ -83,7 +86,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon fill only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = PolygonContourType.FILLED;
+    properties.contourType = ContourType.FILLED;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;
@@ -94,7 +97,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon contour only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = PolygonContourType.CONTOUR;
+    properties.contourType = ContourType.CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;

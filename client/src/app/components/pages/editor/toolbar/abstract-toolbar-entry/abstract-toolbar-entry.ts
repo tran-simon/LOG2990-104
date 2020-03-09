@@ -1,6 +1,6 @@
 import { Input } from '@angular/core';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ToolProperties } from '../../../../../models/tool-properties/tool-properties';
 import { EditorService } from '../../../../../services/editor.service';
 

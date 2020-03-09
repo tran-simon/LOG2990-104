@@ -1,21 +1,22 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
-import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
+import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
+  providers: [KeyboardListenerService, MouseListenerService],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  private readonly keyboardListener: KeyboardListener;
-
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
@@ -24,77 +25,93 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
-  modalTypes: typeof ModalTypes;
+  modalTypes: typeof ModalType;
 
-  constructor(private router: ActivatedRoute, public editorService: EditorService, private dialog: ModalDialogService) {
+  constructor(
+    private router: ActivatedRoute,
+    public editorService: EditorService,
+    private dialog: ModalDialogService,
+    private keyboardListener: KeyboardListenerService,
+    private mouseListener: MouseListenerService,
+  ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
-    this.modalTypes = ModalTypes;
+    this.modalTypes = ModalType;
 
-    this.keyboardListener = new KeyboardListener(
-      new Map<string, KeyboardEventAction>([
-        [
-          KeyboardListener.getIdentifier('l'),
-          () => {
-            this.currentToolType = ToolType.Line;
-            return false;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('3'),
-          () => {
-            this.currentToolType = ToolType.Polygon;
-            return false;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('c'),
-          () => {
-            this.currentToolType = ToolType.Pen;
-            return false;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('w'),
-          () => {
-            this.currentToolType = ToolType.Brush;
-            return false;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('1'),
-          () => {
-            this.currentToolType = ToolType.Rectangle;
-            return false;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('i'),
-          () => {
-            this.currentToolType = ToolType.Pipette;
-            return false;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('s'),
-          () => {
-            this.currentToolType = ToolType.Select;
-            return false;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('o', true),
-          () => {
-            this.openCreateModal();
-            return true;
-          },
-        ],
-      ]),
-    );
+    this.keyboardListener.addEvents([
+      [
+        KeyboardListenerService.getIdentifier('l'),
+        () => {
+          this.currentToolType = ToolType.Line;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('3'),
+        () => {
+          this.currentToolType = ToolType.Polygon;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('c'),
+        () => {
+          this.currentToolType = ToolType.Pen;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('w'),
+        () => {
+          this.currentToolType = ToolType.Brush;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('1'),
+        () => {
+          this.currentToolType = ToolType.Rectangle;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('i'),
+        () => {
+          this.currentToolType = ToolType.Pipette;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('s', true),
+        () => {
+          this.currentToolType = ToolType.Select;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('o', true),
+        () => {
+          this.openCreateModal();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('z', true),
+        () => {
+          this.editorService.commandReceiver.undo();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('z', true, true),
+        () => {
+          this.editorService.commandReceiver.redo();
+          return true;
+        },
+      ],
+    ]);
 
     this.keyboardListener.defaultEventAction = (e) => {
       return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
+    };
+
+    this.mouseListener.defaultEventAction = (e) => {
+      return this.currentTool ? this.currentTool.handleMouseEvent(e) : false;
     };
 
     this.currentToolType = ToolType.Pen;
@@ -113,11 +130,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    if (this.currentTool) {
-      this.currentTool.handleMouseEvent(e);
-    }
+    this.mouseListener.handle(e);
   }
-
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;
   }
@@ -128,26 +142,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.keyboardListener.handle(event);
   }
 
-  @HostListener('contextmenu', ['$event'])
-  onRightClick(e: MouseEvent): void {
-    this.handleMouseEvent(e);
-    e.preventDefault();
-  }
-
   openGuide(): void {
-    this.dialog.openByName(ModalTypes.GUIDE);
+    this.dialog.openByName(ModalType.GUIDE);
   }
 
   openSave(): void {
-    this.dialog.openByName(ModalTypes.SAVE);
+    this.dialog.openByName(ModalType.SAVE);
   }
 
   openCreateModal(): void {
-    const confirmDialog = this.dialog.openByName(ModalTypes.CONFIRM);
+    const confirmDialog = this.dialog.openByName(ModalType.CONFIRM);
     if (confirmDialog) {
       confirmDialog.afterClosed().subscribe((result) => {
         if (result) {
-          this.dialog.openByName(ModalTypes.CREATE);
+          this.dialog.openByName(ModalType.CREATE);
         }
       });
     }

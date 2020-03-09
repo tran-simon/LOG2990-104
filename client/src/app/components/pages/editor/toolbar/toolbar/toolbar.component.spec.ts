@@ -4,6 +4,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
+import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
@@ -11,7 +12,7 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { UserGuideModule } from 'src/app/components/pages/user-guide/user-guide.module';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
 
@@ -30,6 +31,7 @@ describe('ToolbarComponent', () => {
         BrushToolbarComponent,
         RectangleToolbarComponent,
         LineToolbarComponent,
+        EllipseToolbarComponent,
         PolygonToolbarComponent,
       ],
     })
