@@ -30,13 +30,15 @@ describe('ColorHistoryComponent', () => {
   });
 
   it('can push color when limit reached', () => {
-    for (let i = 0; i < 10; i++) {
-      ColorHistoryComponent.push(i % 2 === 0 ? Color.RED : Color.GREEN);
+    for (let i = 0; i < ColorsService.MAX_HISTORY_LENGTH; i++) {
+      ColorsService.pushHistory(i % 2 === 0 ? Color.RED : Color.GREEN);
     }
     expect(component.colorHistory[0]).toEqual(Color.RED);
+    // tslint:disable-next-line:no-magic-numbers
     expect(component.colorHistory[9]).toEqual(Color.GREEN);
-    ColorHistoryComponent.push(Color.BLUE);
+    ColorsService.pushHistory(Color.BLUE);
     expect(component.colorHistory[0]).toEqual(Color.GREEN);
+    // tslint:disable-next-line:no-magic-numbers
     expect(component.colorHistory[9]).toEqual(Color.BLUE);
   });
 
@@ -51,7 +53,7 @@ describe('ColorHistoryComponent', () => {
   });
 
   it('sets secondary color on right click', () => {
-    ColorHistoryComponent.getColorHistory().fill(Color.WHITE);
+    ColorsService.getColorHistory().fill(Color.WHITE);
     selectedColors.secondaryColor = Color.BLACK;
     fixture.detectChanges();
     const button: DebugElement = fixture.debugElement.query(By.css('.color-history-button'));

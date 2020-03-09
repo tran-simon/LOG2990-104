@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { MathUtil } from './math-util';
 
 describe('MathUtil', () => {

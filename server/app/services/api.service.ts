@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
-import 'reflect-metadata';
 import { Message } from '../../../common/communication/message';
+
+import 'reflect-metadata';
 
 @injectable()
 export class APIService {

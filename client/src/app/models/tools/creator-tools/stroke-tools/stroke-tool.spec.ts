@@ -1,4 +1,4 @@
-/* tslint:disable:no-string-literal */
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
@@ -7,6 +7,7 @@ import { EditorComponent } from '../../../../components/pages/editor/editor/edit
 import { BrushToolbarComponent } from '../../../../components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { LineToolbarComponent } from '../../../../components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from '../../../../components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from '../../../../components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from '../../../../components/shared/shared.module';
@@ -66,6 +67,7 @@ describe('StrokeTool', () => {
         PenToolbarComponent,
         BrushToolbarComponent,
         RectangleToolbarComponent,
+        PolygonToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
         EditorComponent,

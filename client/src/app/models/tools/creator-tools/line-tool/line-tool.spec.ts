@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -15,6 +15,7 @@ import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 
 describe('LineTool', () => {
@@ -69,6 +70,7 @@ describe('LineTool', () => {
         PenToolbarComponent,
         BrushToolbarComponent,
         RectangleToolbarComponent,
+        PolygonToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
         EditorComponent,
@@ -90,42 +92,42 @@ describe('LineTool', () => {
   it('should call removeLastPoint on backspace if isActive', () => {
     lineTool['isActive'] = true;
     const removeSpy = spyOn(lineTool.shape, 'removeLastPoint');
-    lineTool.handleKeyboardEvent(keyDown('backspace'));
+    lineTool.handleKeyboardEvent(keyDown('Backspace'));
     expect(removeSpy).toHaveBeenCalled();
   });
 
   it('should not call removeLastPoint on backspace if not isActive', () => {
     lineTool['isActive'] = false;
     const removeSpy = spyOn(lineTool.shape, 'removeLastPoint');
-    lineTool.handleKeyboardEvent(keyDown('backspace'));
+    lineTool.handleKeyboardEvent(keyDown('Backspace'));
     expect(removeSpy).not.toHaveBeenCalled();
   });
 
   it('should call cancelShape on escape if isActive', () => {
     lineTool['isActive'] = false;
     const cancelSpy = spyOn(lineTool, 'cancelShape');
-    lineTool.handleKeyboardEvent(keyDown('escape'));
+    lineTool.handleKeyboardEvent(keyDown('Escape'));
     expect(cancelSpy).not.toHaveBeenCalled();
   });
 
   it('should not call cancelShape on escape if not isActive', () => {
     lineTool['isActive'] = false;
     const cancelSpy = spyOn(lineTool, 'cancelShape');
-    lineTool.handleKeyboardEvent(keyDown('escape'));
+    lineTool.handleKeyboardEvent(keyDown('Escape'));
     expect(cancelSpy).not.toHaveBeenCalled();
   });
 
   it('should determine lock method and update on shift down', () => {
     const lockSpy = spyOn(lineTool, 'determineLockMethod').and.callThrough();
     const updateSpy = spyOn(lineTool.shape, 'updateCurrentCoord');
-    lineTool.handleKeyboardEvent(keyDown('shift', true));
+    lineTool.handleKeyboardEvent(keyDown('Shift', true));
     expect(lockSpy).toHaveBeenCalled();
     expect(updateSpy).toHaveBeenCalled();
   });
 
   it('should reset lock method and update on shift up', () => {
     const updateSpy = spyOn(lineTool.shape, 'updateCurrentCoord');
-    lineTool.handleKeyboardEvent(keyUp('shift'));
+    lineTool.handleKeyboardEvent(keyUp('Shift'));
     expect(lineTool['lockMethod']).toEqual(lineTool['calculateNoLock']);
     expect(updateSpy).toHaveBeenCalled();
   });

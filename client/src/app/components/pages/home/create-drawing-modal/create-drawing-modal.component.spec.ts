@@ -11,7 +11,11 @@ import createSpy = jasmine.createSpy;
 
 describe('CreateDrawingModalComponent', () => {
   const dialogRefCloseSpy = createSpy('close');
-  const routerSpy = createSpyObj('Router', ['navigate']);
+  const routerSpy = createSpyObj('Router', {
+    navigate: new Promise<boolean>(() => {
+      return;
+    }),
+  });
   let component: CreateDrawingModalComponent;
   let fixture: ComponentFixture<CreateDrawingModalComponent>;
 
@@ -42,21 +46,26 @@ describe('CreateDrawingModalComponent', () => {
     expect(onCreateClickSpy).toHaveBeenCalled();
   });
 
-  it('should route correctly when calling onCreateClick', () => {
+  it('should route correctly when calling onCreateClick', async(() => {
+    routerSpy.navigate.and.returnValue(Promise.resolve());
     component.width = '2';
     component.height = '3';
     component.colorPicker.color = Color.RED;
     component.onCreateClick();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
-      'edit',
-      {
-        width: '2',
-        height: '3',
-        color: 'ff0000',
-      },
-    ]);
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
 
-    expect(dialogRefCloseSpy).toHaveBeenCalled();
-  });
+      expect(routerSpy.navigate).toHaveBeenCalledWith([
+        'edit',
+        {
+          width: '2',
+          height: '3',
+          color: 'ff0000',
+        },
+      ]);
+
+      expect(dialogRefCloseSpy).toHaveBeenCalled();
+    });
+  }));
 });

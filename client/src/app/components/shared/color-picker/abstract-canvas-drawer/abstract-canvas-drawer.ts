@@ -3,13 +3,13 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterViewInit {
+  static readonly DEFAULT_INDICATOR_SIZE: number = 20;
+  static readonly DEFAULT_INDICATOR_LINE_WIDTH: number = 3;
+
   @Input('color')
   set color(color: Color) {
-    if (!color || !this.color) {
-      this._color = color;
-    } else {
-      this.updateColor(color);
-    }
+    const shouldUpdateColor = color && this.color;
+    shouldUpdateColor ? this.updateColor(color) : (this._color = color);
   }
 
   get color(): Color {
@@ -20,14 +20,14 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
 
   @Input() indicatorSize: number;
   @Input() indicatorLineWidth: number;
-  canvas: ElementRef<HTMLCanvasElement>;
+  abstract canvas: ElementRef<HTMLCanvasElement>;
   renderingContext: CanvasRenderingContext2D;
   mouseIsDown: boolean;
 
   constructor() {
     this._color = Color.WHITE;
-    this.indicatorSize = 20;
-    this.indicatorLineWidth = 3;
+    this.indicatorSize = AbstractCanvasDrawer.DEFAULT_INDICATOR_SIZE;
+    this.indicatorLineWidth = AbstractCanvasDrawer.DEFAULT_INDICATOR_LINE_WIDTH;
     this.mouseIsDown = false;
   }
 
@@ -71,7 +71,8 @@ export abstract class AbstractCanvasDrawer implements OnInit, OnChanges, AfterVi
     if (change) {
       const color: Color = change.currentValue;
       const previousColor: Color = change.previousValue;
-      if (!previousColor || (color && this.shouldRedraw(color, previousColor))) {
+      const shouldDraw = !previousColor || (color && this.shouldRedraw(color, previousColor));
+      if (shouldDraw) {
         this.drawAll();
       }
     }

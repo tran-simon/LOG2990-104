@@ -5,6 +5,7 @@ import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EllipseToolbarComponent } from './ellipse-toolbar/ellipse-toolbar.component';
+import { PolygonToolbarComponent } from './polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar.component';
 
 @NgModule({
@@ -15,6 +16,7 @@ import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar
     RectangleToolbarComponent,
     LineToolbarComponent,
     EllipseToolbarComponent,
+    PolygonToolbarComponent,
   ],
   imports: [SharedModule],
   exports: [
@@ -24,6 +26,7 @@ import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar
     RectangleToolbarComponent,
     LineToolbarComponent,
     EllipseToolbarComponent,
+    PolygonToolbarComponent,
   ],
 })
 export class ToolbarModule {}

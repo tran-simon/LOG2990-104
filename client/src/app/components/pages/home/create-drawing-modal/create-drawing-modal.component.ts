@@ -2,8 +2,8 @@ import { AfterViewInit, ChangeDetectorRef, Component, HostListener, ViewChild } 
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorParams } from 'src/app/components/pages/editor/editor/editor-params';
-import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 
@@ -13,6 +13,8 @@ import { ColorPickerComponent } from 'src/app/components/shared/color-picker/col
   styleUrls: ['./create-drawing-modal.component.scss'],
 })
 export class CreateDrawingModalComponent extends AbstractModalComponent implements AfterViewInit {
+  static readonly MARGIN_WIDTH: number = 68;
+  static readonly MARGIN_HEIGHT: number = 12;
   @ViewChild('colorpicker', { static: true }) colorPicker: ColorPickerComponent;
   formGroup: FormGroup;
   private windowWidth: number;
@@ -21,14 +23,14 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
   height: string;
 
   constructor(
-    private router: Router,
     public dialogRef: MatDialogRef<AbstractModalComponent>,
+    private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
   ) {
     super(dialogRef);
     this.formGroup = new FormGroup({});
-    this.windowHeight = 500;
-    this.windowWidth = 500;
+    this.windowHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
+    this.windowWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.width = this.windowWidth.toString();
     this.height = this.windowHeight.toString();
   }
@@ -39,9 +41,10 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
 
   @HostListener('window:resize')
   onResize(): void {
-    if (this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString()) {
-      this.windowWidth = window.innerWidth - ToolbarComponent.TOOLBAR_WIDTH;
-      this.windowHeight = window.innerHeight;
+    const shouldUpdate = this.width === this.windowWidth.toString() && this.height === this.windowHeight.toString();
+    if (shouldUpdate) {
+      this.windowWidth = window.innerWidth - CreateDrawingModalComponent.MARGIN_WIDTH;
+      this.windowHeight = window.innerHeight - CreateDrawingModalComponent.MARGIN_HEIGHT;
 
       this.width = this.windowWidth.toString();
       this.height = this.windowHeight.toString();
@@ -51,7 +54,7 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
 
   onCreateClick(): void {
     const params: EditorParams = { width: this.width, height: this.height, color: this.colorPicker.color.hex };
-    this.router.navigate(['edit', params]);
+    this.router.navigate(['/'], { skipLocationChange: true }).then((a) => this.router.navigate(['edit', params]));
     this.dialogRef.close();
   }
 }

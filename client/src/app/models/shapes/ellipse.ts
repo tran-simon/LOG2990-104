@@ -36,7 +36,7 @@ export class Ellipse extends BaseShape {
     return Coordinate.add(this.origin, new Coordinate(this._radiusX, this._radiusY));
   }
 
-  constructor(origin = new Coordinate(), rx: number = 0, ry: number = rx) {
+  constructor(origin: Coordinate = new Coordinate(), rx: number = 0, ry: number = rx) {
     super('ellipse');
     this.origin = origin;
     this.radiusX = rx;

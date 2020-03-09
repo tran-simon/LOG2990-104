@@ -12,7 +12,7 @@ import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal
 export class UserGuideModalComponent extends AbstractModalComponent implements OnInit {
   @ViewChild('sidenav', { static: false })
   sidenav: MatSidenav;
-  subjects = GuideSubject;
+  subjects: typeof GuideSubject = GuideSubject;
   selectedSubject: GuideSubject;
   panelOpenState1: boolean;
 
@@ -24,7 +24,6 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   ngOnInit(): void {
     this.selectedSubject = this.subjects.Welcome;
   }
-
   selectSubject(selection: GuideSubject): void {
     this.selectedSubject = selection;
   }
@@ -41,5 +40,13 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   nextSubject(): void {
     this.selectSubject(this.selectedSubject + 1);
     this.openCategories();
+  }
+
+  get disablePreviousButton(): boolean {
+    return this.selectedSubject === this.subjects.Welcome;
+  }
+
+  get disableNextButton(): boolean {
+    return this.selectedSubject === this.subjects.Color;
   }
 }
