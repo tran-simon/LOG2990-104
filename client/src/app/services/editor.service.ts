@@ -91,29 +91,6 @@ export class EditorService {
     return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
 
-  exportSVGElement(name: string, surface: DrawingSurfaceComponent): void {
-    const download = document.createElement('a');
-    download.href = this.createDataURL(surface);
-    download.download = name;
-    download.click();
-  }
-
-  exportImageElement(name: string, extension: string, surface: DrawingSurfaceComponent): void {
-    const image = new Image();
-    const canvas = document.createElement('canvas');
-    image.src = this.createDataURL(surface);
-    const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
-    image.onload = () => {
-      canvas.width = surface.width;
-      canvas.height = surface.height;
-      ctx.drawImage(image, 0, 0);
-      const download = document.createElement('a');
-      download.href = canvas.toDataURL(`image/${extension}`);
-      download.download = name;
-      download.click();
-    };
-  }
-
   removeShape(shape: BaseShape): void {
     const index = this.shapes.findIndex((s) => s === shape);
     if (index !== -1) {

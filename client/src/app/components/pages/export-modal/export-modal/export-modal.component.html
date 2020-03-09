@@ -2,10 +2,11 @@
   <div content>
     <img id="preview" [src]="previewURL()">
     <form [formGroup]="formGroup">
-      <app-name-input [formGroup]="formGroup" [(value)]="name" required=true>Nom du fichier</app-name-input>
+      <app-name-input [formGroup]="formGroup" [(value)]="name" required=true (change)="changeName()">Nom du fichier
+      </app-name-input>
       <mat-form-field [formGroup]="formGroup">
         <mat-label>Extension</mat-label>
-        <mat-select [(ngModel)]="selectedExtension" name="extensions">
+        <mat-select [(value)]="selectedExtension" name="extensions" (selectionChange)="changeExtension()">
           <mat-option *ngFor="let ext of extensions" [value]="ext">
             {{ext}}
           </mat-option>
@@ -17,8 +18,7 @@
     <button mat-button (click)="addFilter">
       Ajouter le filtre
     </button>
-    <button mat-button id="save-button" [disabled]="formGroup.invalid" (click)="submit()">
-      Sauvegarder
-    </button>
+    <a mat-stroked-button id="save-button" [href]="href" [download]="fullName" [disabled]="formGroup.invalid"
+      (click)="submit()">Sauvegarder</a>
   </div>
 </app-abstract-modal>

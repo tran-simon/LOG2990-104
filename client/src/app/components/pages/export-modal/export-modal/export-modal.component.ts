@@ -16,6 +16,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   selectedExtension: ExtensionType;
   extensions: string[] = Object.values(ExtensionType);
   fullName: string;
+  href: SafeResourceUrl;
   name: string;
   previewImage: DrawingSurfaceComponent;
   formGroup: FormGroup;
@@ -30,6 +31,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     this.previewImage = this.editorService.view;
     this.name = '';
     this.selectedExtension = ExtensionType.SVG;
+    this.exportSVGElement();
     this.formGroup = new FormGroup({});
   }
 
@@ -37,12 +39,35 @@ export class ExportModalComponent extends AbstractModalComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.previewImage));
   }
 
-  submit(): void {
-    this.fullName = this.name + '.' + this.selectedExtension;
+  exportSVGElement(): void {
+    this.href = this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.previewImage));
+  }
 
-    this.selectedExtension === ExtensionType.SVG ?
-      this.editorService.exportSVGElement(this.fullName, this.previewImage) :
-      this.editorService.exportImageElement(this.fullName, this.selectedExtension, this.previewImage);
-    this.dialogRef.close();
+  exportImageElement(): void {
+    const image = new Image();
+    const canvas = document.createElement('canvas');
+    image.src = this.editorService.createDataURL(this.previewImage);
+    const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
+    image.onload = () => {
+      canvas.width = this.previewImage.width;
+      canvas.height = this.previewImage.height;
+      ctx.drawImage(image, 0, 0);
+      this.href = canvas.toDataURL(`image/${this.selectedExtension}`);
+    };
+  }
+
+  changeName(): void {
+    this.fullName = this.name + '.' + this.selectedExtension;
+  }
+
+  changeExtension(): void {
+    this.fullName = this.name + '.' + this.selectedExtension;
+    this.selectedExtension === ExtensionType.SVG ? this.exportSVGElement() : this.exportImageElement();
+  }
+
+  submit(): void {
+    if (!this.formGroup.invalid) {
+      this.dialogRef.close();
+    }
   }
 }
