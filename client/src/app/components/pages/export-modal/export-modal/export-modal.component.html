@@ -2,7 +2,7 @@
   <div content>
     <img id="preview" [src]="previewURL()">
     <form [formGroup]="formGroup">
-      <app-name-input [formGroup]="formGroup" [(value)]="name" required=true (change)="changeName()">Nom du fichier
+      <app-name-input [formGroup]="formGroup" [(value)]="name" required=true>Nom du fichier
       </app-name-input>
       <mat-form-field [formGroup]="formGroup">
         <mat-label>Extension</mat-label>

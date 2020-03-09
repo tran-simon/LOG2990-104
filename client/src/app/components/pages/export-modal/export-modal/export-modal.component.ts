@@ -15,7 +15,6 @@ import { ExtensionType } from '../extension-type.enum';
 export class ExportModalComponent extends AbstractModalComponent {
   selectedExtension: ExtensionType;
   extensions: string[] = Object.values(ExtensionType);
-  fullName: string;
   href: SafeResourceUrl;
   name: string;
   previewImage: DrawingSurfaceComponent;
@@ -56,12 +55,11 @@ export class ExportModalComponent extends AbstractModalComponent {
     };
   }
 
-  changeName(): void {
-    this.fullName = this.name + '.' + this.selectedExtension;
+  get fullName(): string {
+    return this.name + '.' + this.selectedExtension;
   }
 
   changeExtension(): void {
-    this.fullName = this.name + '.' + this.selectedExtension;
     this.selectedExtension === ExtensionType.SVG ? this.exportSVGElement() : this.exportImageElement();
   }
 
