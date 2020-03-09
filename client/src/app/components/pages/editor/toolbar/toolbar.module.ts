@@ -4,6 +4,7 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { EllipseToolbarComponent } from './ellipse-toolbar/ellipse-toolbar.component';
 import { PolygonToolbarComponent } from './polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar.component';
 
@@ -14,6 +15,7 @@ import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar
     BrushToolbarComponent,
     RectangleToolbarComponent,
     LineToolbarComponent,
+    EllipseToolbarComponent,
     PolygonToolbarComponent,
   ],
   imports: [SharedModule],
@@ -23,6 +25,7 @@ import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar
     BrushToolbarComponent,
     RectangleToolbarComponent,
     LineToolbarComponent,
+    EllipseToolbarComponent,
     PolygonToolbarComponent,
   ],
 })

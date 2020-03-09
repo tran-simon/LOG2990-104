@@ -23,10 +23,11 @@ import { Color } from 'src/app/utils/color/color';
 import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
+import createSpyObj = jasmine.createSpyObj;
+import { EllipseToolbarComponent } from '../toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { PolygonToolbarComponent } from '../toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { EditorComponent } from './editor.component';
-import createSpyObj = jasmine.createSpyObj;
 
 export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
@@ -63,6 +64,7 @@ describe('EditorComponent', () => {
         RectangleToolbarComponent,
         BrushToolbarComponent,
         LineToolbarComponent,
+        EllipseToolbarComponent,
         CreateDrawingModalComponent,
         UserGuideModalComponent,
         PolygonToolbarComponent,
