@@ -93,10 +93,11 @@ export class EditorService {
 
   exportSVGElement(name: string, surface: DrawingSurfaceComponent): void {
     const download = document.createElement('a');
-    download.setAttribute('href', this.createDataURL(surface));
-    download.setAttribute('download', name);
+    download.href = this.createDataURL(surface);
+    download.download = name;
     download.click();
   }
+
   exportImageElement(name: string, extension: string, surface: DrawingSurfaceComponent): void {
     const image = new Image();
     const canvas = document.createElement('canvas');

@@ -14,11 +14,11 @@
     </form>
   </div>
   <div actions>
-    <button mat-button id="save-button" [disabled]="formGroup.invalid" (click)="submit()">
-      Save
-    </button>
     <button mat-button (click)="addFilter">
-      add
+      Ajouter le filtre
+    </button>
+    <button mat-button id="save-button" [disabled]="formGroup.invalid" (click)="submit()">
+      Sauvegarder
     </button>
   </div>
 </app-abstract-modal>

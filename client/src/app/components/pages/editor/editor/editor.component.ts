@@ -104,6 +104,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           return true;
         },
       ],
+      [
+        KeyboardListenerService.getIdentifier('s', true),
+        () => {
+          this.dialog.openByName(ModalType.SAVE);
+          return true;
+        },
+      ],
     ]);
 
     this.keyboardListener.defaultEventAction = (e) => {
