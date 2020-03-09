@@ -19,7 +19,7 @@
   },
   "lint-staged": {
     "src/**/*.{ts, js, css, scss}": [
-      "prettier --tab-width 2 --arrow-parens always --single-quote --trailing-comma 'all' --write",
+      "prettier --tab-width 2 --print-width 140 --arrow-parens always --single-quote --trailing-comma 'all' --write",
       "git add"
     ],
     "package.json": [

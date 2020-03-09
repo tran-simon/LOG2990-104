@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AppComponent } from './app.component';
 import { ChooseExportSaveModule } from './components/pages/choose-export-save/choose-export-save.module';
+// tslint:disable-next-line: max-line-length
 import { ChooseExportSaveModalComponent } from './components/pages/choose-export-save/choose-export-save/choose-export-save-modal.component';
 import { EditorModule } from './components/pages/editor/editor.module';
 import { EditorComponent } from './components/pages/editor/editor/editor.component';
