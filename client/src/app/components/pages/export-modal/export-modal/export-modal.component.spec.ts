@@ -9,18 +9,16 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { EditorModule } from '../../editor/editor.module';
-import { ExportModalComponent } from './export-modal.component';
 import createSpyObj = jasmine.createSpyObj;
 import Spy = jasmine.Spy;
 import SpyObj = jasmine.SpyObj;
+import { ExportModalComponent } from './export-modal.component';
 
 describe('ExportModalComponent', () => {
   let component: ExportModalComponent;
   let fixture: ComponentFixture<ExportModalComponent>;
   const dialogRefCloseSpy = createSpy('close');
   let createDataURLSpy: Spy;
-  let exportSVGElementSpy: Spy;
-  let exportImageElement: Spy;
   let domSanitizer: SpyObj<DomSanitizer>;
 
   beforeEach(async(() => {
@@ -30,8 +28,6 @@ describe('ExportModalComponent', () => {
     } as DrawingSurfaceComponent;
 
     createDataURLSpy = spyOn(editorService, 'createDataURL');
-    exportSVGElementSpy = spyOn(editorService, 'exportSVGElement');
-    exportImageElement = spyOn(editorService, 'exportImageElement');
 
     domSanitizer = createSpyObj<DomSanitizer>('domSanitizer', ['bypassSecurityTrustResourceUrl', 'sanitize']);
 
@@ -42,15 +38,14 @@ describe('ExportModalComponent', () => {
       ],
       providers: [
         { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
-        {provide: EditorService, useValue: editorService},
-        {provide: DomSanitizer, useValue: domSanitizer},
+        { provide: EditorService, useValue: editorService },
+        { provide: DomSanitizer, useValue: domSanitizer },
       ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ExportModalComponent);
-
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -63,19 +58,5 @@ describe('ExportModalComponent', () => {
     createDataURLSpy.calls.reset();
     component.previewURL();
     expect(createDataURLSpy).toHaveBeenCalled();
-  });
-
-  it('should call export svg element on submit with svg extension', () => {
-    component.name = 'NAME';
-    component.selectedExtension = 'svg';
-    component.submit();
-    expect(exportSVGElementSpy).toHaveBeenCalled();
-  });
-
-  it('should call export image element on submit with other extension', () => {
-    component.name = 'NAME';
-    component.selectedExtension = 'EXTENsION';
-    component.submit();
-    expect(exportImageElement).toHaveBeenCalled();
   });
 });
