@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
+import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
@@ -44,6 +45,7 @@ export class EditorService {
     this.tools.set(ToolType.Brush, new BrushTool(this));
     this.tools.set(ToolType.Rectangle, new RectangleTool(this));
     this.tools.set(ToolType.Line, new LineTool(this));
+    this.tools.set(ToolType.Ellipse, new EllipseTool(this));
     this.tools.set(ToolType.Pipette, new PipetteTool(this));
     this.tools.set(ToolType.Polygon, new PolygonTool(this));
   }
@@ -80,6 +82,9 @@ export class EditorService {
     }
   }
 
+  /**
+   * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
+   */
   createDataURL(surface: DrawingSurfaceComponent): string {
     const xmlSerializer = new XMLSerializer();
     const svgString = xmlSerializer.serializeToString(surface.svg);

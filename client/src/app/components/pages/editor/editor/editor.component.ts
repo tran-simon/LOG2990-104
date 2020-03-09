@@ -132,7 +132,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
   handleMouseEvent(e: MouseEvent): void {
     this.mouseListener.handle(e);
   }
-
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;
   }

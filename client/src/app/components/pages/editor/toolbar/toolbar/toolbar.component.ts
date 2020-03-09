@@ -55,6 +55,7 @@ export class ToolbarComponent {
       [ToolType.Brush, 'brush'],
       [ToolType.Rectangle, 'crop_square'],
       [ToolType.Line, 'show_chart'],
+      [ToolType.Ellipse, 'panorama_fish_eye'],
       [ToolType.Pipette, 'colorize'],
       [ToolType.Polygon, 'category'],
     ]);
