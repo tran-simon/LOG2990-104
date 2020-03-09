@@ -1,6 +1,6 @@
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type';
+import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { MathUtil } from '../../utils/math/math-util';
 
 export class LineToolProperties extends ToolProperties {

@@ -1,5 +1,5 @@
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { MAX_POLY_EDGES, MIN_POLY_EDGES } from '../shapes/polygon';
-import { ToolType } from '../tools/tool-type';
 import { ToolProperties } from './tool-properties';
 
 export enum PolygonContourType {

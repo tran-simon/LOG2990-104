@@ -3,9 +3,9 @@ import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
-import { SelectedColorType } from 'src/app/services/selected-color-type';
+import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({

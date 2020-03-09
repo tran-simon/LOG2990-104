@@ -7,30 +7,37 @@ export abstract class StrokeTool<T = ToolProperties> extends CreatorTool<T> {
   abstract createShape(): Path;
 
   protected updateProperties(): void {
-    if (!this.shape) {
-      this.shape = this.createShape();
-    }
     this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
     this.shape.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
   }
 
-  handleMouseEvent(e: MouseEvent): void {
-    super.handleMouseEvent(e);
+  protected startShape(): void {
+    super.startShape();
+    this.shape.addPoint(this.mousePosition);
+  }
+
+  handleMouseDown(e: MouseEvent): boolean | void {
+    if (!this.isActive) {
+      this.startShape();
+    }
+    return super.handleMouseDown(e);
+  }
+
+  handleMouseMove(e: MouseEvent): boolean | void {
     if (this.isActive) {
-      switch (e.type) {
-        case 'mouseup':
-        case 'mouseleave':
-          this.applyShape();
-          break;
-        case 'mousemove':
-          this.shape.addPoint(this.mousePosition);
-          break;
-      }
-    } else if (e.type === 'mousedown') {
-      this.isActive = true;
-      this.updateProperties();
-      this.addShape();
       this.shape.addPoint(this.mousePosition);
     }
+    return super.handleMouseMove(e);
+  }
+
+  handleMouseUp(e: MouseEvent): boolean | void {
+    if (this.isActive) {
+      this.applyShape();
+    }
+    return super.handleMouseUp(e);
+  }
+
+  handleMouseLeave(e: MouseEvent): boolean | void {
+    return this.handleMouseUp(e);
   }
 }

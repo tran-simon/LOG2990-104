@@ -45,6 +45,7 @@ describe('BrushTool', () => {
   it('Should not add shape on mousedown event if already active', () => {
     const addShapeSpy = spyOn(brushTool, 'addShape');
     brushTool['isActive'] = true;
+    brushTool.shape = brushTool.createShape();
     brushTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(addShapeSpy).not.toHaveBeenCalled();
   });
