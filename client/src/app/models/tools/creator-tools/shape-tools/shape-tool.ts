@@ -73,7 +73,8 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
     const delta = Coordinate.substract(c, this.initialMouseCoord);
     const previewDimensions = Coordinate.abs(delta);
     let dimensions = new Coordinate(previewDimensions.x, previewDimensions.y);
-    let origin = Coordinate.minXYCoord(c, this.initialMouseCoord);
+    const previewOrigin = Coordinate.minXYCoord(c, this.initialMouseCoord);
+    let origin = new Coordinate(previewOrigin.x, previewOrigin.y);
 
     if (this.forceEqualDimensions) {
       const minDimension = Math.min(dimensions.x, dimensions.y);
@@ -88,9 +89,9 @@ export abstract class ShapeTool<T = ToolProperties> extends CreatorTool<T> {
       origin = new Coordinate(origin.x + previewDimensions.x - dimensions.x, origin.y);
     }
 
-    this.previewArea.origin = origin;
-    this.previewArea.width = dimensions.x;
-    this.previewArea.height = dimensions.y;
+    this.previewArea.origin = previewOrigin;
+    this.previewArea.width = previewDimensions.x;
+    this.previewArea.height = previewDimensions.y;
     this.previewArea.shapeProperties.fillColor = Color.TRANSPARENT;
     this.previewArea.updateProperties();
 
