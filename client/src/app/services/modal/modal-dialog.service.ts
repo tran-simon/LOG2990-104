@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-// tslint:disable-next-line: max-line-length
 import { ChooseExportSaveModalComponent } from 'src/app/components/pages/choose-export-save/choose-export-save/choose-export-save-modal.component';
-import { ExportModalComponent } from 'src/app/components/pages/export-modal/export-modal.component';
+import { ExportModalComponent } from 'src/app/components/pages/export-modal/export-modal/export-modal.component';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { SaveDrawingModalComponent } from 'src/app/components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
