@@ -11,6 +11,12 @@ describe('BaseShape', () => {
     set origin(c: Coordinate) {
       this._origin = c;
     }
+    get height(): number {
+      return 10;
+    }
+    get width(): number {
+      return 10;
+    }
   }
   let component: BaseShape;
   beforeEach(() => {

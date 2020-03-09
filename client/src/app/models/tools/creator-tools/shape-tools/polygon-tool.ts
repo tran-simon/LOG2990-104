@@ -3,6 +3,7 @@ import { Color } from '../../../../utils/color/color';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Polygon } from '../../../shapes/polygon';
 import { PolygonContourType, PolygonToolProperties } from '../../../tool-properties/polygon-tool-properties';
+import { ToolType } from '../../tool-type';
 import { ShapeTool } from './shape-tool';
 
 export class PolygonTool extends ShapeTool<PolygonToolProperties> {
@@ -11,6 +12,7 @@ export class PolygonTool extends ShapeTool<PolygonToolProperties> {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new PolygonToolProperties();
+    this.type = ToolType.Polygon;
     this.setEqualDimensions(true);
   }
 

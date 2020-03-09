@@ -5,6 +5,7 @@ import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { ToolType } from '../../tool-type';
 
 export class RectangleTool extends ShapeTool<RectangleToolProperties> {
   shape: Rectangle;
@@ -12,6 +13,7 @@ export class RectangleTool extends ShapeTool<RectangleToolProperties> {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new RectangleToolProperties();
+    this.type = ToolType.Rectangle;
   }
 
   protected updateProperties(): void {

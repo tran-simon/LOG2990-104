@@ -4,6 +4,7 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
 import { Rectangle } from '../../shapes/rectangle';
 import { Tool } from '../tool';
+import { ToolType } from '../tool-type';
 
 export class SelectionTool extends Tool {
   // tslint:disable-next-line:no-magic-numbers
@@ -15,6 +16,7 @@ export class SelectionTool extends Tool {
 
   constructor(public editorService: EditorService) {
     super(editorService);
+    this.type = ToolType.Select;
     this.editorService.selectedShapes = new Array<BaseShape>();
   }
 

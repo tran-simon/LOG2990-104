@@ -2,6 +2,7 @@ import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { SelectedColorType } from 'src/app/services/selected-color-type';
 import { Color } from 'src/app/utils/color/color';
+import { ToolType } from '../tool-type';
 
 /**
  * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
@@ -11,6 +12,7 @@ export class PipetteTool extends Tool {
 
   constructor(editorService: EditorService) {
     super(editorService);
+    this.type = ToolType.Pipette;
     this.image = new Image();
   }
 
