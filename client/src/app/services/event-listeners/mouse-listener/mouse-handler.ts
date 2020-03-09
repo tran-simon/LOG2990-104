@@ -1,11 +1,13 @@
+import { MouseEventAction } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
+
 export interface MouseHandler {
-  handleDblClick(e: MouseEvent): boolean | void;
-  handleMouseMove(e: MouseEvent): boolean | void;
-  handleMouseDown(e: MouseEvent): boolean | void;
-  handleMouseUp(e: MouseEvent): boolean | void;
-  handleMouseLeave(e: MouseEvent): boolean | void;
-  handleClick(e: MouseEvent): boolean | void;
-  handleContextMenu(e: MouseEvent): boolean | void;
+  handleDblClick: MouseEventAction;
+  handleMouseMove: MouseEventAction;
+  handleMouseDown: MouseEventAction;
+  handleMouseUp: MouseEventAction;
+  handleMouseLeave: MouseEventAction;
+  handleClick: MouseEventAction;
+  handleContextMenu: MouseEventAction;
 
   handleMouseEvent(e: MouseEvent): boolean | void;
 }

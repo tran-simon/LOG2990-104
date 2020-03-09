@@ -18,28 +18,27 @@ export class SelectionTool extends Tool {
     this.editorService.selectedShapes = new Array<BaseShape>();
   }
 
-  handleMouseMove(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.updateSelection();
-    }
-    return super.handleMouseMove(e);
-  }
+  initMouseHandler(): void {
+    this.handleMouseMove = () => {
+      if (this.isActive) {
+        this.updateSelection();
+      }
+    };
 
-  handleMouseUp(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.isActive = false;
-      this.applySelectArea();
-    }
-    return super.handleMouseUp(e);
-  }
+    this.handleMouseUp = () => {
+      if (this.isActive) {
+        this.isActive = false;
+        this.applySelectArea();
+      }
+    };
 
-  handleMouseDown(e: MouseEvent): boolean | void {
-    if (!this.isActive) {
-      this.isActive = true;
-      this.initialMouseCoord = Coordinate.copy(this.mousePosition);
-      this.initSelectArea();
-    }
-    return super.handleMouseUp(e);
+    this.handleMouseDown = () => {
+      if (!this.isActive) {
+        this.isActive = true;
+        this.initialMouseCoord = Coordinate.copy(this.mousePosition);
+        this.initSelectArea();
+      }
+    };
   }
 
   selectSingleItem(c: Coordinate): void {

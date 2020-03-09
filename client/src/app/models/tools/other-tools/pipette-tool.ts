@@ -42,13 +42,13 @@ export class PipetteTool extends Tool {
     }
   }
 
-  handleClick(e: MouseEvent): boolean | void {
-    this.handleLeftOrRightClick(SelectedColorType.primary);
-    return super.handleClick(e);
+  initMouseHandler(): void {
+    this.handleClick = () => this.handleLeftOrRightClick(SelectedColorType.primary);
+
+    this.handleContextMenu = (): boolean => {
+      this.handleLeftOrRightClick(SelectedColorType.secondary);
+      return super.handleContextMenu();
+    };
   }
 
-  handleContextMenu(e: MouseEvent): boolean | void {
-    this.handleLeftOrRightClick(SelectedColorType.secondary);
-    return super.handleContextMenu(e);
-  }
 }

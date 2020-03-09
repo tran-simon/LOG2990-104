@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AbstractEventListenerService } from 'src/app/services/event-listeners/abstract-event-listener.service';
+import { AbstractEventListenerService, EventAction } from 'src/app/services/event-listeners/abstract-event-listener.service';
 import { MouseHandler } from 'src/app/services/event-listeners/mouse-listener/mouse-handler';
 
+export type MouseEventAction = EventAction<MouseEvent>;
 @Injectable()
 export class MouseListenerService extends AbstractEventListenerService<MouseEvent> {
   static readonly EVENT_DBLCLICK: string = 'dblclick';
@@ -15,13 +16,13 @@ export class MouseListenerService extends AbstractEventListenerService<MouseEven
   static defaultMouseListener(handler: MouseHandler): MouseListenerService {
     const mouseListenerService = new MouseListenerService();
     mouseListenerService.addEvents([
-      [this.EVENT_DBLCLICK, (e) => handler.handleDblClick(e)],
-      [this.EVENT_MOUSEMOVE, (e) => handler.handleMouseMove(e)],
-      [this.EVENT_MOUSEDOWN, (e) => handler.handleMouseDown(e)],
-      [this.EVENT_MOUSEUP, (e) => handler.handleMouseUp(e)],
-      [this.EVENT_MOUSELEAVE, (e) => handler.handleMouseLeave(e)],
-      [this.EVENT_CLICK, (e) => handler.handleClick(e)],
-      [this.EVENT_CONTEXTMENU, (e) => handler.handleContextMenu(e)],
+      [this.EVENT_DBLCLICK, handler.handleDblClick],
+      [this.EVENT_MOUSEMOVE, handler.handleMouseMove],
+      [this.EVENT_MOUSEDOWN, handler.handleMouseDown],
+      [this.EVENT_MOUSEUP, handler.handleMouseUp],
+      [this.EVENT_MOUSELEAVE, handler.handleMouseLeave],
+      [this.EVENT_CLICK, handler.handleClick],
+      [this.EVENT_CONTEXTMENU, handler.handleContextMenu],
     ]);
 
     return mouseListenerService;

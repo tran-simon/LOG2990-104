@@ -201,6 +201,10 @@ describe('EditorComponent', () => {
         super(editorService);
         this.type = type;
       }
+
+      initMouseHandler(): void {
+        return;
+      }
     }
 
     const tool: ToolImpl = new ToolImpl({} as EditorService, 'toolMock');
