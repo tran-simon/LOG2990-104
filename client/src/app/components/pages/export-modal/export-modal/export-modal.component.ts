@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { EditorService } from 'src/app//services/editor.service';
@@ -17,6 +18,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   fullName: string;
   name: string;
   previewImage: DrawingSurfaceComponent;
+  formGroup: FormGroup;
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
@@ -28,6 +30,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     this.previewImage = this.editorService.view;
     this.name = '';
     this.selectedExtension = ExtensionType.SVG;
+    this.formGroup = new FormGroup({});
   }
 
   previewURL(): SafeResourceUrl {
@@ -36,11 +39,10 @@ export class ExportModalComponent extends AbstractModalComponent {
 
   submit(): void {
     this.fullName = this.name + '.' + this.selectedExtension;
-    if (this.name !== '') {
-      this.selectedExtension === ExtensionType.SVG ?
-        this.editorService.exportSVGElement(this.fullName, this.previewImage) :
-        this.editorService.exportImageElement(this.fullName, this.selectedExtension, this.previewImage);
-      this.dialogRef.close();
-    }
+
+    this.selectedExtension === ExtensionType.SVG ?
+      this.editorService.exportSVGElement(this.fullName, this.previewImage) :
+      this.editorService.exportImageElement(this.fullName, this.selectedExtension, this.previewImage);
+    this.dialogRef.close();
   }
 }

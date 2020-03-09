@@ -6,6 +6,7 @@ import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/ta
 import { Drawing } from 'src/app/models/drawing';
 import { APIService } from 'src/app/services/api.service';
 import { EditorService } from 'src/app/services/editor.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-save-drawing-modal',
@@ -13,9 +14,11 @@ import { EditorService } from 'src/app/services/editor.service';
   styleUrls: ['./save-drawing-modal.component.scss'],
 })
 export class SaveDrawingModalComponent extends AbstractModalComponent {
+
   tags: TagInputComponent[];
   name: string;
   errorMessage: string;
+  formGroup: FormGroup;
 
   constructor(
     private apiService: APIService,
@@ -27,41 +30,22 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     this.tags = [new TagInputComponent()];
     this.name = '';
     this.errorMessage = '';
+    this.formGroup = new FormGroup({});
   }
 
   saveDrawing(): void {
-    if (this.name !== '' && this.validateTags()) {
-      const tagValues: string[] = [];
+    const tagValues: string[] = [];
 
-      this.tags.forEach((tag: TagInputComponent) => {
-        tagValues.push(tag.value);
-      });
-
-      const data = JSON.stringify(this.editorService.shapes);
-      const drawing = new Drawing(this.name, tagValues, data);
-
-      this.apiService.uploadDrawing(drawing);
-
-      this.dialogRef.close();
-    } else if (this.name === '') {
-      this.errorMessage = 'Le nom du dessin est vide.';
-    }
-  }
-
-  validateTags(): boolean {
-    let valid = true;
-
-    this.tags.forEach((tag) => {
-      if (tag.value === '') {
-        valid = false;
-      }
+    this.tags.forEach((tag: TagInputComponent) => {
+      tagValues.push(tag.value);
     });
 
-    if (!valid) {
-      this.errorMessage = 'Un des tags est vide.';
-    }
+    const data = JSON.stringify(this.editorService.shapes);
+    const drawing = new Drawing(this.name, tagValues, data);
 
-    return valid;
+    this.apiService.uploadDrawing(drawing);
+
+    this.dialogRef.close();
   }
 
   addTag(): void {
