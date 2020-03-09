@@ -1,8 +1,9 @@
+import { PolygonContourType } from 'src/app/models/tool-properties/polygon-contour-type';
 import { EditorService } from '../../../../services/editor.service';
 import { Color } from '../../../../utils/color/color';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Polygon } from '../../../shapes/polygon';
-import { PolygonContourType, PolygonToolProperties } from '../../../tool-properties/polygon-tool-properties';
+import { PolygonToolProperties } from '../../../tool-properties/polygon-tool-properties';
 import { ShapeTool } from './shape-tool';
 
 export class PolygonTool extends ShapeTool<PolygonToolProperties> {

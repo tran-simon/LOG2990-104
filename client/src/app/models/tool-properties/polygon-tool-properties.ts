@@ -1,12 +1,7 @@
 import { MAX_POLY_EDGES, MIN_POLY_EDGES } from '../shapes/polygon';
 import { ToolType } from '../tools/tool-type';
+import { PolygonContourType } from './polygon-contour-type';
 import { ToolProperties } from './tool-properties';
-
-export enum PolygonContourType {
-  FILLED_CONTOUR = 'Plein avec contour',
-  FILLED = 'Plein',
-  CONTOUR = 'Contour',
-}
 
 export class PolygonToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS: number = 1;

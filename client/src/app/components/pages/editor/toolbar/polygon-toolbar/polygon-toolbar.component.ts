@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/abstract-toolbar-entry/abstract-toolbar-entry';
+import { PolygonContourType } from 'src/app/models/tool-properties/polygon-contour-type';
 import { ToolType } from 'src/app/models/tools/tool-type';
-import { PolygonContourType, PolygonToolProperties } from '../../../../../models/tool-properties/polygon-tool-properties';
+import { PolygonToolProperties } from '../../../../../models/tool-properties/polygon-tool-properties';
 import { EditorService } from '../../../../../services/editor.service';
 
 @Component({

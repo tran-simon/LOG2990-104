@@ -7,6 +7,7 @@ import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/b
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EllipseContourType } from 'src/app/models/tool-properties/ellipse-contour-type';
@@ -33,6 +34,7 @@ describe('EllipseTool', () => {
         RectangleToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
+        PolygonToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
