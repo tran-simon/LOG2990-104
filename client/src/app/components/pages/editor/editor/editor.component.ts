@@ -17,7 +17,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
   providers: [KeyboardListenerService, MouseListenerService],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  @ViewChild('drawingSurface', {static: false})
+  @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
   private _currentToolType: ToolType;
@@ -27,60 +27,75 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceHeight: number;
   modalTypes: typeof ModalType;
 
-  constructor(private router: ActivatedRoute,
-              public editorService: EditorService,
-              private dialog: ModalDialogService,
-              private keyboardListener: KeyboardListenerService,
-              private mouseListener: MouseListenerService) {
+  constructor(
+    private router: ActivatedRoute,
+    public editorService: EditorService,
+    private dialog: ModalDialogService,
+    private keyboardListener: KeyboardListenerService,
+    private mouseListener: MouseListenerService) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
     this.modalTypes = ModalType;
 
     this.keyboardListener.addEvents([
-        [
-          KeyboardListenerService.getIdentifier('l'),
-          () => {
-            this.currentToolType = ToolType.Line;
-          },
-        ],
-        [
-          KeyboardListenerService.getIdentifier('3'),
-          () => {
-            this.currentToolType = ToolType.Polygon;
-          }
-        ],
-        [
-          KeyboardListenerService.getIdentifier('c'),
-          () => {
-            this.currentToolType = ToolType.Pen;
-          },
-        ],
-        [
-          KeyboardListenerService.getIdentifier('w'),
-          () => {
-            this.currentToolType = ToolType.Brush;
-          },
-        ],
-        [
-          KeyboardListenerService.getIdentifier('1'),
-          () => {
-            this.currentToolType = ToolType.Rectangle;
-          },
-        ],
-        [
-          KeyboardListenerService.getIdentifier('i'),
-          () => {
-            this.currentToolType = ToolType.Pipette;
-          },
-        ],
-        [
-          KeyboardListenerService.getIdentifier('o', true),
-          () => {
-            this.openCreateModal();
-            return true;
-          },
-        ],
+      [
+        KeyboardListenerService.getIdentifier('l'),
+        () => {
+          this.currentToolType = ToolType.Line;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('3'),
+        () => {
+          this.currentToolType = ToolType.Polygon;
+        }
+      ],
+      [
+        KeyboardListenerService.getIdentifier('c'),
+        () => {
+          this.currentToolType = ToolType.Pen;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('w'),
+        () => {
+          this.currentToolType = ToolType.Brush;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('1'),
+        () => {
+          this.currentToolType = ToolType.Rectangle;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('i'),
+        () => {
+          this.currentToolType = ToolType.Pipette;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('o', true),
+        () => {
+          this.openCreateModal();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('z', true),
+        () => {
+          this.editorService.commandReceiver.undo();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('z', true, true),
+        () => {
+          this.editorService.commandReceiver.redo();
+          return true;
+        },
+      ],
     ]);
 
     this.keyboardListener.defaultEventAction = (e) => {
