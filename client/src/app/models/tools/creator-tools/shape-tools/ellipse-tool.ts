@@ -15,23 +15,12 @@ export class EllipseTool extends ShapeTool<EllipseToolProperties> {
   }
 
   protected updateProperties(): void {
-    switch (this.toolProperties.contourType) {
-      case EllipseContourType.FILLED_CONTOUR:
-        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
-        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
-        break;
-      case EllipseContourType.FILLED:
-        this.shape.shapeProperties.strokeWidth = 0;
-        this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
-        this.shape.shapeProperties.strokeColor = Color.TRANSPARENT;
-        break;
-      case EllipseContourType.CONTOUR:
-        this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
-        this.shape.shapeProperties.fillColor = Color.TRANSPARENT;
-        this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
-        break;
-    }
+    const { contourType, strokeWidth } = this.toolProperties;
+    const { primaryColor, secondaryColor } = this.editorService.colorsService;
+
+    this.shape.shapeProperties.strokeWidth = contourType === EllipseContourType.FILLED ? 0 : strokeWidth;
+    this.shape.shapeProperties.fillColor = contourType === EllipseContourType.CONTOUR ? Color.TRANSPARENT : primaryColor;
+    this.shape.shapeProperties.strokeColor = contourType === EllipseContourType.FILLED ? Color.TRANSPARENT : secondaryColor;
     this.shape.updateProperties();
   }
 
