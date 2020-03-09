@@ -8,7 +8,7 @@ export class KeyboardListenerService extends AbstractEventListenerService<Keyboa
 
     identifier += ctrlKey ? 'ctrl_' : '';
     identifier += shiftKey ? 'shift_' : '';
-    identifier += key;
+    identifier += key.toUpperCase();
     identifier += `_${type}`;
 
     return identifier;
