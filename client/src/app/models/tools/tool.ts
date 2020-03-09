@@ -1,10 +1,11 @@
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
+import { MouseHandler } from 'src/app/services/event-listeners/mouse-listener/mouse-handler';
+import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export abstract class Tool<T = ToolProperties> {
-  protected keyboardListener: KeyboardListener;
+export abstract class Tool<T = ToolProperties> implements MouseHandler {
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
@@ -12,19 +13,55 @@ export abstract class Tool<T = ToolProperties> {
   protected constructor(editorService: EditorService) {
     this.editorService = editorService;
     this._mousePosition = new Coordinate();
-    this.keyboardListener = new KeyboardListener();
+    this.keyboardListener = new KeyboardListenerService();
+    this.mouseListener = MouseListenerService.defaultMouseListener(this);
   }
+
+  protected keyboardListener: KeyboardListenerService;
+  private mouseListener: MouseListenerService;
+
   private _mousePosition: Coordinate;
   protected editorService: EditorService;
   protected isActive: boolean;
   toolProperties: T;
+
+  handleDblClick(e: MouseEvent): boolean | void {
+    return;
+  }
+
+  handleMouseDown(e: MouseEvent): boolean | void {
+    return;
+  }
+
+  handleMouseMove(e: MouseEvent): boolean | void {
+    return;
+  }
+
+  handleMouseUp(e: MouseEvent): boolean | void {
+    return;
+  }
+
+  handleMouseLeave(e: MouseEvent): boolean | void {
+    return;
+  }
+
+  handleClick(e: MouseEvent): boolean | void {
+    return ;
+  }
+
+  handleContextMenu(e: MouseEvent): boolean | void {
+    return true;
+  }
+
   protected abstract updateProperties(): void;
 
-  handleMouseEvent(e: MouseEvent): void {
+  handleMouseEvent(e: MouseEvent): boolean {
     this._mousePosition = new Coordinate(e.offsetX, e.offsetY);
+    const result = this.mouseListener.handle(e);
     if (this.isActive) {
       this.updateProperties();
     }
+    return result;
   }
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {

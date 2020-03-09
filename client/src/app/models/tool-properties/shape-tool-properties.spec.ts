@@ -1,6 +1,6 @@
-import { ContourType } from 'src/app/models/tool-properties/contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
 export class ShapeToolPropertiesImpl extends ShapeToolProperties {
   constructor() {

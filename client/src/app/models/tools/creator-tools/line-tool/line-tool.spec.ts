@@ -10,7 +10,7 @@ import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type';
+import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';

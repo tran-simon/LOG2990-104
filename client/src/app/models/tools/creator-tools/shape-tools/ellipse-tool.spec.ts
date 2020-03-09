@@ -10,7 +10,7 @@ import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen
 import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ContourType } from 'src/app/models/tool-properties/contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
 import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
@@ -55,7 +55,7 @@ describe('EllipseTool', () => {
     ellipseTool.toolProperties = properties;
     ellipseTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(ellipseTool.shape.origin).toEqual(new Coordinate(100, 100));
-    expect(fixture.componentInstance.drawingSurface.svg.nativeElement.querySelector('rect')).toBeTruthy();
+    expect(fixture.componentInstance.drawingSurface.svg.querySelector('rect')).toBeTruthy();
   });
 
   it('can resize Ellipse', () => {

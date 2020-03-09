@@ -1,45 +1,44 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalDialogService, ModalTypes } from 'src/app/services/modal-dialog.service';
-import { KeyboardEventAction, KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  providers: [KeyboardListenerService]
 })
 export class HomeComponent {
-  private readonly keyboardListener: KeyboardListener;
   previousDrawings: boolean;
   modalIsOpened: boolean;
-  guideModalType: ModalTypes;
+  guideModalType: ModalType;
 
-  constructor(private router: Router, private dialog: ModalDialogService) {
+  constructor(private router: Router, private dialog: ModalDialogService, private keyboardListener: KeyboardListenerService) {
     this.previousDrawings = false;
     this.modalIsOpened = false;
-    this.guideModalType = ModalTypes.GUIDE;
+    this.guideModalType = ModalType.GUIDE;
 
-    this.keyboardListener = new KeyboardListener(
-      new Map<string, KeyboardEventAction>([
-        [
-          KeyboardListener.getIdentifier('o', true),
-          () => {
-            this.openModal(ModalTypes.CREATE);
-            return true;
-          },
-        ],
-        [
-          KeyboardListener.getIdentifier('g', true),
-          () => {
-            this.openGallery();
-            return true;
-          },
-        ],
-      ]),
-    );
+    this.keyboardListener.addEvents([
+      [
+        KeyboardListenerService.getIdentifier('o', true),
+        () => {
+          this.openModal(ModalType.CREATE);
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('g', true),
+        () => {
+          this.openGallery();
+          return true;
+        },
+      ],
+    ]);
   }
 
-  openModal(link: ModalTypes = ModalTypes.CREATE): void {
+  openModal(link: ModalType = ModalType.CREATE): void {
     this.dialog.openByName(link);
   }
 

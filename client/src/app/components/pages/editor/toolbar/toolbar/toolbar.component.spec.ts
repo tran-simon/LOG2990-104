@@ -12,7 +12,7 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { UserGuideModule } from 'src/app/components/pages/user-guide/user-guide.module';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
 

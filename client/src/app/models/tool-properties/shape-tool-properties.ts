@@ -1,6 +1,6 @@
-import { ContourType } from 'src/app/models/tool-properties/contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
 export abstract class ShapeToolProperties extends ToolProperties {
   static readonly MIN_THICKNESS: number = 1;

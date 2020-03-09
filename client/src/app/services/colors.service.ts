@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SelectedColorType } from 'src/app/services/selected-color-type';
+import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { MathUtil } from 'src/app/utils/math/math-util';
 

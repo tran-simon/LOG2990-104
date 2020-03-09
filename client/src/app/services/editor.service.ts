@@ -8,8 +8,9 @@ import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
+import { CommandReceiver } from '../models/commands/command-receiver';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
 
 @Injectable({
@@ -17,8 +18,20 @@ import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-t
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
+  readonly shapes: BaseShape[];
+  private shapesBuffer: BaseShape[];
+  private previewShapes: BaseShape[];
+  private _commandReceiver: CommandReceiver;
+
+  view: DrawingSurfaceComponent;
+
+  get commandReceiver(): CommandReceiver {
+    return this._commandReceiver;
+  }
 
   constructor(public colorsService: ColorsService) {
+    this._commandReceiver = new CommandReceiver();
+
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
 
@@ -26,12 +39,6 @@ export class EditorService {
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
   }
-
-  view: DrawingSurfaceComponent;
-
-  private shapesBuffer: BaseShape[];
-  readonly shapes: BaseShape[];
-  private previewShapes: BaseShape[];
 
   private initTools(): void {
     this.tools.set(ToolType.Pen, new PenTool(this));
@@ -70,9 +77,16 @@ export class EditorService {
 
   addShapeToBuffer(shape: BaseShape): void {
     this.shapesBuffer.push(shape);
-
     if (this.view) {
       this.view.addShape(shape);
+    }
+  }
+
+  removeShape(shape: BaseShape): void {
+    const index = this.shapes.findIndex((s) => s === shape);
+    if (index !== -1) {
+      this.shapes.splice(index, 1, shape);
+      this.view.removeShape(shape);
     }
   }
 }

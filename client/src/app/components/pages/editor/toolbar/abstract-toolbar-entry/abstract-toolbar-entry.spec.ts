@@ -2,7 +2,7 @@
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/abstract-toolbar-entry/abstract-toolbar-entry';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 

@@ -9,7 +9,7 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ContourType } from 'src/app/models/tool-properties/contour-type';
+import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { PolygonToolProperties } from 'src/app/models/tool-properties/polygon-tool-properties';
 import { PolygonTool } from 'src/app/models/tools/creator-tools/shape-tools/polygon-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
@@ -55,7 +55,7 @@ describe('RectangleTool', () => {
   it('can initialize new Polygon', () => {
     polygonTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(polygonTool.shape.origin).toEqual(new Coordinate(100, 100));
-    expect(fixture.componentInstance.drawingSurface.svg.nativeElement.querySelector('polygon')).toBeTruthy();
+    expect(fixture.componentInstance.drawingSurface.svg.querySelector('polygon')).toBeTruthy();
   });
 
   it('can resize Polygon', () => {

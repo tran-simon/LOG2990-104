@@ -1,6 +1,6 @@
 import { Polygon } from 'src/app/models/shapes/polygon';
 import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
-import { ToolType } from '../tools/tool-type';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
 export class PolygonToolProperties extends ShapeToolProperties {
   minPolyEdges: number = Polygon.MIN_POLY_EDGES;
