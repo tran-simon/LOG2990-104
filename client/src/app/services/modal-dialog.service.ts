@@ -4,11 +4,13 @@ import { CreateDrawingModalComponent } from 'src/app/components/pages/home/creat
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from 'src/app/components/shared/abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
+import { SaveDrawingModalComponent } from '../components/pages/save-drawing/save-drawing/save-drawing-modal.component';
 
 export enum ModalTypes {
   CREATE = 'create',
   GUIDE = 'help',
   CONFIRM = 'confirm',
+  SAVE = 'save',
 }
 @Injectable({
   providedIn: 'root',
@@ -23,6 +25,8 @@ export class ModalDialogService extends MatDialog {
           return this.open(UserGuideModalComponent, {});
         case ModalTypes.CONFIRM:
           return this.open(ConfirmModalComponent, {});
+        case ModalTypes.SAVE:
+          return this.open(SaveDrawingModalComponent, {});
       }
     }
     return null;
