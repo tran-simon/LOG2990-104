@@ -1,9 +1,10 @@
+import { EllipseContourType } from 'src/app/models/tool-properties/ellipse-contour-type';
 import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { Ellipse } from '../../../shapes/ellipse';
-import { EllipseContourType, EllipseToolProperties } from '../../../tool-properties/ellipse-tool-properties';
+import { EllipseToolProperties } from '../../../tool-properties/ellipse-tool-properties';
 
 export class EllipseTool extends ShapeTool<EllipseToolProperties> {
   shape: Ellipse;
@@ -15,7 +16,7 @@ export class EllipseTool extends ShapeTool<EllipseToolProperties> {
 
   protected updateProperties(): void {
     switch (this.toolProperties.contourType) {
-      case EllipseContourType.FILLEDCONTOUR:
+      case EllipseContourType.FILLED_CONTOUR:
         this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
         this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
         this.shape.shapeProperties.strokeColor = this.editorService.colorsService.secondaryColor;
