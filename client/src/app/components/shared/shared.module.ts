@@ -28,6 +28,7 @@ import { ColorHistoryComponent } from './color-picker/color-history/color-histor
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { NameInputComponent } from './inputs/name-input/name-input.component';
 import { TagInputComponent } from './inputs/tag-input/tag-input.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     MatDividerModule,
     MatListModule,
     HttpClientModule,
+    MatSelectModule,
   ],
   declarations: [
     AbstractModalComponent,
@@ -87,6 +89,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     MatExpansionModule,
     MatDividerModule,
     MatListModule,
+    MatSelectModule,
   ],
 })
 export class SharedModule {}
