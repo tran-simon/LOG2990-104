@@ -189,7 +189,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   shapeClicked(shape: BaseShape, rightClick: boolean = false): void {
     // TODO: implements simpleselect interface?
-    if (this.currentTool instanceof SimpleSelectionTool){
+    if (this.currentTool instanceof SimpleSelectionTool) {
       (this.currentTool as SimpleSelectionTool).selectShape(shape, rightClick);
     }
   }

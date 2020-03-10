@@ -14,7 +14,9 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
     this.editorService = editorService;
     this._mousePosition = new Coordinate();
     this.keyboardListener = new KeyboardListenerService();
-    this.initMouseHandler();
+    if(this.initMouseHandler) {
+      this.initMouseHandler();
+    }
     this.mouseListener = MouseListenerService.defaultMouseListener(this);
   }
   toolProperties: T;
@@ -33,7 +35,7 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
   handleMouseMove: MouseEventAction;
   handleMouseUp: MouseEventAction;
 
-  abstract initMouseHandler(): void;
+  initMouseHandler?(): void;
 
   handleContextMenu(): boolean {
     return true;

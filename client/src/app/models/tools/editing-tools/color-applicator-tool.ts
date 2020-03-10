@@ -16,9 +16,4 @@ export class ColorApplicatorTool extends SimpleSelectionTool {
     }
     shape.updateProperties();
   }
-
-  initMouseHandler(): void {
-    return;
-  }
-
 }
