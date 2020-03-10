@@ -40,7 +40,5 @@ export abstract class BaseShape {
 
     this._svgNode.style.stroke = strokeAlpha ? this.shapeProperties.secondaryColor.rgbString : BaseShape.NO_STYLE;
     this._svgNode.style.fill = fillAlpha ? this.shapeProperties.primaryColor.rgbString : BaseShape.NO_STYLE;
-
-    this._svgNode.style.visibility = this.shapeProperties.visibility;
   }
 }

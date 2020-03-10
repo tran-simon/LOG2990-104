@@ -33,7 +33,6 @@ describe('BaseShape', () => {
     expect(component.svgNode.style.stroke).toEqual(component.shapeProperties.secondaryColor.rgbString);
     expect(component.svgNode.style.fillOpacity).toEqual(component.shapeProperties.primaryColor.a.toString());
     expect(component.svgNode.style.fill).toEqual(component.shapeProperties.primaryColor.rgbString);
-    expect(component.svgNode.style.visibility).toEqual(component.shapeProperties.visibility);
   });
 
   it('can get end', ()=> {
