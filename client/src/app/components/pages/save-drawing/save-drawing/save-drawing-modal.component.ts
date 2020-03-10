@@ -14,7 +14,6 @@ import { EditorService } from 'src/app/services/editor.service';
   styleUrls: ['./save-drawing-modal.component.scss'],
 })
 export class SaveDrawingModalComponent extends AbstractModalComponent {
-
   tags: TagInputComponent[];
   name: string;
   errorMessage: string;

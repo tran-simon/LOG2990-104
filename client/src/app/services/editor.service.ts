@@ -12,16 +12,18 @@ import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
 import { CommandReceiver } from '../models/commands/command-receiver';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
+import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
+  selectedShapes: BaseShape[];
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
   private previewShapes: BaseShape[];
-  private _commandReceiver: CommandReceiver;
+  private readonly _commandReceiver: CommandReceiver;
 
   view: DrawingSurfaceComponent;
 
@@ -45,6 +47,7 @@ export class EditorService {
     this.tools.set(ToolType.Brush, new BrushTool(this));
     this.tools.set(ToolType.Rectangle, new RectangleTool(this));
     this.tools.set(ToolType.Line, new LineTool(this));
+    this.tools.set(ToolType.Select, new SelectionTool(this));
     this.tools.set(ToolType.Ellipse, new EllipseTool(this));
     this.tools.set(ToolType.Pipette, new PipetteTool(this));
     this.tools.set(ToolType.Polygon, new PolygonTool(this));

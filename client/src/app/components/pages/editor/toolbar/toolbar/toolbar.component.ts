@@ -14,7 +14,6 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  static readonly TOOLBAR_WIDTH: number = 60;
   static readonly SLIDER_STEP: number = 0.1;
 
   @Input() stepThickness: number;

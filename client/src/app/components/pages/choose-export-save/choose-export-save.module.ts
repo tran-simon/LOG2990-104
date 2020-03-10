@@ -7,4 +7,4 @@ import { ChooseExportSaveModalComponent } from './choose-export-save/choose-expo
   declarations: [ChooseExportSaveModalComponent],
   entryComponents: [ChooseExportSaveModalComponent],
 })
-export class ChooseExportSaveModule { }
+export class ChooseExportSaveModule {}

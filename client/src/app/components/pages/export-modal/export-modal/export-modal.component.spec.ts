@@ -24,7 +24,7 @@ describe('ExportModalComponent', () => {
   beforeEach(async(() => {
     const editorService = new EditorService(new ColorsService());
     editorService.view = {
-      svg: createSpyObj('svg', ['appendChild', 'removeChild'])
+      svg: createSpyObj('svg', ['appendChild', 'removeChild']),
     } as DrawingSurfaceComponent;
 
     createDataURLSpy = spyOn(editorService, 'createDataURL');
@@ -33,9 +33,7 @@ describe('ExportModalComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [SharedModule, EditorModule],
-      declarations: [
-        ExportModalComponent,
-      ],
+      declarations: [ExportModalComponent],
       providers: [
         { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
         { provide: EditorService, useValue: editorService },

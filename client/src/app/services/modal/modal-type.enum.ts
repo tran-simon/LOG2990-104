@@ -4,5 +4,5 @@ export enum ModalType {
   CONFIRM = 'confirm',
   SAVE = 'save',
   EXPORT = 'export',
-  CHOOSE_EXPORT_SAVE = 'choose-export-save'
+  CHOOSE_EXPORT_SAVE = 'choose-export-save',
 }

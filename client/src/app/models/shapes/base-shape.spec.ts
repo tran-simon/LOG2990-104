@@ -11,6 +11,12 @@ describe('BaseShape', () => {
     set origin(c: Coordinate) {
       this._origin = c;
     }
+    get height(): number {
+      return 10;
+    }
+    get width(): number {
+      return 10;
+    }
   }
   let component: BaseShape;
   beforeEach(() => {
@@ -29,5 +35,10 @@ describe('BaseShape', () => {
     expect(component.svgNode.style.fillOpacity).toEqual(component.shapeProperties.fillColor.a.toString());
     expect(component.svgNode.style.fill).toEqual(component.shapeProperties.fillColor.rgbString);
     expect(component.svgNode.style.visibility).toEqual(component.shapeProperties.visibility);
+  });
+
+  it('can get end', ()=> {
+    const end = new Coordinate(10, 10);
+    expect(component.end).toEqual(end);
   });
 });

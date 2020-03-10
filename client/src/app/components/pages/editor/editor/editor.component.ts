@@ -32,7 +32,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     public editorService: EditorService,
     private dialog: ModalDialogService,
     private keyboardListener: KeyboardListenerService,
-    private mouseListener: MouseListenerService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
@@ -77,6 +76,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('s'),
+        () => {
+          this.currentToolType = ToolType.Select;
+          return false;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('o', true),
         () => {
           this.openCreateModal();
@@ -117,10 +123,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
     };
 
-    this.mouseListener.defaultEventAction = (e) => {
-      return this.currentTool ? this.currentTool.handleMouseEvent(e) : false;
-    };
-
     this.currentToolType = ToolType.Pen;
   }
 
@@ -137,7 +139,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    this.mouseListener.handle(e);
+    if (this.currentTool) {
+      this.currentTool.handleMouseEvent(e);
+    }
   }
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;

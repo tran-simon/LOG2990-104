@@ -8,7 +8,7 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
  * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
  */
 export class PipetteTool extends Tool {
-  private image: HTMLImageElement;
+  private readonly image: HTMLImageElement;
 
   constructor(editorService: EditorService) {
     super(editorService);
@@ -42,18 +42,13 @@ export class PipetteTool extends Tool {
     }
   }
 
-  handleClick(e: MouseEvent): boolean | void {
-    this.handleLeftOrRightClick(SelectedColorType.primary);
-    return super.handleClick(e);
+  initMouseHandler(): void {
+    this.handleClick = () => this.handleLeftOrRightClick(SelectedColorType.primary);
+
+    this.handleContextMenu = (): boolean => {
+      this.handleLeftOrRightClick(SelectedColorType.secondary);
+      return super.handleContextMenu();
+    };
   }
 
-  handleContextMenu(e: MouseEvent): boolean | void {
-    this.handleLeftOrRightClick(SelectedColorType.secondary);
-    return super.handleContextMenu(e);
-  }
-
-  protected updateProperties(): void {
-    // todo remove
-    return;
-  }
 }

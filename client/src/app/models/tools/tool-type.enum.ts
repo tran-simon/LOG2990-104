@@ -6,4 +6,5 @@ export enum ToolType {
   Ellipse = 'ellipse-tool',
   Pipette = 'pipette-tool',
   Polygon = 'polygon-tool',
+  Select = 'select-tool',
 }

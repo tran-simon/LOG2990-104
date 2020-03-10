@@ -42,25 +42,24 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
     this.editorService.addPreviewShape(this.previewArea);
   }
 
-  handleMouseMove(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.updateCurrentCoord(this.mousePosition);
-    }
-    return super.handleMouseMove(e);
-  }
+  initMouseHandler(): void {
+    this.handleMouseMove = () => {
+      if (this.isActive) {
+        this.updateCurrentCoord(this.mousePosition);
+      }
+    };
 
-  handleMouseDown(e: MouseEvent): boolean | void {
-    if (!this.isActive) {
-      this.startShape();
-    }
-    return super.handleMouseDown(e);
-  }
+    this.handleMouseDown = () => {
+      if (!this.isActive) {
+        this.startShape();
+      }
+    };
 
-  handleMouseUp(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.applyShape();
-    }
-    return super.handleMouseUp(e);
+    this.handleMouseUp = () => {
+      if (this.isActive) {
+        this.applyShape();
+      }
+    };
   }
 
   setEqualDimensions(value: boolean): void {
@@ -101,14 +100,13 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
 
   protected updateProperties(): void {
     if (this.shape) {
-      const {contourType, strokeWidth} = this.toolProperties;
-      const {primaryColor, secondaryColor} = this.editorService.colorsService;
+      const { contourType, strokeWidth } = this.toolProperties;
+      const { primaryColor, secondaryColor } = this.editorService.colorsService;
 
       this.shape.shapeProperties.strokeWidth = this.getStrokeWidth(contourType, strokeWidth);
       this.shape.shapeProperties.fillColor = this.getFillColor(contourType, primaryColor);
       this.shape.shapeProperties.strokeColor = this.getStrokeColor(contourType, secondaryColor);
       this.shape.updateProperties();
-
     }
   }
 

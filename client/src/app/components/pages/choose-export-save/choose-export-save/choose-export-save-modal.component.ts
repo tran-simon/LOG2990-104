@@ -9,7 +9,6 @@ import { ModalType } from 'src/app/services/modal/modal-type.enum';
   styleUrls: ['./choose-export-save-modal.component.scss'],
 })
 export class ChooseExportSaveModalComponent extends AbstractModalComponent {
-
   @Output() saveButtonClicked: EventEmitter<boolean>;
   @Output() exportButtonClicked: EventEmitter<boolean>;
 
