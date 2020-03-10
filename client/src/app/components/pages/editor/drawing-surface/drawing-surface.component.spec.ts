@@ -44,10 +44,10 @@ describe('DrawingSurfaceComponent', () => {
     expect(nativeElementSpyObj.appendChild).toHaveBeenCalledWith(shape.svgNode);
   });
 
-  it('can add onclick event listener on added shapes', ()=>{
+  it('can add onclick event listener on added shapes', ()=> {
     const shape = new Rectangle();
     component.addShape(shape);
 
     expect(shape.svgNode.onclick).toBeDefined();
-  })
+  });
 });

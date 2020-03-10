@@ -40,7 +40,7 @@ export class SelectionTool extends Tool {
     };
   }
 
-  selectShape(shape: BaseShape): void{
+  selectShape(shape: BaseShape): void {
     this.editorService.selectedShapes.push(shape);
     this.boundingBox.origin = shape.origin;
     this.boundingBox.width = shape.width;

@@ -42,18 +42,18 @@ describe('BaseShape', () => {
     expect(component.end).toEqual(end);
   });
 
-  it('sets stroke to none if transparent', ()=>{
+  it('sets stroke to none if transparent', ()=> {
     component.shapeProperties.strokeOpacity = 0;
     component.shapeProperties.strokeColor = Color.RED;
 
     component.updateProperties();
     expect(component.svgNode.style.stroke).toEqual('none');
-  })
+  });
 
-  it('sets fill to none if transparent', ()=>{
+  it('sets fill to none if transparent', ()=> {
     component.shapeProperties.fillColor = Color.rgb255(100, 100, 100, 0);
 
     component.updateProperties();
     expect(component.svgNode.style.fill).toEqual('none');
-  })
+  });
 });
