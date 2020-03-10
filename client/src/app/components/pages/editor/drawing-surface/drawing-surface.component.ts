@@ -33,7 +33,6 @@ export class DrawingSurfaceComponent {
 
   addShape(shape: BaseShape): void {
     shape.svgNode.onclick = () => {
-      console.log(shape);
       this.shapeClicked.emit(shape);
     };
     shape.svgNode.oncontextmenu = () => {
