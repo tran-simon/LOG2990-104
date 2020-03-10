@@ -19,7 +19,7 @@ import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
-  selectedShapes: BaseShape[];
+  readonly selectedShapes: BaseShape[];
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
   private previewShapes: BaseShape[];
@@ -40,6 +40,7 @@ export class EditorService {
     this.shapesBuffer = new Array<BaseShape>();
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
+    this.selectedShapes = new Array<BaseShape>();
   }
 
   private initTools(): void {
@@ -69,6 +70,10 @@ export class EditorService {
     this.previewShapes.forEach(removeShapes);
     this.shapesBuffer = [];
     this.previewShapes = [];
+  }
+
+  clearSelection(): void {
+    this.selectedShapes.length = 0;
   }
 
   addPreviewShape(shape: BaseShape): void {

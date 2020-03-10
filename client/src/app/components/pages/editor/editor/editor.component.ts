@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
@@ -175,6 +177,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           this.dialog.openByName(ModalType.CREATE);
         }
       });
+    }
+  }
+
+  shapeClicked(shape: BaseShape): void {
+    // TODO: implements simpleselect interface?
+    if (this.currentToolType === ToolType.Select) {
+      (this.currentTool as SelectionTool).resetSelection(shape);
     }
   }
 

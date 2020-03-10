@@ -30,11 +30,16 @@ export abstract class BaseShape {
   }
 
   updateProperties(): void {
+    const strokeAlpha = this.shapeProperties.strokeOpacity;
+    const fillAlpha = this.shapeProperties.fillColor.a;
+
     this._svgNode.style.strokeWidth = this.shapeProperties.strokeWidth.toString();
-    this._svgNode.style.strokeOpacity = this.shapeProperties.strokeOpacity.toString();
-    this._svgNode.style.stroke = this.shapeProperties.strokeColor.rgbString;
+    this._svgNode.style.strokeOpacity = strokeAlpha.toString();
     this._svgNode.style.fillOpacity = this.shapeProperties.fillColor.a.toString();
-    this._svgNode.style.fill = this.shapeProperties.fillColor.rgbString;
+
+    this._svgNode.style.stroke = strokeAlpha ? this.shapeProperties.strokeColor.rgbString : 'none';
+    this._svgNode.style.fill = fillAlpha ? this.shapeProperties.fillColor.rgbString : 'none';
+
     this._svgNode.style.visibility = this.shapeProperties.visibility;
   }
 }

@@ -15,7 +15,6 @@ export class SelectionTool extends Tool {
 
   constructor(public editorService: EditorService) {
     super(editorService);
-    this.editorService.selectedShapes = new Array<BaseShape>();
   }
 
   initMouseHandler(): void {
@@ -41,24 +40,11 @@ export class SelectionTool extends Tool {
     };
   }
 
-  selectSingleItem(c: Coordinate): void {
-    let selectedShape: BaseShape | undefined;
-    this.resetSelection();
-
-    this.editorService.shapes.forEach((shape) => {
-      const inBoundsX = shape.end.x >= c.x && shape.origin.x <= c.x;
-      const inBoundsY = shape.end.y >= c.y && shape.origin.y <= c.y;
-      if (inBoundsX && inBoundsY) {
-        // todo - proper method to determine if inside area
-        selectedShape = shape;
-      }
-    });
-    if (selectedShape) {
-      this.editorService.selectedShapes.push(selectedShape);
-      this.boundingBox.origin = selectedShape.origin;
-      this.boundingBox.width = selectedShape.width;
-      this.boundingBox.height = selectedShape.height;
-    }
+  selectShape(shape: BaseShape): void{
+    this.editorService.selectedShapes.push(shape);
+    this.boundingBox.origin = shape.origin;
+    this.boundingBox.width = shape.width;
+    this.boundingBox.height = shape.height;
   }
 
   initSelectArea(): void {
@@ -74,18 +60,18 @@ export class SelectionTool extends Tool {
     this.editorService.addPreviewShape(this.boundingBox);
   }
 
-  resetSelection(): void {
+  resetSelection(selectedShape?: BaseShape): void {
     this.editorService.clearShapesBuffer();
-    this.editorService.selectedShapes = new Array<BaseShape>();
+    this.editorService.clearSelection();
     this.initSelectArea();
+    if (selectedShape) {
+      this.selectShape(selectedShape);
+    }
   }
 
   applySelectArea(): void {
     this.editorService.clearShapesBuffer();
     this.editorService.addPreviewShape(this.boundingBox);
-    if (this.selectArea.height === 0 && this.selectArea.width === 0) {
-      this.selectSingleItem(this.mousePosition);
-    }
   }
 
   updateSelection(): void {
