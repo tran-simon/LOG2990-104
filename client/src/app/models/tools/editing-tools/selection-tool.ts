@@ -1,11 +1,11 @@
+import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
 import { Rectangle } from '../../shapes/rectangle';
-import { Tool } from '../tool';
 
-export class SelectionTool extends Tool {
+export class SelectionTool extends SimpleSelectionTool {
   // tslint:disable-next-line:no-magic-numbers
   static readonly BOUNDING_BOX_COLOR: Color = Color.rgb255(80, 80, 255, 0.1);
 
@@ -40,7 +40,8 @@ export class SelectionTool extends Tool {
     };
   }
 
-  selectShape(shape: BaseShape): void {
+  selectShape(shape: BaseShape, rightClick: boolean = false): void {
+    this.resetSelection();
     this.editorService.selectedShapes.push(shape);
     this.boundingBox.origin = shape.origin;
     this.boundingBox.width = shape.width;
@@ -60,13 +61,10 @@ export class SelectionTool extends Tool {
     this.editorService.addPreviewShape(this.boundingBox);
   }
 
-  resetSelection(selectedShape?: BaseShape): void {
+  resetSelection(): void {
     this.editorService.clearShapesBuffer();
     this.editorService.clearSelection();
     this.initSelectArea();
-    if (selectedShape) {
-      this.selectShape(selectedShape);
-    }
   }
 
   applySelectArea(): void {

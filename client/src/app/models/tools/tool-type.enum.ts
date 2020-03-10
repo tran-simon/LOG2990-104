@@ -7,4 +7,5 @@ export enum ToolType {
   Pipette = 'pipette-tool',
   Polygon = 'polygon-tool',
   Select = 'select-tool',
+  ColorApplicator = 'color-applicator-tool',
 }

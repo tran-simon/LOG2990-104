@@ -41,7 +41,13 @@ export class Path extends BaseShape {
 
   updateProperties(): void {
     super.updateProperties();
+    const fillAlpha = this.shapeProperties.fillColor.a;
+
     this._svgNode.style.fill = 'transparent';
+
+    this._svgNode.style.stroke = fillAlpha ? this.shapeProperties.fillColor.rgbString : 'none';
+    this._svgNode.style.strokeOpacity = this.shapeProperties.fillColor.a.toString();
+
     this._svgNode.style.strokeLinecap = 'round';
     this._svgNode.style.strokeLinejoin = 'round';
   }

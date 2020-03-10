@@ -16,6 +16,7 @@ export class DrawingSurfaceComponent {
   @Input() color: Color;
 
   @Output() shapeClicked: EventEmitter<BaseShape>;
+  @Output() shapeRightClicked: EventEmitter<BaseShape>;
 
   @ViewChild('svg', { static: false })
   private _svg: ElementRef;
@@ -27,11 +28,16 @@ export class DrawingSurfaceComponent {
   constructor() {
     this.color = Color.WHITE;
     this.shapeClicked = new EventEmitter<BaseShape>();
+    this.shapeRightClicked = new EventEmitter<BaseShape>();
   }
 
   addShape(shape: BaseShape): void {
     shape.svgNode.onclick = () => {
+      console.log(shape);
       this.shapeClicked.emit(shape);
+    };
+    shape.svgNode.oncontextmenu = () => {
+      this.shapeRightClicked.emit(shape);
     };
 
     this.svg.appendChild(shape.svgNode);
