@@ -59,8 +59,8 @@ export class LineTool extends CreatorTool<LineToolProperties> {
 
   protected updateProperties(): void {
     if (this.shape) {
-      this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
-      this.shape.shapeProperties.fillColor = this.editorService.colorsService.secondaryColor;
+      this.shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
+      this.shape.shapeProperties.secondaryColor = this.editorService.colorsService.secondaryColor;
       this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
       const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;

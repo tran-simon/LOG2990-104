@@ -2,6 +2,7 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class Path extends BaseShape {
+  static readonly PATH_STYLE: string = 'round';
   private _trace: string;
 
   get trace(): string {
@@ -41,14 +42,14 @@ export class Path extends BaseShape {
 
   updateProperties(): void {
     super.updateProperties();
-    const fillAlpha = this.shapeProperties.fillColor.a;
+    const fillAlpha = this.shapeProperties.primaryColor.a;
 
-    this._svgNode.style.fill = 'transparent';
+    this._svgNode.style.fill = Path.NO_STYLE;
 
-    this._svgNode.style.stroke = fillAlpha ? this.shapeProperties.fillColor.rgbString : 'none';
-    this._svgNode.style.strokeOpacity = this.shapeProperties.fillColor.a.toString();
+    this._svgNode.style.stroke = fillAlpha ? this.shapeProperties.primaryColor.rgbString : Path.NO_STYLE;
+    this._svgNode.style.strokeOpacity = fillAlpha.toString();
 
-    this._svgNode.style.strokeLinecap = 'round';
-    this._svgNode.style.strokeLinejoin = 'round';
+    this._svgNode.style.strokeLinecap = Path.PATH_STYLE;
+    this._svgNode.style.strokeLinejoin = Path.PATH_STYLE;
   }
 }

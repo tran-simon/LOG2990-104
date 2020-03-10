@@ -3,9 +3,8 @@ import { Color } from 'src/app/utils/color/color';
 export class ShapeProperties {
   thickness: number;
   strokeWidth: number;
-  strokeColor: Color;
-  strokeOpacity: number;
-  fillColor: Color;
+  secondaryColor: Color;
+  primaryColor: Color;
   visible: boolean;
 
   get visibility(): string {
@@ -15,9 +14,8 @@ export class ShapeProperties {
   constructor() {
     this.thickness = 1;
     this.strokeWidth = 1;
-    this.strokeOpacity = 1.0;
-    this.strokeColor = Color.BLACK;
-    this.fillColor = Color.WHITE;
+    this.secondaryColor = Color.BLACK;
+    this.primaryColor = Color.WHITE;
     this.visible = true;
   }
 }
