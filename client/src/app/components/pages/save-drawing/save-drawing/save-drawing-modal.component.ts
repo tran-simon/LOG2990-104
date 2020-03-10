@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/tag-input.component';
 import { Drawing } from 'src/app/models/drawing';
@@ -14,15 +16,20 @@ import { EditorService } from 'src/app/services/editor.service';
 export class SaveDrawingModalComponent extends AbstractModalComponent {
   tags: TagInputComponent[];
   name: string;
+  errorMessage: string;
+  formGroup: FormGroup;
 
   constructor(
     private apiService: APIService,
     private editorService: EditorService,
     public dialogRef: MatDialogRef<AbstractModalComponent>,
+    private sanitizer: DomSanitizer,
   ) {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
     this.name = '';
+    this.errorMessage = '';
+    this.formGroup = new FormGroup({});
   }
 
   saveDrawing(): void {
@@ -46,5 +53,9 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
 
   removeTag(): void {
     this.tags.pop();
+  }
+
+  previewURL(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.editorService.view));
   }
 }

@@ -103,6 +103,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
           return true;
         },
       ],
+      [
+        KeyboardListenerService.getIdentifier('e', true),
+        () => {
+          this.dialog.openByName(ModalType.EXPORT);
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('s', true),
+        () => {
+          this.dialog.openByName(ModalType.SAVE);
+          return true;
+        },
+      ],
     ]);
 
     this.keyboardListener.defaultEventAction = (e) => {
@@ -143,8 +157,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.dialog.openByName(ModalType.GUIDE);
   }
 
-  openSave(): void {
-    this.dialog.openByName(ModalType.SAVE);
+  openChooseExportSave(): void {
+    const confirmDialog = this.dialog.openByName(ModalType.CHOOSE_EXPORT_SAVE);
+
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        this.dialog.openByName(result);
+      });
+    }
   }
 
   openCreateModal(): void {
