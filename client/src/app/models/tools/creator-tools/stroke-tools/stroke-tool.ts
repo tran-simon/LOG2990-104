@@ -7,8 +7,7 @@ export abstract class StrokeTool<T = ToolProperties> extends CreatorTool<T> {
   abstract createShape(): Path;
 
   protected updateProperties(): void {
-    this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
-    this.shape.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
+    this.shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
   }
 
   protected startShape(): void {
@@ -16,28 +15,25 @@ export abstract class StrokeTool<T = ToolProperties> extends CreatorTool<T> {
     this.shape.addPoint(this.mousePosition);
   }
 
-  handleMouseDown(e: MouseEvent): boolean | void {
-    if (!this.isActive) {
-      this.startShape();
-    }
-    return super.handleMouseDown(e);
-  }
+  initMouseHandler(): void {
+    this.handleMouseDown = () => {
+      if (!this.isActive) {
+        this.startShape();
+      }
+    };
 
-  handleMouseMove(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.shape.addPoint(this.mousePosition);
-    }
-    return super.handleMouseMove(e);
-  }
+    this.handleMouseMove = () => {
+      if (this.isActive) {
+        this.shape.addPoint(this.mousePosition);
+      }
+    };
 
-  handleMouseUp(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.applyShape();
-    }
-    return super.handleMouseUp(e);
-  }
+    this.handleMouseUp = () => {
+      if (this.isActive) {
+        this.applyShape();
+      }
+    };
 
-  handleMouseLeave(e: MouseEvent): boolean | void {
-    return this.handleMouseUp(e);
+    this.handleMouseLeave = this.handleMouseUp;
   }
 }

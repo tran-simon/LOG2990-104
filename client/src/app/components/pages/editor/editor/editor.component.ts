@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
@@ -32,7 +34,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     public editorService: EditorService,
     private dialog: ModalDialogService,
     private keyboardListener: KeyboardListenerService,
-    private mouseListener: MouseListenerService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
@@ -83,6 +84,20 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('s'),
+        () => {
+          this.currentToolType = ToolType.Select;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('r'),
+        () => {
+          this.currentToolType = ToolType.ColorApplicator;
+          return false;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('o', true),
         () => {
           this.openCreateModal();
@@ -103,14 +118,24 @@ export class EditorComponent implements OnInit, AfterViewInit {
           return true;
         },
       ],
+      [
+        KeyboardListenerService.getIdentifier('e', true),
+        () => {
+          this.dialog.openByName(ModalType.EXPORT);
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('s', true),
+        () => {
+          this.dialog.openByName(ModalType.SAVE);
+          return true;
+        },
+      ],
     ]);
 
     this.keyboardListener.defaultEventAction = (e) => {
       return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
-    };
-
-    this.mouseListener.defaultEventAction = (e) => {
-      return this.currentTool ? this.currentTool.handleMouseEvent(e) : false;
     };
 
     this.currentToolType = ToolType.Pen;
@@ -129,7 +154,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    this.mouseListener.handle(e);
+    if (this.currentTool) {
+      this.currentTool.handleMouseEvent(e);
+    }
   }
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;
@@ -145,8 +172,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.dialog.openByName(ModalType.GUIDE);
   }
 
-  openSave(): void {
-    this.dialog.openByName(ModalType.SAVE);
+  openChooseExportSave(): void {
+    const confirmDialog = this.dialog.openByName(ModalType.CHOOSE_EXPORT_SAVE);
+
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        this.dialog.openByName(result);
+      });
+    }
   }
 
   openCreateModal(): void {
@@ -157,6 +190,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           this.dialog.openByName(ModalType.CREATE);
         }
       });
+    }
+  }
+
+  shapeClicked(shape: BaseShape, rightClick: boolean = false): void {
+    // TODO: implements simpleselect interface?
+    if (this.currentTool instanceof SimpleSelectionTool) {
+      (this.currentTool as SimpleSelectionTool).selectShape(shape, rightClick);
     }
   }
 

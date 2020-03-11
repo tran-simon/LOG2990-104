@@ -40,30 +40,27 @@ export class LineTool extends CreatorTool<LineToolProperties> {
 
   private lockMethod: (c: Coordinate) => Coordinate;
 
-  handleDblClick(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.shape.endLine(this.mousePosition);
-      this.applyShape();
-    }
-    return super.handleDblClick(e);
-  }
+  initMouseHandler(): void {
+    this.handleDblClick = () => {
+      if (this.isActive) {
+        this.shape.endLine(this.mousePosition);
+        this.applyShape();
+      }
+    };
 
-  handleMouseDown(e: MouseEvent): boolean | void {
-    this.isActive ? this.shape.confirmPoint() : this.startShape();
-    return super.handleMouseDown(e);
-  }
+    this.handleMouseDown = () => (this.isActive ? this.shape.confirmPoint() : this.startShape());
 
-  handleMouseMove(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
-    }
-    return super.handleMouseMove(e);
+    this.handleMouseMove = () => {
+      if (this.isActive) {
+        this.shape.updateCurrentCoord(this.lockMethod(this.mousePosition));
+      }
+    };
   }
 
   protected updateProperties(): void {
     if (this.shape) {
-      this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
-      this.shape.shapeProperties.fillColor = this.editorService.colorsService.secondaryColor;
+      this.shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
+      this.shape.shapeProperties.secondaryColor = this.editorService.colorsService.secondaryColor;
       this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
 
       const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;

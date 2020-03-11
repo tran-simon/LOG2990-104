@@ -42,25 +42,24 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
     this.editorService.addPreviewShape(this.previewArea);
   }
 
-  handleMouseMove(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.updateCurrentCoord(this.mousePosition);
-    }
-    return super.handleMouseMove(e);
-  }
+  initMouseHandler(): void {
+    this.handleMouseMove = () => {
+      if (this.isActive) {
+        this.updateCurrentCoord(this.mousePosition);
+      }
+    };
 
-  handleMouseDown(e: MouseEvent): boolean | void {
-    if (!this.isActive) {
-      this.startShape();
-    }
-    return super.handleMouseDown(e);
-  }
+    this.handleMouseDown = () => {
+      if (!this.isActive) {
+        this.startShape();
+      }
+    };
 
-  handleMouseUp(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.applyShape();
-    }
-    return super.handleMouseUp(e);
+    this.handleMouseUp = () => {
+      if (this.isActive) {
+        this.applyShape();
+      }
+    };
   }
 
   setEqualDimensions(value: boolean): void {
@@ -93,7 +92,7 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
     this.previewArea.origin = previewOrigin;
     this.previewArea.width = previewDimensions.x;
     this.previewArea.height = previewDimensions.y;
-    this.previewArea.shapeProperties.fillColor = Color.TRANSPARENT;
+    this.previewArea.shapeProperties.primaryColor = Color.TRANSPARENT;
     this.previewArea.updateProperties();
 
     this.resizeShape(dimensions, origin);
@@ -105,8 +104,8 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
       const { primaryColor, secondaryColor } = this.editorService.colorsService;
 
       this.shape.shapeProperties.strokeWidth = this.getStrokeWidth(contourType, strokeWidth);
-      this.shape.shapeProperties.fillColor = this.getFillColor(contourType, primaryColor);
-      this.shape.shapeProperties.strokeColor = this.getStrokeColor(contourType, secondaryColor);
+      this.shape.shapeProperties.primaryColor = this.getFillColor(contourType, primaryColor);
+      this.shape.shapeProperties.secondaryColor = this.getStrokeColor(contourType, secondaryColor);
       this.shape.updateProperties();
     }
   }

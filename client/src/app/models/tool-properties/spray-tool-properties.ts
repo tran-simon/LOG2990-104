@@ -1,4 +1,3 @@
-import { ToolType } from '../tools/tool-type.enum';
 import { ToolProperties } from './tool-properties';
 
 export class SprayToolProperties extends ToolProperties {
@@ -15,7 +14,7 @@ export class SprayToolProperties extends ToolProperties {
   maxThickness: number;
   radius: number;
   constructor(radius: number = SprayToolProperties.MIN_SPRAY_RADIUS, frequency: number = 1) {
-    super(ToolType.Spray);
+    super();
     this.minThickness = SprayToolProperties.MIN_SPRAY_RADIUS;
     this.maxThickness = SprayToolProperties.MAX_SPRAY_RADIUS;
     this.minFrequency = SprayToolProperties.MIN_SPRAY_FREQUENCY;

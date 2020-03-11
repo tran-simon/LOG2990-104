@@ -38,11 +38,18 @@ export class CompositeParticle extends BaseShape {
     let particle: Rectangle;
     for (let i = 0; i < Math.floor(frequency); i++) {
       particle = new Rectangle(this.genRandomPosition(c), this.shapeProperties.thickness);
-      particle.shapeProperties.fillColor = this.shapeProperties.fillColor;
-      particle.shapeProperties.strokeColor = this.shapeProperties.strokeColor;
+      particle.shapeProperties.primaryColor = this.shapeProperties.primaryColor;
       particle.updateProperties();
       this.particles.push(particle);
       this.svgNode.appendChild(particle.svgNode);
     }
+  }
+
+  get height(): number {
+    return 0;
+  }
+
+  get width(): number {
+    return 0;
   }
 }

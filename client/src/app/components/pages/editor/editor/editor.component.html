@@ -4,7 +4,7 @@
     (editorBackgroundChanged)="changeBackground($event)"
     (mouseleave)="toolbar.close()"
     (guideButtonClicked)="openGuide()"
-    (saveButtonClicked)="openSave()"
+    (chooseExportSaveButtonClicked)="openChooseExportSave()"
     (mouseenter)='toolbar.open()'
   ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
@@ -14,5 +14,7 @@
     (mousemove)="handleMouseEvent($event)"
     (mouseleave)="handleMouseEvent($event)"
     (contextmenu)="handleMouseEvent($event)"
+    (shapeClicked)="shapeClicked($event)"
+    (shapeRightClicked)="shapeClicked($event, true)"
   ></app-drawing-surface>
 </div>

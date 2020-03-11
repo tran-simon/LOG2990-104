@@ -15,7 +15,8 @@ export abstract class AbstractToolbarEntry<T extends ToolProperties> {
     const tool = this.editorService.tools.get(this.type);
     if (!tool) {
       throw new Error('Tool not found error: ' + this.type);
+    } else {
+      return tool.toolProperties as T;
     }
-    return tool.toolProperties as T;
   }
 }

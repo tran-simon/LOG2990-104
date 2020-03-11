@@ -14,7 +14,6 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  static readonly TOOLBAR_WIDTH: number = 60;
   static readonly SLIDER_STEP: number = 0.1;
 
   @Input() stepThickness: number;
@@ -24,7 +23,7 @@ export class ToolbarComponent {
 
   @Output() editorBackgroundChanged: EventEmitter<Color>;
   @Output() guideButtonClicked: EventEmitter<boolean>;
-  @Output() saveButtonClicked: EventEmitter<boolean>;
+  @Output() chooseExportSaveButtonClicked: EventEmitter<boolean>;
 
   ToolType: typeof ToolType = ToolType;
   toolTypeKeys: string[] = Object.values(ToolType);
@@ -48,7 +47,7 @@ export class ToolbarComponent {
     this.showColorPicker = false;
     this.selectedColor = SelectedColorType.primary;
     this.guideButtonClicked = new EventEmitter<boolean>();
-    this.saveButtonClicked = new EventEmitter<boolean>();
+    this.chooseExportSaveButtonClicked = new EventEmitter<boolean>();
 
     this.toolbarIcons = new Map<ToolType | string, string>([
       [ToolType.Pen, 'edit'],
@@ -58,6 +57,8 @@ export class ToolbarComponent {
       [ToolType.Ellipse, 'panorama_fish_eye'],
       [ToolType.Pipette, 'colorize'],
       [ToolType.Polygon, 'category'],
+      [ToolType.ColorApplicator, 'color_lens'],
+      [ToolType.Select, 'near_me'],
       [ToolType.Spray, 'blur_on'],
     ]);
   }
@@ -80,8 +81,8 @@ export class ToolbarComponent {
     this.close();
   }
 
-  openSave(): void {
-    this.saveButtonClicked.emit(true);
+  openChooseExportSave(): void {
+    this.chooseExportSaveButtonClicked.emit(true);
   }
 
   openGuide(): void {

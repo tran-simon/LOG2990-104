@@ -12,7 +12,12 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
+import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
+import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
+import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
+import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
@@ -20,7 +25,6 @@ import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboa
 import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
-import { ToolProperties } from '../../../../models/tool-properties/tool-properties';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
 import createSpyObj = jasmine.createSpyObj;
@@ -160,21 +164,21 @@ describe('EditorComponent', () => {
   it('should select the line tool', () => {
     component.currentToolType = ToolType.Line;
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.toolProperties.type).toEqual(ToolType.Line);
+    expect(currentTool.constructor.name).toEqual(LineTool.name);
   });
 
   it('should select the rectangle tool', () => {
     component.currentToolType = ToolType.Rectangle;
 
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.toolProperties.type).toEqual(ToolType.Rectangle);
+    expect(currentTool.constructor.name).toEqual(RectangleTool.name);
   });
 
   it('should select the brush tool', () => {
     component.currentToolType = ToolType.Brush;
 
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.toolProperties.type).toEqual(ToolType.Brush);
+    expect(currentTool.constructor.name).toEqual(BrushTool.name);
   });
 
   it('should select the pen tool after selecting the brush tool', () => {
@@ -182,18 +186,38 @@ describe('EditorComponent', () => {
     component.currentToolType = ToolType.Pen;
 
     const currentTool = component.currentTool as Tool;
-    expect(currentTool.toolProperties.type).toEqual(ToolType.Pen);
+    expect(currentTool.constructor.name).toEqual(PenTool.name);
+  });
+
+  it('should select selection tool on typing s', () => {
+    keyboardListener.handle(keyDown('s'));
+    expect(component.currentToolType).toEqual(ToolType.Select);
+    const currentTool = component.currentTool as Tool;
+    expect(currentTool.constructor.name).toEqual(SelectionTool.name);
   });
 
   it('can get current tool', () => {
-    const tool: Tool = { toolProperties: { type: 'toolMock' as ToolType } as ToolProperties } as Tool;
+    class ToolImpl extends Tool {
+      type: string;
+      constructor(editorService: EditorService, type: string) {
+        super(editorService);
+        this.type = type;
+      }
+
+      initMouseHandler(): void {
+        return;
+      }
+    }
+
+    const tool: ToolImpl = new ToolImpl({} as EditorService, 'toolMock');
     component.editorService.tools.set('toolMock' as ToolType, tool);
 
     component.currentToolType = 'toolMock' as ToolType;
 
     const currentTool = component.currentTool as Tool;
     expect(currentTool).toEqual(tool);
-    expect(currentTool.toolProperties.type).toEqual('toolMock');
+    expect(currentTool.constructor.name).toEqual(ToolImpl.name);
+    expect((currentTool as ToolImpl).type).toEqual('toolMock');
   });
 
   it('handles mouse event', () => {
@@ -243,5 +267,19 @@ describe('EditorComponent', () => {
   it('opens dialog on openGuide', () => {
     component.openGuide();
     expect(modalDialogServiceSpy.openByName).toHaveBeenCalledWith(ModalType.GUIDE);
+  });
+
+  it('should undo on ctrl z', () => {
+    const undoSpy = spyOn(component.editorService.commandReceiver, 'undo');
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', ctrlKey: true }));
+    expect(undoSpy).toHaveBeenCalled();
+  });
+
+  it('should redo on ctrl shift z', () => {
+    const undoSpy = spyOn(component.editorService.commandReceiver, 'redo');
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', ctrlKey: true, shiftKey: true }));
+    expect(undoSpy).toHaveBeenCalled();
   });
 });

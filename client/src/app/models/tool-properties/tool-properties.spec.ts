@@ -1,4 +1,3 @@
-import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ToolProperties } from './tool-properties';
 
 class MockToolProperties extends ToolProperties {
@@ -9,8 +8,7 @@ class MockToolProperties extends ToolProperties {
   maxThickness: number = MockToolProperties.MAX_THICKNESS;
 
   constructor(thickness: number = MockToolProperties.MIN_THICKNESS) {
-    super('MockTool' as ToolType);
-
+    super();
     this.strokeWidth = thickness;
   }
 }
@@ -20,10 +18,6 @@ describe('Tool Properties', () => {
 
   beforeEach(() => {
     toolProperties = new MockToolProperties();
-  });
-
-  it('should have the correct tool type', () => {
-    expect(toolProperties.type).toBe('MockTool' as ToolType);
   });
 
   it('should correct a thickness input that is too low', () => {

@@ -6,6 +6,7 @@ import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/elli
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
+import { ColorApplicatorTool } from 'src/app/models/tools/editing-tools/color-applicator-tool';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -13,16 +14,18 @@ import { ColorsService } from 'src/app/services/colors.service';
 import { CommandReceiver } from '../models/commands/command-receiver';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '../models/tools/creator-tools/spray-tool/spray-tool';
+import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
+  readonly selectedShapes: BaseShape[];
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
   private previewShapes: BaseShape[];
-  private _commandReceiver: CommandReceiver;
+  private readonly _commandReceiver: CommandReceiver;
 
   view: DrawingSurfaceComponent;
 
@@ -39,6 +42,7 @@ export class EditorService {
     this.shapesBuffer = new Array<BaseShape>();
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
+    this.selectedShapes = new Array<BaseShape>();
   }
 
   private initTools(): void {
@@ -46,10 +50,12 @@ export class EditorService {
     this.tools.set(ToolType.Brush, new BrushTool(this));
     this.tools.set(ToolType.Rectangle, new RectangleTool(this));
     this.tools.set(ToolType.Line, new LineTool(this));
+    this.tools.set(ToolType.Select, new SelectionTool(this));
     this.tools.set(ToolType.Ellipse, new EllipseTool(this));
     this.tools.set(ToolType.Pipette, new PipetteTool(this));
     this.tools.set(ToolType.Polygon, new PolygonTool(this));
     this.tools.set(ToolType.Spray, new SprayTool(this));
+    this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
   }
 
   applyShapesBuffer(): void {
@@ -70,6 +76,10 @@ export class EditorService {
     this.previewShapes = [];
   }
 
+  clearSelection(): void {
+    this.selectedShapes.length = 0;
+  }
+
   addPreviewShape(shape: BaseShape): void {
     this.previewShapes.push(shape);
     if (this.view) {
@@ -82,6 +92,15 @@ export class EditorService {
     if (this.view) {
       this.view.addShape(shape);
     }
+  }
+
+  /**
+   * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
+   */
+  createDataURL(surface: DrawingSurfaceComponent): string {
+    const xmlSerializer = new XMLSerializer();
+    const svgString = xmlSerializer.serializeToString(surface.svg);
+    return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
 
   removeShape(shape: BaseShape): void {

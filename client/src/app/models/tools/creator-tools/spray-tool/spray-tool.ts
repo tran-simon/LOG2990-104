@@ -25,40 +25,30 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
     }, SprayTool.INTERVAL_REFRESH_VALUE);
   }
 
-  handleMouseDown(e: MouseEvent): boolean | void {
-    if (!this.isActive) {
-      this.startShape();
-    }
-    return super.handleMouseDown(e);
-  }
-
-  handleMouseUp(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      window.clearInterval(this.interval);
-      this.applyShape();
-    }
-    return super.handleMouseUp(e);
-  }
-
-  handleMouseLeave(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      window.clearInterval(this.interval);
-      this.applyShape();
-    }
-    return super.handleMouseUp(e);
-  }
-
-  handleMouseMove(e: MouseEvent): boolean | void {
-    if (this.isActive) {
-      this.lastMovePosition = new Coordinate(e.offsetX, e.offsetY);
-    }
-    return super.handleMouseMove(e);
+  initMouseHandler(): void {
+    this.handleMouseDown = () => {
+      if (!this.isActive) {
+        this.startShape();
+      }
+    };
+    this.handleMouseUp = () => {
+      if (this.isActive) {
+        window.clearInterval(this.interval);
+        this.applyShape();
+      }
+    };
+    this.handleMouseMove = () => {
+      if (this.isActive) {
+        this.lastMovePosition = this.mousePosition;
+      }
+    };
+    this.handleMouseLeave = this.handleMouseUp;
   }
 
   protected updateProperties(): void {
     if (this.shape) {
-      this.shape.shapeProperties.fillColor = this.editorService.colorsService.primaryColor;
-      this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
+      this.shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
+      this.shape.shapeProperties.secondaryColor = this.editorService.colorsService.primaryColor;
       this.shape.shapeProperties.strokeWidth = this.toolProperties.radius;
       this.shape.updateProperties();
     }
