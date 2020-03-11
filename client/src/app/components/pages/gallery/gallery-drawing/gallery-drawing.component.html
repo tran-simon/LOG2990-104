@@ -1,0 +1,22 @@
+<div id="main-container">
+  <div id="preview-container">
+    <div id="preview-placeholder"></div>
+  </div>
+  <div id="title-container">
+    <h3>{{drawing.name}}</h3>
+  </div>
+  <div id="tag-container">
+    <button mat-flat-button *ngFor="let tag of drawing.tags">
+      {{tag}}
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+  <div id="actions-container">
+    <button mat-flat-button id="delete-button">Supprimer</button>
+    <button mat-flat-button id="add-tag-button">
+      <mat-icon>add</mat-icon>
+      <mat-icon>local_offer</mat-icon>
+    </button>
+    <button mat-flat-button id="choose-button">Choisir</button>
+  </div>
+</div>

@@ -23,6 +23,8 @@ import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
+import { GalleryDrawingComponent } from '../pages/gallery/gallery-drawing/gallery-drawing.component';
+import { GalleryModalComponent } from '../pages/gallery/gallery/gallery-modal.component';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from './abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
 import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
@@ -62,9 +64,10 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     NameInputComponent,
     ColorHistoryComponent,
     ConfirmModalComponent,
+    GalleryModalComponent,
+    GalleryDrawingComponent,
   ],
-
-  entryComponents: [AbstractModalComponent, ConfirmModalComponent],
+  entryComponents: [AbstractModalComponent, ConfirmModalComponent, GalleryModalComponent],
   exports: [
     AbstractModalComponent,
     ReactiveFormsModule,
@@ -90,6 +93,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     MatDividerModule,
     MatListModule,
     MatSelectModule,
+    GalleryDrawingComponent,
   ],
 })
-export class SharedModule {}
+export class SharedModule { }
