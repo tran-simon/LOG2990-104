@@ -23,7 +23,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     private apiService: APIService,
     private editorService: EditorService,
     public dialogRef: MatDialogRef<AbstractModalComponent>,
-    private imageExportService: ImageExportService
+    private imageExportService: ImageExportService,
   ) {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
@@ -38,7 +38,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
       tagValues.push(tag.value);
     });
 
-    const drawing = new Drawing(this.name, tagValues, JSON.stringify(this.editorService.shapes));
+    const drawing = new Drawing(this.name, tagValues, this.editorService.shapes);
 
     this.apiService.uploadDrawing(drawing);
 

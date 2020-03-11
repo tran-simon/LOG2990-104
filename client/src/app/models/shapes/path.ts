@@ -44,12 +44,12 @@ export class Path extends BaseShape {
     super.updateProperties();
     const fillAlpha = this.shapeProperties.primaryColor.a;
 
-    this._svgNode.style.fill = Path.NO_STYLE;
+    this.svgNode.style.fill = Path.NO_STYLE;
 
-    this._svgNode.style.stroke = fillAlpha ? this.shapeProperties.primaryColor.rgbString : Path.NO_STYLE;
-    this._svgNode.style.strokeOpacity = fillAlpha.toString();
+    this.svgNode.style.stroke = fillAlpha ? this.shapeProperties.primaryColor.rgbString : Path.NO_STYLE;
+    this.svgNode.style.strokeOpacity = fillAlpha.toString();
 
-    this._svgNode.style.strokeLinecap = Path.PATH_STYLE;
-    this._svgNode.style.strokeLinejoin = Path.PATH_STYLE;
+    this.svgNode.style.strokeLinecap = Path.PATH_STYLE;
+    this.svgNode.style.strokeLinejoin = Path.PATH_STYLE;
   }
 }
