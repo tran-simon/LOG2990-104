@@ -1,11 +1,11 @@
+import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
 import { Rectangle } from '../../shapes/rectangle';
-import { Tool } from '../tool';
 
-export class SelectionTool extends Tool {
+export class SelectionTool extends SimpleSelectionTool {
   // tslint:disable-next-line:no-magic-numbers
   static readonly BOUNDING_BOX_COLOR: Color = Color.rgb255(80, 80, 255, 0.1);
 
@@ -15,7 +15,6 @@ export class SelectionTool extends Tool {
 
   constructor(public editorService: EditorService) {
     super(editorService);
-    this.editorService.selectedShapes = new Array<BaseShape>();
   }
 
   initMouseHandler(): void {
@@ -41,51 +40,36 @@ export class SelectionTool extends Tool {
     };
   }
 
-  selectSingleItem(c: Coordinate): void {
-    let selectedShape: BaseShape | undefined;
+  selectShape(shape: BaseShape, rightClick: boolean = false): void {
     this.resetSelection();
-
-    this.editorService.shapes.forEach((shape) => {
-      const inBoundsX = shape.end.x >= c.x && shape.origin.x <= c.x;
-      const inBoundsY = shape.end.y >= c.y && shape.origin.y <= c.y;
-      if (inBoundsX && inBoundsY) {
-        // todo - proper method to determine if inside area
-        selectedShape = shape;
-      }
-    });
-    if (selectedShape) {
-      this.editorService.selectedShapes.push(selectedShape);
-      this.boundingBox.origin = selectedShape.origin;
-      this.boundingBox.width = selectedShape.width;
-      this.boundingBox.height = selectedShape.height;
-    }
+    this.editorService.selectedShapes.push(shape);
+    this.boundingBox.origin = shape.origin;
+    this.boundingBox.width = shape.width;
+    this.boundingBox.height = shape.height;
   }
 
   initSelectArea(): void {
     this.selectArea = new Rectangle(this.initialMouseCoord);
-    this.selectArea.shapeProperties.fillColor = Color.TRANSPARENT;
+    this.selectArea.shapeProperties.primaryColor = Color.TRANSPARENT;
     this.selectArea.updateProperties();
     this.editorService.addPreviewShape(this.selectArea);
 
     this.boundingBox = new Rectangle(this.initialMouseCoord);
-    this.boundingBox.shapeProperties.fillColor = SelectionTool.BOUNDING_BOX_COLOR;
-    this.boundingBox.shapeProperties.strokeColor = SelectionTool.BOUNDING_BOX_COLOR;
+    this.boundingBox.shapeProperties.primaryColor = SelectionTool.BOUNDING_BOX_COLOR;
+    this.boundingBox.shapeProperties.secondaryColor = SelectionTool.BOUNDING_BOX_COLOR;
     this.boundingBox.updateProperties();
     this.editorService.addPreviewShape(this.boundingBox);
   }
 
   resetSelection(): void {
     this.editorService.clearShapesBuffer();
-    this.editorService.selectedShapes = new Array<BaseShape>();
+    this.editorService.clearSelection();
     this.initSelectArea();
   }
 
   applySelectArea(): void {
     this.editorService.clearShapesBuffer();
     this.editorService.addPreviewShape(this.boundingBox);
-    if (this.selectArea.height === 0 && this.selectArea.width === 0) {
-      this.selectSingleItem(this.mousePosition);
-    }
   }
 
   updateSelection(): void {

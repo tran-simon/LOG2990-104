@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
@@ -79,6 +81,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('s'),
         () => {
           this.currentToolType = ToolType.Select;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('r'),
+        () => {
+          this.currentToolType = ToolType.ColorApplicator;
           return false;
         },
       ],
@@ -175,6 +184,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
           this.dialog.openByName(ModalType.CREATE);
         }
       });
+    }
+  }
+
+  shapeClicked(shape: BaseShape, rightClick: boolean = false): void {
+    // TODO: implements simpleselect interface?
+    if (this.currentTool instanceof SimpleSelectionTool) {
+      (this.currentTool as SimpleSelectionTool).selectShape(shape, rightClick);
     }
   }
 

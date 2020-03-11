@@ -136,8 +136,8 @@ describe('LineTool', () => {
     const drawSpy = spyOn(lineTool, 'addShape');
     lineTool.handleMouseEvent(mouseDown());
     expect(lineTool.shape).toBeTruthy();
-    expect(lineTool.shape.shapeProperties.strokeColor).toEqual(colorsService.primaryColor);
-    expect(lineTool.shape.shapeProperties.fillColor).toEqual(colorsService.secondaryColor);
+    expect(lineTool.shape.shapeProperties.secondaryColor).toEqual(colorsService.secondaryColor);
+    expect(lineTool.shape.shapeProperties.primaryColor).toEqual(colorsService.primaryColor);
     expect(lineTool.shape.shapeProperties.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth);
     expect(drawSpy).toHaveBeenCalled();
   });

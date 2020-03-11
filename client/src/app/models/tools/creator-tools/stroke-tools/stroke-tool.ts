@@ -7,8 +7,7 @@ export abstract class StrokeTool<T = ToolProperties> extends CreatorTool<T> {
   abstract createShape(): Path;
 
   protected updateProperties(): void {
-    this.shape.shapeProperties.strokeColor = this.editorService.colorsService.primaryColor;
-    this.shape.shapeProperties.strokeOpacity = this.editorService.colorsService.primaryColor.a;
+    this.shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
   }
 
   protected startShape(): void {

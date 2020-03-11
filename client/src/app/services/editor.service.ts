@@ -6,6 +6,7 @@ import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/elli
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
+import { ColorApplicatorTool } from 'src/app/models/tools/editing-tools/color-applicator-tool';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -19,7 +20,7 @@ import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
-  selectedShapes: BaseShape[];
+  readonly selectedShapes: BaseShape[];
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
   private previewShapes: BaseShape[];
@@ -40,6 +41,7 @@ export class EditorService {
     this.shapesBuffer = new Array<BaseShape>();
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
+    this.selectedShapes = new Array<BaseShape>();
   }
 
   private initTools(): void {
@@ -51,6 +53,7 @@ export class EditorService {
     this.tools.set(ToolType.Ellipse, new EllipseTool(this));
     this.tools.set(ToolType.Pipette, new PipetteTool(this));
     this.tools.set(ToolType.Polygon, new PolygonTool(this));
+    this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
   }
 
   applyShapesBuffer(): void {
@@ -69,6 +72,10 @@ export class EditorService {
     this.previewShapes.forEach(removeShapes);
     this.shapesBuffer = [];
     this.previewShapes = [];
+  }
+
+  clearSelection(): void {
+    this.selectedShapes.length = 0;
   }
 
   addPreviewShape(shape: BaseShape): void {

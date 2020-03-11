@@ -2,6 +2,7 @@ import { ShapeProperties } from 'src/app/models/shape-properties';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
+  static readonly NO_STYLE: string = 'none';
   protected _origin: Coordinate;
   protected _svgNode: SVGElement;
   shapeProperties: ShapeProperties;
@@ -30,11 +31,14 @@ export abstract class BaseShape {
   }
 
   updateProperties(): void {
+    const strokeAlpha = this.shapeProperties.secondaryColor.a;
+    const fillAlpha = this.shapeProperties.primaryColor.a;
+
     this._svgNode.style.strokeWidth = this.shapeProperties.strokeWidth.toString();
-    this._svgNode.style.strokeOpacity = this.shapeProperties.strokeOpacity.toString();
-    this._svgNode.style.stroke = this.shapeProperties.strokeColor.rgbString;
-    this._svgNode.style.fillOpacity = this.shapeProperties.fillColor.a.toString();
-    this._svgNode.style.fill = this.shapeProperties.fillColor.rgbString;
-    this._svgNode.style.visibility = this.shapeProperties.visibility;
+    this._svgNode.style.strokeOpacity = strokeAlpha.toString();
+    this._svgNode.style.fillOpacity = fillAlpha.toString();
+
+    this._svgNode.style.stroke = strokeAlpha ? this.shapeProperties.secondaryColor.rgbString : BaseShape.NO_STYLE;
+    this._svgNode.style.fill = fillAlpha ? this.shapeProperties.primaryColor.rgbString : BaseShape.NO_STYLE;
   }
 }

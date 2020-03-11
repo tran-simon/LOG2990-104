@@ -10,14 +10,7 @@ export abstract class ToolProperties {
   abstract readonly maxThickness: number;
 
   fillColor: SelectedColorType;
-  fillOpacity: number;
   strokeColor: SelectedColorType;
-  strokeOpacity: number;
-
-  protected constructor() {
-    this.fillOpacity = 1;
-    this.strokeOpacity = 1;
-  }
 
   get strokeWidth(): number {
     return this._strokeWidth;

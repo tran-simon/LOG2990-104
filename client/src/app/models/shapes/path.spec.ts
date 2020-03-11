@@ -28,7 +28,7 @@ describe('Path', () => {
   });
   it('Should update priorities', () => {
     path.updateProperties();
-    expect(path.svgNode.style.fill).toEqual('transparent');
+    expect(path.svgNode.style.fill).toEqual('none');
     expect(path.svgNode.style.strokeLinecap).toEqual('round');
     expect(path.svgNode.style.strokeLinejoin).toEqual('round');
   });
