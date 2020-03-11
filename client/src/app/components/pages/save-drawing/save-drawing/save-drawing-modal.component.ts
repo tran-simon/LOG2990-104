@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/tag-input.component';
 import { Drawing } from 'src/app/models/drawing';
 import { APIService } from 'src/app/services/api.service';
 import { EditorService } from 'src/app/services/editor.service';
+import { ImageExportService } from 'src/app/services/image-export.service';
 
 @Component({
   selector: 'app-save-drawing-modal',
@@ -16,19 +17,17 @@ import { EditorService } from 'src/app/services/editor.service';
 export class SaveDrawingModalComponent extends AbstractModalComponent {
   tags: TagInputComponent[];
   name: string;
-  errorMessage: string;
   formGroup: FormGroup;
 
   constructor(
     private apiService: APIService,
     private editorService: EditorService,
     public dialogRef: MatDialogRef<AbstractModalComponent>,
-    private sanitizer: DomSanitizer,
+    private imageExportService: ImageExportService
   ) {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
     this.name = '';
-    this.errorMessage = '';
     this.formGroup = new FormGroup({});
   }
 
@@ -39,8 +38,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
       tagValues.push(tag.value);
     });
 
-    const data = JSON.stringify(this.editorService.shapes);
-    const drawing = new Drawing(this.name, tagValues, data);
+    const drawing = new Drawing(this.name, tagValues, JSON.stringify(this.editorService.shapes));
 
     this.apiService.uploadDrawing(drawing);
 
@@ -55,7 +53,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     this.tags.pop();
   }
 
-  previewURL(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.editorService.view));
+  get previewURL(): SafeResourceUrl {
+    return this.imageExportService.exportSVGElement(this.editorService.view);
   }
 }
