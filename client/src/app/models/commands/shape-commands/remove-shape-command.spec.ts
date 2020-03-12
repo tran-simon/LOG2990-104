@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { Rectangle } from '../../shapes/rectangle';
 import { RemoveShapeCommand } from './remove-shape-command';
+import { SprayToolbarComponent } from '../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 
 describe('RemoveShapeCommand', () => {
   let fixture: ComponentFixture<EditorComponent>;
@@ -31,6 +32,7 @@ describe('RemoveShapeCommand', () => {
         EditorComponent,
         DrawingSurfaceComponent,
         EllipseToolbarComponent,
+        SprayToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],

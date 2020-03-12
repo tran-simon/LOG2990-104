@@ -18,6 +18,7 @@ import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 
 describe('EllipseTool', () => {
   let ellipseTool: EllipseTool;
@@ -37,6 +38,7 @@ describe('EllipseTool', () => {
         PolygonToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
+        SprayToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],

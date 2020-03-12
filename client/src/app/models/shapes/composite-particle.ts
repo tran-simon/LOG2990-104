@@ -13,6 +13,22 @@ export class CompositeParticle extends BaseShape {
     this._radius = !r ? 1 : Math.abs(r);
   }
 
+  private _frequency: number;
+  get frequency(): number {
+    return this._frequency;
+  }
+  set frequency(frequency: number) {
+    this._frequency = !frequency ? 1 : Math.abs(Math.floor(frequency));
+  }
+
+  get height(): number {
+    return 0; // ToDO
+  }
+
+  get width(): number {
+    return 0; // ToDO
+  }
+
   get origin(): Coordinate {
     return this._origin;
   }
@@ -20,7 +36,7 @@ export class CompositeParticle extends BaseShape {
     this._origin = c;
   }
 
-  constructor(origin: Coordinate = new Coordinate(), radius: number = 10) {
+  constructor(origin: Coordinate = new Coordinate(), radius: number = 1) {
     super('g');
     this.radius = radius;
     this.origin = origin;
@@ -34,22 +50,15 @@ export class CompositeParticle extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  addParticle(c: Coordinate = new Coordinate(), frequency: number = 1): void {
+  addParticle(c: Coordinate = new Coordinate()): void {
     let particle: Rectangle;
-    for (let i = 0; i < Math.floor(frequency); i++) {
+    for (let i = 0; i < this.frequency; i++) {
       particle = new Rectangle(this.genRandomPosition(c), this.shapeProperties.thickness);
       particle.shapeProperties.primaryColor = this.shapeProperties.primaryColor;
+      particle.shapeProperties.secondaryColor = this.shapeProperties.primaryColor;
       particle.updateProperties();
       this.particles.push(particle);
       this.svgNode.appendChild(particle.svgNode);
     }
-  }
-
-  get height(): number {
-    return 0;
-  }
-
-  get width(): number {
-    return 0;
   }
 }
