@@ -22,18 +22,8 @@ describe('CompositeParticle', () => {
     expect(compositeParticle.radius).toEqual(1);
   });
   it('should add frequency amount of particles on addParticle call', () => {
-    compositeParticle.frequency = 10;
-    compositeParticle.addParticle(new Coordinate());
+    compositeParticle.addParticle(new Coordinate(), 10);
     expect(compositeParticle.particles.length).toEqual(10);
-  });
-  it('should have positive loop index on negative frequency input', () => {
-    compositeParticle.frequency = -10;
-    compositeParticle.addParticle(new Coordinate());
-    expect(compositeParticle.particles.length).toEqual(10);
-  });
-  it('should have a frequency of 1 on invalid input', () => {
-    compositeParticle.frequency = Number.NaN;
-    expect(compositeParticle.frequency).toEqual(1);
   });
   it('should init with origin at 0,0', () => {
     expect(compositeParticle.origin).toEqual(new Coordinate());

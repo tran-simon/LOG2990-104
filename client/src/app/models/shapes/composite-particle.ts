@@ -13,14 +13,6 @@ export class CompositeParticle extends BaseShape {
     this._radius = !r ? 1 : Math.abs(r);
   }
 
-  private _frequency: number;
-  get frequency(): number {
-    return this._frequency;
-  }
-  set frequency(frequency: number) {
-    this._frequency = !frequency ? 1 : Math.abs(Math.floor(frequency));
-  }
-
   get height(): number {
     return 0; // ToDO
   }
@@ -50,9 +42,9 @@ export class CompositeParticle extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  addParticle(c: Coordinate = new Coordinate()): void {
+  addParticle(c: Coordinate = new Coordinate(), frequency: number = 1): void {
     let particle: Rectangle;
-    for (let i = 0; i < this.frequency; i++) {
+    for (let i = 0; i < frequency; i++) {
       particle = new Rectangle(this.genRandomPosition(c), this.shapeProperties.thickness);
       particle.shapeProperties.primaryColor = this.shapeProperties.primaryColor;
       particle.shapeProperties.secondaryColor = this.shapeProperties.primaryColor;
