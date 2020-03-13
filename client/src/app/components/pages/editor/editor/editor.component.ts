@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
@@ -21,6 +22,8 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
+
+  @ViewChild('toolbar', { static: false }) toolbar: ToolbarComponent;
 
   private _currentToolType: ToolType;
 
@@ -192,6 +195,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (this.currentTool instanceof SimpleSelectionTool) {
       (this.currentTool as SimpleSelectionTool).selectShape(shape, rightClick);
     }
+  }
+
+  setToolbarState(opened: boolean): void {
+    opened ? this.toolbar.open() : this.toolbar.close();
+    this.keyboardListener.listening = !(opened || this.dialog.modalIsOpened);
   }
 
   get currentTool(): Tool | undefined {

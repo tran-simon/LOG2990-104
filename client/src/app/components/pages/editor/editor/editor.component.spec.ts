@@ -270,14 +270,28 @@ describe('EditorComponent', () => {
   it('should undo on ctrl z', () => {
     const undoSpy = spyOn(component.editorService.commandReceiver, 'undo');
 
-    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'z', ctrlKey: true}));
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', ctrlKey: true }));
     expect(undoSpy).toHaveBeenCalled();
   });
 
   it('should redo on ctrl shift z', () => {
     const undoSpy = spyOn(component.editorService.commandReceiver, 'redo');
 
-    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'z', ctrlKey: true, shiftKey: true}));
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', ctrlKey: true, shiftKey: true }));
     expect(undoSpy).toHaveBeenCalled();
+  });
+
+  it('disables keyboardListener when toolbar is opened', () => {
+    const toolbarOpenSpy = spyOn(component.toolbar, 'open');
+    component.setToolbarState(true);
+    expect(toolbarOpenSpy).toHaveBeenCalled();
+    expect(component['keyboardListener'].listening).toEqual(false);
+  });
+
+  it('enables keyboardListener when toolbar is closed', () => {
+    const toolbarClosedSpy = spyOn(component.toolbar, 'close');
+    component.setToolbarState(false);
+    expect(toolbarClosedSpy).toHaveBeenCalled();
+    expect(component['keyboardListener'].listening).toEqual(true);
   });
 });
