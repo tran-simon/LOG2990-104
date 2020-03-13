@@ -1,5 +1,4 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
@@ -31,18 +30,6 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
   protected initialMouseCoord: Coordinate;
-
-  protected static getStrokeWidthForContourType(contourType: ContourType, width: number): number {
-    return contourType === ContourType.FILLED ? 0 : width;
-  }
-
-  protected static getFillColorForContourType(contourType: ContourType, color: Color): Color {
-    return contourType === ContourType.CONTOUR ? Color.TRANSPARENT : color;
-  }
-
-  protected static getStrokeColorForContourType(contourType: ContourType, color: Color): Color {
-    return contourType === ContourType.FILLED ? Color.TRANSPARENT : color;
-  }
 
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
@@ -114,9 +101,10 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
       const { contourType, strokeWidth } = this.toolProperties;
       const { primaryColor, secondaryColor } = this.editorService.colorsService;
 
-      this.shape.strokeWidth = ShapeTool.getStrokeWidthForContourType(contourType, strokeWidth);
-      this.shape.primaryColor = ShapeTool.getFillColorForContourType(contourType, primaryColor);
-      this.shape.secondaryColor = ShapeTool.getStrokeColorForContourType(contourType, secondaryColor);
+      this.shape.contourType = contourType;
+      this.shape.strokeWidth = strokeWidth;
+      this.shape.primaryColor = primaryColor;
+      this.shape.secondaryColor = secondaryColor;
       this.shape.updateProperties();
     }
   }

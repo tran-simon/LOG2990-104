@@ -1,3 +1,4 @@
+import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -10,6 +11,7 @@ export abstract class BaseShape {
   strokeWidth: number;
   secondaryColor: Color;
   primaryColor: Color;
+  contourType: ContourType;
 
   get svgNode(): SVGElement {
     return this._svgNode;
@@ -32,19 +34,20 @@ export abstract class BaseShape {
     this.strokeWidth = 1;
     this.secondaryColor = Color.BLACK;
     this.primaryColor = Color.WHITE;
+    this.contourType = ContourType.FILLED_CONTOUR;
 
     this.updateProperties();
   }
 
   updateProperties(): void {
-    const strokeAlpha = this.secondaryColor.a;
-    const fillAlpha = this.primaryColor.a;
+    const hasStroke = this.contourType !== ContourType.FILLED;
+    const hasFill = this.contourType !== ContourType.CONTOUR;
 
     this._svgNode.style.strokeWidth = this.strokeWidth.toString();
-    this._svgNode.style.strokeOpacity = strokeAlpha.toString();
-    this._svgNode.style.fillOpacity = fillAlpha.toString();
+    this._svgNode.style.strokeOpacity = this.secondaryColor.a.toString();
+    this._svgNode.style.fillOpacity = this.primaryColor.a.toString();
 
-    this._svgNode.style.stroke = strokeAlpha ? this.secondaryColor.rgbString : BaseShape.NO_STYLE;
-    this._svgNode.style.fill = fillAlpha ? this.primaryColor.rgbString : BaseShape.NO_STYLE;
+    this._svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.NO_STYLE;
+    this._svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.NO_STYLE;
   }
 }
