@@ -22,14 +22,6 @@ export class Path extends BaseShape {
     this._origin = c;
   }
 
-  get width(): number {
-    return 0; // todo
-  }
-
-  get height(): number {
-    return 0; // todo
-  }
-
   constructor(c: Coordinate) {
     super('path');
     this.origin = c;

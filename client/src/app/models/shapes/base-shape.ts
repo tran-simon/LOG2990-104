@@ -20,8 +20,12 @@ export abstract class BaseShape {
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
 
-  abstract get width(): number;
-  abstract get height(): number;
+  get width(): number {
+    return 0;
+  }
+  get height(): number {
+    return 0;
+  }
 
   get end(): Coordinate {
     return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
