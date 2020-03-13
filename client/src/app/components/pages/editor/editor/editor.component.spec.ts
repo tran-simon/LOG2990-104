@@ -294,6 +294,6 @@ describe('EditorComponent', () => {
     const shape = new Rectangle();
     component.shapeClicked(shape);
 
-    expect(selectShapeSpy).toHaveBeenCalledWith(shape);
+    expect(selectShapeSpy).toHaveBeenCalledWith(shape, false);
   });
 });
