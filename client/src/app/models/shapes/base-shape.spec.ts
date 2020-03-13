@@ -39,18 +39,4 @@ describe('BaseShape', () => {
     const end = new Coordinate(10, 10);
     expect(component.end).toEqual(end);
   });
-
-  it('sets stroke to none if transparent', () => {
-    component.secondaryColor = Color.rgb255(255, 0, 0, 0);
-
-    component.updateProperties();
-    expect(component.svgNode.style.stroke).toEqual('none');
-  });
-
-  it('sets fill to none if transparent', () => {
-    component.primaryColor = Color.rgb255(100, 100, 100, 0);
-
-    component.updateProperties();
-    expect(component.svgNode.style.fill).toEqual('none');
-  });
 });
