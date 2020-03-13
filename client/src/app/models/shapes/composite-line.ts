@@ -46,17 +46,17 @@ export class CompositeLine extends BaseShape {
   updateProperties(): void {
     if (this.lineArray) {
       this.lineArray.forEach((line) => {
-        line.shapeProperties.secondaryColor = this.shapeProperties.primaryColor;
-        line.shapeProperties.strokeWidth = this.shapeProperties.strokeWidth;
+        line.secondaryColor = this.primaryColor;
+        line.strokeWidth = this.strokeWidth;
         line.updateProperties();
       });
     }
     if (this.junctionArray) {
       this.junctionArray.forEach((junction) => {
-        junction.shapeProperties.primaryColor = this.shapeProperties.secondaryColor;
-        junction.shapeProperties.strokeWidth = 0;
-        junction.radiusX = this.shapeProperties.thickness;
-        junction.radiusY = this.shapeProperties.thickness;
+        junction.primaryColor = this.secondaryColor;
+        junction.strokeWidth = 0;
+        junction.radiusX = this.thickness;
+        junction.radiusY = this.thickness;
         junction.updateProperties();
       });
     }
@@ -112,7 +112,7 @@ export class CompositeLine extends BaseShape {
 
   addJunction(c: Coordinate): void {
     const junction = new Ellipse(c, 2); // todo - use editor properties
-    junction.shapeProperties.primaryColor = Color.BLACK;
+    junction.primaryColor = Color.BLACK;
     junction.updateProperties();
 
     this.junctionArray.push(junction);

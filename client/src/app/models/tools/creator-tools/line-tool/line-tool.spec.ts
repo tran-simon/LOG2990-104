@@ -7,6 +7,8 @@ import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/b
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
+import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
@@ -15,8 +17,6 @@ import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
-import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 
 describe('LineTool', () => {
   let lineTool: LineTool;
@@ -136,22 +136,22 @@ describe('LineTool', () => {
     const drawSpy = spyOn(lineTool, 'addShape');
     lineTool.handleMouseEvent(mouseDown());
     expect(lineTool.shape).toBeTruthy();
-    expect(lineTool.shape.shapeProperties.secondaryColor).toEqual(colorsService.secondaryColor);
-    expect(lineTool.shape.shapeProperties.primaryColor).toEqual(colorsService.primaryColor);
-    expect(lineTool.shape.shapeProperties.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth);
+    expect(lineTool.shape.secondaryColor).toEqual(colorsService.secondaryColor);
+    expect(lineTool.shape.primaryColor).toEqual(colorsService.primaryColor);
+    expect(lineTool.shape.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth);
     expect(drawSpy).toHaveBeenCalled();
   });
 
   it('can init line with junctions', () => {
     lineTool['toolProperties'].junctionType = LineJunctionType.POINTS;
     lineTool.handleMouseEvent(mouseDown());
-    expect(lineTool.shape.shapeProperties.thickness).toEqual(lineTool['toolProperties'].junctionDiameter);
+    expect(lineTool.shape.thickness).toEqual(lineTool['toolProperties'].junctionDiameter);
   });
 
   it('can init line without junctions', () => {
     lineTool['toolProperties'].junctionType = LineJunctionType.EMPTY;
     lineTool.handleMouseEvent(mouseDown());
-    expect(lineTool.shape.shapeProperties.thickness).toEqual(0);
+    expect(lineTool.shape.thickness).toEqual(0);
   });
 
   it('should call endLine on double click if isActive', () => {
