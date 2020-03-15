@@ -48,7 +48,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
       }
     };
 
-    this.handleMouseDown = () => this.isActive ? this.shape.confirmPoint() : this.startShape();
+    this.handleMouseDown = () => (this.isActive ? this.shape.confirmPoint() : this.startShape());
 
     this.handleMouseMove = () => {
       if (this.isActive) {
@@ -59,12 +59,12 @@ export class LineTool extends CreatorTool<LineToolProperties> {
 
   protected updateProperties(): void {
     if (this.shape) {
-      this.shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
-      this.shape.shapeProperties.secondaryColor = this.editorService.colorsService.secondaryColor;
-      this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+      this.shape.primaryColor = this.editorService.colorsService.primaryColor;
+      this.shape.secondaryColor = this.editorService.colorsService.secondaryColor;
+      this.shape.strokeWidth = this.toolProperties.strokeWidth;
 
       const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;
-      this.shape.shapeProperties.thickness = hasPoints ? this.toolProperties.junctionDiameter : 0;
+      this.shape.thickness = hasPoints ? this.toolProperties.junctionDiameter : 0;
 
       this.shape.updateProperties();
     }
