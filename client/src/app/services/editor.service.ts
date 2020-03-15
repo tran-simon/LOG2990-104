@@ -110,4 +110,25 @@ export class EditorService {
       this.view.removeShape(shape);
     }
   }
+
+  async viewToCanvas(): Promise<CanvasRenderingContext2D> {
+    const image = new Image();
+    const { width, height, svg } = this.view;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.canvas.width = width;
+    ctx.canvas.height = height;
+
+    const xml = new XMLSerializer().serializeToString(svg);
+    image.src = 'data:image/svg+xml;base64,' + btoa(xml);
+    image.style.display = 'none';
+
+    return new Promise((resolve) => {
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0);
+        resolve(ctx);
+      };
+    });
+  }
+
 }
