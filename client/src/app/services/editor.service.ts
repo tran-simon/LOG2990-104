@@ -7,6 +7,7 @@ import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/re
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { ColorApplicatorTool } from 'src/app/models/tools/editing-tools/color-applicator-tool';
+import { EraserTool } from 'src/app/models/tools/editing-tools/eraser-tool';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -54,6 +55,7 @@ export class EditorService {
     this.tools.set(ToolType.Pipette, new PipetteTool(this));
     this.tools.set(ToolType.Polygon, new PolygonTool(this));
     this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
+    this.tools.set(ToolType.Eraser, new EraserTool(this));
   }
 
   applyShapesBuffer(): void {

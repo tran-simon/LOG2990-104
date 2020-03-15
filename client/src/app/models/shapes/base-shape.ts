@@ -3,9 +3,11 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
+  static id = 0;
   static readonly NO_STYLE: string = 'none';
   protected _origin: Coordinate;
-  protected _svgNode: SVGElement;
+  protected readonly _svgNode: SVGElement;
+  readonly id: string;
 
   thickness: number;
   strokeWidth: number;
@@ -33,6 +35,9 @@ export abstract class BaseShape {
 
   constructor(type: string) {
     this._svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
+    this.id = `BaseShape-${BaseShape.id++}-${type}`;
+    this._svgNode.id = this.id;
+
     this._origin = new Coordinate();
     this.thickness = 1;
     this.strokeWidth = 1;
