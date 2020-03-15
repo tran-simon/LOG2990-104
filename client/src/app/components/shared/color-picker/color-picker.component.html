@@ -1,4 +1,4 @@
-<div id="color-picker" [style.background-color]="color.hexString" >
+<div id="color-picker" >
   <div *ngIf=showHistory>
     <app-color-history (colorSelectedEvent)='closed.emit()'></app-color-history>
   </div>

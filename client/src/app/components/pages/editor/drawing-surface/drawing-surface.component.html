@@ -1,5 +1,5 @@
 <svg #svg [attr.width]="width" [attr.height]="height">
-  <rect [attr.fill]="color.hexString" [attr.width]="width" [attr.height]="height"></rect>
+  <rect id='background' [attr.fill]="color.hexString" [attr.width]="width" [attr.height]="height"></rect>
   <defs>
     <filter #stroke1 id="TEXTURE_1" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur in="SourceGraphic" stdDeviation="3" />

@@ -13,11 +13,14 @@ export class PipetteTool extends Tool {
     super(editorService);
   }
 
+  static colorAtPointInCanvas(canvasContext: CanvasRenderingContext2D, point: Coordinate): Color{
+    const colorData = canvasContext.getImageData(point.x, point.y, 1, 1).data;
+    return Color.rgb255(colorData[0], colorData[1], colorData[2]);
+  }
+
   private pickColor(position: Coordinate, selectedColorType: SelectedColorType): void {
-    const canvasContext = this.editorService.viewToCanvas();
-    canvasContext.then((ctx) => {
-      const data = ctx.getImageData(position.x, position.y, 1, 1).data;
-      const color = Color.rgb255(data[0], data[1], data[2]);
+    this.editorService.viewToCanvas().then((ctx) => {
+      const color = PipetteTool.colorAtPointInCanvas(ctx, position);
       this.editorService.colorsService.setColorByTypeAndUpdateHistory(color, selectedColorType);
     });
   }

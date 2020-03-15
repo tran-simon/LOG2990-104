@@ -19,6 +19,9 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
     }
     this.mouseListener = MouseListenerService.defaultMouseListener(this);
   }
+  afterViewChange():void{
+    return;
+  }
   toolProperties: T;
 
   protected keyboardListener: KeyboardListenerService;
