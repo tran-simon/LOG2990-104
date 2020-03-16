@@ -50,4 +50,22 @@ describe('DrawingSurfaceComponent', () => {
 
     expect(shape.svgNode.onclick).toBeDefined();
   });
+
+  it('emits shapeClicked when clicking a shape', () => {
+    const shape = new Rectangle();
+    const shapeClickedSpy = spyOn(component['shapeClicked'], 'emit');
+    component.addShape(shape);
+    // @ts-ignore
+    shape.svgNode.onclick();
+    expect(shapeClickedSpy).toHaveBeenCalled();
+  });
+
+  it('emits shapeRightClicked when right clicking clicking a shape', () => {
+    const shape = new Rectangle();
+    const shapeRightClickedSpy = spyOn(component['shapeRightClicked'], 'emit');
+    component.addShape(shape);
+    // @ts-ignore
+    shape.svgNode.oncontextmenu();
+    expect(shapeRightClickedSpy).toHaveBeenCalled();
+  });
 });

@@ -9,9 +9,9 @@ export class ColorApplicatorTool extends SimpleSelectionTool {
 
   selectShape(shape: BaseShape, rightClick: boolean = false): void {
     if (!rightClick) {
-      shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
+      shape.primaryColor = this.editorService.colorsService.primaryColor;
     } else {
-      shape.shapeProperties.secondaryColor = this.editorService.colorsService.secondaryColor;
+      shape.secondaryColor = this.editorService.colorsService.secondaryColor;
     }
     shape.updateProperties();
   }

@@ -1,5 +1,4 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
@@ -8,10 +7,6 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTool<T> {
-  protected previewArea: Rectangle;
-  private forceEqualDimensions: boolean;
-  protected initialMouseCoord: Coordinate;
-
   protected constructor(editorService: EditorService) {
     super(editorService);
 
@@ -32,6 +27,9 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
       ],
     ]);
   }
+  protected previewArea: Rectangle;
+  private forceEqualDimensions: boolean;
+  protected initialMouseCoord: Coordinate;
 
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
@@ -92,7 +90,7 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
     this.previewArea.origin = previewOrigin;
     this.previewArea.width = previewDimensions.x;
     this.previewArea.height = previewDimensions.y;
-    this.previewArea.shapeProperties.primaryColor = Color.TRANSPARENT;
+    this.previewArea.primaryColor = Color.TRANSPARENT;
     this.previewArea.updateProperties();
 
     this.resizeShape(dimensions, origin);
@@ -103,22 +101,11 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
       const { contourType, strokeWidth } = this.toolProperties;
       const { primaryColor, secondaryColor } = this.editorService.colorsService;
 
-      this.shape.shapeProperties.strokeWidth = this.getStrokeWidth(contourType, strokeWidth);
-      this.shape.shapeProperties.primaryColor = this.getFillColor(contourType, primaryColor);
-      this.shape.shapeProperties.secondaryColor = this.getStrokeColor(contourType, secondaryColor);
+      this.shape.contourType = contourType;
+      this.shape.strokeWidth = strokeWidth;
+      this.shape.primaryColor = primaryColor;
+      this.shape.secondaryColor = secondaryColor;
       this.shape.updateProperties();
     }
-  }
-
-  protected getStrokeWidth(contourType: ContourType, width: number): number {
-    return contourType === ContourType.FILLED ? 0 : width;
-  }
-
-  protected getFillColor(contourType: ContourType, color: Color): Color {
-    return contourType === ContourType.CONTOUR ? Color.TRANSPARENT : color;
-  }
-
-  protected getStrokeColor(contourType: ContourType, color: Color): Color {
-    return contourType === ContourType.FILLED ? Color.TRANSPARENT : color;
   }
 }

@@ -37,9 +37,9 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
 
   protected updateProperties(): void {
     if (this.shape) {
-      this.shape.shapeProperties.primaryColor = this.editorService.colorsService.primaryColor;
-      this.shape.shapeProperties.secondaryColor = this.editorService.colorsService.primaryColor;
-      this.shape.shapeProperties.strokeWidth = this.toolProperties.radius;
+      this.shape.primaryColor = this.editorService.colorsService.primaryColor;
+      this.shape.secondaryColor = this.editorService.colorsService.primaryColor;
+      this.shape.strokeWidth = this.toolProperties.radius;
       this.shape.updateProperties();
     }
   }

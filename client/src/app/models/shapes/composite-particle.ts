@@ -45,9 +45,9 @@ export class CompositeParticle extends BaseShape {
   addParticle(c: Coordinate = new Coordinate(), frequency: number = 1): void {
     let particle: Rectangle;
     for (let i = 0; i < frequency; i++) {
-      particle = new Rectangle(this.genRandomPosition(c), this.shapeProperties.thickness);
-      particle.shapeProperties.primaryColor = this.shapeProperties.primaryColor;
-      particle.shapeProperties.secondaryColor = this.shapeProperties.primaryColor;
+      particle = new Rectangle(this.genRandomPosition(c), this.thickness);
+      particle.primaryColor = this.primaryColor;
+      particle.secondaryColor = this.primaryColor;
       particle.updateProperties();
       this.particles.push(particle);
       this.svgNode.appendChild(particle.svgNode);

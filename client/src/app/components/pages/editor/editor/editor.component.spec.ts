@@ -12,6 +12,7 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
@@ -27,12 +28,12 @@ import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-import createSpyObj = jasmine.createSpyObj;
 import { EllipseToolbarComponent } from '../toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { PolygonToolbarComponent } from '../toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
 import { EditorComponent } from './editor.component';
+import createSpyObj = jasmine.createSpyObj;
 
 export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
   return {
@@ -161,6 +162,11 @@ describe('EditorComponent', () => {
     expect(component.currentToolType).toEqual(ToolType.Polygon);
   });
 
+  it('should select the color applicator tool when typing r', () => {
+    keyboardListener.handle(keyDown('r'));
+    expect(component.currentToolType).toEqual(ToolType.ColorApplicator);
+  });
+
   it('should select the line tool', () => {
     component.currentToolType = ToolType.Line;
     const currentTool = component.currentTool as Tool;
@@ -281,5 +287,15 @@ describe('EditorComponent', () => {
 
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', ctrlKey: true, shiftKey: true }));
     expect(undoSpy).toHaveBeenCalled();
+  });
+
+  it('should select shape on shapeClicked', () => {
+    component.currentToolType = ToolType.Select;
+    const tool = component.currentTool as SelectionTool;
+    const selectShapeSpy = spyOn(tool, 'selectShape');
+    const shape = new Rectangle();
+    component.shapeClicked(shape);
+
+    expect(selectShapeSpy).toHaveBeenCalledWith(shape, false);
   });
 });
