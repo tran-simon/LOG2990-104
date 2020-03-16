@@ -54,6 +54,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('a'),
+        () => {
+          this.currentToolType = ToolType.Spray;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('c'),
         () => {
           this.currentToolType = ToolType.Pen;

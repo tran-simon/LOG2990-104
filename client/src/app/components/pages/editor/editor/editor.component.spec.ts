@@ -31,6 +31,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 import { EllipseToolbarComponent } from '../toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { PolygonToolbarComponent } from '../toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
 import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 
@@ -73,6 +74,7 @@ describe('EditorComponent', () => {
         CreateDrawingModalComponent,
         UserGuideModalComponent,
         PolygonToolbarComponent,
+        SprayToolbarComponent,
       ],
       providers: [
         EditorService,

@@ -18,6 +18,7 @@ import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/strok
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 
 describe('RectangleTool', () => {
   let rectangleTool: RectangleTool;
@@ -35,6 +36,7 @@ describe('RectangleTool', () => {
         PolygonToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
+        SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],

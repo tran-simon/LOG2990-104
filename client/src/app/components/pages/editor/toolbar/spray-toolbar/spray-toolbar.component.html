@@ -1,0 +1,11 @@
+<h3 class="toolbar-option-section">Options de l'aérosol</h3>
+<label>Rayon du jet</label>
+<mat-slider [min]="toolProperties.minThickness"
+            [max]="toolProperties.maxThickness" [step]="thicknessSliderStep" thumbLabel="true"
+            [(ngModel)]="toolProperties.radius">
+</mat-slider>
+<label>Débit du jet</label>
+<mat-slider [min]="toolProperties.minFrequency"
+            [max]="toolProperties.maxFrequency" [step]="thicknessSliderStep" thumbLabel="true"
+            [(ngModel)]="toolProperties.frequency">
+</mat-slider>
