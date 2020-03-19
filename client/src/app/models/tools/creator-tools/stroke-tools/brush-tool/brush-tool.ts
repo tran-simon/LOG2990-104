@@ -13,8 +13,8 @@ export class BrushTool extends StrokeTool<BrushToolProperties> {
 
   protected updateProperties(): void {
     super.updateProperties();
-    this.shape.shapeProperties.secondaryColor = this.editorService.colorsService.primaryColor;
-    this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+    this.shape.secondaryColor = this.editorService.colorsService.primaryColor;
+    this.shape.strokeWidth = this.toolProperties.strokeWidth;
     this.shape.changeFilter(this.toolProperties.texture);
     this.shape.updateProperties();
   }

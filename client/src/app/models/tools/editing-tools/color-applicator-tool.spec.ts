@@ -25,18 +25,18 @@ describe('ColorApplicatorTool', () => {
   it('should change primary color of a shape on selectShape with left click', () => {
     tool['editorService'].colorsService.primaryColor = Color.RED;
     const shape = new Rectangle();
-    shape.shapeProperties.primaryColor = Color.GREEN;
+    shape.primaryColor = Color.GREEN;
     tool.selectShape(shape, false);
 
-    expect(shape.shapeProperties.primaryColor).toEqual(Color.RED);
+    expect(shape.primaryColor).toEqual(Color.RED);
   });
 
   it('should change secondary color of a shape on selectShape with right click', () => {
     tool['editorService'].colorsService.secondaryColor = Color.RED;
     const shape = new Rectangle();
-    shape.shapeProperties.secondaryColor = Color.GREEN;
+    shape.secondaryColor = Color.GREEN;
     tool.selectShape(shape, true);
 
-    expect(shape.shapeProperties.secondaryColor).toEqual(Color.RED);
+    expect(shape.secondaryColor).toEqual(Color.RED);
   });
 });
