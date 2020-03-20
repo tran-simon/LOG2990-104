@@ -24,7 +24,7 @@ export class GalleryModalComponent extends AbstractModalComponent {
     this.apiService.getAllDrawings().subscribe((drawings: Drawing[]) => {
       drawings.forEach((drawing: Drawing) => {
         const drawingData = JSON.parse(drawing.data.toString()) as BaseShape[];
-        const parsedDrawing = new Drawing(drawing.name, drawing.tags, drawingData);
+        const parsedDrawing = new Drawing(drawing.name, drawing.tags, drawingData, drawing.previewURL);
 
         this.drawings.push(parsedDrawing);
       });

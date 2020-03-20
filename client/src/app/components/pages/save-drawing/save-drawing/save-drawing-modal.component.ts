@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, SecurityContext } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/tag-input.component';
 import { Drawing } from 'src/app/models/drawing';
@@ -24,6 +24,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     private editorService: EditorService,
     public dialogRef: MatDialogRef<AbstractModalComponent>,
     private imageExportService: ImageExportService,
+    private sanitizer: DomSanitizer,
   ) {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
@@ -37,9 +38,8 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     this.tags.forEach((tag: TagInputComponent) => {
       tagValues.push(tag.value);
     });
-
-    const drawing = new Drawing(this.name, tagValues, this.editorService.shapes);
-
+    const preview = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.previewURL);
+    const drawing = new Drawing(this.name, tagValues, this.editorService.shapes, preview == null ? '' : preview);
     this.apiService.uploadDrawing(drawing);
 
     this.dialogRef.close();

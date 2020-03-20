@@ -1,5 +1,7 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Drawing } from 'src/app/models/drawing';
+import { APIService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-gallery-drawing',
@@ -9,6 +11,13 @@ import { Drawing } from 'src/app/models/drawing';
 export class GalleryDrawingComponent {
   @Input() drawing: Drawing;
 
-  @ViewChild('svg', { static: false })
-  svg: ElementRef;
+  constructor(private sanitizer: DomSanitizer, private apiService: APIService) {}
+
+  get previewURL(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.drawing.previewURL);
+  }
+
+  delete(): void {
+    this.apiService.deleteDrawing();
+  }
 }

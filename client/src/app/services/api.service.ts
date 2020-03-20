@@ -29,4 +29,8 @@ export class APIService {
 
     return this.http.get<Drawing[]>(url);
   }
+
+  deleteDrawing(): void {
+    console.log('deleted!');
+  }
 }
