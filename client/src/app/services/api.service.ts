@@ -30,7 +30,8 @@ export class APIService {
     return this.http.get<Drawing[]>(url);
   }
 
-  deleteDrawing(): void {
-    console.log('deleted!');
+  deleteDrawing(id: string): void {
+    const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE + '/' + id;
+    this.http.delete(url, { responseType: 'text' }).subscribe();
   }
 }

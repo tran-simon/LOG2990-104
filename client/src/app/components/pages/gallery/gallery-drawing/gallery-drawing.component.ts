@@ -10,14 +10,18 @@ import { APIService } from 'src/app/services/api.service';
 })
 export class GalleryDrawingComponent {
   @Input() drawing: Drawing;
+  deleted: boolean;
 
-  constructor(private sanitizer: DomSanitizer, private apiService: APIService) {}
+  constructor(private sanitizer: DomSanitizer, private apiService: APIService) {
+    this.deleted = false;
+  }
 
   get previewURL(): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.drawing.previewURL);
   }
 
   delete(): void {
-    this.apiService.deleteDrawing();
+    this.apiService.deleteDrawing(this.drawing._id);
+    this.deleted = true;
   }
 }

@@ -5,15 +5,15 @@ export class Drawing {
   tags: string[];
   data: BaseShape[];
   previewURL: string;
-  id: string;
+  _id: string;
 
-  constructor(name: string, tags: string[], data: BaseShape[], previewURL: string, id?: string) {
+  constructor(name: string, tags: string[], data: BaseShape[], previewURL: string, _id?: string) {
     this.name = name;
     this.tags = tags;
     this.data = data;
     this.previewURL = previewURL;
-    if (id) {
-      this.id = id;
+    if (_id) {
+      this._id = _id;
     }
   }
 }

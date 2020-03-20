@@ -37,7 +37,7 @@ export class DatabaseService {
   }
 
   addDrawing(res: express.Response, body: Drawing): void {
-    const drawing = { name: body.name, tags: body.tags, data: JSON.stringify(body.data) } as Drawing;
+    const drawing = { name: body.name, tags: body.tags, data: JSON.stringify(body.data), previewURL: body.previewURL } as Drawing;
     const model = new drawingModel(drawing);
     model.save((err: mongoose.Error) => {
       const status = err ? httpStatus.INTERNAL_SERVER_ERROR : httpStatus.OK;
@@ -56,5 +56,4 @@ export class DatabaseService {
       res.sendStatus(DatabaseService.determineStatus(err, doc));
     });
   }
-
 }
