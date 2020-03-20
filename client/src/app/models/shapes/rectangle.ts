@@ -37,10 +37,10 @@ export class Rectangle extends BaseShape {
     return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
-  constructor(origin: Coordinate = new Coordinate(), size: number = 0) {
+  constructor(origin: Coordinate = new Coordinate(), sizeX: number = 0, sizeY: number = 0) {
     super('rect');
     this.origin = origin;
-    this.width = size;
-    this.height = size;
+    this.width = sizeX;
+    this.height = sizeY;
   }
 }

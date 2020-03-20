@@ -22,6 +22,10 @@ export abstract class BaseShape {
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
 
+  get bboxes(): BaseShape[] {
+    return [];
+  }
+
   get width(): number {
     return 0;
   }

@@ -106,7 +106,7 @@ export class EditorService {
   removeShape(shape: BaseShape): void {
     const index = this.shapes.findIndex((s) => s === shape);
     if (index !== -1) {
-      this.shapes.splice(index, 1, shape);
+      this.shapes.splice(index, 1);
       this.view.removeShape(shape);
     }
   }
@@ -130,5 +130,4 @@ export class EditorService {
       };
     });
   }
-
 }
