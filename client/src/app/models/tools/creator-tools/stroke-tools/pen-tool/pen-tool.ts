@@ -11,7 +11,7 @@ export class PenTool extends StrokeTool<PenToolProperties> {
 
   protected updateProperties(): void {
     super.updateProperties();
-    this.shape.shapeProperties.strokeWidth = this.toolProperties.strokeWidth;
+    this.shape.strokeWidth = this.toolProperties.strokeWidth;
     this.shape.updateProperties();
   }
 

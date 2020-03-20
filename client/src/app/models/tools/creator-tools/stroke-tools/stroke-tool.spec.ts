@@ -9,6 +9,7 @@ import { LineToolbarComponent } from '../../../../components/pages/editor/toolba
 import { PenToolbarComponent } from '../../../../components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { ToolbarComponent } from '../../../../components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from '../../../../components/shared/shared.module';
 import { EditorService } from '../../../../services/editor.service';
@@ -70,6 +71,7 @@ describe('StrokeTool', () => {
         PolygonToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
+        SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],

@@ -57,6 +57,7 @@ export class ToolbarComponent {
       [ToolType.Ellipse, 'panorama_fish_eye'],
       [ToolType.Pipette, 'colorize'],
       [ToolType.Polygon, 'category'],
+      [ToolType.Spray, 'blur_on'],
       [ToolType.ColorApplicator, 'color_lens'],
       [ToolType.Select, 'near_me'],
     ]);

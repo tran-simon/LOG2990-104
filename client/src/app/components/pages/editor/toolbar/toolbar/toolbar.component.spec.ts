@@ -15,6 +15,7 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
+import { SprayToolbarComponent } from '../spray-toolbar/spray-toolbar.component';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -33,6 +34,7 @@ describe('ToolbarComponent', () => {
         LineToolbarComponent,
         EllipseToolbarComponent,
         PolygonToolbarComponent,
+        SprayToolbarComponent,
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
@@ -98,6 +100,14 @@ describe('ToolbarComponent', () => {
     fixture.detectChanges();
 
     expect(component.currentToolType).toBe(ToolType.Brush);
+  });
+
+  it('should select the spray tool', () => {
+    const brushButton = fixture.debugElement.nativeElement.querySelector('#btn-spray-tool');
+    brushButton.click();
+    fixture.detectChanges();
+
+    expect(component.currentToolType).toBe(ToolType.Spray);
   });
 
   it('should select the primary color and the secondary color when clicking associated squares', () => {

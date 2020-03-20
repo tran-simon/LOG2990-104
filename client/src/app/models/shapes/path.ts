@@ -22,14 +22,6 @@ export class Path extends BaseShape {
     this._origin = c;
   }
 
-  get width(): number {
-    return 0; // todo
-  }
-
-  get height(): number {
-    return 0; // todo
-  }
-
   constructor(c: Coordinate) {
     super('path');
     this.origin = c;
@@ -42,12 +34,11 @@ export class Path extends BaseShape {
 
   updateProperties(): void {
     super.updateProperties();
-    const fillAlpha = this.shapeProperties.primaryColor.a;
 
     this.svgNode.style.fill = Path.NO_STYLE;
 
-    this.svgNode.style.stroke = fillAlpha ? this.shapeProperties.primaryColor.rgbString : Path.NO_STYLE;
-    this.svgNode.style.strokeOpacity = fillAlpha.toString();
+    this.svgNode.style.stroke = this.primaryColor.rgbString;
+    this.svgNode.style.strokeOpacity = this.primaryColor.a.toString();
 
     this.svgNode.style.strokeLinecap = Path.PATH_STYLE;
     this.svgNode.style.strokeLinejoin = Path.PATH_STYLE;

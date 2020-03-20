@@ -7,6 +7,8 @@ import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/b
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
+import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
+import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
@@ -16,10 +18,10 @@ import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/strok
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
-import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { keyUp } from '../../../../components/pages/editor/editor/editor.component.spec';
+import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 
-describe('RectangleTool', () => {
+describe('PolygonTool', () => {
   let polygonTool: PolygonTool;
   let fixture: ComponentFixture<EditorComponent>;
   let properties: PolygonToolProperties;
@@ -35,6 +37,7 @@ describe('RectangleTool', () => {
         PolygonToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
+        SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
@@ -56,6 +59,16 @@ describe('RectangleTool', () => {
     polygonTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(polygonTool.shape.origin).toEqual(new Coordinate(100, 100));
     expect(fixture.componentInstance.drawingSurface.svg.querySelector('polygon')).toBeTruthy();
+  });
+
+  it('should initialize new Polygon with equal dimensions', () => {
+    expect(polygonTool['forceEqualDimensions']).toEqual(true);
+  });
+
+  it('should force equal size to true after shift up input', () => {
+    polygonTool.setEqualDimensions(false);
+    polygonTool.handleKeyboardEvent(keyUp('Shift', false));
+    expect(polygonTool['forceEqualDimensions']).toEqual(true);
   });
 
   it('can resize Polygon', () => {
@@ -91,8 +104,7 @@ describe('RectangleTool', () => {
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
-    const strokeWidth = style.strokeWidth as string;
-    expect(parseInt(strokeWidth, 10)).toEqual(0);
+    expect(style.stroke).toEqual('none');
   });
 
   it('can draw Polygon contour only', () => {
@@ -101,7 +113,7 @@ describe('RectangleTool', () => {
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;
-    expect(style.fillOpacity).toEqual('0');
+    expect(style.fill).toEqual('none');
     expect(style.stroke).toEqual(selectedColorsService.secondaryColor.rgbString);
   });
 });
