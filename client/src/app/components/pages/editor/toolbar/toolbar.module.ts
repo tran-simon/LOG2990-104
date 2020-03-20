@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EllipseToolbarComponent } from './ellipse-toolbar/ellipse-toolbar.component';
 import { PolygonToolbarComponent } from './polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar
     LineToolbarComponent,
     EllipseToolbarComponent,
     PolygonToolbarComponent,
+    SprayToolbarComponent,
   ],
   imports: [SharedModule],
   exports: [
@@ -27,6 +29,7 @@ import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar
     LineToolbarComponent,
     EllipseToolbarComponent,
     PolygonToolbarComponent,
+    SprayToolbarComponent,
   ],
 })
 export class ToolbarModule {}

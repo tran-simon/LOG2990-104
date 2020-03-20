@@ -12,6 +12,7 @@ import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolb
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
+import { SprayToolbarComponent } from '../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { Rectangle } from '../../shapes/rectangle';
 import { RemoveShapeCommand } from './remove-shape-command';
 
@@ -31,6 +32,7 @@ describe('RemoveShapeCommand', () => {
         EditorComponent,
         DrawingSurfaceComponent,
         EllipseToolbarComponent,
+        SprayToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],

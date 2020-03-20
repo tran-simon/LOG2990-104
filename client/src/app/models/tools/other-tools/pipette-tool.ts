@@ -50,5 +50,4 @@ export class PipetteTool extends Tool {
       return super.handleContextMenu();
     };
   }
-
 }
