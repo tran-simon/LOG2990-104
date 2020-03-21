@@ -8,12 +8,11 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
  * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
  */
 export class PipetteTool extends Tool {
-
   constructor(editorService: EditorService) {
     super(editorService);
   }
 
-  static colorAtPointInCanvas(canvasContext: CanvasRenderingContext2D, point: Coordinate): Color{
+  static colorAtPointInCanvas(canvasContext: CanvasRenderingContext2D, point: Coordinate): Color {
     const colorData = canvasContext.getImageData(point.x, point.y, 1, 1).data;
     return Color.rgb255(colorData[0], colorData[1], colorData[2]);
   }
@@ -39,5 +38,4 @@ export class PipetteTool extends Tool {
       return super.handleContextMenu();
     };
   }
-
 }

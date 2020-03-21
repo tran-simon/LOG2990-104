@@ -3,6 +3,7 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
+  // tslint:disable-next-line:typedef
   static id = 0;
   static readonly NO_STYLE: string = 'none';
   protected _origin: Coordinate;
