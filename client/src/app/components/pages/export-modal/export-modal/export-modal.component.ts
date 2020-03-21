@@ -15,10 +15,11 @@ import { ExtensionType } from '../extension-type.enum';
 export class ExportModalComponent extends AbstractModalComponent {
   selectedExtension: ExtensionType;
   extensions: string[] = Object.values(ExtensionType);
-  href: SafeResourceUrl;
+  href: string;
   name: string;
   previewImage: DrawingSurfaceComponent;
   formGroup: FormGroup;
+  addFilterBool: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
@@ -32,14 +33,23 @@ export class ExportModalComponent extends AbstractModalComponent {
     this.selectedExtension = ExtensionType.SVG;
     this.exportSVGElement();
     this.formGroup = new FormGroup({});
+    this.addFilterBool = true;
   }
 
-  previewURL(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.previewImage));
+  previewURL(dataUrl: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(dataUrl);
   }
 
   exportSVGElement(): void {
-    this.href = this.previewURL();
+    this.href = this.previewURL(this.editorService.createDataURL(this.previewImage)).toString();
+  }
+  addFilterToPreview(): void {
+    const image = document.getElementById('preview') as HTMLImageElement;
+    image.style.filter = 'grayscale(100%)';
+    this.addFilterBool = true;
+  }
+  addFilter(): void {
+    this.previewImage.svg.setAttribute('filter', 'grayscale(100%)');
   }
 
   exportImageElement(): void {
@@ -60,10 +70,14 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   changeExtension(): void {
+    if (this.addFilterBool) {
+      this.addFilter();
+    }
     this.selectedExtension === ExtensionType.SVG ? this.exportSVGElement() : this.exportImageElement();
   }
 
   submit(): void {
+    this.editorService.view.svg.removeAttribute('filter');
     if (!this.formGroup.invalid) {
       this.dialogRef.close();
     }
