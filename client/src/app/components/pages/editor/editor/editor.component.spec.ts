@@ -289,6 +289,20 @@ describe('EditorComponent', () => {
     expect(undoSpy).toHaveBeenCalled();
   });
 
+  it('disables keyboardListener when toolbar is opened', () => {
+    const toolbarOpenSpy = spyOn(component.toolbar, 'open');
+    component.setToolbarState(true);
+    expect(toolbarOpenSpy).toHaveBeenCalled();
+    expect(component['keyboardListener'].listening).toEqual(false);
+  });
+
+  it('enables keyboardListener when toolbar is closed', () => {
+    const toolbarClosedSpy = spyOn(component.toolbar, 'close');
+    component.setToolbarState(false);
+    expect(toolbarClosedSpy).toHaveBeenCalled();
+    expect(component['keyboardListener'].listening).toEqual(true);
+  });
+
   it('should select shape on shapeClicked', () => {
     component.currentToolType = ToolType.Select;
     const tool = component.currentTool as SelectionTool;
