@@ -5,4 +5,5 @@ export enum ModalType {
   SAVE = 'save',
   EXPORT = 'export',
   CHOOSE_EXPORT_SAVE = 'choose-export-save',
+  GALLERY = 'gallery',
 }

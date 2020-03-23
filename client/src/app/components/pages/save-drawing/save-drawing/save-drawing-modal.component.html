@@ -2,7 +2,7 @@
   <div content>
     <div id="main-container">
       <div id="form-container">
-        <img id="preview" [src]="previewURL()">
+        <img id="preview" [src]="previewURL">
         <form [formGroup]="formGroup"></form>
         <app-name-input [formGroup]="formGroup" [(value)]="name" required=true>Nom du dessin</app-name-input>
         <div id="tag-container" *ngFor="let tag of tags; index as i">
