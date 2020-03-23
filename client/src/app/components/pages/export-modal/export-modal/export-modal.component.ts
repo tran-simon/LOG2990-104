@@ -31,7 +31,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     editorService.clearShapesBuffer();
     this.name = '';
     this.selectedExtension = ExtensionType.SVG;
-    this.imageExportService.exportSVGElement(this.editorService.view);
+    this.href = this.imageExportService.exportSVGElement(this.editorService.view);
     this.formGroup = new FormGroup({});
   }
 
@@ -41,8 +41,10 @@ export class ExportModalComponent extends AbstractModalComponent {
 
   changeExtension(): void {
     this.selectedExtension === ExtensionType.SVG
-      ? this.imageExportService.exportSVGElement(this.editorService.view)
-      : this.imageExportService.exportImageElement(this.editorService.view, this.selectedExtension);
+      ? (this.href = this.imageExportService.exportSVGElement(this.editorService.view))
+      : this.imageExportService.exportImageElement(this.editorService.view, this.selectedExtension).then((data: string) => {
+          this.href = data;
+        });
   }
 
   submit(): void {

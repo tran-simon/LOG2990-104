@@ -8,16 +8,18 @@ import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing
 export class ImageExportService {
   constructor(private sanitizer: DomSanitizer) {}
 
-  exportImageElement(surface: DrawingSurfaceComponent, extension: string): () => string {
-    const image = new Image();
-    const canvas = document.createElement('canvas');
-    image.src = this.createDataURL(surface);
-    const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
-    return (image.onload = (): string => {
-      canvas.width = surface.width;
-      canvas.height = surface.height;
-      ctx.drawImage(image, 0, 0);
-      return canvas.toDataURL(`image/${extension}`);
+  async exportImageElement(surface: DrawingSurfaceComponent, extension: string): Promise<string> {
+    return new Promise<string>((resolve) => {
+      const image = new Image();
+      const canvas = document.createElement('canvas');
+      image.src = this.createDataURL(surface);
+      const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
+      image.onload = (): void => {
+        canvas.width = surface.width;
+        canvas.height = surface.height;
+        ctx.drawImage(image, 0, 0);
+        resolve(canvas.toDataURL(`image/${extension}`));
+      };
     });
   }
 
