@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { EditorService } from 'src/app//services/editor.service';
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
@@ -18,7 +17,6 @@ export class ExportModalComponent extends AbstractModalComponent {
   extensions: string[] = Object.values(ExtensionType);
   href: SafeResourceUrl;
   name: string;
-  previewImage: DrawingSurfaceComponent;
   formGroup: FormGroup;
   selectedFilter: FilterType;
   filters: string[] = Object.values(FilterType);
@@ -30,7 +28,6 @@ export class ExportModalComponent extends AbstractModalComponent {
   ) {
     super(dialogRef);
     editorService.clearShapesBuffer();
-    this.previewImage = this.editorService.view;
     this.name = '';
     this.selectedExtension = ExtensionType.EMPTY;
     this.selectedFilter = FilterType.EMPTY;
@@ -39,37 +36,32 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   previewURL(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.previewImage));
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.editorService.view));
   }
 
   addFilterToPreview(): void {
     const image = document.getElementById('preview') as HTMLImageElement;
     switch (this.selectedFilter) {
-      case FilterType.EMPTY: {
+      case FilterType.EMPTY:
         image.style.filter = 'none';
         break;
-      }
-      case FilterType.BLACKWHITE: {
+      case FilterType.BLACKWHITE:
         image.style.filter = 'grayscale(100%)';
         break;
-      }
-      case FilterType.BLUR: {
+      case FilterType.BLUR:
         image.style.filter = 'blur(5px)';
         break;
-      }
-      case FilterType.INVERT: {
+      case FilterType.INVERT:
         image.style.filter = 'invert(100%)';
         break;
-      }
-      case FilterType.SATURATE: {
+      case FilterType.SATURATE:
         image.style.filter = 'saturate(200%)';
         break;
-      }
-      case FilterType.SEPIA: {
+      case FilterType.SEPIA:
         image.style.filter = 'sepia(100%)';
         break;
-      }
     }
+    this.changeExtension();
   }
   removeFilter(): void {
     this.editorService.view.svg.removeAttribute('filter');
@@ -77,30 +69,24 @@ export class ExportModalComponent extends AbstractModalComponent {
 
   addFilter(): void {
     switch (this.selectedFilter) {
-      case FilterType.EMPTY: {
-        this.previewImage.svg.setAttribute('filter', 'none');
+      case FilterType.EMPTY:
+        this.editorService.view.svg.setAttribute('filter', 'none');
         break;
-      }
-      case FilterType.BLACKWHITE: {
-        this.previewImage.svg.setAttribute('filter', 'grayscale(100%)');
+      case FilterType.BLACKWHITE:
+        this.editorService.view.svg.setAttribute('filter', 'grayscale(100%)');
         break;
-      }
-      case FilterType.BLUR: {
-        this.previewImage.svg.setAttribute('filter', 'blur(5px)');
+      case FilterType.BLUR:
+        this.editorService.view.svg.setAttribute('filter', 'blur(5px)');
         break;
-      }
-      case FilterType.INVERT: {
-        this.previewImage.svg.setAttribute('filter', 'invert(100%)');
+      case FilterType.INVERT:
+        this.editorService.view.svg.setAttribute('filter', 'invert(100%)');
         break;
-      }
-      case FilterType.SATURATE: {
-        this.previewImage.svg.setAttribute('filter', 'saturate(200%)');
+      case FilterType.SATURATE:
+        this.editorService.view.svg.setAttribute('filter', 'saturate(200%)');
         break;
-      }
-      case FilterType.SEPIA: {
-        this.previewImage.svg.setAttribute('filter', 'sepia(100%)');
+      case FilterType.SEPIA:
+        this.editorService.view.svg.setAttribute('filter', 'sepia(100%)');
         break;
-      }
     }
   }
 
@@ -114,11 +100,11 @@ export class ExportModalComponent extends AbstractModalComponent {
     const image = new Image();
     const canvas = document.createElement('canvas');
     this.addFilter();
-    image.src = this.editorService.createDataURL(this.previewImage);
+    image.src = this.editorService.createDataURL(this.editorService.view);
     const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
     image.onload = () => {
-      canvas.width = this.previewImage.width;
-      canvas.height = this.previewImage.height;
+      canvas.width = this.editorService.view.width;
+      canvas.height = this.editorService.view.height;
       ctx.drawImage(image, 0, 0);
       this.href = canvas.toDataURL(`image/${this.selectedExtension}`);
     };

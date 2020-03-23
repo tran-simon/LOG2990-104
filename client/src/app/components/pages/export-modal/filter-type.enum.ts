@@ -1,5 +1,5 @@
 export enum FilterType {
-  EMPTY = 'Pas de filtres',
+  EMPTY = 'Pas de filtre',
   BLUR = 'Flou',
   BLACKWHITE = 'Noir et blanc',
   INVERT = 'Inversion',
