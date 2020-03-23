@@ -12,14 +12,14 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field [formGroup]="formGroup">
+      <!-- <mat-form-field [formGroup]="formGroup">
         <mat-label>Filtres</mat-label>
         <mat-select [(value)]="selectedFilter" name="extensions" (selectionChange)="addFilterToPreview()">
           <mat-option *ngFor="let filter of filters" [value]="filter">
             {{filter}}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </form>
   </div>
   <div actions>
