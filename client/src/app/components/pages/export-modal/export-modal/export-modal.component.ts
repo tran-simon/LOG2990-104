@@ -63,11 +63,11 @@ export class ExportModalComponent extends AbstractModalComponent {
     }
     this.changeExtension();
   }
-  removeFilter(): void {
+  private removeFilter(): void {
     this.editorService.view.svg.removeAttribute('filter');
   }
 
-  addFilter(): void {
+  private addFilter(): void {
     switch (this.selectedFilter) {
       case FilterType.EMPTY:
         this.editorService.view.svg.setAttribute('filter', 'none');
@@ -90,13 +90,13 @@ export class ExportModalComponent extends AbstractModalComponent {
     }
   }
 
-  exportSVGElement(): void {
+  private exportSVGElement(): void {
     this.addFilter();
     this.href = this.previewURL();
     this.removeFilter();
   }
 
-  exportImageElement(): void {
+  private exportImageElement(): void {
     const image = new Image();
     const canvas = document.createElement('canvas');
     this.addFilter();
