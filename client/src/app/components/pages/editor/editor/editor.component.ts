@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -81,6 +82,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('s'),
         () => {
           this.currentToolType = ToolType.Select;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('a', true),
+        () => {
+          (this.editorService.tools.get(ToolType.Select) as SelectionTool).selectAll();
           return false;
         },
       ],

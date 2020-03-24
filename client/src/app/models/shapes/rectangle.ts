@@ -33,6 +33,22 @@ export class Rectangle extends BaseShape {
     this.svgNode.setAttribute('y', this._origin.y.toString());
   }
 
+  set start(c: Coordinate) {
+    const end = Coordinate.copy(this.end);
+    this.origin = c;
+    this.end = end;
+  }
+
+  get end(): Coordinate {
+    return super.end;
+  }
+
+  set end(c: Coordinate) {
+    // todo - validation logic
+    this.width = c.x - this.origin.x;
+    this.height = c.y - this.origin.y;
+  }
+
   get center(): Coordinate {
     return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }

@@ -48,6 +48,12 @@ export class SelectionTool extends SimpleSelectionTool {
     this.boundingBox.height = shape.height;
   }
 
+  selectAll(): void {
+    this.resetSelection();
+    this.editorService.selectedShapes.push(...this.editorService.shapes);
+    this.updateBoundingBox();
+  }
+
   initSelectArea(): void {
     this.selectArea = new Rectangle(this.initialMouseCoord);
     this.selectArea.shapeProperties.primaryColor = Color.TRANSPARENT;
@@ -73,21 +79,27 @@ export class SelectionTool extends SimpleSelectionTool {
   }
 
   updateSelection(): void {
-    let boundingBoxMin: Coordinate;
-    let boundingBoxMax: Coordinate;
     this.resetSelection();
     this.resizeSelectArea();
 
     this.editorService.shapes.forEach((shape) => {
       if (this.detectBoundingBoxCollision(this.selectArea, shape)) {
         this.editorService.selectedShapes.push(shape);
-        boundingBoxMin = Coordinate.minXYCoord(boundingBoxMin, shape.origin);
-        boundingBoxMax = Coordinate.maxXYCoord(boundingBoxMax, shape.end);
-        this.boundingBox.origin = boundingBoxMin;
-        this.boundingBox.width = boundingBoxMax.x - boundingBoxMin.x;
-        this.boundingBox.height = boundingBoxMax.y - boundingBoxMin.y;
       }
     });
+
+    this.updateBoundingBox();
+  }
+
+  updateBoundingBox(): void {
+    if (this.editorService.selectedShapes.length > 0) {
+      this.boundingBox.origin = this.editorService.selectedShapes[0].origin;
+      this.boundingBox.end = this.editorService.selectedShapes[0].end;
+      this.editorService.selectedShapes.forEach((shape) => {
+        this.boundingBox.start = Coordinate.minXYCoord(this.boundingBox.origin, shape.origin);
+        this.boundingBox.end = Coordinate.maxXYCoord(this.boundingBox.end, shape.end);
+      });
+    }
   }
 
   detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
