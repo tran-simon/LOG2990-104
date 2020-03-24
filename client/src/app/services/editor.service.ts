@@ -13,6 +13,7 @@ import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
 import { CommandReceiver } from '../models/commands/command-receiver';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
+import { SprayTool } from '../models/tools/creator-tools/spray-tool/spray-tool';
 import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 
 @Injectable({
@@ -53,6 +54,7 @@ export class EditorService {
     this.tools.set(ToolType.Ellipse, new EllipseTool(this));
     this.tools.set(ToolType.Pipette, new PipetteTool(this));
     this.tools.set(ToolType.Polygon, new PolygonTool(this));
+    this.tools.set(ToolType.Spray, new SprayTool(this));
     this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
   }
 
@@ -90,15 +92,6 @@ export class EditorService {
     if (this.view) {
       this.view.addShape(shape);
     }
-  }
-
-  /**
-   * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
-   */
-  createDataURL(surface: DrawingSurfaceComponent): string {
-    const xmlSerializer = new XMLSerializer();
-    const svgString = xmlSerializer.serializeToString(surface.svg);
-    return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
 
   removeShape(shape: BaseShape): void {

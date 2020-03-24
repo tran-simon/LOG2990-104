@@ -56,13 +56,13 @@ export class SelectionTool extends SimpleSelectionTool {
 
   initSelectArea(): void {
     this.selectArea = new Rectangle(this.initialMouseCoord);
-    this.selectArea.shapeProperties.primaryColor = Color.TRANSPARENT;
+    this.selectArea.primaryColor = Color.TRANSPARENT;
     this.selectArea.updateProperties();
     this.editorService.addPreviewShape(this.selectArea);
 
     this.boundingBox = new Rectangle(this.initialMouseCoord);
-    this.boundingBox.shapeProperties.primaryColor = SelectionTool.BOUNDING_BOX_COLOR;
-    this.boundingBox.shapeProperties.secondaryColor = SelectionTool.BOUNDING_BOX_COLOR;
+    this.boundingBox.primaryColor = SelectionTool.BOUNDING_BOX_COLOR;
+    this.boundingBox.secondaryColor = SelectionTool.BOUNDING_BOX_COLOR;
     this.boundingBox.updateProperties();
     this.editorService.addPreviewShape(this.boundingBox);
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, SecurityContext } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -7,6 +7,7 @@ import { TagInputComponent } from 'src/app/components/shared/inputs/tag-input/ta
 import { Drawing } from 'src/app/models/drawing';
 import { APIService } from 'src/app/services/api.service';
 import { EditorService } from 'src/app/services/editor.service';
+import { ImageExportService } from 'src/app/services/image-export.service';
 
 @Component({
   selector: 'app-save-drawing-modal',
@@ -16,19 +17,18 @@ import { EditorService } from 'src/app/services/editor.service';
 export class SaveDrawingModalComponent extends AbstractModalComponent {
   tags: TagInputComponent[];
   name: string;
-  errorMessage: string;
   formGroup: FormGroup;
 
   constructor(
     private apiService: APIService,
     private editorService: EditorService,
     public dialogRef: MatDialogRef<AbstractModalComponent>,
+    private imageExportService: ImageExportService,
     private sanitizer: DomSanitizer,
   ) {
     super(dialogRef);
     this.tags = [new TagInputComponent()];
     this.name = '';
-    this.errorMessage = '';
     this.formGroup = new FormGroup({});
   }
 
@@ -38,10 +38,8 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     this.tags.forEach((tag: TagInputComponent) => {
       tagValues.push(tag.value);
     });
-
-    const data = JSON.stringify(this.editorService.shapes);
-    const drawing = new Drawing(this.name, tagValues, data);
-
+    const preview = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.previewURL);
+    const drawing = new Drawing(this.name, tagValues, this.editorService.shapes, preview == null ? '' : preview);
     this.apiService.uploadDrawing(drawing);
 
     this.dialogRef.close();
@@ -55,7 +53,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     this.tags.pop();
   }
 
-  previewURL(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.editorService.createDataURL(this.editorService.view));
+  get previewURL(): SafeResourceUrl {
+    return this.imageExportService.exportSVGElement(this.editorService.view);
   }
 }
