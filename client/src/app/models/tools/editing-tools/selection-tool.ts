@@ -4,13 +4,11 @@ import { MouseListenerService } from 'src/app/services/event-listeners/mouse-lis
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
+import { BoundingBox } from '../../shapes/bounding-box';
 import { Rectangle } from '../../shapes/rectangle';
 
 export class SelectionTool extends SimpleSelectionTool {
-  // tslint:disable-next-line:no-magic-numbers
-  static readonly BOUNDING_BOX_COLOR: Color = Color.rgb255(80, 80, 255, 0.25);
-
-  private boundingBox: Rectangle;
+  private boundingBox: BoundingBox;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean;
@@ -92,11 +90,7 @@ export class SelectionTool extends SimpleSelectionTool {
   }
 
   initBoundingBox(): void {
-    this.boundingBox = new Rectangle(this.initialMouseCoord);
-    this.boundingBox.svgNode.style.pointerEvents = 'none';
-    this.boundingBox.primaryColor = SelectionTool.BOUNDING_BOX_COLOR;
-    this.boundingBox.secondaryColor = SelectionTool.BOUNDING_BOX_COLOR;
-    this.boundingBox.updateProperties();
+    this.boundingBox = new BoundingBox(this.initialMouseCoord);
     this.editorService.addPreviewShape(this.boundingBox);
   }
 
@@ -162,6 +156,7 @@ export class SelectionTool extends SimpleSelectionTool {
       this.boundingBox.origin = new Coordinate();
       this.boundingBox.end = new Coordinate();
     }
+    this.boundingBox.updateControlPoints();
   }
 
   detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {

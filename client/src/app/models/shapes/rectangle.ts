@@ -53,6 +53,10 @@ export class Rectangle extends BaseShape {
     return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
+  set center(c: Coordinate) {
+    this.origin = new Coordinate(c.x - this.width / 2, c.y - this.height / 2);
+  }
+
   constructor(origin: Coordinate = new Coordinate(), size: number = 0) {
     super('rect');
     this.origin = origin;
