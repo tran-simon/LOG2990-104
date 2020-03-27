@@ -10,10 +10,12 @@ export class EraserTool extends Tool {
   constructor(public editorService: EditorService) {
     super(editorService);
   }
+
   static readonly DEFAULT_SIZE: number = 25;
   static readonly HIGHLIGHT_SIZE: number = 3;
 
   private eraserView: Rectangle;
+  private selectedShape: BaseShape | undefined;
 
   static highlightShape(shape: BaseShape): void {
     shape.svgNode.style.strokeWidth =
@@ -23,7 +25,11 @@ export class EraserTool extends Tool {
   }
 
   initMouseHandler(): void {
+    //todo:command
     this.handleMouseMove = () => {
+      if (this.isActive && this.selectedShape) {
+        this.editorService.removeShape(this.selectedShape);
+      }
       this.updateSelection();
     };
 
@@ -34,16 +40,18 @@ export class EraserTool extends Tool {
     };
 
     this.handleMouseDown = () => {
-      if (!this.isActive) {
-        this.isActive = true;
-        this.updateSelection();
+      this.isActive = true;
+      if (this.selectedShape ) {
+        this.editorService.removeShape(this.selectedShape);
       }
+      this.updateSelection();
     };
     this.handleMouseLeave = this.handleMouseUp;
   }
 
   private resetSelection(): void {
     this.editorService.clearShapesBuffer();
+    this.selectedShape = undefined;
     this.initEraserView();
   }
 
@@ -63,39 +71,33 @@ export class EraserTool extends Tool {
     );
   }
 
-  detectBoundingCollision(area: Rectangle, shape: BaseShape): Rectangle[] {
+  getBboxIntersection(area: Rectangle, shape: BaseShape): Rectangle[] {
     return shape.bboxes.filter((box: Rectangle) => this.detectBoundingBoxCollision(area, box));
   }
 
-  resizeSelectArea(size: Coordinate = new Coordinate(EraserTool.DEFAULT_SIZE, EraserTool.DEFAULT_SIZE)): void {
-    this.eraserView.origin = new Coordinate(this.mousePosition.x - size.x / 2, this.mousePosition.y - size.y / 2);
-    this.eraserView.width = size.x;
-    this.eraserView.height = size.y;
+  getShapeIsIntersecting(area: Rectangle, shape: BaseShape): boolean {
+    return !!this.getBboxIntersection(area, shape).length;
+  }
+
+  resizeSelectArea(size: number = EraserTool.DEFAULT_SIZE): void {
+    this.eraserView.origin = new Coordinate(this.mousePosition.x - size / 2, this.mousePosition.y - size / 2);
+    this.eraserView.width = size;
+    this.eraserView.height = size;
   }
 
   updateSelection(): void {
     this.resetSelection();
     this.resizeSelectArea();
 
-    const erasableShapes = Array<BaseShape>();
     this.editorService.shapes.forEach((shape: BaseShape) => {
-      !!this.detectBoundingCollision(this.eraserView, shape).length ?
-        erasableShapes.push(shape) :
-        shape.updateProperties();
-    });
-    if (erasableShapes.length > 0) {
-      let topShape = erasableShapes[0];
-      erasableShapes.forEach((shape: BaseShape) => {
-        if (shape.id > topShape.id) {
-          topShape.updateProperties();
-          topShape = shape;
-        }
-      });
-      if (this.isActive && !!topShape) {
-        this.editorService.removeShape(topShape);
-      } else {
-        EraserTool.highlightShape(topShape);
+      shape.updateProperties();
+      if (this.getShapeIsIntersecting(this.eraserView, shape)) {
+        this.selectedShape = shape;
       }
+    });
+
+    if (this.selectedShape) {
+        EraserTool.highlightShape(this.selectedShape);
     }
   }
 }

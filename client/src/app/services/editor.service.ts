@@ -89,11 +89,21 @@ export class EditorService {
     }
   }
 
+  addShapesToBuffer(shapes: BaseShape[]): void {
+    shapes.forEach(this.addShapeToBuffer, this);
+  }
+
   addShapeToBuffer(shape: BaseShape): void {
-    this.shapesBuffer.push(shape);
-    if (this.view) {
+    if (!this.view) {
+      this.shapesBuffer.push(shape);
+    } else if (!this.view.svg.contains(shape.svgNode)) {
+      this.shapesBuffer.push(shape);
       this.view.addShape(shape);
     }
+  }
+
+  removeShapes(shapes: BaseShape[]): void {
+    shapes.forEach(this.removeShape, this);
   }
 
   removeShape(shape: BaseShape): void {
@@ -106,7 +116,7 @@ export class EditorService {
 
   async viewToCanvas(): Promise<CanvasRenderingContext2D> {
     const image = new Image();
-    const { width, height, svg } = this.view;
+    const {width, height, svg} = this.view;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.canvas.width = width;

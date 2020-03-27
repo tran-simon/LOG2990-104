@@ -2,6 +2,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { Ellipse } from '../models/shapes/ellipse';
 import { Line } from '../models/shapes/line';
@@ -60,6 +61,24 @@ describe('EditorService', () => {
     service.clearShapesBuffer();
     expect(service['shapesBuffer'].length).toEqual(0);
     expect(service['previewShapes'].length).toEqual(0);
+  });
+
+  it('can add multiple shapes', () => {
+    const addShapeSpy = spyOn(service, 'addShapeToBuffer');
+    const shapes = [new Rectangle(), new CompositeLine()];
+    service.addShapesToBuffer(shapes);
+    expect(addShapeSpy).toHaveBeenCalledTimes(2);
+    expect(addShapeSpy).toHaveBeenCalledWith(shapes[0]);
+    expect(addShapeSpy).toHaveBeenCalledWith(shapes[1]);
+  });
+
+  it('can remove multiple shapes', () => {
+    const removeShapeSpy = spyOn(service, 'removeShape');
+    const shapes = [new Rectangle(), new CompositeLine()];
+    service.removeShapes(shapes);
+    expect(removeShapeSpy).toHaveBeenCalledTimes(2);
+    expect(removeShapeSpy).toHaveBeenCalledWith(shapes[0]);
+    expect(removeShapeSpy).toHaveBeenCalledWith(shapes[1]);
   });
 
   it('removes the shapes that were in the buffer from the view on clearShapesBuffer', () => {

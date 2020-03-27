@@ -14,9 +14,9 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { SprayToolbarComponent } from '../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { Rectangle } from '../../shapes/rectangle';
-import { RemoveShapeCommand } from './remove-shape-command';
+import { AddShapesCommand } from 'src/app/models/commands/shape-commands/add-shapes-command';
 
-describe('RemoveShapeCommand', () => {
+describe('AddShapesCommand', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let editor: EditorComponent;
 
@@ -45,34 +45,33 @@ describe('RemoveShapeCommand', () => {
     editor = fixture.componentInstance;
   });
 
-  it('should add back shape to buffer then apply buffer', () => {
+  it('should add shape to buffer then apply buffer', () => {
     const shape = new Rectangle();
-    const command = new RemoveShapeCommand(shape, editor.editorService);
+    const command = new AddShapesCommand([shape], editor.editorService);
     const addSpy = spyOn(editor.editorService, 'addShapeToBuffer');
     const applySpy = spyOn(editor.editorService, 'applyShapesBuffer');
-    command.undo();
+    command.execute();
     expect(addSpy).toHaveBeenCalled();
     expect(applySpy).toHaveBeenCalled();
   });
 
   it('should only apply buffer if shape is already present', () => {
     const shape = new Rectangle();
-    const command = new RemoveShapeCommand(shape, editor.editorService);
+    const command = new AddShapesCommand([shape], editor.editorService);
     editor.editorService.addShapeToBuffer(shape);
     const addSpy = spyOn(editor.editorService, 'addShapeToBuffer');
     const applySpy = spyOn(editor.editorService, 'applyShapesBuffer');
-    command.undo();
+    command.execute();
     expect(addSpy).not.toHaveBeenCalled();
     expect(applySpy).toHaveBeenCalled();
   });
 
-  it('can remove shape', () => {
+  it('should remove shape on undo', () => {
     const shape = new Rectangle();
-    const command = new RemoveShapeCommand(shape, editor.editorService);
+    const command = new AddShapesCommand([shape], editor.editorService);
     const removeSpy = spyOn(editor.editorService, 'removeShape');
-    editor.editorService.addShapeToBuffer(shape);
-    editor.editorService.applyShapesBuffer();
     command.execute();
+    command.undo();
     expect(removeSpy).toHaveBeenCalledWith(shape);
   });
 });
