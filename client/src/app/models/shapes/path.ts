@@ -6,10 +6,6 @@ export class Path extends BaseShape {
   static readonly PATH_STYLE: string = 'round';
   private _trace: string;
   private lastPoint: Coordinate;
-  private _bboxes: BaseShape[];
-  get bboxes(): BaseShape[] {
-    return this._bboxes;
-  }
 
   get trace(): string {
     return this._trace;
@@ -40,7 +36,6 @@ export class Path extends BaseShape {
     this.minCoord = this.maxCoord = [c.x, c.y];
     this._trace = 'M ' + c.x + ' ' + c.y;
     this.lastPoint = c;
-    this._bboxes = [];
   }
 
   private minCoord: [number, number];
@@ -54,7 +49,7 @@ export class Path extends BaseShape {
     if (Math.sqrt(Math.pow(this.lastPoint.x - c.x, 2) + Math.pow(this.lastPoint.y - c.y, 2)) > 1) {
       const origin = new Coordinate(this.lastPoint.x - this.strokeWidth / 2, this.lastPoint.y - this.strokeWidth / 2);
       const box = new Rectangle(origin, this.strokeWidth, this.strokeWidth);
-      this._bboxes.push(box);
+      this.bboxes.push(box);
       this.lastPoint = c;
     }
     this.trace += ' L ' + c.x + ' ' + c.y;

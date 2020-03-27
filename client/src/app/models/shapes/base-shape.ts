@@ -1,3 +1,4 @@
+import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
@@ -9,6 +10,7 @@ export abstract class BaseShape {
   protected _origin: Coordinate;
   readonly svgNode: SVGElement;
   readonly id: string;
+  readonly bboxes: Rectangle[];
 
   thickness: number;
   strokeWidth: number;
@@ -18,10 +20,6 @@ export abstract class BaseShape {
 
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
-
-  get bboxes(): BaseShape[] {
-    return [];
-  }
 
   get width(): number {
     return 0;
@@ -45,6 +43,7 @@ export abstract class BaseShape {
     this.secondaryColor = Color.BLACK;
     this.primaryColor = Color.WHITE;
     this.contourType = ContourType.FILLED_CONTOUR;
+    this.bboxes = [];
 
     this.updateProperties();
   }

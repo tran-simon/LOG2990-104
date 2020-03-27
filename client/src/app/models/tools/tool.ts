@@ -34,9 +34,6 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
   handleMouseLeave: MouseEventAction;
   handleMouseMove: MouseEventAction;
   handleMouseUp: MouseEventAction;
-  afterViewChange(): void {
-    return;
-  }
 
   initMouseHandler?(): void;
 
