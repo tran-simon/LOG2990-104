@@ -4,7 +4,6 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
   static readonly NO_STYLE: string = 'none';
-  protected _origin: Coordinate;
   readonly svgNode: SVGElement;
 
   thickness: number;
@@ -16,11 +15,15 @@ export abstract class BaseShape {
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
 
-  get width(): number {
-    return 0;
+  abstract get width(): number;
+  abstract get height(): number;
+
+  get center(): Coordinate {
+    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
-  get height(): number {
-    return 0;
+
+  set center(c: Coordinate) {
+    this.origin = new Coordinate(c.x - this.width / 2, c.y - this.height / 2);
   }
 
   get end(): Coordinate {
@@ -29,7 +32,6 @@ export abstract class BaseShape {
 
   constructor(type: string) {
     this.svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
-    this._origin = new Coordinate();
     this.thickness = 1;
     this.strokeWidth = 1;
     this.secondaryColor = Color.BLACK;

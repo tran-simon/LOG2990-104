@@ -22,10 +22,10 @@ export class CompositeParticle extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return this._origin;
+    return new Coordinate();
   }
   set origin(c: Coordinate) {
-    this._origin = c;
+    // todo
   }
 
   constructor(origin: Coordinate = new Coordinate(), radius: number = 1) {

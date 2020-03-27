@@ -26,6 +26,14 @@ export class BoundingBox extends BaseShape {
     this.updateControlPoints();
   }
 
+  get width(): number {
+    return this.outline.width;
+  }
+
+  get height(): number {
+    return this.outline.height;
+  }
+
   get start(): Coordinate {
     return this.outline.start;
   }

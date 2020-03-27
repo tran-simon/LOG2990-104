@@ -3,7 +3,10 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class Path extends BaseShape {
   static readonly PATH_STYLE: string = 'round';
-  private _trace: string;
+  private _trace: string; // todo - store individual points
+
+  private _width: number;
+  private _height: number;
 
   get trace(): string {
     return this._trace;
@@ -15,11 +18,19 @@ export class Path extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return this._origin;
+    return new Coordinate();
   }
 
   set origin(c: Coordinate) {
-    this._origin = c;
+    // todo
+  }
+
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
   }
 
   constructor(c: Coordinate) {

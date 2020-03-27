@@ -2,6 +2,7 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class Rectangle extends BaseShape {
+  private _origin: Coordinate;
   private _height: number;
   private _width: number;
 
@@ -47,14 +48,6 @@ export class Rectangle extends BaseShape {
     // todo - validation logic
     this.width = c.x - this.origin.x;
     this.height = c.y - this.origin.y;
-  }
-
-  get center(): Coordinate {
-    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
-  }
-
-  set center(c: Coordinate) {
-    this.origin = new Coordinate(c.x - this.width / 2, c.y - this.height / 2);
   }
 
   constructor(origin: Coordinate = new Coordinate(), size: number = 0) {
