@@ -7,11 +7,21 @@ import * as httpStatus from 'http-status-codes';
 
 import { Application } from '../app';
 
-import { container } from '../inversify.config';
+import { Container } from 'inversify';
+import { containerBootstrapper } from '../inversify.config';
 import Types from '../types';
 
 describe('API Controller', () => {
-  const application = container.get<Application>(Types.Application);
+  let container: Container;
+  let application: Application;
+
+  containerBootstrapper().then((c) => {
+    container = c;
+  });
+
+  beforeEach(() => {
+    application = container.get<Application>(Types.Application);
+  });
 
   it('should OK on GET /', (done: Mocha.Done) => {
     chai.request(application.app).get('/api').then((res) => {

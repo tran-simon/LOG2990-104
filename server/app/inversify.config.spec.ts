@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import { container } from './inversify.config';
 
+import { Container } from 'inversify';
+import { containerBootstrapper } from './inversify.config';
 import Types from './types';
 
 import { Application } from './app';
@@ -11,6 +12,11 @@ import { APIService } from './services/api.service';
 import { DatabaseService } from './services/database.service';
 
 describe('Inversify config', () => {
+  let container: Container;
+
+  containerBootstrapper().then((c) => {
+    container = c;
+  });
 
   it('should have Server binded to Types.Server', (done: Mocha.Done) => {
     const server = container.get<Server>(Types.Server);

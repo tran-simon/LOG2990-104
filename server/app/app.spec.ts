@@ -5,14 +5,20 @@ chai.use(require('chai-http'));
 
 import * as httpStatus from 'http-status-codes';
 
-import { container } from './inversify.config';
+import { Container } from 'inversify';
+import { containerBootstrapper } from './inversify.config';
 import Types from './types';
 
 import { Application } from './app';
 
-let application: Application;
-
 describe('Application', () => {
+  let container: Container;
+  let application: Application;
+
+  containerBootstrapper().then((c) => {
+    container = c;
+  });
+
   beforeEach(() => {
     application = container.get<Application>(Types.Application);
   });

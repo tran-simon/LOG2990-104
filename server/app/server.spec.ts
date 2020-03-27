@@ -4,15 +4,20 @@ import * as sinon from 'sinon';
 
 import { Server } from './server';
 
-import { container } from './inversify.config';
+import { Container } from 'inversify';
+import { containerBootstrapper } from './inversify.config';
 import Types from './types';
 
 import { DEFAULT_PORT } from './constants';
 
 describe('Server', () => {
-
+  let container: Container;
   let server: Server;
   let anotherServer: Server;
+
+  containerBootstrapper().then((c) => {
+    container = c;
+  });
 
   beforeEach(() => {
     server = container.get<Server>(Types.Server);
