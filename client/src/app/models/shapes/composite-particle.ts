@@ -13,26 +13,42 @@ export class CompositeParticle extends BaseShape {
     this._radius = !r ? 1 : Math.abs(r);
   }
 
-  get height(): number {
-    return 0; // ToDO
+  get width(): number {
+    if (this.particles.length > 0) {
+      return Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).x - this.origin.x;
+    } else {
+      return 0;
+    }
   }
 
-  get width(): number {
-    return 0; // ToDO
+  get height(): number {
+    if (this.particles.length > 0) {
+      return Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).y - this.origin.y;
+    } else {
+      return 0;
+    }
   }
 
   get origin(): Coordinate {
-    return new Coordinate();
+    if (this.particles.length > 0) {
+      return Coordinate.minArrayXYCoord(this.particles.map((shape) => shape.origin));
+    } else {
+      return new Coordinate();
+    }
   }
   set origin(c: Coordinate) {
-    // todo
+    if (this.particles.length > 0) {
+      const delta = Coordinate.substract(c, this.origin);
+      this.particles.forEach((shape) => {
+        shape.origin = Coordinate.add(shape.origin, delta);
+      });
+    }
   }
 
-  constructor(origin: Coordinate = new Coordinate(), radius: number = 1) {
+  constructor(radius: number = 1) {
     super('g');
-    this.radius = radius;
-    this.origin = origin;
     this.particles = [];
+    this.radius = radius;
   }
 
   private genRandomPosition(c: Coordinate): Coordinate {

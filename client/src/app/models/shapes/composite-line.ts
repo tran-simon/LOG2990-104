@@ -17,7 +17,7 @@ export class CompositeLine extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return Coordinate.minArrayXYCoord(this.junctionArray);
+    return Coordinate.minArrayXYCoord(this.junctionArray.map((shape) => shape.origin));
   }
 
   set origin(c: Coordinate) {
@@ -29,11 +29,11 @@ export class CompositeLine extends BaseShape {
   }
 
   get width(): number {
-    return Coordinate.maxArrayXYCoord(this.junctionArray).x - this.origin.x;
+    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).x - this.origin.x;
   }
 
   get height(): number {
-    return Coordinate.maxArrayXYCoord(this.junctionArray).y - this.origin.y;
+    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y;
   }
 
   constructor(initCoord: Coordinate = new Coordinate()) {

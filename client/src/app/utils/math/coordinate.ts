@@ -1,5 +1,3 @@
-import { BaseShape } from 'src/app/models/shapes/base-shape';
-
 export class Coordinate {
   readonly x: number;
   readonly y: number;
@@ -45,18 +43,18 @@ export class Coordinate {
     return new Coordinate(Math.max(c1.x, c2.x), Math.max(c1.y, c2.y));
   }
 
-  static minArrayXYCoord(shapes: BaseShape[]): Coordinate {
-    let min = Coordinate.copy(shapes[0].origin);
-    shapes.forEach((shape) => {
-      min = this.minXYCoord(shape.origin, min);
+  static minArrayXYCoord(array: Coordinate[]): Coordinate {
+    let min = Coordinate.copy((array as Coordinate[])[0]);
+    (array as Coordinate[]).forEach((c) => {
+      min = this.minXYCoord(c, min);
     });
     return min;
   }
 
-  static maxArrayXYCoord(shapes: BaseShape[]): Coordinate {
-    let max = Coordinate.copy(shapes[0].end);
-    shapes.forEach((shape) => {
-      max = this.maxXYCoord(shape.end, max);
+  static maxArrayXYCoord(array: Coordinate[]): Coordinate {
+    let max = Coordinate.copy((array as Coordinate[])[0]);
+    (array as Coordinate[]).forEach((c) => {
+      max = this.maxXYCoord(c, max);
     });
     return max;
   }
