@@ -20,11 +20,11 @@ describe('AbstractEventListenerService', () => {
     preventDefaultSpy = createSpy('preventDefaultSpy');
     eventListenerService = new AbstractEventListenerServiceImpl();
 
-    eventListenerService['eventsHandlingMap'].set('a', () => false);
-    eventListenerService['eventsHandlingMap'].set('b', () => true);
-    eventListenerService['eventsHandlingMap'].set('c', () => false);
-    eventListenerService['eventsHandlingMap'].set('d', () => true);
-    eventListenerService['eventsHandlingMap'].set('e', () => true);
+    eventListenerService['eventsHandlingMap'].set('a', createSpy().and.returnValue(false));
+    eventListenerService['eventsHandlingMap'].set('b', createSpy().and.returnValue(true));
+    eventListenerService['eventsHandlingMap'].set('c', createSpy().and.returnValue(false));
+    eventListenerService['eventsHandlingMap'].set('d', createSpy().and.returnValue(true));
+    eventListenerService['eventsHandlingMap'].set('e', createSpy().and.returnValue(true));
   });
 
   it('should create', () => {
@@ -35,6 +35,7 @@ describe('AbstractEventListenerService', () => {
     const event = { type: 'b', preventDefault } as Event;
 
     expect(eventListenerService.handle(event)).toEqual(true);
+    expect(eventListenerService['eventsHandlingMap'].get('b')).toHaveBeenCalledWith(event);
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
@@ -42,6 +43,7 @@ describe('AbstractEventListenerService', () => {
     const event = { type: 'a', preventDefault } as Event;
 
     expect(eventListenerService.handle(event)).toEqual(false);
+    expect(eventListenerService['eventsHandlingMap'].get('a')).toHaveBeenCalledWith(event);
     expect(preventDefaultSpy).not.toHaveBeenCalled();
   });
 
@@ -80,6 +82,7 @@ describe('AbstractEventListenerService', () => {
     } as KeyboardEvent;
 
     expect(eventListenerService.handle(event)).toEqual(true);
+    expect(eventListenerService['eventsHandlingMap'].get('b')).toHaveBeenCalledWith(event);
     expect(eventListenerService.defaultEventAction).not.toHaveBeenCalled();
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
@@ -87,6 +90,15 @@ describe('AbstractEventListenerService', () => {
   it('can add event', () => {
     eventListenerService.addEvent('ID', () => false);
     expect(eventListenerService['eventsHandlingMap'].get('ID')).toBeDefined();
+  });
+
+  it('does not handle events if not listening', () => {
+    const event = { type: 'b', preventDefault } as Event;
+    eventListenerService.listening = false;
+
+    expect(eventListenerService.handle(event)).toEqual(false);
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+    expect(eventListenerService['eventsHandlingMap'].get('b')).not.toHaveBeenCalled();
   });
 
   it('can add multiple events', () => {

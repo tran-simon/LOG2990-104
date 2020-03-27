@@ -9,4 +9,5 @@ export enum ToolType {
   Line = 'line-tool',
   Ellipse = 'ellipse-tool',
   Polygon = 'polygon-tool',
+  Spray = 'spray-tool',
 }

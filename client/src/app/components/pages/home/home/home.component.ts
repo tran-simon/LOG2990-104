@@ -47,7 +47,7 @@ export class HomeComponent {
   }
 
   openGallery(): void {
-    return;
+    this.dialog.openByName(ModalType.GALLERY);
   }
 
   @HostListener('window:keydown', ['$event'])

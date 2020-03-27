@@ -63,12 +63,12 @@ export class Path extends BaseShape {
   updateProperties(): void {
     super.updateProperties();
 
-    this._svgNode.style.fill = Path.NO_STYLE;
+    this.svgNode.style.fill = Path.NO_STYLE;
 
-    this._svgNode.style.stroke = this.primaryColor.rgbString;
-    this._svgNode.style.strokeOpacity = this.primaryColor.a.toString();
+    this.svgNode.style.stroke = this.primaryColor.rgbString;
+    this.svgNode.style.strokeOpacity = this.primaryColor.a.toString();
 
-    this._svgNode.style.strokeLinecap = Path.PATH_STYLE;
-    this._svgNode.style.strokeLinejoin = Path.PATH_STYLE;
+    this.svgNode.style.strokeLinecap = Path.PATH_STYLE;
+    this.svgNode.style.strokeLinejoin = Path.PATH_STYLE;
   }
 }

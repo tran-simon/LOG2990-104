@@ -7,7 +7,7 @@ export abstract class BaseShape {
   static id = 0;
   static readonly NO_STYLE: string = 'none';
   protected _origin: Coordinate;
-  protected readonly _svgNode: SVGElement;
+  readonly svgNode: SVGElement;
   readonly id: string;
 
   thickness: number;
@@ -15,10 +15,6 @@ export abstract class BaseShape {
   secondaryColor: Color;
   primaryColor: Color;
   contourType: ContourType;
-
-  get svgNode(): SVGElement {
-    return this._svgNode;
-  }
 
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
@@ -39,9 +35,9 @@ export abstract class BaseShape {
   }
 
   constructor(type: string) {
-    this._svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
-    this.id = `BaseShape-${BaseShape.id++}-${type}`;
-    this._svgNode.id = this.id;
+    this.svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
+    this.id = `BaseShape-${BaseShape.id++}-${type}`;//todo: needed?
+    this.svgNode.id = this.id;
 
     this._origin = new Coordinate();
     this.thickness = 1;
@@ -57,11 +53,11 @@ export abstract class BaseShape {
     const hasStroke = this.contourType !== ContourType.FILLED;
     const hasFill = this.contourType !== ContourType.CONTOUR;
 
-    this._svgNode.style.strokeWidth = this.strokeWidth.toString();
-    this._svgNode.style.strokeOpacity = this.secondaryColor.a.toString();
-    this._svgNode.style.fillOpacity = this.primaryColor.a.toString();
+    this.svgNode.style.strokeWidth = this.strokeWidth.toString();
+    this.svgNode.style.strokeOpacity = this.secondaryColor.a.toString();
+    this.svgNode.style.fillOpacity = this.primaryColor.a.toString();
 
-    this._svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.NO_STYLE;
-    this._svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.NO_STYLE;
+    this.svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.NO_STYLE;
+    this.svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.NO_STYLE;
   }
 }

@@ -10,6 +10,7 @@ import { EditorModule } from './components/pages/editor/editor.module';
 import { EditorComponent } from './components/pages/editor/editor/editor.component';
 import { ExportDrawingModule } from './components/pages/export-modal/export-modal.module';
 import { ExportModalComponent } from './components/pages/export-modal/export-modal/export-modal.component';
+import { GalleryModule } from './components/pages/gallery/gallery.module';
 import { HomeModule } from './components/pages/home/home.module';
 import { HomeComponent } from './components/pages/home/home/home.component';
 import { SaveDrawingModule } from './components/pages/save-drawing/save-drawing.module';
@@ -27,6 +28,7 @@ import { SharedModule } from './components/shared/shared.module';
     SaveDrawingModule,
     ChooseExportSaveModule,
     ExportDrawingModule,
+    GalleryModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'edit', component: EditorComponent },
