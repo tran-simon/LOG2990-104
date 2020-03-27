@@ -3,6 +3,4 @@
 --full-trace
 --recursive
 app/**/*.spec.ts
---exclude
-www.ts
 --timeout 10000

@@ -8,13 +8,15 @@ import { Server } from './server';
 import { APIService } from './services/api.service';
 import { DatabaseService } from './services/database.service';
 
-const container: Container = new Container();
+export const containerBootstrapper: () => Promise<Container> = async () => {
+  const container: Container = new Container();
 
-container.bind(Types.Server).to(Server);
-container.bind(Types.Application).to(Application);
-container.bind(Types.APIController).to(APIController);
-container.bind(Types.APIService).to(APIService);
-container.bind(Types.DatabaseController).to(DatabaseController);
-container.bind(Types.DatabaseService).to(DatabaseService);
+  container.bind(Types.Server).to(Server);
+  container.bind(Types.Application).to(Application);
+  container.bind(Types.APIController).to(APIController);
+  container.bind(Types.APIService).to(APIService);
+  container.bind(Types.DatabaseController).to(DatabaseController);
+  container.bind(Types.DatabaseService).to(DatabaseService);
 
-export { container };
+  return container;
+};
