@@ -1,3 +1,4 @@
+import { RemoveShapesCommand } from 'src/app/models/commands/shape-commands/remove-shapes-command';
 import { EditorService } from '../../../services/editor.service';
 import { Color } from '../../../utils/color/color';
 import { Coordinate } from '../../../utils/math/coordinate';
@@ -9,6 +10,7 @@ export class EraserTool extends Tool {
 
   constructor(public editorService: EditorService) {
     super(editorService);
+    this.removedShapes = [];
   }
 
   static readonly DEFAULT_SIZE: number = 25;
@@ -16,6 +18,7 @@ export class EraserTool extends Tool {
 
   private eraserView: Rectangle;
   private selectedShape: BaseShape | undefined;
+  private removedShapes: BaseShape[];
 
   static highlightShape(shape: BaseShape): void {
     shape.svgNode.style.strokeWidth =
@@ -24,11 +27,18 @@ export class EraserTool extends Tool {
     shape.svgNode.style.strokeOpacity = '1';
   }
 
+  private erase(shape: BaseShape | undefined): void {
+    if (shape) {
+      this.editorService.removeShapeFromView(shape);
+      this.removedShapes.push(shape);
+    }
+  }
+
+
   initMouseHandler(): void {
-    //todo:command
     this.handleMouseMove = () => {
-      if (this.isActive && this.selectedShape) {
-        this.editorService.removeShape(this.selectedShape);
+      if (this.isActive) {
+        this.erase(this.selectedShape);
       }
       this.updateSelection();
     };
@@ -36,20 +46,21 @@ export class EraserTool extends Tool {
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
+        const removeShapesCommand = new RemoveShapesCommand(this.removedShapes, this.editorService);
+        this.editorService.commandReceiver.add(removeShapesCommand);
+        this.removedShapes = [];
       }
     };
 
     this.handleMouseDown = () => {
       this.isActive = true;
-      if (this.selectedShape ) {
-        this.editorService.removeShape(this.selectedShape);
-      }
+      this.erase(this.selectedShape);
       this.updateSelection();
     };
     this.handleMouseLeave = this.handleMouseUp;
   }
 
-  private resetSelection(): void {
+  private resetCurrentSelection(): void {
     this.editorService.clearShapesBuffer();
     this.selectedShape = undefined;
     this.initEraserView();
@@ -86,7 +97,7 @@ export class EraserTool extends Tool {
   }
 
   updateSelection(): void {
-    this.resetSelection();
+    this.resetCurrentSelection();
     this.resizeSelectArea();
 
     this.editorService.shapes.forEach((shape: BaseShape) => {

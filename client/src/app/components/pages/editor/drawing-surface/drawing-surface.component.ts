@@ -43,6 +43,8 @@ export class DrawingSurfaceComponent {
   }
 
   removeShape(shape: BaseShape): void {
-    this.svg.removeChild(shape.svgNode);
+    if (this.svg.contains(shape.svgNode)) {
+      this.svg.removeChild(shape.svgNode);
+    }
   }
 }

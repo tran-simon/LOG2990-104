@@ -106,11 +106,14 @@ export class EditorService {
     shapes.forEach(this.removeShape, this);
   }
 
+  removeShapeFromView(shape: BaseShape): void{
+    this.view.removeShape(shape);
+  }
   removeShape(shape: BaseShape): void {
     const index = this.shapes.findIndex((s) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
-      this.view.removeShape(shape);
+      this.removeShapeFromView(shape);
     }
   }
 

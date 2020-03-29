@@ -32,9 +32,17 @@ describe('DrawingSurfaceComponent', () => {
   });
 
   it('can remove shape from the view', () => {
+    spyOn(component.svg, 'contains').and.returnValue(true);
     const shape = new Rectangle();
     component.removeShape(shape);
     expect(nativeElementSpyObj.removeChild).toHaveBeenCalledWith(shape.svgNode);
+  });
+
+  it('does not remove shape if view does not contain the shape', () => {
+    spyOn(component.svg, 'contains').and.returnValue(false);
+    const shape = new Rectangle();
+    component.removeShape(shape);
+    expect(nativeElementSpyObj.removeChild).not.toHaveBeenCalled();
   });
 
   it('can add shape to the view', () => {
