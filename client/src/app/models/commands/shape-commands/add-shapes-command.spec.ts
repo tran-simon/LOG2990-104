@@ -11,10 +11,10 @@ import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar
 import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { AddShapesCommand } from 'src/app/models/commands/shape-commands/add-shapes-command';
 import { EditorService } from 'src/app/services/editor.service';
 import { SprayToolbarComponent } from '../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { Rectangle } from '../../shapes/rectangle';
-import { AddShapesCommand } from 'src/app/models/commands/shape-commands/add-shapes-command';
 
 describe('AddShapesCommand', () => {
   let fixture: ComponentFixture<EditorComponent>;

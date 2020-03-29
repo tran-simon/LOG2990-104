@@ -1,5 +1,5 @@
+import { RectangleToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/rectangle-tool-properties';
 import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
-import { RectangleToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/rectangle-tool-properties';
 
 describe('Rectangle Tool Properties', () => {
   let rectangleProperties: RectangleToolProperties;

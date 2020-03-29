@@ -1,8 +1,8 @@
 import { AddShapesCommand } from 'src/app/models/commands/shape-commands/add-shapes-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 
 export abstract class CreatorTool<T = CreatorToolProperties> extends Tool<T> {
   abstract shape: BaseShape | undefined;

@@ -2,8 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { SharedModule } from '../../../../shared/shared.module';
 
-import { EditorService } from '../../../../../services/editor.service';
 import { EraserToolbarComponent } from 'src/app/components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
+import { EditorService } from '../../../../../services/editor.service';
 
 describe('ErasorToolbarComponent', () => {
   let component: EraserToolbarComponent;

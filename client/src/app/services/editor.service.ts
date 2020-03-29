@@ -106,7 +106,7 @@ export class EditorService {
     shapes.forEach(this.removeShape, this);
   }
 
-  removeShapeFromView(shape: BaseShape): void{
+  removeShapeFromView(shape: BaseShape): void {
     this.view.removeShape(shape);
   }
   removeShape(shape: BaseShape): void {

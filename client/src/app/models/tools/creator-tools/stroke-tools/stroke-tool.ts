@@ -1,5 +1,5 @@
-import { Path } from '../../../shapes/path';
 import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
+import { Path } from '../../../shapes/path';
 import { CreatorTool } from '../creator-tool';
 
 export abstract class StrokeTool<T = CreatorToolProperties> extends CreatorTool<T> {

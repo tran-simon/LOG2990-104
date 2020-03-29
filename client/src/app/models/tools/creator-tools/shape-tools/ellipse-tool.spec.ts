@@ -1,6 +1,7 @@
 /*tslint:disable:no-string-literal no-magic-numbers*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EllipseToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/ellipse-tool-properties';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
@@ -12,7 +13,6 @@ import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolb
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
-import { EllipseToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/ellipse-tool-properties';
 import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';

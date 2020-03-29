@@ -34,7 +34,6 @@ export class EraserTool extends Tool {
     }
   }
 
-
   initMouseHandler(): void {
     this.handleMouseMove = () => {
       if (this.isActive) {

@@ -34,7 +34,7 @@ export abstract class BaseShape {
 
   constructor(type: string) {
     this.svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
-    this.id = `BaseShape-${BaseShape.id++}-${type}`;//todo: needed?
+    this.id = `BaseShape-${BaseShape.id++}-${type}`;// todo: needed?
     this.svgNode.id = this.id;
 
     this._origin = new Coordinate();

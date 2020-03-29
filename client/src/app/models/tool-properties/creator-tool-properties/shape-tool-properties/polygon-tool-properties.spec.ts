@@ -1,4 +1,4 @@
-import { PolygonToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/polygon-tool-properties';
+import { PolygonToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/polygon-tool-properties';
 
 describe('PolygonToolProperties', () => {
   it('should create an instance', () => {

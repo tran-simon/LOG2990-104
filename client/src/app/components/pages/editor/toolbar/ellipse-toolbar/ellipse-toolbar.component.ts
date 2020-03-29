@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { EllipseToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/ellipse-tool-properties';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/abstract-toolbar-entry/abstract-toolbar-entry';
 import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
-import { EllipseToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/ellipse-tool-properties';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 
-import { EditorService } from '../../../../../services/editor.service';
+import { EditorService } from '@services/editor.service';
 
 @Component({
   selector: 'app-ellipse-toolbar',
