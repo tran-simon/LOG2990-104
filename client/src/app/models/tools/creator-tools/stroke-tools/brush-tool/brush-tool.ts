@@ -3,7 +3,7 @@ import { BrushToolProperties } from 'src/app/models/tool-properties/creator-tool
 import { EditorService } from 'src/app/services/editor.service';
 import { StrokeTool } from '../stroke-tool';
 
-export class BrushTool extends StrokeTool<BrushToolProperties> {
+export class BrushTool extends StrokeTool {
   shape: BrushPath;
 
   constructor(editorService: EditorService) {
@@ -14,8 +14,8 @@ export class BrushTool extends StrokeTool<BrushToolProperties> {
   protected updateProperties(): void {
     super.updateProperties();
     this.shape.secondaryColor = this.editorService.colorsService.primaryColor;
-    this.shape.strokeWidth = this.toolProperties.strokeWidth;
-    this.shape.changeFilter(this.toolProperties.texture);
+    this.shape.strokeWidth = this.toolProperties.strokeWidth.value;
+    this.shape.changeFilter(this.toolProperties.texture.value);
     this.shape.updateProperties();
   }
 

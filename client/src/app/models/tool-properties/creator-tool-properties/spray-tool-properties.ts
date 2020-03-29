@@ -1,3 +1,4 @@
+import { NumericProperty } from '@tool-properties/props/numeric-property/numeric-property';
 import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 
 export class SprayToolProperties extends CreatorToolProperties {
@@ -6,20 +7,10 @@ export class SprayToolProperties extends CreatorToolProperties {
   static readonly MIN_SPRAY_FREQUENCY: number = 1;
   static readonly MAX_SPRAY_FREQUENCY: number = 100;
 
-  minFrequency: number;
-  maxFrequency: number;
-  frequency: number;
+  frequency: NumericProperty;
 
-  minThickness: number;
-  maxThickness: number;
-  radius: number;
-  constructor(radius: number = SprayToolProperties.MIN_SPRAY_RADIUS, frequency: number = 1) {
-    super();
-    this.minThickness = SprayToolProperties.MIN_SPRAY_RADIUS;
-    this.maxThickness = SprayToolProperties.MAX_SPRAY_RADIUS;
-    this.minFrequency = SprayToolProperties.MIN_SPRAY_FREQUENCY;
-    this.maxFrequency = SprayToolProperties.MAX_SPRAY_FREQUENCY;
-    this.radius = radius;
-    this.frequency = frequency;
+  constructor() {
+    super(SprayToolProperties.MIN_SPRAY_RADIUS, SprayToolProperties.MAX_SPRAY_RADIUS);
+    this.frequency = new NumericProperty(SprayToolProperties.MIN_SPRAY_FREQUENCY, SprayToolProperties.MAX_SPRAY_FREQUENCY);
   }
 }

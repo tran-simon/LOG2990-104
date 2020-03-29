@@ -1,0 +1,8 @@
+<label>
+  <ng-content></ng-content>
+</label>
+<mat-radio-group [(ngModel)]='property.value'>
+  <mat-radio-button *ngFor='let choice of property.choices' [value]='choice'>
+    {{choice}}
+  </mat-radio-button>
+</mat-radio-group>

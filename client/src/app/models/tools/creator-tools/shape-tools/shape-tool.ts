@@ -1,12 +1,11 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { ShapeToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/shape-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTool<T> {
+export abstract class ShapeTool extends CreatorTool {
   protected constructor(editorService: EditorService) {
     super(editorService);
 
@@ -101,8 +100,8 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
       const { contourType, strokeWidth } = this.toolProperties;
       const { primaryColor, secondaryColor } = this.editorService.colorsService;
 
-      this.shape.contourType = contourType;
-      this.shape.strokeWidth = strokeWidth;
+      this.shape.contourType = contourType.value;
+      this.shape.strokeWidth = strokeWidth.value;
       this.shape.primaryColor = primaryColor;
       this.shape.secondaryColor = secondaryColor;
       this.shape.updateProperties();

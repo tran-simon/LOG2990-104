@@ -25,9 +25,6 @@
       "dom"
     ],
     "paths": {
-      "@app*": [
-        "src/app*"
-      ],
       "@services/*": [
         "src/app/services/*"
       ],

@@ -4,7 +4,7 @@ import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { Ellipse } from '../../../shapes/ellipse';
 
-export class EllipseTool extends ShapeTool<EllipseToolProperties> {
+export class EllipseTool extends ShapeTool {
   shape: Ellipse;
 
   constructor(editorService: EditorService) {

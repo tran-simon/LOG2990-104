@@ -3,7 +3,7 @@ import { PenToolProperties } from 'src/app/models/tool-properties/creator-tool-p
 import { EditorService } from 'src/app/services/editor.service';
 import { StrokeTool } from '../stroke-tool';
 
-export class PenTool extends StrokeTool<PenToolProperties> {
+export class PenTool extends StrokeTool {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new PenToolProperties();
@@ -11,7 +11,7 @@ export class PenTool extends StrokeTool<PenToolProperties> {
 
   protected updateProperties(): void {
     super.updateProperties();
-    this.shape.strokeWidth = this.toolProperties.strokeWidth;
+    this.shape.strokeWidth = this.toolProperties.strokeWidth.value;
     this.shape.updateProperties();
   }
 

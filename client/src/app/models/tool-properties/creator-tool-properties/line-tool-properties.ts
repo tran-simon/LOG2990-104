@@ -1,6 +1,7 @@
+import { EnumProperty } from '@tool-properties/props/enum-property/enum-property';
+import { NumericProperty } from '@tool-properties/props/numeric-property/numeric-property';
 import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 import { LineJunctionType } from 'src/app/models/tool-properties/creator-tool-properties/line-junction-type.enum';
-import { MathUtil } from 'src/app/utils/math/math-util';
 
 export class LineToolProperties extends CreatorToolProperties {
   static readonly MIN_THICKNESS: number = 1;
@@ -8,35 +9,15 @@ export class LineToolProperties extends CreatorToolProperties {
   static readonly MIN_DIAMETER: number = 1;
   static readonly MAX_DIAMETER: number = 50;
 
-  minThickness: number;
-  maxThickness: number;
-  readonly minDiameter: number;
-  readonly maxDiameter: number;
-
-  junctionType: LineJunctionType;
-  private _junctionDiameter: number;
+  junctionDiameter: NumericProperty;
+  junctionType: EnumProperty;
 
   constructor(
-    thickness: number = LineToolProperties.MIN_THICKNESS,
     junctionType: LineJunctionType = LineJunctionType.POINTS,
-    junctionDiameter: number = LineToolProperties.MIN_DIAMETER,
   ) {
-    super();
+    super(LineToolProperties.MIN_THICKNESS, LineToolProperties.MAX_THICKNESS);
+    this.junctionDiameter = new NumericProperty(LineToolProperties.MIN_DIAMETER, LineToolProperties.MAX_DIAMETER);
 
-    this.strokeWidth = thickness;
-    this.junctionType = junctionType;
-    this._junctionDiameter = junctionDiameter;
-    this.minThickness = LineToolProperties.MIN_THICKNESS;
-    this.maxThickness = LineToolProperties.MAX_THICKNESS;
-    this.minDiameter = LineToolProperties.MIN_DIAMETER;
-    this.maxDiameter = LineToolProperties.MAX_DIAMETER;
-  }
-
-  get junctionDiameter(): number {
-    return this._junctionDiameter;
-  }
-
-  set junctionDiameter(diameter: number) {
-    this._junctionDiameter = MathUtil.fit(diameter, this.minDiameter, this.maxDiameter);
+    this.junctionType = new EnumProperty(junctionType, LineJunctionType);
   }
 }

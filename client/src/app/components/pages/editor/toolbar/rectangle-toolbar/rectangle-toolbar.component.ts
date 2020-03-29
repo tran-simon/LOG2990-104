@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RectangleToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/rectangle-tool-properties';
 import { AbstractToolbarEntry } from 'src/app/components/pages/editor/toolbar/abstract-toolbar-entry/abstract-toolbar-entry';
-import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from '../../../../../services/editor.service';
 
@@ -11,9 +10,6 @@ import { EditorService } from '../../../../../services/editor.service';
   styleUrls: ['../toolbar/toolbar.component.scss'],
 })
 export class RectangleToolbarComponent extends AbstractToolbarEntry<RectangleToolProperties> {
-  rectangleContourTypes: typeof ContourType = ContourType;
-  rectangleContourNames: string[] = Object.values(this.rectangleContourTypes);
-
   constructor(protected editorService: EditorService) {
     super(editorService, ToolType.Rectangle);
   }

@@ -6,7 +6,7 @@ import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export class LineTool extends CreatorTool<LineToolProperties> {
+export class LineTool extends CreatorTool {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new LineToolProperties();
@@ -29,6 +29,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     this.keyboardListener.addEvent(KeyboardListenerService.getIdentifier('Escape'), () => {
       this.cancel();
     });
+    this.toolProperties = new LineToolProperties();
   }
 
   // tslint:disable-next-line:no-magic-numbers
@@ -61,10 +62,10 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     if (this.shape) {
       this.shape.primaryColor = this.editorService.colorsService.primaryColor;
       this.shape.secondaryColor = this.editorService.colorsService.secondaryColor;
-      this.shape.strokeWidth = this.toolProperties.strokeWidth;
+      this.shape.strokeWidth = this.toolProperties.strokeWidth.value;
 
-      const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;
-      this.shape.thickness = hasPoints ? this.toolProperties.junctionDiameter : 0;
+      const hasPoints = this.toolProperties.junctionType.value === LineJunctionType.POINTS;
+      this.shape.thickness = hasPoints ? this.toolProperties.junctionDiameter.value : 0;
 
       this.shape.updateProperties();
     }

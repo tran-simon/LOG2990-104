@@ -3,7 +3,7 @@ import { EditorService } from '../../../../services/editor.service';
 import { CompositeParticle } from '../../../shapes/composite-particle';
 import { CreatorTool } from '../creator-tool';
 
-export class SprayTool extends CreatorTool<SprayToolProperties> {
+export class SprayTool extends CreatorTool {
   static readonly INTERVAL_REFRESH_VALUE: number = 15;
   shape: CompositeParticle;
   private interval: number;
@@ -16,7 +16,7 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
   startShape(): void {
     super.startShape();
     this.interval = window.setInterval(() => {
-      this.shape.addParticle(this.mousePosition, this.toolProperties.frequency);
+      this.shape.addParticle(this.mousePosition, this.toolProperties.frequency.value);
     }, SprayTool.INTERVAL_REFRESH_VALUE);
   }
 
@@ -39,12 +39,12 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
     if (this.shape) {
       this.shape.primaryColor = this.editorService.colorsService.primaryColor;
       this.shape.secondaryColor = this.editorService.colorsService.primaryColor;
-      this.shape.strokeWidth = this.toolProperties.radius;
+      this.shape.strokeWidth = this.toolProperties.strokeWidth.value;
       this.shape.updateProperties();
     }
   }
 
   createShape(): CompositeParticle {
-    return new CompositeParticle(this.mousePosition, this.toolProperties.radius);
+    return new CompositeParticle(this.mousePosition, this.toolProperties.strokeWidth.value);
   }
 }

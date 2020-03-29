@@ -2,7 +2,6 @@ import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angu
 import { ActivatedRoute } from '@angular/router';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
-// import { EraserTool } from 'src/app/models/tools/editing-tools/eraser-tool';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';

@@ -1,5 +1,5 @@
-import { ToolType } from 'src/app/models/tools/tool-type.enum';
+import { Property } from '@tool-properties/props/property';
 
-export abstract class ToolProperties {
-  type: ToolType;// todo
+export class ToolProperties {
+  [properties: string]: Property<any>;
 }

@@ -1,11 +1,11 @@
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { ToolProperties } from '@tool-properties/tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { MouseHandler } from 'src/app/services/event-listeners/mouse-listener/mouse-handler';
 import { MouseEventAction, MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export abstract class Tool<T = ToolProperties> implements MouseHandler {
+export abstract class Tool implements MouseHandler {
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
@@ -19,7 +19,7 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
     }
     this.mouseListener = MouseListenerService.defaultMouseListener(this);
   }
-  toolProperties: T;
+  toolProperties: ToolProperties;
 
   protected keyboardListener: KeyboardListenerService;
   private readonly mouseListener: MouseListenerService;

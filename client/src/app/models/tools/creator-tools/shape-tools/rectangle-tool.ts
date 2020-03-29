@@ -4,7 +4,7 @@ import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export class RectangleTool extends ShapeTool<RectangleToolProperties> {
+export class RectangleTool extends ShapeTool {
   shape: Rectangle;
 
   constructor(editorService: EditorService) {
