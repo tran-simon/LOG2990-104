@@ -1,5 +1,5 @@
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
+import { ShapeToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/shape-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';

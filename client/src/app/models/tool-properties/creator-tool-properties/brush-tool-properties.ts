@@ -1,7 +1,7 @@
-import { BrushTextureType } from 'src/app/models/tool-properties/brush-texture-type.enum';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { BrushTextureType } from 'src/app/models/tool-properties/creator-tool-properties/brush-texture-type.enum';
+import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 
-export class BrushToolProperties extends ToolProperties {
+export class BrushToolProperties extends CreatorToolProperties {
   static readonly MIN_THICKNESS: number = 1;
   static readonly MAX_THICKNESS: number = 50;
 

@@ -1,8 +1,8 @@
 import { Path } from '../../../shapes/path';
-import { ToolProperties } from '../../../tool-properties/tool-properties';
+import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 import { CreatorTool } from '../creator-tool';
 
-export abstract class StrokeTool<T = ToolProperties> extends CreatorTool<T> {
+export abstract class StrokeTool<T = CreatorToolProperties> extends CreatorTool<T> {
   shape: Path;
   abstract createShape(): Path;
 

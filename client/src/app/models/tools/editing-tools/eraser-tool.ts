@@ -68,7 +68,7 @@ export class EraserTool extends Tool {
 
   initEraserView(): void {
     this.eraserView = new Rectangle();
-    this.eraserView.primaryColor = Color.TRANSPARENT;
+    this.eraserView.primaryColor = Color.WHITE;
     this.eraserView.updateProperties();
     this.editorService.addPreviewShape(this.eraserView);
   }

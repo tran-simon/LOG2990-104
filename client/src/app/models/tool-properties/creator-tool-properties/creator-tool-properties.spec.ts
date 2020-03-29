@@ -1,23 +1,23 @@
-import { ToolProperties } from './tool-properties';
+import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 
-class MockToolProperties extends ToolProperties {
+class CreatorToolPropertiesMock extends CreatorToolProperties {
   static readonly MIN_THICKNESS: number = 1;
   static readonly MAX_THICKNESS: number = 50;
 
-  minThickness: number = MockToolProperties.MIN_THICKNESS;
-  maxThickness: number = MockToolProperties.MAX_THICKNESS;
+  minThickness: number = CreatorToolPropertiesMock.MIN_THICKNESS;
+  maxThickness: number = CreatorToolPropertiesMock.MAX_THICKNESS;
 
-  constructor(thickness: number = MockToolProperties.MIN_THICKNESS) {
+  constructor(thickness: number = CreatorToolPropertiesMock.MIN_THICKNESS) {
     super();
     this.strokeWidth = thickness;
   }
 }
 
-describe('Tool Properties', () => {
-  let toolProperties: MockToolProperties;
+describe('Creator Tool Properties', () => {
+  let toolProperties: CreatorToolPropertiesMock;
 
   beforeEach(() => {
-    toolProperties = new MockToolProperties();
+    toolProperties = new CreatorToolPropertiesMock();
   });
 
   it('should correct a thickness input that is too low', () => {
@@ -37,10 +37,10 @@ describe('Tool Properties', () => {
   });
 
   it('should return the correct minimum thickness', () => {
-    expect(toolProperties.minThickness).toBe(MockToolProperties.MIN_THICKNESS);
+    expect(toolProperties.minThickness).toBe(CreatorToolPropertiesMock.MIN_THICKNESS);
   });
 
   it('should return the correct maximum thickness', () => {
-    expect(toolProperties.maxThickness).toBe(MockToolProperties.MAX_THICKNESS);
+    expect(toolProperties.maxThickness).toBe(CreatorToolPropertiesMock.MAX_THICKNESS);
   });
 });

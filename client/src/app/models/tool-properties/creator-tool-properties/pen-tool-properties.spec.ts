@@ -1,4 +1,4 @@
-import { PenToolProperties } from './pen-tool-properties';
+import { PenToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/pen-tool-properties';
 
 describe('Pen Tool Properties', () => {
   let penProperties: PenToolProperties;

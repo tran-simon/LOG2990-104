@@ -1,6 +1,6 @@
-import { ToolProperties } from './tool-properties';
+import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 
-export class SprayToolProperties extends ToolProperties {
+export class SprayToolProperties extends CreatorToolProperties {
   static readonly MIN_SPRAY_RADIUS: number = 10;
   static readonly MAX_SPRAY_RADIUS: number = 100;
   static readonly MIN_SPRAY_FREQUENCY: number = 1;

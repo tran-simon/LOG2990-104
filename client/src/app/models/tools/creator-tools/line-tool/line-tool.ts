@@ -1,6 +1,6 @@
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
-import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { LineJunctionType } from 'src/app/models/tool-properties/creator-tool-properties/line-junction-type.enum';
+import { LineToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';

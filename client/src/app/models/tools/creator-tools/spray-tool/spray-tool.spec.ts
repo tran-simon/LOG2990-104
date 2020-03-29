@@ -14,7 +14,7 @@ import { ToolbarComponent } from '../../../../components/pages/editor/toolbar/to
 import { SharedModule } from '../../../../components/shared/shared.module';
 import { ColorsService } from '../../../../services/colors.service';
 import { EditorService } from '../../../../services/editor.service';
-import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
+import { SprayToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/spray-tool-properties';
 import { mouseDown, mouseLeave, mouseUp } from '../stroke-tools/stroke-tool.spec';
 import { SprayTool } from './spray-tool';
 

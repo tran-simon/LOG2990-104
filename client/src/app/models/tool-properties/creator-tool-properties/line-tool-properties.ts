@@ -1,8 +1,8 @@
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { MathUtil } from '../../utils/math/math-util';
+import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
+import { LineJunctionType } from 'src/app/models/tool-properties/creator-tool-properties/line-junction-type.enum';
+import { MathUtil } from 'src/app/utils/math/math-util';
 
-export class LineToolProperties extends ToolProperties {
+export class LineToolProperties extends CreatorToolProperties {
   static readonly MIN_THICKNESS: number = 1;
   static readonly MAX_THICKNESS: number = 50;
   static readonly MIN_DIAMETER: number = 1;

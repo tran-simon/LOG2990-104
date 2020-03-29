@@ -1,6 +1,6 @@
 import { EditorService } from '../../../../services/editor.service';
 import { CompositeParticle } from '../../../shapes/composite-particle';
-import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
+import { SprayToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/spray-tool-properties';
 import { CreatorTool } from '../creator-tool';
 
 export class SprayTool extends CreatorTool<SprayToolProperties> {

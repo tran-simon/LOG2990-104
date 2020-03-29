@@ -1,0 +1,9 @@
+<h3 class="toolbar-option-section">Options de l'éfface</h3>
+<app-number-input  allowDecimals="true"
+                  [(numberValue)]="toolProperties.strokeWidth">
+  Épaisseur du trait de contour
+</app-number-input>
+<mat-slider [min]="toolProperties.minThickness"
+            [max]="toolProperties.maxThickness" [step]="thicknessSliderStep" thumbLabel="true"
+            [(ngModel)]="toolProperties.strokeWidth">
+</mat-slider>

@@ -11,8 +11,8 @@ import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar
 import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
-import { PolygonToolProperties } from 'src/app/models/tool-properties/polygon-tool-properties';
+import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
+import { PolygonToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/polygon-tool-properties';
 import { PolygonTool } from 'src/app/models/tools/creator-tools/shape-tools/polygon-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';

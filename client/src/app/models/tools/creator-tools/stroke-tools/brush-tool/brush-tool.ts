@@ -1,5 +1,5 @@
 import { BrushPath } from 'src/app/models/shapes/brush-path';
-import { BrushToolProperties } from 'src/app/models/tool-properties/brush-tool-properties';
+import { BrushToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/brush-tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
 import { StrokeTool } from '../stroke-tool';
 

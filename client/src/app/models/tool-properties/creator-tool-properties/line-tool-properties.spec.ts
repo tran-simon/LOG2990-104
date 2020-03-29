@@ -1,4 +1,4 @@
-import { LineToolProperties } from './line-tool-properties';
+import { LineToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/line-tool-properties';
 
 describe('Line Tool Properties', () => {
   let lineProperties: LineToolProperties;
