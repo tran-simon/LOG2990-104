@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import {
   MatButtonModule,
@@ -30,7 +31,6 @@ import { NameInputComponent } from './inputs/name-input/name-input.component';
 import { EnumPropertyInputComponent } from './inputs/property-inputs/enum-property-input/enum-property-input.component';
 import { NumericPropertyInputComponent } from './inputs/property-inputs/numeric-property-input/numeric-property-input.component';
 import { TagInputComponent } from './inputs/tag-input/tag-input.component';
-import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [

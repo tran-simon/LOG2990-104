@@ -167,6 +167,11 @@ describe('EditorComponent', () => {
     expect(component.currentToolType).toEqual(ToolType.ColorApplicator);
   });
 
+  it('should select the eraser tool when typing e', () => {
+    keyboardListener.handle(keyDown('e'));
+    expect(component.currentToolType).toEqual(ToolType.Eraser);
+  });
+
   it('should select the line tool', () => {
     component.currentToolType = ToolType.Line;
     const currentTool = component.currentTool as Tool;

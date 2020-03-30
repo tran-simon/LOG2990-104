@@ -7,7 +7,6 @@ import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboa
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class LineTool extends CreatorTool {
-  toolProperties: LineToolProperties;
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new LineToolProperties();
@@ -38,6 +37,7 @@ export class LineTool extends CreatorTool {
   // tslint:disable-next-line:no-magic-numbers
   static readonly MAX_DIAGONAL_LOCK_ANGLE: number = Math.PI / 3;
   static readonly MAX_VERTICAL_LOCK_ANGLE: number = Math.PI / 2;
+  toolProperties: LineToolProperties;
   shape: CompositeLine;
 
   private lockMethod: (c: Coordinate) => Coordinate;

@@ -1,7 +1,7 @@
 import { Property } from '@tool-properties/props/property';
 import { MathUtil } from '@utils/math/math-util';
 
-export class NumericProperty implements Property<number>{//todo setter?
+export class NumericProperty implements Property<number> {// todo setter?
   private _value: number;
   minValue: number;
   maxValue: number;

@@ -1,6 +1,7 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { TestBed } from '@angular/core/testing';
 import { BaseShape } from '@models/shapes/base-shape';
+import { Polygon } from '@models/shapes/polygon';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
@@ -66,7 +67,7 @@ describe('EditorService', () => {
 
   it('can add multiple shapes', () => {
     const addedShapes: BaseShape[] = [];
-    const addShapeSpy = spyOn(service, 'addShapeToBuffer').and.callFake((shape)=>{
+    const addShapeSpy = spyOn(service, 'addShapeToBuffer').and.callFake((shape)=> {
       addedShapes.push(shape);
     });
     const shapes = [new Rectangle(), new CompositeLine()];
@@ -77,10 +78,10 @@ describe('EditorService', () => {
 
   it('can remove multiple shapes', () => {
     const removedShapes: BaseShape[] = [];
-    const removeShapeSpy = spyOn(service, 'removeShape').and.callFake((shape)=>{
+    const removeShapeSpy = spyOn(service, 'removeShape').and.callFake((shape)=> {
     removedShapes.push(shape);
   });
-  const shapes = [new Rectangle(), new CompositeLine()];
+    const shapes = [new Rectangle(), new CompositeLine()];
     service.removeShapes(shapes);
     expect(removeShapeSpy).toHaveBeenCalledTimes(2);
     expect(removedShapes).toEqual(shapes);
@@ -112,5 +113,36 @@ describe('EditorService', () => {
     expect(service['shapes']).toEqual([line]);
     expect(service['shapesBuffer']).toEqual([rectangle, rectangle, ellipse]);
     expect(service.view.addShape).toHaveBeenCalledWith(ellipse);
+  });
+  it('adds shape to buffer if view is undefined', () => {
+    const ellipse = new Ellipse();
+    // @ts-ignore
+    service.view = undefined;
+
+    service.addShapeToBuffer(ellipse);
+    expect(service['shapesBuffer']).toEqual([rectangle, rectangle, ellipse]);
+  });
+
+  it('can remove shape from view', () => {
+    service.removeShapeFromView(line);
+
+    expect(service.view.removeShape).toHaveBeenCalledWith(line);
+  });
+
+  it('can remove shape', () => {
+    service.removeShape(line);
+    expect(service.shapes.length).toEqual(0);
+    expect(service.view.removeShape).toHaveBeenCalledWith(line);
+  });
+
+  it('does not remove shape if it is not in the list', () => {
+    service.removeShape(new Polygon());
+    expect(service.shapes.length).toEqual(1);
+    expect(service.view.removeShape).not.toHaveBeenCalled();
+  });
+
+  it('can clear selection', () => {
+    service.clearSelection();
+    expect(service.selectedShapes).toEqual([]);
   });
 });

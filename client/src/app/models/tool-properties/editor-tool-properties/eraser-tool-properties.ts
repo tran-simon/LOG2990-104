@@ -7,7 +7,7 @@ export class EraserToolProperties extends ToolProperties {
 
   eraserSize: NumericProperty;
 
-  constructor(eraserSize: number = 7) {//todo change default?
+  constructor(eraserSize: number = 7) {// todo change default?
     super();
     this.eraserSize = new NumericProperty(EraserToolProperties.MIN_SIZE, EraserToolProperties.MAX_SIZE, eraserSize);
   }

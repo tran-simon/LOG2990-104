@@ -118,7 +118,6 @@ export class EditorService {
   }
 
   async viewToCanvas(): Promise<CanvasRenderingContext2D> {
-    console.log('view', this.view);
     const image = new Image();
     const {width, height, svg} = this.view;
     const canvas = document.createElement('canvas');

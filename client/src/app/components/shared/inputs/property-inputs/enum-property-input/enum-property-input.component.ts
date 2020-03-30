@@ -8,6 +8,6 @@ import { PropertyType } from '@tool-properties/props/property';
   templateUrl: './enum-property-input.component.html',
   styleUrls: ['./enum-property-input.component.scss']
 })
-export class EnumPropertyInputComponent<E extends PropertyType, ENUM> extends AbstractPropertyInput<EnumProperty<E, ENUM>>{
+export class EnumPropertyInputComponent<E extends PropertyType, ENUM> extends AbstractPropertyInput<EnumProperty<E, ENUM>> {
   @Input() property: EnumProperty<E, ENUM>;
 }

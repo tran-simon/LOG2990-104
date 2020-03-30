@@ -1,4 +1,6 @@
 <app-number-input allowDecimals="true"
+                  [min]=property.minValue
+                  [max]=property.maxValue
                   [(numberValue)]="property.value">
   <ng-content></ng-content>
 </app-number-input>

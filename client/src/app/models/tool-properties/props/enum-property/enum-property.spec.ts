@@ -1,7 +1,7 @@
 import { EnumProperty } from './enum-property';
 
 describe('EnumProperty', () => {
-  enum Enum{
+  enum Enum {
     a = '1',
     b = '2',
   }

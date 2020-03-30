@@ -8,7 +8,6 @@ import { Rectangle } from '../../shapes/rectangle';
 import { Tool } from '../tool';
 
 export class EraserTool extends Tool {
-  toolProperties: EraserToolProperties;
 
   constructor(public editorService: EditorService) {
     super(editorService);
@@ -18,6 +17,7 @@ export class EraserTool extends Tool {
 
   static readonly DEFAULT_SIZE: number = 25;
   static readonly HIGHLIGHT_SIZE: number = 3;
+  toolProperties: EraserToolProperties;
 
   private eraserView: Rectangle;
   private selectedShape: BaseShape | undefined;
@@ -46,12 +46,12 @@ export class EraserTool extends Tool {
     };
 
     this.handleMouseUp = () => {
-      if (this.isActive) {
-        this.isActive = false;
+      if (this.isActive && this.removedShapes.length) {
         const removeShapesCommand = new RemoveShapesCommand(this.removedShapes, this.editorService);
         this.editorService.commandReceiver.add(removeShapesCommand);
         this.removedShapes = [];
       }
+      this.isActive = false;
     };
 
     this.handleMouseDown = () => {
@@ -68,7 +68,7 @@ export class EraserTool extends Tool {
     this.initEraserView();
   }
 
-  initEraserView(): void {
+  private initEraserView(): void {
     this.eraserView = new Rectangle();
     this.eraserView.primaryColor = Color.WHITE;
     this.eraserView.updateProperties();
@@ -76,6 +76,7 @@ export class EraserTool extends Tool {
   }
 
   detectBoundingBoxCollision(area: Rectangle, shape: Rectangle): boolean {
+    // todo: move somewhere else?
     return (
       area.origin.x + area.width > shape.origin.x &&
       area.end.x - area.width < shape.end.x &&

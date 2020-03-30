@@ -17,6 +17,7 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { PolygonToolbarComponent } from '../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { SprayToolbarComponent } from '../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('PipetteTool', () => {
   let pipetteTool: PipetteTool;
@@ -92,5 +93,14 @@ describe('PipetteTool', () => {
       expect(pipetteTool['editorService']['colorsService'].secondaryColor).toEqual(Color.BLUE);
       expect(PipetteTool.colorAtPointInCanvas).toHaveBeenCalled();
     });
+  });
+
+  it('can get color at a position in a canvas', () => {
+    const context: CanvasRenderingContext2D = createSpyObj('canvasContext', {getImageData: {data: [100, 200, 255]}});
+    const color = PipetteTool.colorAtPointInCanvas(context, new Coordinate());
+
+    expect(color.r255).toEqual(100);
+    expect(color.g255).toEqual(200);
+    expect(color.b255).toEqual(255);
   });
 });
