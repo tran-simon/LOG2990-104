@@ -7,6 +7,7 @@ import { ShapeTool } from './shape-tool';
 
 export class PolygonTool extends ShapeTool {
   shape: Polygon;
+  toolProperties: PolygonToolProperties;
 
   constructor(editorService: EditorService) {
     super(editorService);

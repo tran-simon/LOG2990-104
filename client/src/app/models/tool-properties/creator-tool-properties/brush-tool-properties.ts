@@ -5,6 +5,7 @@ import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-to
 export class BrushToolProperties extends CreatorToolProperties {
   static readonly MIN_THICKNESS: number = 1;
   static readonly MAX_THICKNESS: number = 50;
+  texture: EnumProperty<BrushTextureType, BrushTextureType>;
 
   constructor(texture: BrushTextureType = BrushTextureType.TEXTURE_1) {
     super(BrushToolProperties.MIN_THICKNESS, BrushToolProperties.MAX_THICKNESS);

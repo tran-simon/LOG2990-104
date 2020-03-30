@@ -7,6 +7,7 @@ export class SprayTool extends CreatorTool {
   static readonly INTERVAL_REFRESH_VALUE: number = 15;
   shape: CompositeParticle;
   private interval: number;
+  toolProperties: SprayToolProperties;
 
   constructor(editorService: EditorService) {
     super(editorService);

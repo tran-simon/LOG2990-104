@@ -10,7 +10,7 @@ export class LineToolProperties extends CreatorToolProperties {
   static readonly MAX_DIAMETER: number = 50;
 
   junctionDiameter: NumericProperty;
-  junctionType: EnumProperty;
+  junctionType: EnumProperty<LineJunctionType, LineJunctionType>;
 
   constructor(
     junctionType: LineJunctionType = LineJunctionType.POINTS,

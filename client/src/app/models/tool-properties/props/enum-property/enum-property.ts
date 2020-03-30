@@ -1,10 +1,10 @@
-import { Property } from '@tool-properties/props/property';
+import { Property, PropertyType } from '@tool-properties/props/property';
 
-export class EnumProperty implements Property<string>{//todo: rename to other property
-  value: string;
+export class EnumProperty<E extends PropertyType,ENUM> implements Property<E>{
+  value: E;
   choices: string[];
 
-  constructor(value: string, choices: any) {//todo
+  constructor(value: E, choices: ENUM) {
     this.value = value;
     this.choices = Object.values(choices);
   }

@@ -4,6 +4,7 @@ import { EditorService } from 'src/app/services/editor.service';
 import { StrokeTool } from '../stroke-tool';
 
 export class PenTool extends StrokeTool {
+  toolProperties: PenToolProperties;
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new PenToolProperties();

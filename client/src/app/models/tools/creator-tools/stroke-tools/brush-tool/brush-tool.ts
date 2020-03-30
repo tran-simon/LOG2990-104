@@ -5,6 +5,7 @@ import { StrokeTool } from '../stroke-tool';
 
 export class BrushTool extends StrokeTool {
   shape: BrushPath;
+  toolProperties: BrushToolProperties;
 
   constructor(editorService: EditorService) {
     super(editorService);

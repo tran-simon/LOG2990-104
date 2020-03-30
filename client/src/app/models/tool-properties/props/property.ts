@@ -1,3 +1,4 @@
-export interface Property<T> {//todo: rename to ToolProperties
-  value: T;//todo
+export type PropertyType = string | number;
+export interface Property<T > {
+  value: T;
 }

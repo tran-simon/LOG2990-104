@@ -1,3 +1,4 @@
+import { ShapeToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/shape-tool-properties';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
@@ -29,6 +30,7 @@ export abstract class ShapeTool extends CreatorTool {
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
   protected initialMouseCoord: Coordinate;
+  toolProperties: ShapeToolProperties;
 
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 

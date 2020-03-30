@@ -1,5 +1,5 @@
-import { Property } from '@tool-properties/props/property';
+import { Property, PropertyType } from '@tool-properties/props/property';
 
-export class ToolProperties {
-  [properties: string]: Property<any>;
+export abstract class ToolProperties {
+  [properties: string]: Property<PropertyType>;
 }

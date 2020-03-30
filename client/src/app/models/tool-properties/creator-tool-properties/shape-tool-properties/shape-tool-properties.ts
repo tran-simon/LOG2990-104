@@ -6,7 +6,7 @@ export abstract class ShapeToolProperties extends CreatorToolProperties {
   static readonly MIN_THICKNESS: number = 1;
   static readonly MAX_THICKNESS: number = 10;
 
-  contourType: EnumProperty;
+  contourType: EnumProperty<ContourType, ContourType>;
 
   constructor(
     contourType: ContourType = ContourType.FILLED_CONTOUR,

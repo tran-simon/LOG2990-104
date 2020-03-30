@@ -7,6 +7,7 @@ import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboa
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class LineTool extends CreatorTool {
+  toolProperties: LineToolProperties;
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new LineToolProperties();
