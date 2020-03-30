@@ -4,12 +4,9 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
-  // tslint:disable-next-line:typedef
-  static id = 0;
   static readonly NO_STYLE: string = 'none';
   protected _origin: Coordinate;
   readonly svgNode: SVGElement;
-  readonly id: string;
   readonly bboxes: Rectangle[];
 
   thickness: number;
@@ -34,8 +31,6 @@ export abstract class BaseShape {
 
   constructor(type: string) {
     this.svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
-    this.id = `BaseShape-${BaseShape.id++}-${type}`;// todo: needed?
-    this.svgNode.id = this.id;
 
     this._origin = new Coordinate();
     this.thickness = 1;

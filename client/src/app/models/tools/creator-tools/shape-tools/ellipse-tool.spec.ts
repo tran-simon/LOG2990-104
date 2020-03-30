@@ -80,7 +80,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse contour and fill', () => {
-    properties.contourType = ContourType.FILLED_CONTOUR;
+    properties.contourType.value = ContourType.FILLED_CONTOUR;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();
@@ -90,7 +90,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse fill only', () => {
-    properties.contourType = ContourType.FILLED;
+    properties.contourType.value = ContourType.FILLED;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();
@@ -101,7 +101,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse contour only', () => {
-    properties.contourType = ContourType.CONTOUR;
+    properties.contourType.value = ContourType.CONTOUR;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();

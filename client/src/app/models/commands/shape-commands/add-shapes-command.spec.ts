@@ -55,23 +55,12 @@ describe('AddShapesCommand', () => {
     expect(applySpy).toHaveBeenCalled();
   });
 
-  it('should only apply buffer if shape is already present', () => {
-    const shape = new Rectangle();
-    const command = new AddShapesCommand([shape], editor.editorService);
-    editor.editorService.addShapeToBuffer(shape);
-    const addSpy = spyOn(editor.editorService, 'addShapeToBuffer');
-    const applySpy = spyOn(editor.editorService, 'applyShapesBuffer');
-    command.execute();
-    expect(addSpy).not.toHaveBeenCalled();
-    expect(applySpy).toHaveBeenCalled();
-  });
-
   it('should remove shape on undo', () => {
     const shape = new Rectangle();
     const command = new AddShapesCommand([shape], editor.editorService);
-    const removeSpy = spyOn(editor.editorService, 'removeShape');
+    const removeSpy = spyOn(editor.editorService, 'removeShapes');
     command.execute();
     command.undo();
-    expect(removeSpy).toHaveBeenCalledWith(shape);
+    expect(removeSpy).toHaveBeenCalledWith([shape]);
   });
 });

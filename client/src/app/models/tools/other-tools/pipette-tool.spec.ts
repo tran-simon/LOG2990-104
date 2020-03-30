@@ -49,29 +49,48 @@ describe('PipetteTool', () => {
 
   it('picks primary color on left click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
-    pipetteTool.handleMouseEvent({ type: 'click', offsetX: 10, offsetY: 20 } as MouseEvent);
+    pipetteTool.handleMouseEvent({type: 'click', offsetX: 10, offsetY: 20} as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(new Coordinate(10, 20), SelectedColorType.primary);
   });
 
   it('picks secondary color on right click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
-    pipetteTool.handleMouseEvent({ type: 'contextmenu', offsetX: 10, offsetY: 20, preventDefault: () => {} } as MouseEvent);
+    pipetteTool.handleMouseEvent({
+      type: 'contextmenu', offsetX: 10, offsetY: 20, preventDefault: () => {
+      }
+    } as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(new Coordinate(10, 20), SelectedColorType.secondary);
   });
 
-  it('can pick primary color', () => {
-    const setColorSpy = spyOn(pipetteTool['editorService'].colorsService, 'setColorByTypeAndUpdateHistory').and.callThrough();
+  it('can pick primary color', (done) => {
+    spyOn(PipetteTool, 'colorAtPointInCanvas').and.returnValue(Color.BLUE);
+    spyOn(pipetteTool['editorService'], 'viewToCanvas').and.returnValue(new Promise<CanvasRenderingContext2D>((resolve) => {
+      resolve({} as CanvasRenderingContext2D);
+      done();
+    }));
+
     pipetteTool['pickColor'](new Coordinate(), SelectedColorType.primary);
-    // @ts-ignore
-    pipetteTool['image'].onload();
-    expect(setColorSpy).toHaveBeenCalledWith(Color.BLACK, SelectedColorType.primary);
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(pipetteTool['editorService']['colorsService'].primaryColor).toEqual(Color.BLUE);
+      expect(PipetteTool.colorAtPointInCanvas).toHaveBeenCalled();
+    });
   });
 
-  it('can pick secondary color', () => {
-    const setColorSpy = spyOn(pipetteTool['editorService'].colorsService, 'setColorByTypeAndUpdateHistory').and.callThrough();
+  it('can pick secondary color', (done) => {
+    spyOn(PipetteTool, 'colorAtPointInCanvas').and.returnValue(Color.BLUE);
+    spyOn(pipetteTool['editorService'], 'viewToCanvas').and.returnValue(new Promise<CanvasRenderingContext2D>((resolve) => {
+      resolve({} as CanvasRenderingContext2D);
+      done();
+    }));
+
     pipetteTool['pickColor'](new Coordinate(), SelectedColorType.secondary);
-    // @ts-ignore
-    pipetteTool['image'].onload();
-    expect(setColorSpy).toHaveBeenCalledWith(Color.BLACK, SelectedColorType.secondary);
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(pipetteTool['editorService']['colorsService'].secondaryColor).toEqual(Color.BLUE);
+      expect(PipetteTool.colorAtPointInCanvas).toHaveBeenCalled();
+    });
   });
 });

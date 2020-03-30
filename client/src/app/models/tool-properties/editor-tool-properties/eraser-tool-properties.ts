@@ -1,5 +1,5 @@
 import { NumericProperty } from '@tool-properties/props/numeric-property/numeric-property';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
+import { ToolProperties } from '@tool-properties/tool-properties';
 
 export class EraserToolProperties extends ToolProperties {
   static readonly MIN_SIZE: number = 3;
@@ -11,5 +11,4 @@ export class EraserToolProperties extends ToolProperties {
     super();
     this.eraserSize = new NumericProperty(EraserToolProperties.MIN_SIZE, EraserToolProperties.MAX_SIZE, eraserSize);
   }
-
 }

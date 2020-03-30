@@ -19,13 +19,13 @@ export abstract class Tool implements MouseHandler {
     }
     this.mouseListener = MouseListenerService.defaultMouseListener(this);
   }
-  toolProperties: ToolProperties;
+  readonly toolProperties: ToolProperties;
 
-  protected keyboardListener: KeyboardListenerService;
+  protected readonly keyboardListener: KeyboardListenerService;
   private readonly mouseListener: MouseListenerService;
 
   private _mousePosition: Coordinate;
-  protected editorService: EditorService;
+  protected readonly editorService: EditorService;
   protected isActive: boolean;
 
   handleClick: MouseEventAction;

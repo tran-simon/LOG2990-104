@@ -140,18 +140,18 @@ describe('LineTool', () => {
     expect(lineTool.shape).toBeTruthy();
     expect(lineTool.shape.secondaryColor).toEqual(colorsService.secondaryColor);
     expect(lineTool.shape.primaryColor).toEqual(colorsService.primaryColor);
-    expect(lineTool.shape.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth);
+    expect(lineTool.shape.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth.value);
     expect(drawSpy).toHaveBeenCalled();
   });
 
   it('can init line with junctions', () => {
-    lineTool['toolProperties'].junctionType = LineJunctionType.POINTS;
+    lineTool['toolProperties'].junctionType.value = LineJunctionType.POINTS;
     lineTool.handleMouseEvent(mouseDown());
-    expect(lineTool.shape.thickness).toEqual(lineTool['toolProperties'].junctionDiameter);
+    expect(lineTool.shape.thickness).toEqual(lineTool['toolProperties'].junctionDiameter.value);
   });
 
   it('can init line without junctions', () => {
-    lineTool['toolProperties'].junctionType = LineJunctionType.EMPTY;
+    lineTool['toolProperties'].junctionType.value = LineJunctionType.EMPTY;
     lineTool.handleMouseEvent(mouseDown());
     expect(lineTool.shape.thickness).toEqual(0);
   });

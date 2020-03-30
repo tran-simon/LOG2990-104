@@ -90,7 +90,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon contour and fill', () => {
     polygonTool['_mousePosition'] = new Coordinate(50, 100);
-    properties.contourType = ContourType.FILLED_CONTOUR;
+    properties.contourType.value = ContourType.FILLED_CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     const style = polygonTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
@@ -99,7 +99,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon fill only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = ContourType.FILLED;
+    properties.contourType.value = ContourType.FILLED;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;
@@ -109,7 +109,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon contour only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = ContourType.CONTOUR;
+    properties.contourType.value = ContourType.CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;

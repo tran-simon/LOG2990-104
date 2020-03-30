@@ -9,6 +9,7 @@ import { NumericProperty } from '@tool-properties/props/numeric-property/numeric
 })
 export class NumericPropertyInputComponent extends AbstractPropertyInput<NumericProperty>{
   static readonly SLIDER_STEP: number = 0.1;
+
   @Input() sliderStep: number = NumericPropertyInputComponent.SLIDER_STEP;
-  property: NumericProperty;
+  @Input() property: NumericProperty;
 }

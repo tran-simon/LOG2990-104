@@ -8,11 +8,9 @@ describe('Brush Tool Properties', () => {
     brushProperties = new BrushToolProperties();
   });
 
-  it('should create with the default thickness', () => {
-    expect(brushProperties.strokeWidth).toBe(BrushToolProperties.MIN_THICKNESS);
-  });
-
-  it('should create with the default texture', () => {
-    expect(brushProperties.texture).toBe(BrushTextureType.TEXTURE_1);
+  it('should create ', () => {
+    expect(brushProperties).toBeDefined();
+    expect(brushProperties.strokeWidth.value).toBe(BrushToolProperties.MIN_THICKNESS);
+    expect(brushProperties.texture.value).toEqual(BrushTextureType.TEXTURE_1);
   });
 });

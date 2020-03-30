@@ -1,5 +1,6 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { TestBed } from '@angular/core/testing';
+import { BaseShape } from '@models/shapes/base-shape';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
@@ -27,7 +28,7 @@ describe('EditorService', () => {
     service = new EditorService(new ColorsService());
     line = new Line();
     rectangle = new Rectangle();
-    service.view = createSpyObj('view', ['addShape', 'removeShape']);
+    service.view = createSpyObj('view', ['addShape', 'removeShape', 'svg']);
 
     service['shapesBuffer'] = [rectangle, rectangle];
     // @ts-ignore
@@ -64,21 +65,25 @@ describe('EditorService', () => {
   });
 
   it('can add multiple shapes', () => {
-    const addShapeSpy = spyOn(service, 'addShapeToBuffer');
+    const addedShapes: BaseShape[] = [];
+    const addShapeSpy = spyOn(service, 'addShapeToBuffer').and.callFake((shape)=>{
+      addedShapes.push(shape);
+    });
     const shapes = [new Rectangle(), new CompositeLine()];
     service.addShapesToBuffer(shapes);
     expect(addShapeSpy).toHaveBeenCalledTimes(2);
-    expect(addShapeSpy).toHaveBeenCalledWith(shapes[0]);
-    expect(addShapeSpy).toHaveBeenCalledWith(shapes[1]);
+    expect(addedShapes).toEqual(shapes);
   });
 
   it('can remove multiple shapes', () => {
-    const removeShapeSpy = spyOn(service, 'removeShape');
-    const shapes = [new Rectangle(), new CompositeLine()];
+    const removedShapes: BaseShape[] = [];
+    const removeShapeSpy = spyOn(service, 'removeShape').and.callFake((shape)=>{
+    removedShapes.push(shape);
+  });
+  const shapes = [new Rectangle(), new CompositeLine()];
     service.removeShapes(shapes);
     expect(removeShapeSpy).toHaveBeenCalledTimes(2);
-    expect(removeShapeSpy).toHaveBeenCalledWith(shapes[0]);
-    expect(removeShapeSpy).toHaveBeenCalledWith(shapes[1]);
+    expect(removedShapes).toEqual(shapes);
   });
 
   it('removes the shapes that were in the buffer from the view on clearShapesBuffer', () => {
@@ -100,6 +105,7 @@ describe('EditorService', () => {
 
   it('updates view on addShapeToBuffer', () => {
     const ellipse = new Ellipse();
+    service.view.svg.contains = () => false;
 
     service.addShapeToBuffer(ellipse);
 

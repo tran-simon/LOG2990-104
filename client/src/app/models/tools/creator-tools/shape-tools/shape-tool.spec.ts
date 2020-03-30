@@ -9,7 +9,6 @@ import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/li
 import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ShapeToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/shape-tool-properties/shape-tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
@@ -19,7 +18,7 @@ import { Coordinate } from '../../../../utils/math/coordinate';
 import { Rectangle } from '../../../shapes/rectangle';
 import { ShapeTool } from './shape-tool';
 
-export class MockShapeTool extends ShapeTool<ShapeToolProperties> {
+export class MockShapeTool extends ShapeTool {
   shape: Rectangle;
 
   constructor(editorService: EditorService) {
@@ -40,7 +39,7 @@ export class MockShapeTool extends ShapeTool<ShapeToolProperties> {
 }
 
 describe('ShapeTool', () => {
-  let mockShapeTool: ShapeTool<ShapeToolProperties>;
+  let mockShapeTool: ShapeTool;
   let fixture: ComponentFixture<EditorComponent>;
   let surface: DrawingSurfaceComponent;
 

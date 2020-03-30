@@ -80,7 +80,7 @@ describe('RectangleTool', () => {
   });
 
   it('can draw Rectangle contour and fill', () => {
-    properties.contourType = ContourType.FILLED_CONTOUR;
+    properties.contourType.value = ContourType.FILLED_CONTOUR;
     rectangleTool.toolProperties = properties;
     rectangleTool['_mousePosition'] = new Coordinate(50, 100);
     rectangleTool['shape'] = rectangleTool.createShape();
@@ -90,7 +90,7 @@ describe('RectangleTool', () => {
   });
 
   it('can draw Rectangle fill only', () => {
-    properties.contourType = ContourType.FILLED;
+    properties.contourType.value = ContourType.FILLED;
     rectangleTool.toolProperties = properties;
     rectangleTool['_mousePosition'] = new Coordinate(100, 100);
     rectangleTool['shape'] = rectangleTool.createShape();
@@ -101,7 +101,7 @@ describe('RectangleTool', () => {
   });
 
   it('can draw Rectangle contour only', () => {
-    properties.contourType = ContourType.CONTOUR;
+    properties.contourType.value = ContourType.CONTOUR;
     rectangleTool.toolProperties = properties;
     rectangleTool['_mousePosition'] = new Coordinate(100, 100);
     rectangleTool['shape'] = rectangleTool.createShape();

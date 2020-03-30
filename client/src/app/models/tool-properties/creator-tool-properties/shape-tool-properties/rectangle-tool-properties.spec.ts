@@ -9,10 +9,10 @@ describe('Rectangle Tool Properties', () => {
   });
 
   it('should create with the default thickness', () => {
-    expect(rectangleProperties.strokeWidth).toBe(RectangleToolProperties.MIN_THICKNESS);
+    expect(rectangleProperties.strokeWidth.value).toBe(RectangleToolProperties.MIN_THICKNESS);
   });
 
   it('should create with the default contour', () => {
-    expect(rectangleProperties.contourType).toBe(ContourType.FILLED_CONTOUR);
+    expect(rectangleProperties.contourType.value).toBe(ContourType.FILLED_CONTOUR);
   });
 });

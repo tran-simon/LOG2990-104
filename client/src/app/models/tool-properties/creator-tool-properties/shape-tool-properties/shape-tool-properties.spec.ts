@@ -13,9 +13,18 @@ describe('ShapeToolProperties', () => {
     shapeToolProperties = new ShapeToolPropertiesImpl();
   });
 
-  it('can initialize correctly', () => {
-    expect(shapeToolProperties.contourType).toEqual(ContourType.FILLED_CONTOUR);
-    expect(shapeToolProperties.minThickness).toEqual(ShapeToolProperties.MIN_THICKNESS);
-    expect(shapeToolProperties.maxThickness).toEqual(ShapeToolProperties.MAX_THICKNESS);
+  it('should create', () => {
+    expect(shapeToolProperties).toBeDefined();
+  });
+
+  it('should init contourType property', () => {
+    expect(shapeToolProperties.contourType.value).toEqual(ContourType.FILLED_CONTOUR);
+    expect(shapeToolProperties.contourType.choices).toEqual([ContourType.FILLED_CONTOUR, ContourType.FILLED, ContourType.CONTOUR]);
+  });
+
+  it('should init strokeWidth property', () => {
+    expect(shapeToolProperties.strokeWidth.value).toEqual(ShapeToolProperties.MIN_THICKNESS);
+    expect(shapeToolProperties.strokeWidth.minValue).toEqual(ShapeToolProperties.MIN_THICKNESS);
+    expect(shapeToolProperties.strokeWidth.maxValue).toEqual(ShapeToolProperties.MAX_THICKNESS);
   });
 });

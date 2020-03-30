@@ -47,7 +47,7 @@ describe('RemoveShapesCommand', () => {
 
   it('should add back shape to buffer then apply buffer', () => {
     const shape = new Rectangle();
-    const command = new RemoveShapesCommand(shape, editor.editorService);
+    const command = new RemoveShapesCommand([shape], editor.editorService);
     const addSpy = spyOn(editor.editorService, 'addShapeToBuffer');
     const applySpy = spyOn(editor.editorService, 'applyShapesBuffer');
     command.undo();
@@ -55,24 +55,13 @@ describe('RemoveShapesCommand', () => {
     expect(applySpy).toHaveBeenCalled();
   });
 
-  it('should only apply buffer if shape is already present', () => {
-    const shape = new Rectangle();
-    const command = new RemoveShapesCommand(shape, editor.editorService);
-    editor.editorService.addShapeToBuffer(shape);
-    const addSpy = spyOn(editor.editorService, 'addShapeToBuffer');
-    const applySpy = spyOn(editor.editorService, 'applyShapesBuffer');
-    command.undo();
-    expect(addSpy).not.toHaveBeenCalled();
-    expect(applySpy).toHaveBeenCalled();
-  });
-
   it('can remove shape', () => {
     const shape = new Rectangle();
-    const command = new RemoveShapesCommand(shape, editor.editorService);
-    const removeSpy = spyOn(editor.editorService, 'removeShape');
+    const command = new RemoveShapesCommand([shape], editor.editorService);
+    const removeSpy = spyOn(editor.editorService, 'removeShapes');
     editor.editorService.addShapeToBuffer(shape);
     editor.editorService.applyShapesBuffer();
     command.execute();
-    expect(removeSpy).toHaveBeenCalledWith(shape);
+    expect(removeSpy).toHaveBeenCalledWith([shape]);
   });
 });

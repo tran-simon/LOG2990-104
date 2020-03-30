@@ -1,3 +1,4 @@
+import { EraserToolProperties } from '@tool-properties/editor-tool-properties/eraser-tool-properties';
 import { RemoveShapesCommand } from 'src/app/models/commands/shape-commands/remove-shapes-command';
 import { EditorService } from '../../../services/editor.service';
 import { Color } from '../../../utils/color/color';
@@ -7,10 +8,12 @@ import { Rectangle } from '../../shapes/rectangle';
 import { Tool } from '../tool';
 
 export class EraserTool extends Tool {
+  toolProperties: EraserToolProperties;
 
   constructor(public editorService: EditorService) {
     super(editorService);
     this.removedShapes = [];
+    this.toolProperties = new EraserToolProperties();
   }
 
   static readonly DEFAULT_SIZE: number = 25;

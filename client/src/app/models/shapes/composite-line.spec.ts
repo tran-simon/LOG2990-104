@@ -29,6 +29,7 @@ describe('CompositeLine', () => {
     expect(addJunctionSpy).toHaveBeenCalledWith(coord1);
   });
   it('Should add line at the end of lineArray', () => {
+    console.log(cLine);
     cLine.addLine(coord1);
     expect(cLine.lineArray.pop()).toEqual(new Line(coord1));
     expect(cLine.svgNode.querySelector('line')).toBeTruthy();
