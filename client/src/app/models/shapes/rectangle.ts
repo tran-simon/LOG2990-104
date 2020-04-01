@@ -45,15 +45,16 @@ export class Rectangle extends BaseShape {
   }
 
   set end(c: Coordinate) {
-    // todo - validation logic
-    this.width = c.x - this.origin.x;
-    this.height = c.y - this.origin.y;
+    const end = Coordinate.maxXYCoord(c, this.origin);
+    this.origin = Coordinate.minXYCoord(c, this.origin);
+    this.width = end.x - this.origin.x;
+    this.height = end.y - this.origin.y;
   }
 
-  constructor(origin: Coordinate = new Coordinate(), size: number = 0) {
+  constructor(origin: Coordinate = new Coordinate(), width: number = 0, height: number = width) {
     super('rect');
     this.origin = origin;
-    this.width = size;
-    this.height = size;
+    this.width = width;
+    this.height = height;
   }
 }

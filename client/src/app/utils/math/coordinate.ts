@@ -44,7 +44,7 @@ export class Coordinate {
   }
 
   static minArrayXYCoord(array: Coordinate[]): Coordinate {
-    let min = Coordinate.copy((array as Coordinate[])[0]);
+    let min = Coordinate.copy(array[0]);
     (array as Coordinate[]).forEach((c) => {
       min = this.minXYCoord(c, min);
     });
@@ -52,7 +52,7 @@ export class Coordinate {
   }
 
   static maxArrayXYCoord(array: Coordinate[]): Coordinate {
-    let max = Coordinate.copy((array as Coordinate[])[0]);
+    let max = Coordinate.copy(array[0]);
     (array as Coordinate[]).forEach((c) => {
       max = this.maxXYCoord(c, max);
     });
