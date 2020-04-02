@@ -12,6 +12,8 @@ import { DatabaseService } from '../services/database.service';
 import Types from '../types';
 import { DatabaseController } from './database.controller';
 
+import Drawing from '../../models/drawing';
+
 describe('Database Controller', () => {
   let application: Application;
   let databaseController: DatabaseController;
@@ -30,10 +32,64 @@ describe('Database Controller', () => {
 
   it('should call getAllDrawings when accessing api/database/drawings', (done: Mocha.Done) => {
     const stub = sinon.stub(DatabaseService.prototype, 'getAllDrawings').resolves({ statusCode: 200, documents: [] });
-    chai.request(application.app).get('/api/database/drawings').then((res) => {
-      chai.expect(stub.calledOnce).to.equal(true);
-      stub.restore();
-      done();
-    });
+    chai.request(application.app)
+      .get('/api/database/drawings')
+      .then(() => {
+        chai.expect(stub.called).to.equal(true);
+        stub.restore();
+        done();
+      });
+  });
+
+  it('should call getDrawingById when accessing api/database/drawings/:id', (done: Mocha.Done) => {
+    const drawing = new Drawing();
+    const stub = sinon.stub(DatabaseService.prototype, 'getDrawingById').resolves({ statusCode: 200, documents: drawing });
+    chai.request(application.app)
+      .get('/api/database/drawings/test')
+      .then(() => {
+        chai.expect(stub.called).to.equal(true);
+        stub.restore();
+        done();
+      });
+  });
+
+  it('should call addDrawing when sending a POST request to api/database/drawings', (done: Mocha.Done) => {
+    const drawing = new Drawing();
+    const stub = sinon.stub(DatabaseService.prototype, 'addDrawing').resolves({ statusCode: 200, documents: drawing });
+    chai.request(application.app)
+      .post('/api/database/drawings')
+      .set('content-type', 'application/json')
+      .send({ data: 'random data' })
+      .then(() => {
+        chai.expect(stub.called).to.equal(true);
+        stub.restore();
+        done();
+      });
+  });
+
+  it('should call deleteDrawing when sending a delete request to api/database/drawings/:id', (done: Mocha.Done) => {
+    const drawing = new Drawing();
+    const stub = sinon.stub(DatabaseService.prototype, 'deleteDrawing').resolves({ statusCode: 200, documents: drawing });
+    chai.request(application.app)
+      .delete('/api/database/drawings/test')
+      .then(() => {
+        chai.expect(stub.called).to.equal(true);
+        stub.restore();
+        done();
+      });
+  });
+
+  it('should call updateDrawing when sending a post request to api/database/drawings/id', (done: Mocha.Done) => {
+    const drawing = new Drawing();
+    const stub = sinon.stub(DatabaseService.prototype, 'updateDrawing').resolves({ statusCode: 200, documents: drawing });
+    chai.request(application.app)
+      .post('/api/database/drawings/test')
+      .set('content-type', 'application/json')
+      .send({ data: 'random data' })
+      .then(() => {
+        chai.expect(stub.called).to.equal(true);
+        stub.restore();
+        done();
+      });
   });
 });
