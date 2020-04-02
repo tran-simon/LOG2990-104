@@ -12,7 +12,7 @@ export class ImageExportService {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.createDataURL(surface));
   }
 
-  private addFilter(surface: DrawingSurfaceComponent, filter: FilterType): void {
+  addFilter(surface: DrawingSurfaceComponent, filter: FilterType): void {
     switch (filter) {
       case FilterType.EMPTY:
         surface.svg.setAttribute('filter', 'none');
@@ -35,7 +35,7 @@ export class ImageExportService {
     }
   }
 
-  private removeFilter(surface: DrawingSurfaceComponent): void {
+  removeFilter(surface: DrawingSurfaceComponent): void {
     surface.svg.removeAttribute('filter');
   }
 
