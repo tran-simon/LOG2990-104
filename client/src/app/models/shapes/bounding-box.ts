@@ -45,7 +45,7 @@ export class BoundingBox extends BaseShape {
   constructor(c: Coordinate) {
     super('g');
     this.outline = new Rectangle(c);
-    this.outline.svgNode.style.pointerEvents = 'none';
+    this.outline.svgNode.style.pointerEvents = BaseShape.CSS_NONE;
     this.outline.primaryColor = BoundingBox.BOUNDING_BOX_COLOR;
     this.outline.secondaryColor = BoundingBox.BOUNDING_BOX_COLOR;
     this.outline.updateProperties();
@@ -66,18 +66,22 @@ export class BoundingBox extends BaseShape {
   }
 
   private updateControlPoints(): void {
-    if (this.outline.width === 0 && this.outline.height === 0) {
-      this.controlPoints.forEach((point) => {
-        point.svgNode.style.display = 'none';
-      });
-    } else {
-      this.controlPoints.forEach((point) => {
-        point.svgNode.style.display = '';
-      });
-      this.controlPoints[ControlPoint.top].center = new Coordinate(this.outline.center.x, this.outline.origin.y);
-      this.controlPoints[ControlPoint.right].center = new Coordinate(this.outline.end.x, this.outline.center.y);
-      this.controlPoints[ControlPoint.bottom].center = new Coordinate(this.outline.center.x, this.outline.end.y);
-      this.controlPoints[ControlPoint.left].center = new Coordinate(this.outline.origin.x, this.outline.center.y);
-    }
+    this.outline.width === 0 && this.outline.height === 0 ? this.hideControlPoints() : this.displayControlPoints();
+  }
+
+  private displayControlPoints(): void {
+    this.controlPoints.forEach((point) => {
+      point.svgNode.style.display = '';
+    });
+    this.controlPoints[ControlPoint.top].center = new Coordinate(this.outline.center.x, this.outline.origin.y);
+    this.controlPoints[ControlPoint.right].center = new Coordinate(this.outline.end.x, this.outline.center.y);
+    this.controlPoints[ControlPoint.bottom].center = new Coordinate(this.outline.center.x, this.outline.end.y);
+    this.controlPoints[ControlPoint.left].center = new Coordinate(this.outline.origin.x, this.outline.center.y);
+  }
+
+  private hideControlPoints(): void {
+    this.controlPoints.forEach((point) => {
+      point.svgNode.style.display = BaseShape.CSS_NONE;
+    });
   }
 }

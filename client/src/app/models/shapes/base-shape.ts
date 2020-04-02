@@ -3,7 +3,7 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
-  static readonly NO_STYLE: string = 'none';
+  static readonly CSS_NONE: string = 'none';
   readonly svgNode: SVGElement;
 
   thickness: number;
@@ -49,7 +49,7 @@ export abstract class BaseShape {
     this.svgNode.style.strokeOpacity = this.secondaryColor.a.toString();
     this.svgNode.style.fillOpacity = this.primaryColor.a.toString();
 
-    this.svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.NO_STYLE;
-    this.svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.NO_STYLE;
+    this.svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.CSS_NONE;
+    this.svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.CSS_NONE;
   }
 }

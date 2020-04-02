@@ -58,7 +58,7 @@ export class Path extends BaseShape {
   updateProperties(): void {
     super.updateProperties();
 
-    this.svgNode.style.fill = Path.NO_STYLE;
+    this.svgNode.style.fill = Path.CSS_NONE;
 
     this.svgNode.style.stroke = this.primaryColor.rgbString;
     this.svgNode.style.strokeOpacity = this.primaryColor.a.toString();
