@@ -4,105 +4,70 @@ import * as sinon from 'sinon';
 
 import { Server } from './server';
 
-import { Container } from 'inversify';
-import { containerBootstrapper } from './inversify.config';
+import { testingContainer } from '../test/test-utils';
 import Types from './types';
 
-import { DEFAULT_PORT } from './constants';
+import { DEV_PORT, PROD_PORT } from './constants';
 
 describe('Server', () => {
-  let container: Container;
   let server: Server;
   let anotherServer: Server;
 
-  containerBootstrapper().then((c) => {
-    container = c;
-  });
-
-  beforeEach(() => {
-    server = container.get<Server>(Types.Server);
-    anotherServer = container.get<Server>(Types.Server);
-  });
-
-  it('should init with an int port parameter', (done: Mocha.Done) => {
-    const stub = sinon.stub(server, 'onListening' as any);
-
-    server.init(DEFAULT_PORT);
-
-    setTimeout(() => {
-      server.close();
-
-      expect(stub.called).to.equal(true);
-      stub.restore();
-      done();
+  beforeEach(async () => {
+    await testingContainer().then((instance) => {
+      server = instance[0].get<Server>(Types.Server);
+      anotherServer = instance[0].get<Server>(Types.Server);
     });
   });
 
-  it('should init with a string port parameter', (done: Mocha.Done) => {
-    const stub = sinon.stub(server, 'onListening' as any);
-
-    server.init(DEFAULT_PORT.toString());
-
-    setTimeout(() => {
-      server.close();
-
-      expect(stub.called).to.equal(true);
-      stub.restore();
-      done();
-    });
-  });
-
-  it('should init with a string pipe name', (done: Mocha.Done) => {
-    const stub = sinon.stub(server, 'onListening' as any);
-
-    server.init('pipename');
-
-    setTimeout(() => {
-      server.close();
-
-      expect(stub.called).to.equal(true);
-      stub.restore();
-      done();
-    });
-  });
-
-  it('should start listening on init() and call onListening', (done: Mocha.Done) => {
+  it('should init correctly on the development port', (done: Mocha.Done) => {
     const spy = sinon.spy(server, 'onListening' as any);
 
-    server.init(DEFAULT_PORT);
+    server.init(DEV_PORT);
 
     setTimeout(() => {
-      server.close();
+      expect(spy.called).to.equal(true);
 
-      expect(spy.calledOnce).to.equal(true);
+      spy.restore();
       done();
     });
   });
 
-  it('should exit the program when two servers try init() on the same port', (done: Mocha.Done) => {
+  it('should exit the process when init with port 80 is called without higher privileges', (done: Mocha.Done) => {
     const stub = sinon.stub(process, 'exit');
 
-    server.init(DEFAULT_PORT);
-    anotherServer.init(DEFAULT_PORT);
+    server.init(PROD_PORT);
 
     setTimeout(() => {
-      server.close();
+      process.env.USER === 'root' ?
+        expect(stub.called).to.equal(false) :
+        expect(stub.called).to.equal(true);
 
-      expect(stub.called).to.equal(true);
       stub.restore();
       done();
     });
   });
 
-  it('should exit the program if using the port 80 without proper permissions', (done: Mocha.Done) => {
-    const stub = sinon.stub(process, 'exit');
+  it('should throw an error if two servers try to init on the same port', (done: Mocha.Done) => {
+    const spy = sinon.spy(anotherServer, 'onError' as any);
 
-    server.init(80);
+    server.init(DEV_PORT);
+    anotherServer.init(DEV_PORT);
 
     setTimeout(() => {
-      expect(stub.called).to.equal(true);
-      stub.restore();
+      expect(spy.called).to.equal(true);
+
+      spy.restore();
       done();
     });
+  });
+
+  afterEach(() => {
+    if (server && server.isListening) {
+      server.close();
+    }
+    if (anotherServer && anotherServer.isListening) {
+      anotherServer.close();
+    }
   });
 });

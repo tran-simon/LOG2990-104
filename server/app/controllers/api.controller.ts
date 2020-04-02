@@ -1,7 +1,6 @@
 import * as express from 'express';
 import { inject, injectable } from 'inversify';
 
-import { APIService } from '../services/api.service';
 import Types from '../types';
 import { DatabaseController } from './database.controller';
 
@@ -11,7 +10,6 @@ export class APIController {
   router: express.Router;
 
   constructor(
-    @inject(Types.APIService) private apiService: APIService,
     @inject(Types.DatabaseController) private databaseController: DatabaseController,
   ) {
     this.app = express();
@@ -23,9 +21,5 @@ export class APIController {
     this.router = express.Router();
 
     this.router.use('/database', this.databaseController.router);
-
-    this.router.get('/', async (req: express.Request, res: express.Response) => {
-      res.send(this.apiService.message());
-    });
   }
 }

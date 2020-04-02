@@ -5,22 +5,18 @@ chai.use(require('chai-http'));
 
 import * as httpStatus from 'http-status-codes';
 
-import { Container } from 'inversify';
-import { containerBootstrapper } from './inversify.config';
+import { testingContainer } from '../test/test-utils';
 import Types from './types';
 
 import { Application } from './app';
 
 describe('Application', () => {
-  let container: Container;
   let application: Application;
 
-  containerBootstrapper().then((c) => {
-    container = c;
-  });
-
-  beforeEach(() => {
-    application = container.get<Application>(Types.Application);
+  beforeEach(async () => {
+    await testingContainer().then((instance) => {
+      application = instance[0].get<Application>(Types.Application);
+    });
   });
 
   it('should instanciate as the correct type', (done: Mocha.Done) => {

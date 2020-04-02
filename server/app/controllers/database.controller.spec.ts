@@ -3,22 +3,22 @@ import * as chai from 'chai';
 import 'chai-http';
 chai.use(require('chai-http'));
 
-import { APIController } from './api.controller';
+import { DatabaseController } from './database.controller';
 
 import { testingContainer } from '../../test/test-utils';
 import Types from '../types';
 
-describe('API Controller', () => {
-  let apiController: APIController;
+describe('Database Controller', () => {
+  let databaseController: DatabaseController;
 
   beforeEach(async () => {
     await testingContainer().then((instance) => {
-      apiController = instance[0].get<APIController>(Types.APIController);
+      databaseController = instance[0].get<DatabaseController>(Types.DatabaseController);
     });
   });
 
   it('should instanciate correctly', (done: Mocha.Done) => {
-    chai.expect(apiController).to.be.instanceOf(APIController);
+    chai.expect(databaseController).to.be.instanceOf(DatabaseController);
     done();
   });
 });

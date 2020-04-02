@@ -7,9 +7,17 @@ import drawingModel, { Drawing } from '../../models/drawing';
 
 @injectable()
 export class DatabaseService {
-
   constructor() {
-    mongoose.connect(
+    // this.connectDB();
+  }
+
+  private static determineStatus(err: Error, results: Drawing | Drawing[]): number {
+    return err ? httpStatus.INTERNAL_SERVER_ERROR :
+      results ? httpStatus.OK : httpStatus.NOT_FOUND;
+  }
+
+  async connectDB(): Promise<void> {
+    await mongoose.connect(
       'mongodb+srv://polydessin:letmein1@cluster0-lgpty.azure.mongodb.net/polydessin?retryWrites=true&w=majority',
       { useNewUrlParser: true, useUnifiedTopology: true },
       (err: mongoose.Error) => {
@@ -17,9 +25,8 @@ export class DatabaseService {
       });
   }
 
-  private static determineStatus(err: Error, results: Drawing | Drawing[]): number {
-    return err ? httpStatus.INTERNAL_SERVER_ERROR :
-      results ? httpStatus.OK : httpStatus.NOT_FOUND;
+  async disconnectDB(): Promise<void> {
+    await mongoose.disconnect();
   }
 
   getAllDrawings(res: express.Response): void {
