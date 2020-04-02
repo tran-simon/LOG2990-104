@@ -70,6 +70,7 @@ export class EraserTool extends Tool {
   private initEraserView(): void {
     this.eraserView = new Rectangle();
     this.eraserView.primaryColor = Color.WHITE;
+    this.resizeSelectArea(this.toolProperties.eraserSize.value);
     this.eraserView.updateProperties();
     this.editorService.addPreviewShape(this.eraserView);
   }
@@ -92,7 +93,7 @@ export class EraserTool extends Tool {
     return !!this.getBboxIntersection(area, shape).length;
   }
 
-  resizeSelectArea(size: number = EraserToolProperties.DEFAULT_SIZE): void {
+  private resizeSelectArea(size: number = EraserToolProperties.DEFAULT_SIZE): void {
     this.eraserView.origin = new Coordinate(this.mousePosition.x - size / 2, this.mousePosition.y - size / 2);
     this.eraserView.width = size;
     this.eraserView.height = size;
@@ -100,7 +101,6 @@ export class EraserTool extends Tool {
 
   updateSelection(): void {
     this.resetCurrentSelection();
-    this.resizeSelectArea(this.toolProperties.eraserSize.value);
 
     this.editorService.shapes.forEach((shape: BaseShape) => {
       shape.updateProperties();
