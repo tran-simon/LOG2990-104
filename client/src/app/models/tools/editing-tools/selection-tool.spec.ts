@@ -10,8 +10,9 @@ import { SelectionTool } from './selection-tool';
 
 /* tslint:disable:no-string-literal */
 /* tslint:disable:no-magic-numbers */
+/* tslint:disable:no-any */
 
-export const mouseDown = (c: Coordinate = new Coordinate(), rightClick: boolean = false): MouseEvent => {
+const mouseDown = (c: Coordinate = new Coordinate(), rightClick: boolean = false): MouseEvent => {
   return {
     button: rightClick ? MouseListenerService.BUTTON_RIGHT : MouseListenerService.BUTTON_LEFT,
     type: 'mousedown',
@@ -20,7 +21,7 @@ export const mouseDown = (c: Coordinate = new Coordinate(), rightClick: boolean 
   } as MouseEvent;
 };
 
-export const mouseMove = (c: Coordinate = new Coordinate()): MouseEvent => {
+const mouseMove = (c: Coordinate = new Coordinate()): MouseEvent => {
   return {
     type: 'mousemove',
     offsetX: c.x,
@@ -28,7 +29,15 @@ export const mouseMove = (c: Coordinate = new Coordinate()): MouseEvent => {
   } as MouseEvent;
 };
 
-fdescribe('SelectionTool', () => {
+const mouseUp = (c: Coordinate = new Coordinate()): MouseEvent => {
+  return {
+    type: 'mouseup',
+    offsetX: c.x,
+    offsetY: c.y,
+  } as MouseEvent;
+};
+
+describe('SelectionTool', () => {
   let tool: SelectionTool;
   const coord1 = new Coordinate(100, 50);
   const coord2 = new Coordinate(150, 250);
@@ -52,6 +61,51 @@ fdescribe('SelectionTool', () => {
 
   it('should create an instance', () => {
     expect(tool).toBeTruthy();
+  });
+
+  it('can handle mouse down', () => {
+    const beginSpy = spyOn<any>(tool, 'beginSelection');
+    const beginReverseSpy = spyOn<any>(tool, 'beginReverseSelection');
+
+    tool.handleMouseEvent(mouseDown(coord1, false));
+    expect(tool['isActive']).toBeTruthy();
+    expect(beginSpy).toHaveBeenCalledWith(coord1);
+
+    tool.handleMouseDown(mouseDown(coord1, false));
+    expect(beginSpy).toHaveBeenCalledTimes(1);
+
+    tool['isActive'] = false;
+
+    tool.handleMouseEvent(mouseDown(coord1, true));
+    expect(tool['isActive']).toBeTruthy();
+    expect(beginReverseSpy).toHaveBeenCalledWith(coord1);
+  });
+
+  it('can handle mouse move', () => {
+    const updateSpy = spyOn<any>(tool, 'updateSelection');
+
+    tool.handleMouseEvent(mouseMove());
+    expect(updateSpy).not.toHaveBeenCalled();
+
+    tool['isActive'] = true;
+    tool.handleMouseEvent(mouseMove());
+    expect(updateSpy).toHaveBeenCalledTimes(1);
+
+    tool['reverseSelectionMode'] = true;
+    tool.handleMouseEvent(mouseMove());
+    expect(updateSpy).toHaveBeenCalledWith(true);
+  });
+
+  it('can handle mouse up', () => {
+    const applySpy = spyOn<any>(tool, 'applyBoundingBox');
+
+    tool.handleMouseEvent(mouseUp());
+    expect(applySpy).not.toHaveBeenCalled();
+
+    tool['isActive'] = true;
+    tool.handleMouseEvent(mouseUp());
+    expect(applySpy).toHaveBeenCalled();
+    expect(tool['isActive']).toBeFalsy();
   });
 
   it('can select single shape', () => {
@@ -119,7 +173,7 @@ fdescribe('SelectionTool', () => {
 
     expect(tool['reverseSelectionMode']).toBeTruthy();
     expect(tool['initialMouseCoord']).toEqual(coord1);
-    expect(tool['reverseSelectionArray']).toEqual(tool.editorService.selectedShapes);
+    expect(tool['previouslySelectedShapes']).toEqual(tool.editorService.selectedShapes);
   });
 
   it('can initialize select area', () => {
@@ -186,16 +240,55 @@ fdescribe('SelectionTool', () => {
   });
 
   it('can detect bounding box collision', () => {
-    expect(tool['detectBoundingBoxCollision'](shapes[3] as Rectangle, shapes[0])).toBeTruthy();
-    expect(tool['detectBoundingBoxCollision'](shapes[2] as Rectangle, shapes[2])).toBeTruthy();
-    expect(tool['detectBoundingBoxCollision'](shapes[1] as Rectangle, shapes[3])).toBeFalsy();
-    expect(tool['detectBoundingBoxCollision'](shapes[0] as Rectangle, shapes[1])).toBeFalsy();
+    expect(SelectionTool.detectBoundingBoxCollision(shapes[3] as Rectangle, shapes[0])).toBeTruthy();
+    expect(SelectionTool.detectBoundingBoxCollision(shapes[2] as Rectangle, shapes[2])).toBeTruthy();
+    expect(SelectionTool.detectBoundingBoxCollision(shapes[1] as Rectangle, shapes[3])).toBeFalsy();
+    expect(SelectionTool.detectBoundingBoxCollision(shapes[0] as Rectangle, shapes[1])).toBeFalsy();
   });
 
   it('can update selection', () => {
-    tool.handleMouseDown(mouseDown());
-    tool.handleMouseMove(mouseMove(new Coordinate(500, 500)));
+    const resetSpy = spyOn<any>(tool, 'resetSelection');
+    const resizeSpy = spyOn<any>(tool, 'resizeSelectArea');
+    const addSpy = spyOn<any>(tool, 'addSelectedShape');
+    const updateSpy = spyOn<any>(tool, 'updateBoundingBox');
 
-    expect(tool.editorService.selectedShapes.length).toEqual(4);
+    tool.editorService.shapes.push(...shapes);
+    tool['selectArea'] = new Rectangle(new Coordinate(), 500, 500);
+    tool['updateSelection']();
+
+    expect(resetSpy).toHaveBeenCalled();
+    expect(resizeSpy).toHaveBeenCalled();
+    expect(addSpy).toHaveBeenCalledTimes(4);
+    expect(updateSpy).toHaveBeenCalled();
+  });
+
+  it('can update reverse selection', () => {
+    const resetSpy = spyOn<any>(tool, 'resetSelection');
+    const resizeSpy = spyOn<any>(tool, 'resizeSelectArea');
+    const reverseSpy = spyOn<any>(tool, 'reverseSelection');
+    const updateSpy = spyOn<any>(tool, 'updateBoundingBox');
+
+    tool.editorService.shapes.push(...shapes);
+    tool.editorService.selectedShapes.push(shapes[0]);
+    tool['beginReverseSelection'](new Coordinate());
+    tool['selectArea'] = new Rectangle(new Coordinate(), 500, 500);
+    tool['updateSelection'](true);
+
+    expect(resetSpy).toHaveBeenCalled();
+    expect(resizeSpy).toHaveBeenCalled();
+    expect(reverseSpy).toHaveBeenCalledTimes(4);
+    expect(updateSpy).toHaveBeenCalled();
+  });
+
+  // todo - update bounding box
+
+  // todo - detect collision
+
+  it('can resize select area', () => {
+    tool['initSelectArea']();
+    tool['resizeSelectArea'](coord1, coord2);
+
+    expect(tool['selectArea'].origin).toEqual(coord1);
+    expect(tool['selectArea'].end).toEqual(coord2);
   });
 });

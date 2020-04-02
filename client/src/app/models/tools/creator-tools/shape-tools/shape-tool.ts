@@ -70,7 +70,7 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
   }
 
   updateCurrentCoord(c: Coordinate): void {
-    this.previewArea.start = this.initialMouseCoord;
+    this.previewArea.origin = this.initialMouseCoord;
     this.previewArea.end = c;
 
     let dimensions: Coordinate;

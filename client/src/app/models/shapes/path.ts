@@ -16,39 +16,26 @@ export class Path extends BaseShape {
   }
 
   get width(): number {
-    if (this.points.length > 0) {
-      return Coordinate.maxArrayXYCoord(this.points).x - this.origin.x;
-    } else {
-      return 0;
-    }
+    return this.points.length > 0 ? Coordinate.maxArrayXYCoord(this.points).x - this.origin.x : 0;
   }
 
   get height(): number {
-    if (this.points.length > 0) {
-      return Coordinate.maxArrayXYCoord(this.points).y - this.origin.y;
-    } else {
-      return 0;
-    }
+    return this.points.length > 0 ? Coordinate.maxArrayXYCoord(this.points).y - this.origin.y : 0;
   }
 
   get origin(): Coordinate {
-    if (this.points.length > 0) {
-      return Coordinate.minArrayXYCoord(this.points);
-    } else {
-      return new Coordinate();
-    }
+    return this.points.length > 0 ? Coordinate.minArrayXYCoord(this.points) : new Coordinate();
   }
+
   set origin(c: Coordinate) {
     if (this.points.length > 0) {
       const delta = Coordinate.substract(c, this.origin);
-      this.points.forEach((point, index) => {
+      const oldPoints = new Array<Coordinate>();
+      oldPoints.push(...this.points);
+      this.points.length = 0;
+      oldPoints.forEach((point) => {
         point = Coordinate.add(point, delta);
-        this.points[index] = point;
-        if (index === 0) {
-          this._trace = 'M ' + point.x + ' ' + point.y; // todo - make function
-        } else {
-          this.trace += ' L ' + point.x + ' ' + point.y;
-        }
+        this.addPoint(point);
       });
     }
   }
@@ -56,13 +43,16 @@ export class Path extends BaseShape {
   constructor(c: Coordinate) {
     super('path');
     this.points = new Array<Coordinate>();
-    this.points.push(c);
-    this._trace = 'M ' + c.x + ' ' + c.y;
+    this.addPoint(c);
   }
 
   addPoint(c: Coordinate): void {
     this.points.push(c);
-    this.trace += ' L ' + c.x + ' ' + c.y;
+    if (this.points.length === 1) {
+      this.trace = 'M ' + c.x + ' ' + c.y;
+    } else {
+      this.trace += ' L ' + c.x + ' ' + c.y;
+    }
   }
 
   updateProperties(): void {

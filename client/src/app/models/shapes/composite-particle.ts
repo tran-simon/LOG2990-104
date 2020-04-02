@@ -14,35 +14,21 @@ export class CompositeParticle extends BaseShape {
   }
 
   get width(): number {
-    if (this.particles.length > 0) {
-      return Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).x - this.origin.x;
-    } else {
-      return 0;
-    }
+    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).x - this.origin.x : 0;
   }
 
   get height(): number {
-    if (this.particles.length > 0) {
-      return Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).y - this.origin.y;
-    } else {
-      return 0;
-    }
+    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).y - this.origin.y : 0;
   }
 
   get origin(): Coordinate {
-    if (this.particles.length > 0) {
-      return Coordinate.minArrayXYCoord(this.particles.map((shape) => shape.origin));
-    } else {
-      return new Coordinate();
-    }
+    return this.particles.length > 0 ? Coordinate.minArrayXYCoord(this.particles.map((shape) => shape.origin)) : new Coordinate();
   }
   set origin(c: Coordinate) {
-    if (this.particles.length > 0) {
-      const delta = Coordinate.substract(c, this.origin);
-      this.particles.forEach((shape) => {
-        shape.origin = Coordinate.add(shape.origin, delta);
-      });
-    }
+    const delta = Coordinate.substract(c, this.origin);
+    this.particles.forEach((shape) => {
+      shape.origin = Coordinate.add(shape.origin, delta);
+    });
   }
 
   constructor(radius: number = 1) {

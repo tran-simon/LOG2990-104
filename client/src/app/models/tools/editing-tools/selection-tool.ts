@@ -12,20 +12,33 @@ export class SelectionTool extends SimpleSelectionTool {
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean;
-  private reverseSelectionArray: BaseShape[];
+  private previouslySelectedShapes: BaseShape[];
+
+  static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
+    return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
+  }
 
   constructor(public editorService: EditorService) {
     super(editorService);
     this.reverseSelectionMode = false;
-    this.reverseSelectionArray = new Array<BaseShape>();
+    this.previouslySelectedShapes = new Array<BaseShape>();
   }
 
   initMouseHandler(): void {
+    this.handleMouseDown = (e: MouseEvent) => {
+      if (!this.isActive) {
+        this.isActive = true;
+        if (e.button === MouseListenerService.BUTTON_LEFT) {
+          this.beginSelection(this.mousePosition);
+        } else if (e.button === MouseListenerService.BUTTON_RIGHT) {
+          this.beginReverseSelection(this.mousePosition);
+        }
+      }
+    };
+
     this.handleMouseMove = () => {
-      if (this.isActive && !this.reverseSelectionMode) {
-        this.updateSelection();
-      } else if (this.isActive && this.reverseSelectionMode) {
-        this.updateReverseSelection();
+      if (this.isActive) {
+        this.updateSelection(this.reverseSelectionMode);
       }
     };
 
@@ -33,16 +46,6 @@ export class SelectionTool extends SimpleSelectionTool {
       if (this.isActive) {
         this.isActive = false;
         this.applyBoundingBox();
-      }
-    };
-
-    this.handleMouseDown = (e: MouseEvent) => {
-      if (e.button === MouseListenerService.BUTTON_LEFT && !this.isActive) {
-        this.isActive = true;
-        this.beginSelection(this.mousePosition);
-      } else if (e.button === MouseListenerService.BUTTON_RIGHT && !this.isActive) {
-        this.isActive = true;
-        this.beginReverseSelection(this.mousePosition);
       }
     };
   }
@@ -73,8 +76,8 @@ export class SelectionTool extends SimpleSelectionTool {
     this.reverseSelectionMode = true;
     this.initialMouseCoord = Coordinate.copy(c);
     this.initSelectArea();
-    this.reverseSelectionArray.length = 0;
-    this.reverseSelectionArray.push(...this.editorService.selectedShapes);
+    this.previouslySelectedShapes.length = 0;
+    this.previouslySelectedShapes.push(...this.editorService.selectedShapes);
   }
 
   private initSelectArea(): void {
@@ -103,13 +106,7 @@ export class SelectionTool extends SimpleSelectionTool {
   }
 
   private reverseSelection(shape: BaseShape, array: BaseShape[] = this.editorService.selectedShapes): void {
-    const index = array.indexOf(shape);
-    if (index === -1) {
-      this.addSelectedShape(shape);
-    } else {
-      this.removeSelectedShape(shape);
-    }
-
+    array.indexOf(shape) === -1 ? this.addSelectedShape(shape) : this.removeSelectedShape(shape);
     this.updateBoundingBox();
   }
 
@@ -127,27 +124,17 @@ export class SelectionTool extends SimpleSelectionTool {
     }
   }
 
-  private updateSelection(): void {
+  private updateSelection(reverse: boolean = this.reverseSelectionMode): void {
     this.resetSelection();
     this.resizeSelectArea();
 
-    this.editorService.shapes.forEach((shape) => {
-      if (this.detectBoundingBoxCollision(this.selectArea, shape)) {
-        this.addSelectedShape(shape);
-      }
-    });
-
-    this.updateBoundingBox();
-  }
-
-  private updateReverseSelection(): void {
-    this.resetSelection();
-    this.resizeSelectArea();
-    this.editorService.selectedShapes.push(...this.reverseSelectionArray);
+    if (reverse) {
+      this.editorService.selectedShapes.push(...this.previouslySelectedShapes);
+    }
 
     this.editorService.shapes.forEach((shape) => {
-      if (this.detectBoundingBoxCollision(this.selectArea, shape)) {
-        this.reverseSelection(shape, this.reverseSelectionArray);
+      if (SelectionTool.detectBoundingBoxCollision(this.selectArea, shape)) {
+        reverse ? this.reverseSelection(shape, this.previouslySelectedShapes) : this.addSelectedShape(shape);
       }
     });
 
@@ -166,15 +153,10 @@ export class SelectionTool extends SimpleSelectionTool {
       this.boundingBox.origin = new Coordinate();
       this.boundingBox.end = new Coordinate();
     }
-    this.boundingBox.updateControlPoints();
   }
 
-  private detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
-    return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
-  }
-
-  private resizeSelectArea(): void {
-    this.selectArea.start = this.initialMouseCoord;
-    this.selectArea.end = this.mousePosition;
+  private resizeSelectArea(origin: Coordinate = this.initialMouseCoord, end: Coordinate = this.mousePosition): void {
+    this.selectArea.origin = origin;
+    this.selectArea.end = end;
   }
 }
