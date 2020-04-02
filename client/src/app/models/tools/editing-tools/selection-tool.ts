@@ -1,5 +1,6 @@
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
@@ -12,23 +13,49 @@ export class SelectionTool extends SimpleSelectionTool {
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean;
+  private moveSelectionMode: boolean;
   private previouslySelectedShapes: BaseShape[];
+  // private keyPresses: boolean[];
+  // private initialMoveCoord: Coordinate;
+  private moveShapes: BaseShape[];
+  private moveCoords: Coordinate[];
 
   static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
     return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
+  }
+
+  static detectPointCollision(point: Coordinate, shape: BaseShape): boolean {
+    return point.x >= shape.origin.x && point.x <= shape.end.x && point.y >= shape.origin.y && point.y <= shape.end.y;
   }
 
   constructor(public editorService: EditorService) {
     super(editorService);
     this.reverseSelectionMode = false;
     this.previouslySelectedShapes = new Array<BaseShape>();
+
+    this.keyboardListener.addEvents([
+      [
+        KeyboardListenerService.getIdentifier('ArrowUp'),
+        () => {
+          //
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('ArrowUp', false, false, 'keyup'),
+        () => {
+          //
+        },
+      ],
+    ]);
   }
 
   initMouseHandler(): void {
     this.handleMouseDown = (e: MouseEvent) => {
       if (!this.isActive) {
         this.isActive = true;
-        if (e.button === MouseListenerService.BUTTON_LEFT) {
+        if (this.boundingBox && SelectionTool.detectPointCollision(this.mousePosition, this.boundingBox)) {
+          this.startMove(this.mousePosition);
+        } else if (e.button === MouseListenerService.BUTTON_LEFT) {
           this.beginSelection(this.mousePosition);
         } else if (e.button === MouseListenerService.BUTTON_RIGHT) {
           this.beginReverseSelection(this.mousePosition);
@@ -38,16 +65,40 @@ export class SelectionTool extends SimpleSelectionTool {
 
     this.handleMouseMove = () => {
       if (this.isActive) {
-        this.updateSelection(this.reverseSelectionMode);
+        this.moveSelectionMode ? this.move() : this.updateSelection(this.reverseSelectionMode);
       }
     };
 
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
+        this.moveSelectionMode = false; // todo - move?
         this.applyBoundingBox();
       }
     };
+  }
+
+  /*private handleKeyboardMove(): void {
+
+  }*/
+
+  private startMove(c: Coordinate): void {
+    // this.initialMoveCoord = this.boundingBox.origin;
+    this.initialMouseCoord = Coordinate.copy(c);
+    this.moveSelectionMode = true;
+    this.moveShapes = new Array<BaseShape>();
+    this.moveCoords = new Array<Coordinate>();
+    this.moveShapes.push(...this.editorService.selectedShapes);
+    this.moveShapes.push(this.boundingBox);
+    this.moveShapes.forEach((shape) => {
+      this.moveCoords.push(Coordinate.copy(shape.origin));
+    });
+  }
+
+  private move(delta: Coordinate = Coordinate.substract(this.mousePosition, this.initialMouseCoord)): void {
+    this.moveShapes.forEach((shape, index) => {
+      shape.origin = Coordinate.add(this.moveCoords[index], delta);
+    });
   }
 
   selectShape(shape: BaseShape, rightClick: boolean = false): void {
