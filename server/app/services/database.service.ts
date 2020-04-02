@@ -5,15 +5,26 @@ import { injectable } from 'inversify';
 import * as mongoose from 'mongoose';
 import drawingModel, { Drawing } from '../../models/drawing';
 
+export interface DrawingResponse<T> {
+  statusCode: number;
+  documents: T;
+}
+
 @injectable()
 export class DatabaseService {
   constructor() {
-    // this.connectDB();
+    this.connectDB();
   }
 
   private static determineStatus(err: Error, results: Drawing | Drawing[]): number {
     return err ? httpStatus.INTERNAL_SERVER_ERROR :
       results ? httpStatus.OK : httpStatus.NOT_FOUND;
+  }
+
+  static handleResults(res: express.Response, results: DrawingResponse<Drawing> | DrawingResponse<Drawing[]>): void {
+    results.documents ?
+      res.status(results.statusCode).json(results.documents) :
+      res.sendStatus(results.statusCode);
   }
 
   async connectDB(): Promise<void> {
@@ -29,38 +40,48 @@ export class DatabaseService {
     await mongoose.disconnect();
   }
 
-  getAllDrawings(res: express.Response): void {
-    drawingModel.find({}, (err: Error, docs: Drawing[]) => {
-      const status = DatabaseService.determineStatus(err, docs);
-      docs ? res.status(status).json(docs) : res.sendStatus(status);
+  async getAllDrawings(): Promise<DrawingResponse<Drawing[]>> {
+    return new Promise<DrawingResponse<Drawing[]>>((resolve) => {
+      drawingModel.find({}, (err: Error, docs: Drawing[]) => {
+        const status = DatabaseService.determineStatus(err, docs);
+        resolve({ statusCode: status, documents: docs });
+      });
     });
   }
 
-  getDrawingById(res: express.Response, id: string): void {
-    drawingModel.findById(id, (err: Error, doc: Drawing) => {
-      const status = DatabaseService.determineStatus(err, doc);
-      doc ? res.status(status).json(doc) : res.sendStatus(status);
+  async getDrawingById(id: string): Promise<DrawingResponse<Drawing>> {
+    return new Promise<DrawingResponse<Drawing>>((resolve) => {
+      drawingModel.findById(id, (err: Error, doc: Drawing) => {
+        const status = DatabaseService.determineStatus(err, doc);
+        resolve({ statusCode: status, documents: doc });
+      });
     });
   }
 
-  addDrawing(res: express.Response, body: Drawing): void {
-    const drawing = { name: body.name, tags: body.tags, data: JSON.stringify(body.data), previewURL: body.previewURL } as Drawing;
-    const model = new drawingModel(drawing);
-    model.save((err: mongoose.Error) => {
-      const status = err ? httpStatus.INTERNAL_SERVER_ERROR : httpStatus.OK;
-      res.sendStatus(status);
+  async addDrawing(body: Drawing): Promise<DrawingResponse<Drawing>> {
+    return new Promise<DrawingResponse<Drawing>>((resolve) => {
+      const drawing = { name: body.name, tags: body.tags, data: JSON.stringify(body.data), previewURL: body.previewURL } as Drawing;
+      const model = new drawingModel(drawing);
+      model.save((err: mongoose.Error, doc: Drawing) => {
+        const status = err ? httpStatus.INTERNAL_SERVER_ERROR : httpStatus.OK;
+        resolve({ statusCode: status, documents: doc });
+      });
     });
   }
 
-  deleteDrawing(res: express.Response, id: string): void {
-    drawingModel.findByIdAndDelete(id, (err: Error, doc: Drawing) => {
-      res.sendStatus(DatabaseService.determineStatus(err, doc));
+  async deleteDrawing(id: string): Promise<DrawingResponse<Drawing>> {
+    return new Promise<DrawingResponse<Drawing>>((resolve) => {
+      drawingModel.findByIdAndDelete(id, (err: Error, doc: Drawing) => {
+        resolve({ statusCode: DatabaseService.determineStatus(err, doc), documents: doc });
+      });
     });
   }
 
-  updateDrawing(res: express.Response, id: string, body: string): void {
-    drawingModel.findByIdAndUpdate(id, body, (err: Error, doc: Drawing) => {
-      res.sendStatus(DatabaseService.determineStatus(err, doc));
+  async updateDrawing(id: string, body: string): Promise<DrawingResponse<Drawing>> {
+    return new Promise<DrawingResponse<Drawing>>((resolve) => {
+      drawingModel.findByIdAndUpdate(id, body, (err: Error, doc: Drawing) => {
+        resolve({ statusCode: DatabaseService.determineStatus(err, doc), documents: doc });
+      });
     });
   }
 }
