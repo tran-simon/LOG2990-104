@@ -3,6 +3,8 @@ import { inject, injectable } from 'inversify';
 import { Application } from './app';
 import Types from './types';
 
+import { DEV_PORT, PROD_PORT } from './constants';
+
 @injectable()
 export class Server {
     private server: http.Server;
@@ -14,6 +16,14 @@ export class Server {
         @inject(Types.Application) private application: Application
     ) {
         this.isListening = false;
+    }
+
+    static get port(): number {
+        let port: number;
+
+        process.env.USER === 'root' ? port = PROD_PORT : port = DEV_PORT;
+
+        return port;
     }
 
     init(port: number): void {
