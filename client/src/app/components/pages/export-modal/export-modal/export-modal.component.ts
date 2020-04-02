@@ -5,6 +5,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 import { EditorService } from 'src/app//services/editor.service';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ImageExportService } from 'src/app/services/image-export.service';
+import { DrawingSurfaceComponent } from '../../editor/drawing-surface/drawing-surface.component';
 import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
 
@@ -21,6 +22,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   formGroup: FormGroup;
   selectedFilter: FilterType;
   filters: string[] = Object.values(FilterType);
+  previewImage: DrawingSurfaceComponent;
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
@@ -34,6 +36,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     this.selectedFilter = FilterType.EMPTY;
     this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter);
     this.formGroup = new FormGroup({});
+    this.previewImage = this.editorService.view;
   }
 
   get fullName(): string {
@@ -68,9 +71,9 @@ export class ExportModalComponent extends AbstractModalComponent {
   changeExtension(): void {
     if (this.selectedExtension !== ExtensionType.EMPTY) {
       this.selectedExtension === ExtensionType.SVG
-        ? (this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter))
+        ? (this.href = this.imageExportService.exportSVGElement(this.previewImage, this.selectedFilter))
         : this.imageExportService
-            .exportImageElement(this.editorService.view, this.selectedExtension, this.selectedFilter)
+            .exportImageElement(this.previewImage, this.selectedExtension, this.selectedFilter)
             .then((data: string) => {
               this.href = data;
             });
@@ -84,6 +87,6 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   get previewURL(): SafeResourceUrl {
-    return this.imageExportService.safeURL(this.editorService.view);
+    return this.imageExportService.safeURL(this.previewImage);
   }
 }
