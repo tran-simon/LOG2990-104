@@ -1,12 +1,6 @@
-import { EditorService } from 'src/app/services/editor.service';
-import { BaseShape } from '../../shapes/base-shape';
-import { ShapeCommand } from './shape-command';
+import { ShapesCommand } from 'src/app/models/commands/shape-commands/shapes-command';
 
-export class RemoveShapesCommand extends ShapeCommand {
-  constructor(shapes: BaseShape[], private editorService: EditorService) {
-    super(shapes);
-  }
-
+export class RemoveShapesCommand extends ShapesCommand {
   execute(): void {
     this.editorService.removeShapes(this.shapes);
   }

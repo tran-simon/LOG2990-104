@@ -31,7 +31,7 @@ export abstract class CreatorTool extends Tool {
   applyShape(): void {
     this.updateProperties();
     if (this.shape) {
-      this.editorService.commandReceiver.add(new AddShapesCommand([this.shape], this.editorService));
+      this.editorService.commandReceiver.add(new AddShapesCommand(this.shape, this.editorService));
     }
     this.shape = undefined;
     this.isActive = false;
