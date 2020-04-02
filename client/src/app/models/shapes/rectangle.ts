@@ -2,6 +2,7 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class Rectangle extends BaseShape {
+  private _origin: Coordinate;
   private _height: number;
   private _width: number;
 
@@ -33,14 +34,27 @@ export class Rectangle extends BaseShape {
     this.svgNode.setAttribute('y', this._origin.y.toString());
   }
 
-  get center(): Coordinate {
-    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
+  set start(c: Coordinate) {
+    const end = Coordinate.copy(this.end);
+    this.origin = c;
+    this.end = end;
   }
 
-  constructor(origin: Coordinate = new Coordinate(), size: number = 0) {
+  get end(): Coordinate {
+    return super.end;
+  }
+
+  set end(c: Coordinate) {
+    const end = Coordinate.maxXYCoord(c, this.origin);
+    this.origin = Coordinate.minXYCoord(c, this.origin);
+    this.width = end.x - this.origin.x;
+    this.height = end.y - this.origin.y;
+  }
+
+  constructor(origin: Coordinate = new Coordinate(), width: number = 0, height: number = width) {
     super('rect');
     this.origin = origin;
-    this.width = size;
-    this.height = size;
+    this.width = width;
+    this.height = height;
   }
 }

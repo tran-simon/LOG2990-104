@@ -45,6 +45,6 @@ export class SprayTool extends CreatorTool<SprayToolProperties> {
   }
 
   createShape(): CompositeParticle {
-    return new CompositeParticle(this.mousePosition, this.toolProperties.radius);
+    return new CompositeParticle(this.toolProperties.radius);
   }
 }

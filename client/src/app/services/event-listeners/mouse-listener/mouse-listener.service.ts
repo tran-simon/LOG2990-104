@@ -12,6 +12,8 @@ export class MouseListenerService extends AbstractEventListenerService<MouseEven
   static readonly EVENT_MOUSELEAVE: string = 'mouseleave';
   static readonly EVENT_CLICK: string = 'click';
   static readonly EVENT_CONTEXTMENU: string = 'contextmenu';
+  static readonly BUTTON_LEFT: number = 0;
+  static readonly BUTTON_RIGHT: number = 2;
 
   static defaultMouseListener(handler: MouseHandler): MouseListenerService {
     const mouseListenerService = new MouseListenerService();
