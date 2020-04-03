@@ -50,16 +50,24 @@ describe('Server', () => {
 
   it('should throw an error if two servers try to init on the same port', (done: Mocha.Done) => {
     const spy = sinon.spy(anotherServer, 'onError' as any);
+    const stub = sinon.stub(process, 'exit');
 
     server.init(DEV_PORT);
     anotherServer.init(DEV_PORT);
 
     setTimeout(() => {
       expect(spy.called).to.equal(true);
+      expect(stub.called).to.equal(true);
 
       spy.restore();
+      stub.restore();
       done();
     });
+  });
+
+  it('should return the correct port', (done: Mocha.Done) => {
+    process.env.NODE_ENV === 'test' ? expect(Server.port).to.equal(3000) : expect(Server.port).to.equal(80);
+    done();
   });
 
   afterEach(() => {

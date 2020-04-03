@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as httpStatus from 'http-status-codes';
 import { injectable } from 'inversify';
 
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as mongoose from 'mongoose';
 import drawingModel, { Drawing } from '../../models/drawing';
 
@@ -12,8 +13,18 @@ export interface DrawingResponse<T> {
 
 @injectable()
 export class DatabaseService {
+
+  private static readonly CONNECTION_OPTIONS: mongoose.ConnectionOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  };
+
+  mongoMS: MongoMemoryServer;
+
   constructor() {
-    this.connectDB();
+    if (process.env.NODE_ENV !== 'test') {
+      this.connectDB();
+    }
   }
 
   private static determineStatus(err: Error, results: Drawing | Drawing[]): number {
@@ -27,17 +38,34 @@ export class DatabaseService {
       res.sendStatus(results.statusCode);
   }
 
-  async connectDB(): Promise<void> {
-    await mongoose.connect(
+  // Documentation de mongodb-memory-server sur Github
+  // https://github.com/nodkz/mongodb-memory-server
+  async connectMS(): Promise<void> {
+    this.mongoMS = new MongoMemoryServer();
+    return this.mongoMS.getUri().then((mongoUri) => {
+
+      mongoose.connect(mongoUri, DatabaseService.CONNECTION_OPTIONS);
+
+      mongoose.connection.once('open', () => {
+        console.log(`MongoDB successfully connected local instance ${mongoUri}`);
+      });
+    });
+  }
+
+  connectDB(): void {
+    mongoose.connect(
       'mongodb+srv://polydessin:letmein1@cluster0-lgpty.azure.mongodb.net/polydessin?retryWrites=true&w=majority',
-      { useNewUrlParser: true, useUnifiedTopology: true },
+      DatabaseService.CONNECTION_OPTIONS,
       (err: mongoose.Error) => {
-        err ? console.error(err.message) : console.log('Connected to MongoDB');
+        err ? console.error(err.message) : console.log('Connected to MongoDB Atlas Cloud');
       });
   }
 
   async disconnectDB(): Promise<void> {
     await mongoose.disconnect();
+    if (this.mongoMS) {
+      await this.mongoMS.stop();
+    }
   }
 
   async getAllDrawings(): Promise<DrawingResponse<Drawing[]>> {
@@ -79,7 +107,7 @@ export class DatabaseService {
 
   async updateDrawing(id: string, body: string): Promise<DrawingResponse<Drawing>> {
     return new Promise<DrawingResponse<Drawing>>((resolve) => {
-      drawingModel.findByIdAndUpdate(id, body, (err: Error, doc: Drawing) => {
+      drawingModel.findByIdAndUpdate(id, body, (err: Error, doc: Drawing, ) => {
         resolve({ statusCode: DatabaseService.determineStatus(err, doc), documents: doc });
       });
     });

@@ -11,7 +11,7 @@ export const drawingSchema = new mongoose.Schema({
   name: String,
   tags: [String],
   data: String,
-  previewURL: String
+  previewURL: String,
 });
 
 const drawingModel = mongoose.model<Drawing>('Drawing', drawingSchema);
