@@ -38,7 +38,6 @@ export class DrawingSurfaceComponent {
     shape.svgNode.oncontextmenu = () => {
       this.shapeRightClicked.emit(shape);
     };
-
     this.svg.appendChild(shape.svgNode);
   }
 
