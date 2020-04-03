@@ -9,6 +9,7 @@ import { Color } from 'src/app/utils/color/color';
 })
 export class DrawingSurfaceComponent {
   static SHAPE_ID = 0;
+  static readonly SHAPE_ID_PREFIX: string = 'shape-';
   static readonly DEFAULT_WIDTH: number = 500;
   static readonly DEFAULT_HEIGHT: number = 500;
   static readonly DEFAULT_COLOR: Color = Color.WHITE;
@@ -40,7 +41,7 @@ export class DrawingSurfaceComponent {
       this.shapeRightClicked.emit(shape);
     };
 
-    shape.svgNode.id = `shape-${DrawingSurfaceComponent.SHAPE_ID++}`;
+    shape.svgNode.id = DrawingSurfaceComponent.SHAPE_ID_PREFIX + (DrawingSurfaceComponent.SHAPE_ID++);
     this.svg.appendChild(shape.svgNode);
     }
 

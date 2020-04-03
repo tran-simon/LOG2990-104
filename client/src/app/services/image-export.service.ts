@@ -11,31 +11,29 @@ export class ImageExportService {
     private sanitizer: DomSanitizer
   ) { }
 
-  static exportImageElement(surface: DrawingSurfaceComponent, extension: string, svg:any ): () => string {
+  exportImageElement(surface: DrawingSurfaceComponent, extension: string): () => string {
     const image = new Image();
     const canvas = document.createElement('canvas');
-    image.src = this.createDataURL(surface,svg);
+    image.src = this.createDataURL(surface);
     const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
     return image.onload = (): string => {
       canvas.width = surface.width;
       canvas.height = surface.height;
-      ctx.imageSmoothingEnabled = false;
       ctx.drawImage(image, 0, 0);
       return canvas.toDataURL(`image/${extension}`);
     };
   }
 
+  exportSVGElement(surface: DrawingSurfaceComponent): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.createDataURL(surface));
+  }
+
   /**
    * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
    */
-  static createDataURL(surface: DrawingSurfaceComponent, svg:any): string {
+  createDataURL(surface: DrawingSurfaceComponent): string {
     const xmlSerializer = new XMLSerializer();
-    const svgString = xmlSerializer.serializeToString(svg);
+    const svgString = xmlSerializer.serializeToString(surface.svg);
     return 'data:image/svg+xml,' + encodeURIComponent(svgString);
-  }
-
-  exportSVGElement(surface: DrawingSurfaceComponent, svg:any): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(ImageExportService.createDataURL(surface, svg));
-    // return;
   }
 }

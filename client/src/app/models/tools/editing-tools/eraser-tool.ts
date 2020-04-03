@@ -23,10 +23,6 @@ export class EraserTool extends Tool {
   private static assignColorToShapeFromIndex(node:SVGElement, index: number):void {
     const hex: string = ((index) * 10).toString(16).padStart(6, '0');
     const color = Color.hex(hex);
-    // const color = Color.hsl(index * 10, 1, 0.5);
-    // const color = Color.hsl(0, 1, index/100);
-    console.log(color.rgbString);
-
 
     const style = node.style;
     if (style.fill !== BaseShape.CSS_NONE) {
@@ -37,93 +33,64 @@ export class EraserTool extends Tool {
     }
   }
 
+  static sanitizeChildNodes(node: SVGElement, id: number): void{
+    const a = node.style.strokeWidth;
+    if (!a || +a < 5) {
+      node.style.strokeWidth = '5';
+    }
+    node.setAttribute('filter', '')
+    EraserTool.assignColorToShapeFromIndex(node, (+id) + 1);
+    node.childNodes.forEach((childNode:SVGElement) => {
+      EraserTool.sanitizeChildNodes(childNode, id);
+    });
+  }
+
   init(): void {
-    // const background = this.editorService.view.svg.querySelector('#background');
-    // if (background) {
-    //   background.setAttribute('visibility', 'hidden');
-    // }
+    const svgCopy: SVGElement = this.editorService.view.svg.cloneNode(true) as SVGElement;
 
-
-    const viewSvg2 = this.editorService.view['_svg'].nativeElement.cloneNode(true);
-
-    const background =viewSvg2.querySelector('#background');
+    const background = svgCopy.querySelector('#background');
     if (background) {
-      // background.setAttribute('visibility', 'hidden');
       background.setAttribute('fill', Color.RED.rgbString);
     }
 
-    viewSvg2.childNodes.forEach((node:SVGElement, index: number)=>{
+    svgCopy.childNodes.forEach((node: SVGElement, index: number) => {
       console.log(node.id);
       if (node.id.startsWith('shape-')) {
         const a = node.style.strokeWidth;
         if (!a || +a < 5) {
           node.style.strokeWidth = '5';
         }
+        node.setAttribute('filter', '');
         const xd = node.id.split('-')[1];
+        node.childNodes.forEach((childNode:SVGElement) => {
+          EraserTool.sanitizeChildNodes(childNode, (+xd) + 1);
+        });
         EraserTool.assignColorToShapeFromIndex(node, (+xd) + 1);
       }
-    })
+    });
+
     const drawingSurface = new DrawingSurfaceComponent();
     drawingSurface.width = this.editorService.view.width;
     drawingSurface.height = this.editorService.view.height;
 
-    this.editorService.view.svg.parentElement.appendChild(viewSvg2);
+    this.editorService.view.svg.parentElement.appendChild(svgCopy);
 
-    //
-    //
-    //
-    // // const xd:SVGElement = this.editorService.view['_svg'].nativeElement.querySelector('#1xd');
-    // const a = viewSvg2.parentElement.querySelector('svg');
-    // // const b = viewSvg2.parentElement.querySelector('#1xd');
-    // const c = viewSvg2.
-    //
-    //
-    // debugger
-    // console.log(this.editorService.view.svg.querySelector('svg'));
-    // if (xd) {
-    //   debugger
-    //   xd.style.fill = Color.GREEN.rgbString;
-    // }
-
-
-    // this.editorService.shapes.forEach(shape=>{
-    //   shape.svgNode
-    // }
-
-      // EraserTool.assignColorToShapeFromIndex());
-
-    EditorService.viewToCanvas(this.editorService.view, viewSvg2).then((ctx) => {
+    EditorService.viewToCanvas(this.editorService.view, svgCopy).then((ctx) => {
       ctx.imageSmoothingEnabled = false;
       this.ctx = ctx;
-      // this.editorService.shapes.forEach(shape => {
-      //   shape.updateProperties();
-      // });
-
-      if (background) {
-        // background.setAttribute('visibility', 'visible');
-      }
-      // const canvas = document.createElement('canvas');
-      // canvas.id="xdxd"
-      // const ctx = (canvas.getContext('2d') as CanvasRenderingContext2D).;
-      // const xd = ctx.getImageData(0, 0, 50, 50);
-      // debugger
-      // this.editorService.view.svg.parentElement.appendChild(ctx);
       this.initEraserView();
     });
-
   }
 
   selectShapes(x: number, y: number): void {
     this.selectedIndexes = [];
     if (this.ctx) {
-      // const i = this.size / 2;
-      // const j = this.size / 2;
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
           const color = PipetteTool.colorAtPointInCanvas(this.ctx, new Coordinate(x + i, y + j));
 
           if (color.r > 0) {
-            console.log("ASDFASDFASDF" + color.rgbString);
+            // console.log("ASDFASDFASDF" + color.rgbString);
             continue;
           }
           const index1 = parseInt(color.hex, 16) / 10 -1;
@@ -141,16 +108,16 @@ export class EraserTool extends Tool {
           //   console.log(color.rgbString);
           // }
       if (color.hexString !== Color.RED.hexString) {
-        console.log(color.hexString);
+        // console.log(color.hexString);
       }
           if (index >= 0 && color.hexString !== Color.RED.hexString && this.selectedIndexes.indexOf(index) === -1) {
-            console.log(color.hexString + ' A ' + index + " P " + a + " P " + index1);
+            // console.log(color.hexString + ' A ' + index + " P " + a + " P " + index1);
           }
 
           if (index >= 0 && color.hexString !== Color.RED.hexString && this.selectedIndexes.indexOf(index) === -1) {
             this.selectedIndexes.push(index);
             this.editorService.view.color = Color.rgb(0, 0, color.b);
-            console.log(color.hexString + " : " + index);
+            // console.log(color.hexString + " : " + index);
 
           } else {
           }
