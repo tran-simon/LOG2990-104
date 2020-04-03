@@ -23,7 +23,7 @@
     </form>
   </div>
   <div actions>
-    <a mat-stroked-button id="save-button" [href]="valid ? href : ''" [download]="fullName" [disabled]="!valid"
+    <a mat-stroked-button [disabled]="!valid" id="save-button" [href]="valid ? href : ''" [download]="fullName"
       (click)="submit()">Sauvegarder</a>
   </div>
 </app-abstract-modal>

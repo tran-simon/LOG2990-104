@@ -9,10 +9,10 @@
           <app-tag-input [formGroup]="formGroup" [(value)]="tags[i].value" required=true>Tag</app-tag-input>
         </div>
         <div id="tag-button-container">
-          <button mat-icon-button (click)="removeTag()">
+          <button id="btn-remove" mat-icon-button (click)="removeTag()">
             <mat-icon>remove</mat-icon>
           </button>
-          <button mat-icon-button (click)="addTag()">
+          <button id="btn-add" mat-icon-button (click)="addTag()">
             <mat-icon>add</mat-icon>
           </button>
         </div>

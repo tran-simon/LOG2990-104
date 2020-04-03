@@ -24,13 +24,13 @@ export class GalleryModalComponent extends AbstractModalComponent {
   }
 
   updateDrawings(): void {
-    this.apiService.searchDrawings(this.nameQuery, this.tagsQuery.replace(/ /g, '')).subscribe((drawings: Drawing[]) => {
+    this.apiService.searchDrawings(this.nameQuery, this.tagsQuery.replace(/ /g, '')).then((drawings) => {
       this.drawings = drawings;
     });
   }
 
   fetchDrawings(): void {
-    this.apiService.getAllDrawings().subscribe((drawings: Drawing[]) => {
+    this.apiService.getAllDrawings().then((drawings) => {
       this.drawings = drawings;
     });
   }
