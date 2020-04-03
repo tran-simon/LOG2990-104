@@ -73,6 +73,19 @@ export class DatabaseService {
     });
   }
 
+  async searchDrawings(name: string, tag: string): Promise<DrawingResponse<Drawing[]>> {
+    return new Promise<DrawingResponse<Drawing[]>>((resolve) => {
+      drawingModel.find(
+        {
+          name: { $regex: '.*' + name + '.*' },
+          tags: { $regex: '.*' + tag + '.*' }
+        }, (err: Error, docs: Drawing[]) => {
+          const status = DatabaseService.determineStatus(err, docs);
+          resolve({ statusCode: status, documents: docs });
+        });
+    });
+  }
+
   async getDrawingById(id: string): Promise<DrawingResponse<Drawing>> {
     return new Promise<DrawingResponse<Drawing>>((resolve) => {
       drawingModel.findById(id, (err: Error, doc: Drawing) => {

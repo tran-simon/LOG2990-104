@@ -21,6 +21,15 @@ export class DatabaseController {
       });
     });
 
+    this.router.get('/drawing/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      const name = req.query.name == null ? '' : req.query.name;
+      const tag = req.query.tag == null ? '' : req.query.tag;
+
+      this.databaseService.searchDrawings(name, tag).then((results) => {
+        DatabaseService.handleResults(res, results);
+      });
+    });
+
     this.router.get('/drawings/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       this.databaseService.getDrawingById(req.params.id).then((results) => {
         DatabaseService.handleResults(res, results);
