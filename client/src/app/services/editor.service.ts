@@ -104,11 +104,12 @@ export class EditorService {
     }
   }
 
-  async viewToCanvas(): Promise<CanvasRenderingContext2D> {
+  static viewToCanvas(view: DrawingSurfaceComponent, svg:SVGElement = view.svg): Promise<CanvasRenderingContext2D> {
     const image = new Image();
-    const { width, height, svg } = this.view;
+    const { width, height } = view;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.imageSmoothingEnabled = false;
     ctx.canvas.width = width;
     ctx.canvas.height = height;
 

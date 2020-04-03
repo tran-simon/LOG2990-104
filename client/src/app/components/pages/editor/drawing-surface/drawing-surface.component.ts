@@ -8,6 +8,7 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./drawing-surface.component.scss'],
 })
 export class DrawingSurfaceComponent {
+  static SHAPE_ID = 0;
   static readonly DEFAULT_WIDTH: number = 500;
   static readonly DEFAULT_HEIGHT: number = 500;
   static readonly DEFAULT_COLOR: Color = Color.WHITE;
@@ -39,10 +40,12 @@ export class DrawingSurfaceComponent {
       this.shapeRightClicked.emit(shape);
     };
 
+    shape.svgNode.id = `shape-${DrawingSurfaceComponent.SHAPE_ID++}`;
     this.svg.appendChild(shape.svgNode);
-  }
+    }
 
   removeShape(shape: BaseShape): void {
     this.svg.removeChild(shape.svgNode);
+    DrawingSurfaceComponent.SHAPE_ID--;
   }
 }
