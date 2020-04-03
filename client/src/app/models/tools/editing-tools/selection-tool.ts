@@ -7,8 +7,15 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
 import { BoundingBox } from '../../shapes/bounding-box';
 import { Rectangle } from '../../shapes/rectangle';
+import { SelectionMove } from './selection-move.enum';
 
 export class SelectionTool extends SimpleSelectionTool {
+  private readonly KEYBOARD_MOVE_DISTANCE: number = 3;
+  private readonly KEYBOARD_TIMEOUT: number = 500; // todo - move to enum?
+  private readonly KEYBOARD_INTERVAL: number = 100;
+  private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(this.KEYBOARD_MOVE_DISTANCE, 0);
+  private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, this.KEYBOARD_MOVE_DISTANCE);
+
   private boundingBox: BoundingBox;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
@@ -16,10 +23,12 @@ export class SelectionTool extends SimpleSelectionTool {
   private moveSelectionMode: boolean;
   private previouslySelectedShapes: BaseShape[];
 
-  // private keyPresses: boolean[];
+  private keyPresses: boolean[] = [];
   // private initialMoveCoord: Coordinate;
   private moveShapes: BaseShape[];
   private moveCoords: Coordinate[];
+  private keyInterval: number;
+  private keyTimeout: number;
 
   static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
     return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
@@ -38,13 +47,49 @@ export class SelectionTool extends SimpleSelectionTool {
       [
         KeyboardListenerService.getIdentifier('ArrowUp'),
         () => {
-          //
+          this.handleKeyboardMove(SelectionMove.UP, true);
         },
       ],
       [
         KeyboardListenerService.getIdentifier('ArrowUp', false, false, 'keyup'),
         () => {
-          //
+          this.handleKeyboardMove(SelectionMove.UP, false);
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('ArrowRight'),
+        () => {
+          this.handleKeyboardMove(SelectionMove.RIGHT, true);
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('ArrowRight', false, false, 'keyup'),
+        () => {
+          this.handleKeyboardMove(SelectionMove.RIGHT, false);
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('ArrowDown'),
+        () => {
+          this.handleKeyboardMove(SelectionMove.DOWN, true);
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('ArrowDown', false, false, 'keyup'),
+        () => {
+          this.handleKeyboardMove(SelectionMove.DOWN, false);
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('ArrowLeft'),
+        () => {
+          this.handleKeyboardMove(SelectionMove.LEFT, true);
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('ArrowLeft', false, false, 'keyup'),
+        () => {
+          this.handleKeyboardMove(SelectionMove.LEFT, false);
         },
       ],
     ]);
@@ -79,11 +124,54 @@ export class SelectionTool extends SimpleSelectionTool {
     };
   }
 
-  /*private handleKeyboardMove(): void {
+  private calculateKeyboardMove(keyPresses: boolean[]): Coordinate {
+    let result = new Coordinate();
+    if (keyPresses[SelectionMove.UP]) {
+      result = Coordinate.substract(result, this.KEYBOARD_MOVE_DOWN);
+    }
+    if (keyPresses[SelectionMove.RIGHT]) {
+      result = Coordinate.add(result, this.KEYBOARD_MOVE_RIGHT);
+    }
+    if (keyPresses[SelectionMove.DOWN]) {
+      result = Coordinate.add(result, this.KEYBOARD_MOVE_DOWN);
+    }
+    if (keyPresses[SelectionMove.LEFT]) {
+      result = Coordinate.substract(result, this.KEYBOARD_MOVE_RIGHT);
+    }
+    return result;
+  }
 
-  }*/
+  private handleKeyboardMove(key: number, isDown: boolean): void {
+    this.keyPresses[key] = isDown;
+    this.isActive = false;
+    this.keyPresses.forEach((isActive) => {
+      this.isActive = this.isActive || isActive;
+    });
+    if (this.isActive) {
+      if (!this.keyTimeout) {
+        let keyMoveDelta = this.calculateKeyboardMove(this.keyPresses);
+        this.startMove();
+        this.move(keyMoveDelta);
+        this.keyTimeout = window.setTimeout(() => {
+          this.keyInterval = window.setInterval(() => {
+            keyMoveDelta = Coordinate.add(keyMoveDelta, this.calculateKeyboardMove(this.keyPresses));
+            this.move(keyMoveDelta);
+          }, this.KEYBOARD_INTERVAL);
+        }, this.KEYBOARD_TIMEOUT);
+      }
+    } else {
+      if (this.keyTimeout) {
+        window.clearTimeout(this.keyTimeout);
+        this.keyTimeout = 0;
+      }
+      if (this.keyInterval) {
+        window.clearInterval(this.keyInterval);
+        this.keyInterval = 0;
+      }
+    }
+  }
 
-  private startMove(c: Coordinate): void {
+  private startMove(c: Coordinate = new Coordinate()): void {
     // this.initialMoveCoord = this.boundingBox.origin;
     this.initialMouseCoord = Coordinate.copy(c);
     this.moveSelectionMode = true;
