@@ -10,11 +10,13 @@ export class APIService {
   private static API_BASE_URL: string;
   private static API_DATABASE_ROUTE: string;
   private static API_DRAWINGS_ROUTE: string;
+  private static API_DRAWINGS_QUERY_ROUTE: string;
 
   constructor(private http: HttpClient) {
     APIService.API_BASE_URL = 'http://localhost:3000/api';
     APIService.API_DATABASE_ROUTE = '/database';
     APIService.API_DRAWINGS_ROUTE = '/drawings';
+    APIService.API_DRAWINGS_QUERY_ROUTE = '/drawing';
   }
 
   uploadDrawing(drawing: Drawing): void {
@@ -26,6 +28,13 @@ export class APIService {
 
   getAllDrawings(): Observable<Drawing[]> {
     const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE;
+
+    return this.http.get<Drawing[]>(url);
+  }
+
+  searchDrawings(name: string, tag: string): Observable<Drawing[]> {
+    const url =
+      APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_QUERY_ROUTE + '/?name=' + name + '&tag=' + tag;
 
     return this.http.get<Drawing[]>(url);
   }

@@ -1,3 +1,5 @@
+@import "../../../../../assets/globalTheme";
+
 #main-container {
   display: flex;
   flex-flow: row wrap;
@@ -5,4 +7,22 @@
 
 .drawing-container {
   margin: 25px;
+}
+
+#search-bar {
+  display: flex;
+  flex-direction: horizontal;
+  align-items: center;
+  height: 100px;
+}
+
+.search-field {
+  width: 300px;
+  margin-right: 50px;
+}
+
+#apply-button {
+  background-color: $primary;
+  color: $accent;
+  font-size: 16px;
 }
