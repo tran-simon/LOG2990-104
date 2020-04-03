@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
 import { CommandReceiver } from '@models/commands/command-receiver';
 import { ImageExportService } from '@services/image-export.service';
+import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
@@ -30,8 +30,7 @@ export class EditorService {
   private previewShapes: BaseShape[];
   private readonly _commandReceiver: CommandReceiver;
 
-  gridSize: number;
-  gridOpacity: number;
+  readonly gridProperties: GridProperties;
   view: DrawingSurfaceComponent;
 
   get commandReceiver(): CommandReceiver {
@@ -48,8 +47,7 @@ export class EditorService {
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
     this.selectedShapes = new Array<BaseShape>();
-    this.gridSize = GridComponent.DEFAULT_GRID_SIZE;
-    this.gridOpacity = GridComponent.DEFAULT_GRID_OPACITY;
+    this.gridProperties = new GridProperties();
   }
 
   private initTools(): void {
