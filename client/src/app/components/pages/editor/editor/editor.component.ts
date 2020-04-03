@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
@@ -105,15 +106,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [
         KeyboardListenerService.getIdentifier('+', false),
         () => {
-          // (this.editorService.tools.get(ToolType.Grid) as GridTool).upscaleGrid();
-          return false;
+          this.editorService.gridSize += GridComponent.GRID_SIZE_INCREMENT;
         },
       ],
       [
         KeyboardListenerService.getIdentifier('-', false),
         () => {
-          // (this.editorService.tools.get(ToolType.Grid) as GridTool).downscaleGrid();
-          return false;
+          if (this.editorService.gridSize > GridComponent.GRID_SIZE_INCREMENT) {
+            this.editorService.gridSize -= GridComponent.GRID_SIZE_INCREMENT;
+          }
         },
       ],
       [

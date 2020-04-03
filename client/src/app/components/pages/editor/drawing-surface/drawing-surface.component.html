@@ -22,17 +22,4 @@
     </filter>
   </defs>
 </svg>
-<svg id="svgGrid" [attr.width]="width" [attr.height]="height">
-  <defs>
-    <pattern id="smallGrid" [attr.width]="smallGrid" [attr.height]="smallGrid" patternUnits="userSpaceOnUse">
-      <path [attr.d]="'M '+ smallGrid.toString()+' 0 L 0 0 0 '+smallGrid.toString()"
-            fill="none" stroke="black" stroke-width="0.5" [attr.stroke-opacity]="gridOpacity.toString()"/>
-    </pattern>
-    <pattern id="largeGrid" [attr.width]="largeGrid" [attr.height]="largeGrid" patternUnits="userSpaceOnUse">
-      <rect [attr.width]="largeGrid" [attr.height]="largeGrid" fill="url(#smallGrid)"/>
-      <path [attr.d]="'M '+ largeGrid.toString()+' 0 L 0 0 0 '+largeGrid.toString()"
-            fill="none" stroke="black" stroke-width="1" [attr.stroke-opacity]="gridOpacity.toString()"/>
-    </pattern>
-  </defs>
-  <rect [attr.width]="width" [attr.height]="height" fill="url(#largeGrid)"></rect>
-</svg>
+<ng-content></ng-content>

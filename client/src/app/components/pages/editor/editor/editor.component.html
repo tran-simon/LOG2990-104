@@ -16,5 +16,12 @@
     (contextmenu)="handleMouseEvent($event)"
     (shapeClicked)="shapeClicked($event)"
     (shapeRightClicked)="shapeClicked($event, true)"
-  ></app-drawing-surface>
+  >
+	  <app-grid
+			  [width]=surfaceWidth
+			  [height]=surfaceHeight
+			  [size]=editorService.gridSize
+			  [gridOpacity]=editorService.gridOpacity
+	  ></app-grid>
+  </app-drawing-surface>
 </div>

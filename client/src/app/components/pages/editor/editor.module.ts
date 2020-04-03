@@ -3,10 +3,11 @@ import { ToolbarModule } from 'src/app/components/pages/editor/toolbar/toolbar.m
 import { SharedModule } from '../../shared/shared.module';
 import { DrawingSurfaceComponent } from './drawing-surface/drawing-surface.component';
 import { EditorComponent } from './editor/editor.component';
+import { GridComponent } from './drawing-surface/grid/grid.component';
 
 @NgModule({
   imports: [SharedModule, ToolbarModule],
-  declarations: [DrawingSurfaceComponent, EditorComponent],
+  declarations: [DrawingSurfaceComponent, EditorComponent, GridComponent],
   exports: [DrawingSurfaceComponent, EditorComponent],
 })
 export class EditorModule {}
