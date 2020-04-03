@@ -13,7 +13,7 @@ import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
 import { ExportModalComponent } from './export-modal.component';
 
-fdescribe('ExportModalComponent', () => {
+describe('ExportModalComponent', () => {
   let component: ExportModalComponent;
   let fixture: ComponentFixture<ExportModalComponent>;
   let fixtureEditor: ComponentFixture<EditorComponent>;
