@@ -13,7 +13,8 @@ export class EraserTool extends Tool {
   size: number;
   private eraserView: Rectangle;
   private ctx: CanvasRenderingContext2D;
-  private selectedIndexes: number[];
+  // private selectedIndexes: number[];
+  private selectedIndex: number;
 
   constructor(editorService: EditorService) {
     super(editorService);
@@ -31,7 +32,7 @@ export class EraserTool extends Tool {
     svgCopy.childNodes.forEach((node: SVGElement) => {
       if (node.id.startsWith('shape-')) {
         const id = node.id.split('-')[1];
-        EraserUtils.sanitizeAndAssignColorToSvgNode(node, (+id) + 1);
+        EraserUtils.sanitizeAndAssignColorToSvgNode(node, +id + 1);
       }
     });
 
@@ -45,8 +46,10 @@ export class EraserTool extends Tool {
     });
   }
 
-  selectShapes(x: number, y: number): void {
-    this.selectedIndexes = [];
+  selectShapes(pos: Coordinate): void {
+    const { x, y } = pos;
+    // this.selectedIndexes = [];
+    this.selectedIndex = -1;
     if (this.ctx) {
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
@@ -63,8 +66,9 @@ export class EraserTool extends Tool {
             continue;
           }
 
-          if (index >= 0 && this.selectedIndexes.indexOf(index) === -1) {
-            this.selectedIndexes.push(Math.round(index));
+          // if (index >= 0 && this.selectedIndexes.indexOf(index) === -1) {
+          if (index >= this.selectedIndex) {
+            this.selectedIndex = Math.round(index);
           }
         }
       }
@@ -75,34 +79,40 @@ export class EraserTool extends Tool {
 
   initMouseHandler(): void {
     this.handleMouseMove = () => {
-      if (!this.eraserView) {
-        this.initEraserView();
+      if (this.eraserView) {
+        this.eraserView.primaryColor = Color.WHITE;
+        this.eraserView.updateProperties();
       }
 
-      const x = this.mousePosition.x - this.size / 2;
-      const y = this.mousePosition.y - this.size / 2;
-      this.eraserView.origin = new Coordinate(x, y);
-      this.selectShapes(x, y);
+      this.eraserView.origin = this.eraserPosition;
+      this.selectShapes(this.eraserPosition);
 
-      this.editorService.shapes.filter(
-        (s, i) => this.selectedIndexes.indexOf(i) === -1)
-        .forEach((shape) => shape.updateProperties());
+      // this.selectedIndexes.sort();
+      // const highlightedIndex = this.selectedIndexes.pop();
+      const highlightedIndex = this.selectedIndex;
 
-      this.selectedIndexes.forEach((index) => {
-        const shape = this.editorService.shapes[index];
+      this.editorService.shapes.filter((s, i) => i !== highlightedIndex).forEach((shape) => shape.updateProperties());
+
+      if (highlightedIndex !== -1) {
+        const shape = this.editorService.shapes[highlightedIndex];
         if (shape) {
           EraserUtils.highlightShape(shape);
         }
-      });
+      }
     };
   }
 
   initEraserView(): void {
-    this.eraserView = new Rectangle(new Coordinate(), this.size);
-    this.eraserView.primaryColor = Color.WHITE;
+    this.eraserView = new Rectangle(this.eraserPosition, this.size);
+    this.eraserView.primaryColor = Color.TRANSPARENT;
     this.eraserView.contourType = ContourType.FILLED;
     this.eraserView.updateProperties();
 
     this.editorService.addPreviewShape(this.eraserView);
+  }
+  get eraserPosition(): Coordinate {
+    const x = this.mousePosition.x - this.size / 2;
+    const y = this.mousePosition.y - this.size / 2;
+    return new Coordinate(x, y);
   }
 }
