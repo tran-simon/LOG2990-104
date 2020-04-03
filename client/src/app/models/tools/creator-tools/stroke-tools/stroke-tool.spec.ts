@@ -1,6 +1,7 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from '../../../../components/pages/editor/editor/editor.component';
@@ -74,6 +75,7 @@ describe('StrokeTool', () => {
         SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
+        EraserToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],

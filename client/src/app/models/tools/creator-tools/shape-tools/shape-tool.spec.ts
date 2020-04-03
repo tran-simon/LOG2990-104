@@ -1,6 +1,7 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { keyDown, keyUp } from 'src/app/components/pages/editor/editor/editor.component.spec';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
@@ -80,6 +81,7 @@ describe('ShapeTool', () => {
         SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
+        EraserToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],

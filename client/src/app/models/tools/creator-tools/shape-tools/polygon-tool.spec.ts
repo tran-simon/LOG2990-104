@@ -1,6 +1,7 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
 import { PolygonToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/polygon-tool-properties';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
@@ -40,6 +41,7 @@ describe('PolygonTool', () => {
         SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
+        EraserToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],

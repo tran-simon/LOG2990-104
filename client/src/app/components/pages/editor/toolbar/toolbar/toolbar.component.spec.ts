@@ -3,6 +3,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
@@ -35,6 +36,7 @@ describe('ToolbarComponent', () => {
         EllipseToolbarComponent,
         PolygonToolbarComponent,
         SprayToolbarComponent,
+        EraserToolbarComponent,
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })

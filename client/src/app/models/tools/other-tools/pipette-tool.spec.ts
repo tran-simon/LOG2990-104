@@ -1,6 +1,7 @@
 /* tslint:disable:no-any no-string-literal no-magic-numbers no-empty */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
@@ -36,6 +37,7 @@ describe('PipetteTool', () => {
         EditorComponent,
         DrawingSurfaceComponent,
         EllipseToolbarComponent,
+        EraserToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],
@@ -50,25 +52,29 @@ describe('PipetteTool', () => {
 
   it('picks primary color on left click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
-    pipetteTool.handleMouseEvent({type: 'click', offsetX: 10, offsetY: 20} as MouseEvent);
+    pipetteTool.handleMouseEvent({ type: 'click', offsetX: 10, offsetY: 20 } as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(new Coordinate(10, 20), SelectedColorType.primary);
   });
 
   it('picks secondary color on right click', () => {
     const pickColorSpy = spyOn<any>(pipetteTool, 'pickColor');
     pipetteTool.handleMouseEvent({
-      type: 'contextmenu', offsetX: 10, offsetY: 20, preventDefault: () => {
-      }
+      type: 'contextmenu',
+      offsetX: 10,
+      offsetY: 20,
+      preventDefault: () => {},
     } as MouseEvent);
     expect(pickColorSpy).toHaveBeenCalledWith(new Coordinate(10, 20), SelectedColorType.secondary);
   });
 
   it('can pick primary color', (done) => {
     spyOn(PipetteTool, 'colorAtPointInCanvas').and.returnValue(Color.BLUE);
-    spyOn(pipetteTool['editorService'], 'viewToCanvas').and.returnValue(new Promise<CanvasRenderingContext2D>((resolve) => {
-      resolve({} as CanvasRenderingContext2D);
-      done();
-    }));
+    spyOn(pipetteTool['editorService'], 'viewToCanvas').and.returnValue(
+      new Promise<CanvasRenderingContext2D>((resolve) => {
+        resolve({} as CanvasRenderingContext2D);
+        done();
+      }),
+    );
 
     pipetteTool['pickColor'](new Coordinate(), SelectedColorType.primary);
 
@@ -81,10 +87,12 @@ describe('PipetteTool', () => {
 
   it('can pick secondary color', (done) => {
     spyOn(PipetteTool, 'colorAtPointInCanvas').and.returnValue(Color.BLUE);
-    spyOn(pipetteTool['editorService'], 'viewToCanvas').and.returnValue(new Promise<CanvasRenderingContext2D>((resolve) => {
-      resolve({} as CanvasRenderingContext2D);
-      done();
-    }));
+    spyOn(pipetteTool['editorService'], 'viewToCanvas').and.returnValue(
+      new Promise<CanvasRenderingContext2D>((resolve) => {
+        resolve({} as CanvasRenderingContext2D);
+        done();
+      }),
+    );
 
     pipetteTool['pickColor'](new Coordinate(), SelectedColorType.secondary);
 
@@ -96,7 +104,7 @@ describe('PipetteTool', () => {
   });
 
   it('can get color at a position in a canvas', () => {
-    const context: CanvasRenderingContext2D = createSpyObj('canvasContext', {getImageData: {data: [100, 200, 255]}});
+    const context: CanvasRenderingContext2D = createSpyObj('canvasContext', { getImageData: { data: [100, 200, 255] } });
     const color = PipetteTool.colorAtPointInCanvas(context, new Coordinate());
 
     expect(color.r255).toEqual(100);

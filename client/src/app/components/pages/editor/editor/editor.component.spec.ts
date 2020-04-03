@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
 import { of } from 'rxjs';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
@@ -75,6 +76,7 @@ describe('EditorComponent', () => {
         UserGuideModalComponent,
         PolygonToolbarComponent,
         SprayToolbarComponent,
+        EraserToolbarComponent,
       ],
       providers: [
         EditorService,
