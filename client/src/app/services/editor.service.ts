@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ImageExportService } from '@services/image-export.service';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
-import { GridTool } from '@tools/other-tools/grid-tool';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
@@ -60,7 +59,6 @@ export class EditorService {
     this.tools.set(ToolType.Spray, new SprayTool(this));
     this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
     this.tools.set(ToolType.Eraser, new EraserTool(this));
-    this.tools.set(ToolType.Grid, new GridTool(this));
   }
 
   applyShapesBuffer(): void {

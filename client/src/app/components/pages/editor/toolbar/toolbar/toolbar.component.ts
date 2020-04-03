@@ -14,7 +14,7 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  static readonly SLIDER_STEP: number = 0.1; // todo
+  static readonly SLIDER_STEP: number = 0.1;// todo
 
   @Input() stepThickness: number;
 
@@ -60,7 +60,6 @@ export class ToolbarComponent {
       [ToolType.Spray, 'blur_on'],
       [ToolType.ColorApplicator, 'color_lens'],
       [ToolType.Select, 'near_me'],
-      [ToolType.Grid, 'grid_on'],
     ]);
   }
 
