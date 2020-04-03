@@ -24,7 +24,7 @@ export class GalleryModalComponent extends AbstractModalComponent {
   }
 
   updateDrawings(): void {
-    this.apiService.searchDrawings(this.nameQuery, this.tagsQuery).subscribe((drawings: Drawing[]) => {
+    this.apiService.searchDrawings(this.nameQuery, this.tagsQuery.replace(/ /g, '')).subscribe((drawings: Drawing[]) => {
       this.drawings = drawings;
     });
   }
