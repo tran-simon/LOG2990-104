@@ -30,12 +30,7 @@ export class CompositeParticle extends BaseShape {
     return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    const delta = Coordinate.substract(c, this.origin);
-    this.offset = Coordinate.add(delta, this.offset);
     this.offset = Coordinate.substract(c, this.relativeOrigin);
-    /*this.particles.forEach((shape) => {
-      shape.origin = Coordinate.add(shape.origin, delta);
-    });*/
   }
 
   constructor(radius: number = 1) {

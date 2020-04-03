@@ -1,6 +1,7 @@
 import { Coordinate } from '../../utils/math/coordinate';
 import { MathUtil } from '../../utils/math/math-util';
 import { BaseShape } from './base-shape';
+import { Rectangle } from './rectangle';
 
 export class Polygon extends BaseShape {
   static readonly MIN_POLY_EDGES: number = 3;
@@ -8,7 +9,7 @@ export class Polygon extends BaseShape {
   // tslint:disable-next-line:no-magic-numbers
   static readonly ORIENTATION_ANGLE: number = (3 * Math.PI) / 2;
 
-  points: Coordinate[];
+  private points: Coordinate[];
   private _interiorAngle: number;
 
   get interiorAngle(): number {
@@ -24,52 +25,70 @@ export class Polygon extends BaseShape {
     this._interiorAngle = (2 * Math.PI) / this.nEdges;
   }
 
-  private _height: number;
   get height(): number {
-    return this._height;
-  }
-  set height(height: number) {
-    this._height = !height ? 0 : Math.abs(height);
+    return this.points.length > 0 ? Coordinate.maxArrayXYCoord(this.points).y - this.relativeOrigin.y : 0;
   }
 
-  private _width: number;
   get width(): number {
-    return this._width;
-  }
-  set width(width: number) {
-    this._width = !width ? 0 : Math.abs(width);
+    return this.points.length > 0 ? Coordinate.maxArrayXYCoord(this.points).x - this.relativeOrigin.x : 0;
   }
 
-  private _origin: Coordinate;
+  private get relativeOrigin(): Coordinate {
+    // todo - optimize by resetting to zero and/or storing begin/end
+    return this.points.length > 0 ? Coordinate.minArrayXYCoord(this.points) : new Coordinate();
+  }
+
   get origin(): Coordinate {
-    return this._origin;
+    return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    this._origin = c;
-    this.svgNode.setAttribute('x', this._origin.x.toString());
-    this.svgNode.setAttribute('y', this._origin.y.toString());
+    this.offset = Coordinate.substract(c, this.relativeOrigin);
   }
 
   constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
     super('polygon');
+    this.points = new Array<Coordinate>();
     this.origin = origin;
     this.nEdges = nEdges;
-    this.width = 0;
-    this.height = 0;
-    this.points = [];
   }
 
-  private coordRelativeToInCircle(angle: number): Coordinate {
-    const x = this.center.x + (this.width / 2) * Math.cos(angle);
-    const y = this.center.y + (this.height / 2) * Math.sin(angle);
+  private coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
+    const minDimension = Math.min(dimensions.x, dimensions.y);
+    const x = minDimension / 2 + (minDimension / 2) * Math.cos(angle);
+    const y = minDimension / 2 + (minDimension / 2) * Math.sin(angle);
     return new Coordinate(x, y);
   }
 
-  updatePoints(): void {
+  updatePoints(dimensions: Coordinate, delta: Coordinate, box: Rectangle): void {
+    // todo - refactor
     let angle = Polygon.ORIENTATION_ANGLE;
+    this.points.length = 0;
+
+    if (dimensions.x === 0 || dimensions.y === 0) {
+      return;
+    }
+
     for (let i = 0; i < this.nEdges; i++) {
       angle += this.interiorAngle;
-      this.points[i] = this.coordRelativeToInCircle(angle);
+      this.points.push(this.coordRelativeToInCircle(angle, dimensions));
+    }
+
+    const ratio = Math.max(this.width / dimensions.x, this.height / dimensions.y);
+    dimensions = new Coordinate(dimensions.x / ratio, dimensions.y / ratio);
+
+    for (let i = 0; i < this.nEdges; i++) {
+      angle += this.interiorAngle;
+      this.points[i] = this.coordRelativeToInCircle(angle, dimensions);
+    }
+
+    this.origin = box.origin;
+
+    if (delta.y < 0) {
+      this.origin = new Coordinate(this.origin.x, this.origin.y + box.height - this.height);
+    }
+
+    if (delta.x < 0) {
+      this.origin = new Coordinate(this.origin.x + box.width - this.width, this.origin.y);
     }
   }
 

@@ -30,18 +30,4 @@ describe('Polygon', () => {
     expect(polygon.interiorAngle !== initialAngle).toBe(true);
     expect(polygon.interiorAngle).toBe(Math.PI / 3);
   });
-  it('should have positive height value on negative input', () => {
-    polygon.height = -1;
-    expect(polygon.height).toBe(1);
-  });
-  it('should have positive width value on negative input', () => {
-    polygon.width = -1;
-    expect(polygon.width).toBe(1);
-  });
-  it('Should have is center at half width and half height', () => {
-    polygon.width = 1;
-    polygon.height = 1;
-    expect(polygon.center.x).toBe(0.5);
-    expect(polygon.center.y).toBe(0.5);
-  });
 });

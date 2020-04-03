@@ -12,9 +12,10 @@ export class SelectionTool extends SimpleSelectionTool {
   private boundingBox: BoundingBox;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
-  private reverseSelectionMode: boolean;
+  private reverseSelectionMode: boolean; // todo - create states
   private moveSelectionMode: boolean;
   private previouslySelectedShapes: BaseShape[];
+
   // private keyPresses: boolean[];
   // private initialMoveCoord: Coordinate;
   private moveShapes: BaseShape[];
