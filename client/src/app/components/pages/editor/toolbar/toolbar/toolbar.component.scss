@@ -105,6 +105,10 @@ mat-drawer-content {
   align-items: flex-start;
 }
 
+.selected-tool {
+  background-color: $secondary;
+}
+
 .toolbar-option-section {
   display: flex;
   align-self: flex-start;
