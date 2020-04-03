@@ -22,7 +22,7 @@
       id="red-color-input"
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
-      [value]="color.r255.toString(16)"
+      [value]="color.rHex"
       (valueChange)="rgbChange(redinput.value, 'r')"
       [formGroup]="formGroup">
       R:
@@ -32,7 +32,7 @@
       id="green-color-input"
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
-      [value]="color.g255.toString(16)"
+      [value]="color.gHex"
       (valueChange)="rgbChange(greeninput.value, 'g')"
       [formGroup]="formGroup">
       V:
@@ -42,7 +42,7 @@
       id="blue-color-input"
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
-      [value]="color.b255.toString(16)"
+      [value]="color.bHex"
       (valueChange)="rgbChange(blueinput.value, 'b')"
       [formGroup]="formGroup">
       B:

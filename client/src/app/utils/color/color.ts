@@ -151,10 +151,9 @@ export class Color implements ColorComponents {
   /* Utility methods */
 
   get hex(): string {
-    const radix = 16;
-    const r = this.r255.toString(radix).padStart(2, '0');
-    const g = this.g255.toString(radix).padStart(2, '0');
-    const b = this.b255.toString(radix).padStart(2, '0');
+    const r = MathUtil.toHex(this.r255, 2);
+    const g = MathUtil.toHex(this.g255, 2);
+    const b = MathUtil.toHex(this.b255, 2);
     return `${r}${g}${b}`;
   }
 
@@ -270,5 +269,17 @@ export class Color implements ColorComponents {
   get b255(): number {
     // tslint:disable-next-line:no-magic-numbers
     return Math.round(this.b * 255);
+  }
+
+  get rHex(): string{
+    return MathUtil.toHex(this.r255, 2);
+  }
+
+  get gHex(): string{
+    return MathUtil.toHex(this.g255, 2);
+  }
+
+  get bHex(): string{
+    return MathUtil.toHex(this.b255, 2);
   }
 }
