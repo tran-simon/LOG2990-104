@@ -32,9 +32,12 @@ export class APIService {
     return this.http.get<Drawing[]>(url);
   }
 
-  searchDrawings(name: string, tag: string): Observable<Drawing[]> {
-    const url =
-      APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_QUERY_ROUTE + '/?name=' + name + '&tag=' + tag;
+  searchDrawings(name: string, tags: string): Observable<Drawing[]> {
+    let url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_QUERY_ROUTE + '?name=' + name;
+
+    tags.split(',').forEach((tag) => {
+      url += '&tag=' + tag;
+    });
 
     return this.http.get<Drawing[]>(url);
   }

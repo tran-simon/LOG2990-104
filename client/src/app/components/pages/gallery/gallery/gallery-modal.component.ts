@@ -12,19 +12,19 @@ import { APIService } from 'src/app/services/api.service';
 export class GalleryModalComponent extends AbstractModalComponent {
   drawings: Drawing[];
   nameQuery: string;
-  tagQuery: string;
+  tagsQuery: string;
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>, private apiService: APIService) {
     super(dialogRef);
 
     this.drawings = [];
     this.nameQuery = '';
-    this.tagQuery = '';
+    this.tagsQuery = '';
     this.fetchDrawings();
   }
 
   updateDrawings(): void {
-    this.apiService.searchDrawings(this.nameQuery, this.tagQuery).subscribe((drawings: Drawing[]) => {
+    this.apiService.searchDrawings(this.nameQuery, this.tagsQuery).subscribe((drawings: Drawing[]) => {
       this.drawings = drawings;
     });
   }

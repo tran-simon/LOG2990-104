@@ -31,6 +31,7 @@ import { NameInputComponent } from './inputs/name-input/name-input.component';
 import { EnumPropertyInputComponent } from './inputs/property-inputs/enum-property-input/enum-property-input.component';
 import { NumericPropertyInputComponent } from './inputs/property-inputs/numeric-property-input/numeric-property-input.component';
 import { TagInputComponent } from './inputs/tag-input/tag-input.component';
+import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.component';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     CustomInputComponent,
     HexInputComponent,
     TagInputComponent,
+    TagListInputComponent,
     NameInputComponent,
     ColorHistoryComponent,
     ConfirmModalComponent,
@@ -86,6 +88,7 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     CustomInputComponent,
     HexInputComponent,
     TagInputComponent,
+    TagListInputComponent,
     NameInputComponent,
     ColorHistoryComponent,
     AlphaComponent,

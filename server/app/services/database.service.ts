@@ -73,24 +73,40 @@ export class DatabaseService {
     });
   }
 
-  async searchDrawings(name: string, tag: string): Promise<DrawingResponse<Drawing[]>> {
+  async searchDrawings(name: string, tags: string | string[]): Promise<DrawingResponse<Drawing[]>> {
     return new Promise<DrawingResponse<Drawing[]>>((resolve) => {
-      tag !== '' ?
+      if (tags.length !== 0 && tags instanceof Array) {
+        const regex = [];
+        for (let i = 0; i < tags.length; ++i) {
+          regex[i] = new RegExp('^' + tags[i]);
+        }
+        console.log(regex);
         drawingModel.find(
           {
             name: { $regex: '.*' + name + '.*' },
-            tags: { $regex: '.*' + tag + '.*' }
+            tags: { $all: regex },
           }, (err: Error, docs: Drawing[]) => {
             const status = DatabaseService.determineStatus(err, docs);
             resolve({ statusCode: status, documents: docs });
-          })
-        : drawingModel.find(
+          });
+      } else if (tags !== '') {
+        drawingModel.find(
+          {
+            name: { $regex: '.*' + name + '.*' },
+            tags,
+          }, (err: Error, docs: Drawing[]) => {
+            const status = DatabaseService.determineStatus(err, docs);
+            resolve({ statusCode: status, documents: docs });
+          });
+      } else {
+        drawingModel.find(
           {
             name: { $regex: '.*' + name + '.*' },
           }, (err: Error, docs: Drawing[]) => {
             const status = DatabaseService.determineStatus(err, docs);
             resolve({ statusCode: status, documents: docs });
           });
+      }
     });
   }
 
