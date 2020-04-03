@@ -37,6 +37,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter);
     this.formGroup = new FormGroup({});
     this.previewImage = this.editorService.view;
+    console.log(this.selectedExtension);
   }
 
   get fullName(): string {

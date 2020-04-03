@@ -14,55 +14,30 @@ export class ImageExportService {
   }
 
   addFilter(surface: DrawingSurfaceComponent, filter: FilterType): void {
-    if (typeof surface.svg !== 'undefined') {
-      switch (filter) {
-        case FilterType.EMPTY:
-          surface.svg.setAttribute('filter', 'none');
-          break;
-        case FilterType.BLACKWHITE:
-          surface.svg.setAttribute('filter', 'grayscale(100%)');
-          break;
-        case FilterType.BLUR:
-          surface.svg.setAttribute('filter', 'blur(5px)');
-          break;
-        case FilterType.INVERT:
-          surface.svg.setAttribute('filter', 'invert(100%)');
-          break;
-        case FilterType.SATURATE:
-          surface.svg.setAttribute('filter', 'saturate(200%)');
-          break;
-        case FilterType.SEPIA:
-          surface.svg.setAttribute('filter', 'sepia(100%)');
-          break;
-      }
+    switch (filter) {
+      case FilterType.EMPTY:
+        surface.svg.setAttribute('filter', 'none');
+        break;
+      case FilterType.BLACKWHITE:
+        surface.svg.setAttribute('filter', 'grayscale(100%)');
+        break;
+      case FilterType.BLUR:
+        surface.svg.setAttribute('filter', 'blur(5px)');
+        break;
+      case FilterType.INVERT:
+        surface.svg.setAttribute('filter', 'invert(100%)');
+        break;
+      case FilterType.SATURATE:
+        surface.svg.setAttribute('filter', 'saturate(200%)');
+        break;
+      case FilterType.SEPIA:
+        surface.svg.setAttribute('filter', 'sepia(100%)');
+        break;
     }
   }
-  //   switch (filter) {
-  //     case FilterType.EMPTY:
-  //       surface.svg.setAttribute('filter', 'none');
-  //       break;
-  //     case FilterType.BLACKWHITE:
-  //       surface.svg.setAttribute('filter', 'grayscale(100%)');
-  //       break;
-  //     case FilterType.BLUR:
-  //       surface.svg.setAttribute('filter', 'blur(5px)');
-  //       break;
-  //     case FilterType.INVERT:
-  //       surface.svg.setAttribute('filter', 'invert(100%)');
-  //       break;
-  //     case FilterType.SATURATE:
-  //       surface.svg.setAttribute('filter', 'saturate(200%)');
-  //       break;
-  //     case FilterType.SEPIA:
-  //       surface.svg.setAttribute('filter', 'sepia(100%)');
-  //       break;
-  //   }
-  // }
 
   removeFilter(surface: DrawingSurfaceComponent): void {
-    if (typeof surface.svg !== 'undefined') {
-      surface.svg.removeAttribute('filter');
-    }
+    surface.svg.removeAttribute('filter');
   }
 
   async exportImageElement(surface: DrawingSurfaceComponent, extension: string, filter: FilterType): Promise<string> {
@@ -94,11 +69,8 @@ export class ImageExportService {
    * Based on: https://stackoverflow.com/questions/3768565/drawing-an-svg-file-on-a-html5-canvas
    */
   createDataURL(surface: DrawingSurfaceComponent): string {
-    if (typeof surface.svg !== 'undefined') {
-      const xmlSerializer = new XMLSerializer();
-      const svgString = xmlSerializer.serializeToString(surface.svg);
-      return 'data:image/svg+xml,' + encodeURIComponent(svgString);
-    }
-    return '';
+    const xmlSerializer = new XMLSerializer();
+    const svgString = xmlSerializer.serializeToString(surface.svg);
+    return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
 }
