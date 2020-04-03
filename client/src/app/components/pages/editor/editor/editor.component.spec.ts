@@ -31,6 +31,7 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 import { EllipseToolbarComponent } from '../toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { PolygonToolbarComponent } from '../toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
 import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 
@@ -73,6 +74,7 @@ describe('EditorComponent', () => {
         CreateDrawingModalComponent,
         UserGuideModalComponent,
         PolygonToolbarComponent,
+        SprayToolbarComponent,
       ],
       providers: [
         EditorService,
@@ -285,6 +287,20 @@ describe('EditorComponent', () => {
 
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', ctrlKey: true, shiftKey: true }));
     expect(undoSpy).toHaveBeenCalled();
+  });
+
+  it('disables keyboardListener when toolbar is opened', () => {
+    const toolbarOpenSpy = spyOn(component.toolbar, 'open');
+    component.setToolbarState(true);
+    expect(toolbarOpenSpy).toHaveBeenCalled();
+    expect(component['keyboardListener'].listening).toEqual(false);
+  });
+
+  it('enables keyboardListener when toolbar is closed', () => {
+    const toolbarClosedSpy = spyOn(component.toolbar, 'close');
+    component.setToolbarState(false);
+    expect(toolbarClosedSpy).toHaveBeenCalled();
+    expect(component['keyboardListener'].listening).toEqual(true);
   });
 
   it('should select shape on shapeClicked', () => {

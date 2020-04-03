@@ -18,6 +18,8 @@ import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/strok
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { keyUp } from '../../../../components/pages/editor/editor/editor.component.spec';
+import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 
 describe('PolygonTool', () => {
   let polygonTool: PolygonTool;
@@ -35,6 +37,7 @@ describe('PolygonTool', () => {
         PolygonToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
+        SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],
@@ -56,6 +59,16 @@ describe('PolygonTool', () => {
     polygonTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(polygonTool.shape.origin).toEqual(new Coordinate(100, 100));
     expect(fixture.componentInstance.drawingSurface.svg.querySelector('polygon')).toBeTruthy();
+  });
+
+  it('should initialize new Polygon with equal dimensions', () => {
+    expect(polygonTool['forceEqualDimensions']).toEqual(true);
+  });
+
+  it('should force equal size to true after shift up input', () => {
+    polygonTool.setEqualDimensions(false);
+    polygonTool.handleKeyboardEvent(keyUp('Shift', false));
+    expect(polygonTool['forceEqualDimensions']).toEqual(true);
   });
 
   it('can resize Polygon', () => {

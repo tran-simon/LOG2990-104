@@ -63,7 +63,6 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     ColorHistoryComponent,
     ConfirmModalComponent,
   ],
-
   entryComponents: [AbstractModalComponent, ConfirmModalComponent],
   exports: [
     AbstractModalComponent,

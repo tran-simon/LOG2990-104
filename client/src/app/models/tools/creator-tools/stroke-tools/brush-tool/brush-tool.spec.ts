@@ -14,6 +14,7 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 import { DrawingSurfaceComponent } from '../../../../../components/pages/editor/drawing-surface/drawing-surface.component';
 import { PolygonToolbarComponent } from '../../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from '../../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
+import { SprayToolbarComponent } from '../../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { mouseDown } from '../stroke-tool.spec';
 
 describe('BrushTool', () => {
@@ -30,6 +31,7 @@ describe('BrushTool', () => {
         PolygonToolbarComponent,
         LineToolbarComponent,
         EllipseToolbarComponent,
+        SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
       ],

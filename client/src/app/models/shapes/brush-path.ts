@@ -10,19 +10,19 @@ export class BrushPath extends Path {
   changeFilter(filter: BrushTextureType): void {
     switch (filter) {
       case BrushTextureType.TEXTURE_1:
-        this._svgNode.setAttribute('filter', 'url(#TEXTURE_1)');
+        this.svgNode.setAttribute('filter', 'url(#TEXTURE_1)');
         break;
       case BrushTextureType.TEXTURE_2:
-        this._svgNode.setAttribute('filter', 'url(#TEXTURE_2)');
+        this.svgNode.setAttribute('filter', 'url(#TEXTURE_2)');
         break;
       case BrushTextureType.TEXTURE_3:
-        this._svgNode.setAttribute('filter', 'url(#TEXTURE_3)');
+        this.svgNode.setAttribute('filter', 'url(#TEXTURE_3)');
         break;
       case BrushTextureType.TEXTURE_4:
-        this._svgNode.setAttribute('filter', 'url(#TEXTURE_4)');
+        this.svgNode.setAttribute('filter', 'url(#TEXTURE_4)');
         break;
       case BrushTextureType.TEXTURE_5:
-        this._svgNode.setAttribute('filter', 'url(#TEXTURE_5)');
+        this.svgNode.setAttribute('filter', 'url(#TEXTURE_5)');
         break;
     }
   }

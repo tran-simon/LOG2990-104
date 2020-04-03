@@ -2,10 +2,10 @@
   <app-toolbar #toolbar id='toolbar'
     [(currentToolType)]=currentToolType
     (editorBackgroundChanged)="changeBackground($event)"
-    (mouseleave)="toolbar.close()"
+    (mouseleave)="setToolbarState(false)"
     (guideButtonClicked)="openGuide()"
     (chooseExportSaveButtonClicked)="openChooseExportSave()"
-    (mouseenter)='toolbar.open()'
+    (mouseenter)='setToolbarState(true)'
   ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
     (dblclick)="handleMouseEvent($event)"

@@ -5,6 +5,8 @@ import { BaseShape } from './base-shape';
 export class Polygon extends BaseShape {
   static readonly MIN_POLY_EDGES: number = 3;
   static readonly MAX_POLY_EDGES: number = 12;
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly ORIENTATION_ANGLE: number = (3 * Math.PI) / 2;
 
   points: Coordinate[];
   private _interiorAngle: number;
@@ -38,6 +40,7 @@ export class Polygon extends BaseShape {
     this._width = !width ? 0 : Math.abs(width);
   }
 
+  private _origin: Coordinate;
   get origin(): Coordinate {
     return this._origin;
   }
@@ -45,10 +48,6 @@ export class Polygon extends BaseShape {
     this._origin = c;
     this.svgNode.setAttribute('x', this._origin.x.toString());
     this.svgNode.setAttribute('y', this._origin.y.toString());
-  }
-
-  get center(): Coordinate {
-    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
   constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
@@ -67,7 +66,7 @@ export class Polygon extends BaseShape {
   }
 
   updatePoints(): void {
-    let angle = this.interiorAngle / 2 + Math.PI / 2;
+    let angle = Polygon.ORIENTATION_ANGLE;
     for (let i = 0; i < this.nEdges; i++) {
       angle += this.interiorAngle;
       this.points[i] = this.coordRelativeToInCircle(angle);

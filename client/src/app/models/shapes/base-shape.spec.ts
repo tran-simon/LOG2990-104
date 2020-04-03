@@ -6,10 +6,10 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 describe('BaseShape', () => {
   class BaseShapeImpl extends BaseShape {
     get origin(): Coordinate {
-      return this._origin;
+      return new Coordinate();
     }
     set origin(c: Coordinate) {
-      this._origin = c;
+      return;
     }
     get height(): number {
       return 10;
