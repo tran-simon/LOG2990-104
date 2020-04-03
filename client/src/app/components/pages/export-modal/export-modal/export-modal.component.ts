@@ -21,6 +21,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   formGroup: FormGroup;
   selectedFilter: FilterType;
   filters: string[] = Object.values(FilterType);
+  validity: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
@@ -34,6 +35,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     this.selectedFilter = FilterType.EMPTY;
     this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter);
     this.formGroup = new FormGroup({});
+    this.validity = !this.formGroup.invalid && this.selectedExtension !== '';
   }
 
   get fullName(): string {
@@ -84,7 +86,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   get valid(): boolean {
-    return !this.formGroup.invalid && this.selectedExtension !== '';
+    return !this.formGroup.invalid && this.selectedExtension !== ExtensionType.EMPTY;
   }
 
   get previewURL(): SafeResourceUrl {

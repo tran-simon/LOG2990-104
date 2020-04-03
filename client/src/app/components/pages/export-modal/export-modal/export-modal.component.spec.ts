@@ -116,6 +116,16 @@ describe('ExportModalComponent', () => {
     expect(spyImage).toHaveBeenCalled();
   });
   it('should close dialog because the submission is valid', () => {
+    component.selectedExtension = ExtensionType.PNG;
+    component.fileName = '';
+    spyOnProperty(component.formGroup, 'invalid').and.returnValue(true);
+    component.submit();
+    expect(dialogRefCloseSpy).not.toHaveBeenCalled();
+  });
+  it('should close dialog because the submission is valid', () => {
+    component.selectedExtension = ExtensionType.PNG;
+    component.fileName = 'test';
+    spyOnProperty(component.formGroup, 'invalid').and.returnValue(false);
     component.submit();
     expect(dialogRefCloseSpy).toHaveBeenCalled();
   });
