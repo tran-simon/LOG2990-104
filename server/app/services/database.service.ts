@@ -75,7 +75,7 @@ export class DatabaseService {
 
   async searchDrawings(name: string, tag: string): Promise<DrawingResponse<Drawing[]>> {
     return new Promise<DrawingResponse<Drawing[]>>((resolve) => {
-      if (tag !== '') {
+      tag !== '' ?
         drawingModel.find(
           {
             name: { $regex: '.*' + name + '.*' },
@@ -83,16 +83,14 @@ export class DatabaseService {
           }, (err: Error, docs: Drawing[]) => {
             const status = DatabaseService.determineStatus(err, docs);
             resolve({ statusCode: status, documents: docs });
-          });
-      } else {
-        drawingModel.find(
+          })
+        : drawingModel.find(
           {
             name: { $regex: '.*' + name + '.*' },
           }, (err: Error, docs: Drawing[]) => {
             const status = DatabaseService.determineStatus(err, docs);
             resolve({ statusCode: status, documents: docs });
           });
-      }
     });
   }
 
