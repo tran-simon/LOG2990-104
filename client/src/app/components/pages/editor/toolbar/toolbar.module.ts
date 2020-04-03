@@ -9,6 +9,7 @@ import { EllipseToolbarComponent } from './ellipse-toolbar/ellipse-toolbar.compo
 import { PolygonToolbarComponent } from './polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar.component';
 import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
+import { GridToolbarComponent } from '@components/pages/editor/toolbar/grid-toolbar/grid-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
     PolygonToolbarComponent,
     SprayToolbarComponent,
     EraserToolbarComponent,
+    GridToolbarComponent,
   ],
   imports: [SharedModule],
   exports: [
@@ -33,6 +35,7 @@ import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
     PolygonToolbarComponent,
     SprayToolbarComponent,
     EraserToolbarComponent,
+    GridToolbarComponent,
   ],
 })
 export class ToolbarModule {}

@@ -14,10 +14,15 @@ export class DrawingSurfaceComponent {
   static readonly DEFAULT_WIDTH: number = 500;
   static readonly DEFAULT_HEIGHT: number = 500;
   static readonly DEFAULT_COLOR: Color = Color.WHITE;
+  static readonly DEFAULT_LARGEGRID_SIZE: number = 80;
+  static readonly DEFAULT_SMALLGRID_SIZE: number = 16;
+  static readonly DEFAULT_GRIDOPACITY_SIZE: number = 0.75;
   @Input() width: number;
   @Input() height: number;
   @Input() color: Color;
-
+  @Input() smallGrid: number;
+  @Input() largeGrid: number;
+  @Input() gridOpacity: number;
   @Output() shapeClicked: EventEmitter<BaseShape>;
   @Output() shapeRightClicked: EventEmitter<BaseShape>;
 
@@ -32,6 +37,9 @@ export class DrawingSurfaceComponent {
     this.color = Color.WHITE;
     this.shapeClicked = new EventEmitter<BaseShape>();
     this.shapeRightClicked = new EventEmitter<BaseShape>();
+    this.smallGrid = DrawingSurfaceComponent.DEFAULT_SMALLGRID_SIZE;
+    this.largeGrid = DrawingSurfaceComponent.DEFAULT_LARGEGRID_SIZE;
+    this.gridOpacity = DrawingSurfaceComponent.DEFAULT_GRIDOPACITY_SIZE;
   }
 
   addShape(shape: BaseShape): void {
