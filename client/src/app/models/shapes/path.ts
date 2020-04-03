@@ -1,11 +1,10 @@
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { Rectangle } from './rectangle';
 
 export class Path extends BaseShape {
   static readonly PATH_STYLE: string = 'round';
   private _trace: string;
-  private lastPoint: Coordinate;
+  private points: Coordinate[];
 
   get trace(): string {
     return this._trace;
@@ -16,49 +15,50 @@ export class Path extends BaseShape {
     this.svgNode.setAttribute('d', this.trace);
   }
 
+  get width(): number {
+    return this.points.length > 0 ? Coordinate.maxArrayXYCoord(this.points).x - this.origin.x : 0;
+  }
+
+  get height(): number {
+    return this.points.length > 0 ? Coordinate.maxArrayXYCoord(this.points).y - this.origin.y : 0;
+  }
+
   get origin(): Coordinate {
-    return this._origin;
+    return this.points.length > 0 ? Coordinate.minArrayXYCoord(this.points) : new Coordinate();
   }
 
   set origin(c: Coordinate) {
-    this._origin = c;
-  }
-  get height(): number {
-    return Math.abs(this.maxCoord[1] - this.minCoord[1]) + this.strokeWidth; // ToDO
+    if (this.points.length > 0) {
+      const delta = Coordinate.substract(c, this.origin);
+      const oldPoints = new Array<Coordinate>();
+      oldPoints.push(...this.points);
+      this.points.length = 0;
+      oldPoints.forEach((point) => {
+        point = Coordinate.add(point, delta);
+        this.addPoint(point);
+      });
+    }
   }
 
-  get width(): number {
-    return Math.abs(this.maxCoord[0] - this.minCoord[0]) + this.strokeWidth; // ToDO
-  }
   constructor(c: Coordinate) {
     super('path');
-    this.origin = c;
-    this.minCoord = this.maxCoord = [c.x, c.y];
-    this._trace = 'M ' + c.x + ' ' + c.y;
-    this.lastPoint = c;
+    this.points = new Array<Coordinate>();
+    this.addPoint(c);
   }
 
-  private minCoord: [number, number];
-  private maxCoord: [number, number];
-
   addPoint(c: Coordinate): void {
-    this.minCoord = [c.x <= this.minCoord[0] ? c.x : this.minCoord[0], c.y <= this.minCoord[1] ? c.y : this.minCoord[1]];
-    this.maxCoord = [c.x >= this.maxCoord[0] ? c.x : this.maxCoord[0], c.y >= this.maxCoord[1] ? c.y : this.maxCoord[1]];
-    this.origin = new Coordinate(this.minCoord[0] - this.strokeWidth / 2, this.minCoord[1] - this.strokeWidth / 2);
-    // TODO : a little bit sketchy
-    if (Math.sqrt(Math.pow(this.lastPoint.x - c.x, 2) + Math.pow(this.lastPoint.y - c.y, 2)) > 1) {
-      const origin = new Coordinate(this.lastPoint.x - this.strokeWidth / 2, this.lastPoint.y - this.strokeWidth / 2);
-      const box = new Rectangle(origin, this.strokeWidth, this.strokeWidth);
-      this.bboxes.push(box);
-      this.lastPoint = c;
+    this.points.push(c);
+    if (this.points.length === 1) {
+      this.trace = 'M ' + c.x + ' ' + c.y;
+    } else {
+      this.trace += ' L ' + c.x + ' ' + c.y;
     }
-    this.trace += ' L ' + c.x + ' ' + c.y;
   }
 
   updateProperties(): void {
     super.updateProperties();
 
-    this.svgNode.style.fill = Path.NO_STYLE;
+    this.svgNode.style.fill = Path.CSS_NONE;
 
     this.svgNode.style.stroke = this.primaryColor.rgbString;
     this.svgNode.style.strokeOpacity = this.primaryColor.a.toString();

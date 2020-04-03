@@ -40,6 +40,7 @@ export class Polygon extends BaseShape {
     this._width = !width ? 0 : Math.abs(width);
   }
 
+  private _origin: Coordinate;
   get origin(): Coordinate {
     return this._origin;
   }
@@ -47,10 +48,6 @@ export class Polygon extends BaseShape {
     this._origin = c;
     this.svgNode.setAttribute('x', this._origin.x.toString());
     this.svgNode.setAttribute('y', this._origin.y.toString());
-  }
-
-  get center(): Coordinate {
-    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
   constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {

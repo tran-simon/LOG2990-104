@@ -43,6 +43,22 @@ export class Coordinate {
     return new Coordinate(Math.max(c1.x, c2.x), Math.max(c1.y, c2.y));
   }
 
+  static minArrayXYCoord(array: Coordinate[]): Coordinate {
+    let min = Coordinate.copy(array[0]);
+    (array as Coordinate[]).forEach((c) => {
+      min = this.minXYCoord(c, min);
+    });
+    return min;
+  }
+
+  static maxArrayXYCoord(array: Coordinate[]): Coordinate {
+    let max = Coordinate.copy(array[0]);
+    (array as Coordinate[]).forEach((c) => {
+      max = this.maxXYCoord(c, max);
+    });
+    return max;
+  }
+
   static maxXYDistance(c1: Coordinate, c2: Coordinate): number {
     return Math.max(Math.abs(c1.x - c2.x), Math.abs(c1.y - c2.y));
   }

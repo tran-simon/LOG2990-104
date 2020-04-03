@@ -1,6 +1,7 @@
 import { SprayToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/spray-tool-properties';
 import { EditorService } from '../../../../services/editor.service';
 import { CompositeParticle } from '../../../shapes/composite-particle';
+import { SprayToolProperties } from '../../../tool-properties/spray-tool-properties';
 import { CreatorTool } from '../creator-tool';
 
 export class SprayTool extends CreatorTool {
@@ -46,6 +47,6 @@ export class SprayTool extends CreatorTool {
   }
 
   createShape(): CompositeParticle {
-    return new CompositeParticle(this.mousePosition, this.toolProperties.strokeWidth.value);
+    return new CompositeParticle(this.toolProperties.radius.value);
   }
 }
