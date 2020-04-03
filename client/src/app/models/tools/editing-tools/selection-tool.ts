@@ -1,3 +1,4 @@
+import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
@@ -10,11 +11,9 @@ import { Rectangle } from '../../shapes/rectangle';
 import { SelectionMove } from './selection-move.enum';
 
 export class SelectionTool extends SimpleSelectionTool {
-  private readonly KEYBOARD_MOVE_DISTANCE: number = 3;
-  private readonly KEYBOARD_TIMEOUT: number = 500; // todo - move to enum?
-  private readonly KEYBOARD_INTERVAL: number = 100;
-  private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(this.KEYBOARD_MOVE_DISTANCE, 0);
-  private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, this.KEYBOARD_MOVE_DISTANCE);
+  private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
+  private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
+  private readonly SELECT_AREA_DASHARRAY: string = '5';
 
   private boundingBox: BoundingBox;
   private selectArea: Rectangle;
@@ -24,11 +23,9 @@ export class SelectionTool extends SimpleSelectionTool {
   private previouslySelectedShapes: BaseShape[];
 
   private keyPresses: boolean[] = [];
-  // private initialMoveCoord: Coordinate;
-  private moveShapes: BaseShape[];
-  private moveCoords: Coordinate[];
   private keyInterval: number;
   private keyTimeout: number;
+  private moveCommand: MoveShapeCommand;
 
   static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
     return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
@@ -118,7 +115,10 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
-        this.moveSelectionMode = false; // todo - move?
+        if (this.moveSelectionMode) {
+          this.moveSelectionMode = false; // todo - move?
+          this.endMove();
+        }
         this.applyBoundingBox();
       }
     };
@@ -147,47 +147,50 @@ export class SelectionTool extends SimpleSelectionTool {
     this.keyPresses.forEach((isActive) => {
       this.isActive = this.isActive || isActive;
     });
-    if (this.isActive) {
-      if (!this.keyTimeout) {
-        let keyMoveDelta = this.calculateKeyboardMove(this.keyPresses);
-        this.startMove();
-        this.move(keyMoveDelta);
-        this.keyTimeout = window.setTimeout(() => {
-          this.keyInterval = window.setInterval(() => {
-            keyMoveDelta = Coordinate.add(keyMoveDelta, this.calculateKeyboardMove(this.keyPresses));
-            this.move(keyMoveDelta);
-          }, this.KEYBOARD_INTERVAL);
-        }, this.KEYBOARD_TIMEOUT);
-      }
-    } else {
-      if (this.keyTimeout) {
-        window.clearTimeout(this.keyTimeout);
-        this.keyTimeout = 0;
-      }
-      if (this.keyInterval) {
-        window.clearInterval(this.keyInterval);
-        this.keyInterval = 0;
-      }
+    this.isActive ? this.startKeyboardMove() : this.endKeyboardMove();
+  }
+
+  private startKeyboardMove(): void {
+    if (this.keyTimeout) {
+      return;
     }
+    let keyMoveDelta = this.calculateKeyboardMove(this.keyPresses);
+    this.startMove();
+    this.move(keyMoveDelta);
+
+    this.keyTimeout = window.setTimeout(() => {
+      this.keyInterval = window.setInterval(() => {
+        keyMoveDelta = Coordinate.add(keyMoveDelta, this.calculateKeyboardMove(this.keyPresses));
+        this.move(keyMoveDelta);
+      }, SelectionMove.KEYBOARD_INTERVAL);
+    }, SelectionMove.KEYBOARD_TIMEOUT);
+  }
+
+  private endKeyboardMove(): void {
+    this.endMove();
+    window.clearTimeout(this.keyTimeout);
+    this.keyTimeout = 0;
+    window.clearInterval(this.keyInterval);
+    this.keyInterval = 0;
   }
 
   private startMove(c: Coordinate = new Coordinate()): void {
-    // this.initialMoveCoord = this.boundingBox.origin;
     this.initialMouseCoord = Coordinate.copy(c);
     this.moveSelectionMode = true;
-    this.moveShapes = new Array<BaseShape>();
-    this.moveCoords = new Array<Coordinate>();
-    this.moveShapes.push(...this.editorService.selectedShapes);
-    this.moveShapes.push(this.boundingBox);
-    this.moveShapes.forEach((shape) => {
-      this.moveCoords.push(Coordinate.copy(shape.origin));
-    });
+
+    const moveShapes = new Array<BaseShape>();
+    moveShapes.push(...this.editorService.selectedShapes);
+    moveShapes.push(this.boundingBox);
+    this.moveCommand = new MoveShapeCommand(moveShapes, this.editorService);
   }
 
   private move(delta: Coordinate = Coordinate.substract(this.mousePosition, this.initialMouseCoord)): void {
-    this.moveShapes.forEach((shape, index) => {
-      shape.origin = Coordinate.add(this.moveCoords[index], delta);
-    });
+    this.moveCommand.delta = delta;
+    this.moveCommand.execute();
+  }
+
+  private endMove(): void {
+    this.editorService.commandReceiver.add(this.moveCommand);
   }
 
   selectShape(shape: BaseShape, rightClick: boolean = false): void {
@@ -223,7 +226,8 @@ export class SelectionTool extends SimpleSelectionTool {
   private initSelectArea(): void {
     this.selectArea = new Rectangle(this.initialMouseCoord);
     this.selectArea.primaryColor = Color.TRANSPARENT;
-    this.selectArea.svgNode.style.pointerEvents = 'none';
+    this.selectArea.svgNode.style.pointerEvents = BaseShape.CSS_NONE;
+    this.selectArea.svgNode.style.strokeDasharray = this.SELECT_AREA_DASHARRAY;
     this.selectArea.updateProperties();
     this.editorService.addPreviewShape(this.selectArea);
   }
