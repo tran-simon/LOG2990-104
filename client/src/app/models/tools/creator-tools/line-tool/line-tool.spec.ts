@@ -1,6 +1,7 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
@@ -12,7 +13,7 @@ import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolb
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
+import { LineJunctionType } from 'src/app/models/tool-properties/creator-tool-properties/line-junction-type.enum';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
 import { ColorsService } from 'src/app/services/colors.service';
 import { EditorService } from 'src/app/services/editor.service';
@@ -77,6 +78,7 @@ describe('LineTool', () => {
         SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
+        EraserToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],
@@ -140,18 +142,18 @@ describe('LineTool', () => {
     expect(lineTool.shape).toBeTruthy();
     expect(lineTool.shape.secondaryColor).toEqual(colorsService.secondaryColor);
     expect(lineTool.shape.primaryColor).toEqual(colorsService.primaryColor);
-    expect(lineTool.shape.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth);
+    expect(lineTool.shape.strokeWidth).toEqual(lineTool['toolProperties'].strokeWidth.value);
     expect(drawSpy).toHaveBeenCalled();
   });
 
   it('can init line with junctions', () => {
-    lineTool['toolProperties'].junctionType = LineJunctionType.POINTS;
+    lineTool['toolProperties'].junctionType.value = LineJunctionType.POINTS;
     lineTool.handleMouseEvent(mouseDown());
-    expect(lineTool.shape.thickness).toEqual(lineTool['toolProperties'].junctionDiameter);
+    expect(lineTool.shape.thickness).toEqual(lineTool['toolProperties'].junctionDiameter.value);
   });
 
   it('can init line without junctions', () => {
-    lineTool['toolProperties'].junctionType = LineJunctionType.EMPTY;
+    lineTool['toolProperties'].junctionType.value = LineJunctionType.EMPTY;
     lineTool.handleMouseEvent(mouseDown());
     expect(lineTool.shape.thickness).toEqual(0);
   });

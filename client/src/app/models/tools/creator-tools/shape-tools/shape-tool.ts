@@ -1,12 +1,12 @@
+import { ShapeToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/shape-tool-properties';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { ShapeToolProperties } from 'src/app/models/tool-properties/shape-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTool<T> {
+export abstract class ShapeTool extends CreatorTool {
   protected constructor(editorService: EditorService) {
     super(editorService);
 
@@ -30,6 +30,7 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
   protected initialMouseCoord: Coordinate;
+  toolProperties: ShapeToolProperties;
 
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
@@ -37,6 +38,8 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
     this.initialMouseCoord = this.mousePosition;
     super.startShape();
     this.updateCurrentCoord(this.mousePosition);
+    this.previewArea.primaryColor = Color.TRANSPARENT;
+    this.previewArea.updateProperties();
     this.editorService.addPreviewShape(this.previewArea);
   }
 
@@ -68,30 +71,27 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
   }
 
   updateCurrentCoord(c: Coordinate): void {
+    this.previewArea.origin = this.initialMouseCoord;
+    this.previewArea.end = c;
+
+    let dimensions: Coordinate;
+    let origin = Coordinate.copy(this.previewArea.origin);
     const delta = Coordinate.substract(c, this.initialMouseCoord);
-    const previewDimensions = Coordinate.abs(delta);
-    let dimensions = new Coordinate(previewDimensions.x, previewDimensions.y);
-    const previewOrigin = Coordinate.minXYCoord(c, this.initialMouseCoord);
-    let origin = new Coordinate(previewOrigin.x, previewOrigin.y);
 
     if (this.forceEqualDimensions) {
-      const minDimension = Math.min(dimensions.x, dimensions.y);
+      const minDimension = Math.min(this.previewArea.width, this.previewArea.height);
       dimensions = new Coordinate(minDimension, minDimension);
+    } else {
+      dimensions = new Coordinate(this.previewArea.width, this.previewArea.height);
     }
 
     if (delta.y < 0) {
-      origin = new Coordinate(origin.x, origin.y + previewDimensions.y - dimensions.y);
+      origin = new Coordinate(origin.x, origin.y + this.previewArea.height - dimensions.y);
     }
 
     if (delta.x < 0) {
-      origin = new Coordinate(origin.x + previewDimensions.x - dimensions.x, origin.y);
+      origin = new Coordinate(origin.x + this.previewArea.width - dimensions.x, origin.y);
     }
-
-    this.previewArea.origin = previewOrigin;
-    this.previewArea.width = previewDimensions.x;
-    this.previewArea.height = previewDimensions.y;
-    this.previewArea.primaryColor = Color.TRANSPARENT;
-    this.previewArea.updateProperties();
 
     this.resizeShape(dimensions, origin);
   }
@@ -101,8 +101,8 @@ export abstract class ShapeTool<T extends ShapeToolProperties> extends CreatorTo
       const { contourType, strokeWidth } = this.toolProperties;
       const { primaryColor, secondaryColor } = this.editorService.colorsService;
 
-      this.shape.contourType = contourType;
-      this.shape.strokeWidth = strokeWidth;
+      this.shape.contourType = contourType.value;
+      this.shape.strokeWidth = strokeWidth.value;
       this.shape.primaryColor = primaryColor;
       this.shape.secondaryColor = secondaryColor;
       this.shape.updateProperties();

@@ -1,6 +1,8 @@
 /*tslint:disable:no-string-literal no-magic-numbers*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
+import { EllipseToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/ellipse-tool-properties';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
@@ -11,8 +13,7 @@ import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar
 import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
-import { EllipseToolProperties } from 'src/app/models/tool-properties/ellipse-tool-properties';
+import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
 import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';
@@ -39,6 +40,7 @@ describe('EllipseTool', () => {
         EditorComponent,
         DrawingSurfaceComponent,
         SprayToolbarComponent,
+        EraserToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],
@@ -80,7 +82,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse contour and fill', () => {
-    properties.contourType = ContourType.FILLED_CONTOUR;
+    properties.contourType.value = ContourType.FILLED_CONTOUR;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();
@@ -90,7 +92,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse fill only', () => {
-    properties.contourType = ContourType.FILLED;
+    properties.contourType.value = ContourType.FILLED;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();
@@ -101,7 +103,7 @@ describe('EllipseTool', () => {
   });
 
   it('can draw Ellipse contour only', () => {
-    properties.contourType = ContourType.CONTOUR;
+    properties.contourType.value = ContourType.CONTOUR;
     ellipseTool.toolProperties = properties;
     ellipseTool['_mousePosition'] = new Coordinate(100, 100);
     ellipseTool['shape'] = ellipseTool.createShape();

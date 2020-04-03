@@ -1,7 +1,6 @@
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Ellipse } from 'src/app/models/shapes/ellipse';
 import { Line } from 'src/app/models/shapes/line';
-import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class CompositeLine extends BaseShape {
@@ -18,12 +17,23 @@ export class CompositeLine extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return this.lineArray[0].startCoord;
+    return Coordinate.minArrayXYCoord(this.junctionArray.map((shape) => shape.origin));
   }
 
   set origin(c: Coordinate) {
-    this._origin = c;
-    this.lineArray[0].startCoord = c;
+    const delta = Coordinate.substract(c, this.origin);
+    const shapes: BaseShape[] = this.lineArray as BaseShape[];
+    shapes.concat(this.junctionArray as BaseShape[]).forEach((shape) => {
+      shape.origin = Coordinate.add(shape.origin, delta);
+    });
+  }
+
+  get width(): number {
+    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).x - this.origin.x;
+  }
+
+  get height(): number {
+    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y;
   }
 
   constructor(initCoord: Coordinate = new Coordinate()) {
@@ -45,10 +55,12 @@ export class CompositeLine extends BaseShape {
     }
     if (this.junctionArray) {
       this.junctionArray.forEach((junction) => {
+        const center: Coordinate = Coordinate.copy(junction.center);
         junction.primaryColor = this.secondaryColor;
         junction.strokeWidth = 0;
         junction.radiusX = this.thickness;
         junction.radiusY = this.thickness;
+        junction.center = center;
         junction.updateProperties();
       });
     }
@@ -103,9 +115,7 @@ export class CompositeLine extends BaseShape {
   }
 
   addJunction(c: Coordinate): void {
-    const junction = new Ellipse(c, 2); // todo - use editor properties
-    junction.primaryColor = Color.BLACK;
-    junction.updateProperties();
+    const junction = new Ellipse(c);
 
     this.junctionArray.push(junction);
     this.svgNode.appendChild(junction.svgNode);

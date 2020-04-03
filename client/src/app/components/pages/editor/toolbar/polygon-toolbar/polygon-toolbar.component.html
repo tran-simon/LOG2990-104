@@ -1,20 +1,4 @@
 <h3 class="toolbar-option-section">Options des Polygones</h3>
-<app-number-input  allowDecimals="true"
-                  [(numberValue)]="toolProperties.strokeWidth">
-  Épaisseur du trait de contour
-</app-number-input>
-<mat-slider [min]="toolProperties.minThickness"
-            [max]="toolProperties.maxThickness" [step]="thicknessSliderStep" thumbLabel="true"
-            [(ngModel)]="toolProperties.strokeWidth">
-</mat-slider>
-<label>Nombre de côtés</label>
-<mat-slider [min]="toolProperties.minPolyEdges"
-            [max]="toolProperties.maxPolyEdges" [step]="1" thumbLabel="true"
-            [(ngModel)]="toolProperties.nEdges">
-</mat-slider>
-<label>Type de tracé</label>
-<mat-radio-group [(ngModel)]='toolProperties.contourType'>
-  <mat-radio-button *ngFor='let contourType of polygonContourNames' [value]='contourType'>
-    {{contourType}}
-  </mat-radio-button>
-</mat-radio-group>
+<app-numeric-property-input [property]=toolProperties.strokeWidth>Épaisseur du trait de contour</app-numeric-property-input>
+<app-numeric-property-input [property]=toolProperties.nEdges>Nombre de côtés</app-numeric-property-input>
+<app-enum-property-input [property]=toolProperties.contourType>Type de tracé</app-enum-property-input>

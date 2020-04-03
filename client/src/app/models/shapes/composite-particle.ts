@@ -3,7 +3,7 @@ import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
-  particles: Rectangle[];
+  private readonly particles: Rectangle[];
 
   private _radius: number;
   get radius(): number {
@@ -13,26 +13,28 @@ export class CompositeParticle extends BaseShape {
     this._radius = !r ? 1 : Math.abs(r);
   }
 
-  get height(): number {
-    return 0; // ToDO
+  get width(): number {
+    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).x - this.origin.x : 0;
   }
 
-  get width(): number {
-    return 0; // ToDO
+  get height(): number {
+    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).y - this.origin.y : 0;
   }
 
   get origin(): Coordinate {
-    return this._origin;
+    return this.particles.length > 0 ? Coordinate.minArrayXYCoord(this.particles.map((shape) => shape.origin)) : new Coordinate();
   }
   set origin(c: Coordinate) {
-    this._origin = c;
+    const delta = Coordinate.substract(c, this.origin);
+    this.particles.forEach((shape) => {
+      shape.origin = Coordinate.add(shape.origin, delta);
+    });
   }
 
-  constructor(origin: Coordinate = new Coordinate(), radius: number = 1) {
+  constructor(radius: number = 1) {
     super('g');
-    this.radius = radius;
-    this.origin = origin;
     this.particles = [];
+    this.radius = radius;
   }
 
   private genRandomPosition(c: Coordinate): Coordinate {
@@ -48,9 +50,16 @@ export class CompositeParticle extends BaseShape {
       particle = new Rectangle(this.genRandomPosition(c), this.thickness);
       particle.primaryColor = this.primaryColor;
       particle.secondaryColor = this.primaryColor;
-      particle.updateProperties();
       this.particles.push(particle);
       this.svgNode.appendChild(particle.svgNode);
+      particle.updateProperties();
+    }
+  }
+
+  updateProperties(): void {
+    super.updateProperties();
+    if (this.particles) {
+      this.particles.forEach((particle) => particle.updateProperties());
     }
   }
 }

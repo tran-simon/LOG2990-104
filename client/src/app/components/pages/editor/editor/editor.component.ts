@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -94,9 +96,23 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('a', true),
+        () => {
+          (this.editorService.tools.get(ToolType.Select) as SelectionTool).selectAll();
+          return false;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('r'),
         () => {
           this.currentToolType = ToolType.ColorApplicator;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('e'),
+        () => {
+          this.currentToolType = ToolType.Eraser;
           return false;
         },
       ],
@@ -111,6 +127,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('z', true),
         () => {
           this.editorService.commandReceiver.undo();
+          if (this.currentTool) {
+            this.currentTool.handleUndoRedoEvent(true);
+          }
           return true;
         },
       ],
@@ -118,6 +137,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('z', true, true),
         () => {
           this.editorService.commandReceiver.redo();
+          if (this.currentTool) {
+            this.currentTool.handleUndoRedoEvent(false);
+          }
           return true;
         },
       ],
@@ -198,7 +220,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   shapeClicked(shape: BaseShape, rightClick: boolean = false): void {
-    // TODO: implements simpleselect interface?
     if (this.currentTool instanceof SimpleSelectionTool) {
       (this.currentTool as SimpleSelectionTool).selectShape(shape, rightClick);
     }
@@ -222,5 +243,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.currentTool.cancel();
     }
     this._currentToolType = value;
+    if (value === ToolType.Eraser) {
+      // todo
+      (this.currentTool as EraserTool).init();
+    }
   }
 }
