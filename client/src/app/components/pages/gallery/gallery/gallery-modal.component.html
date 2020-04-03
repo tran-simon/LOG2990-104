@@ -1,5 +1,11 @@
 <app-abstract-modal>
+  <div id="search-bar" header>
+    <app-name-input class="search-field" [(value)]="nameQuery">Filtrer par nom</app-name-input>
+    <app-tag-list-input class="search-field" [(value)]="tagsQuery">Filtrer par tag</app-tag-list-input>
+    <button mat-flat-button id="apply-button" (click)="updateDrawings()">Appliquer</button>
+  </div>
   <div id="main-container" content>
+    <div id="empty-content-message" *ngIf="drawings.length == 0">Aucun dessin n'a été trouvé.</div>
     <app-gallery-drawing class="drawing-container" *ngFor="let drawing of drawings" [drawing]="drawing">
     </app-gallery-drawing>
   </div>
