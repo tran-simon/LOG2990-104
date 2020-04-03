@@ -26,6 +26,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('toolbar', { static: false }) toolbar: ToolbarComponent;
 
   private _currentToolType: ToolType;
+  deactivateKeyboardEvents: boolean;
 
   surfaceColor: Color;
   surfaceWidth: number;
@@ -42,6 +43,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
     this.modalTypes = ModalType;
+    this.deactivateKeyboardEvents = false;
 
     this.keyboardListener.addEvents([
       [
@@ -131,6 +133,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [
         KeyboardListenerService.getIdentifier('s', true),
         () => {
+          this.deactivateKeyboardEvents = true;
           this.dialog.openByName(ModalType.SAVE);
           return true;
         },
@@ -168,7 +171,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    this.keyboardListener.handle(event);
+    if (!this.dialog.modalIsOpened) {
+      this.keyboardListener.handle(event);
+    }
   }
 
   openGuide(): void {
@@ -176,13 +181,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   openChooseExportSave(): void {
+    this.deactivateKeyboardEvents = true;
     const confirmDialog = this.dialog.openByName(ModalType.CHOOSE_EXPORT_SAVE);
-
     if (confirmDialog) {
       confirmDialog.afterClosed().subscribe((result) => {
         this.dialog.openByName(result);
       });
     }
+    this.deactivateKeyboardEvents = false;
   }
 
   openCreateModal(): void {

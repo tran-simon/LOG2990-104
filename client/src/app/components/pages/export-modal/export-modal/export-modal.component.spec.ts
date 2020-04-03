@@ -1,5 +1,6 @@
 /* tslint:disable:no-string-literal */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,7 +13,7 @@ import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
 import { ExportModalComponent } from './export-modal.component';
 
-describe('ExportModalComponent', () => {
+fdescribe('ExportModalComponent', () => {
   let component: ExportModalComponent;
   let fixture: ComponentFixture<ExportModalComponent>;
   let fixtureEditor: ComponentFixture<EditorComponent>;
@@ -20,7 +21,7 @@ describe('ExportModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, EditorModule, RouterTestingModule],
+      imports: [SharedModule, EditorModule, RouterTestingModule, FormsModule],
       declarations: [ExportModalComponent],
       providers: [EditorService, { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } }],
     })
@@ -38,8 +39,8 @@ describe('ExportModalComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should return file name with extension', () => {
-    component.name = 'test';
+  it('should return full file name with extension', () => {
+    component.fileName = 'test';
     component.selectedExtension = ExtensionType.SVG;
     expect(component.fullName).toEqual('test.svg');
   });
@@ -47,7 +48,7 @@ describe('ExportModalComponent', () => {
     const spy = spyOn(component['imageExportService'], 'safeURL');
     // tslint:disable-next-line: no-unused-expression
     component.previewURL;
-    expect(spy).toHaveBeenCalledWith(component.previewImage);
+    expect(spy).toHaveBeenCalledWith(component['editorService'].view);
   });
   it('should add empty filter to the preview image', () => {
     component.selectedFilter = FilterType.EMPTY;
@@ -114,10 +115,8 @@ describe('ExportModalComponent', () => {
     expect(spySvg).not.toHaveBeenCalled();
     expect(spyImage).toHaveBeenCalled();
   });
-  it('should not submit because form is invalid', () => {
-    component.name = '';
+  it('should close dialog because the submission is valid', () => {
     component.submit();
-    expect(dialogRefCloseSpy).not.toHaveBeenCalled();
+    expect(dialogRefCloseSpy).toHaveBeenCalled();
   });
-  // TODO - Tester la fermeture du modal
 });
