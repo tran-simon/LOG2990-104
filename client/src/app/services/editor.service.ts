@@ -12,6 +12,7 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
+import { ImageExportService } from 'src/app/services/image-export.service';
 import { CommandReceiver } from '../models/commands/command-receiver';
 import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '../models/tools/creator-tools/spray-tool/spray-tool';
@@ -104,25 +105,10 @@ export class EditorService {
     }
   }
 
-  static viewToCanvas(view: DrawingSurfaceComponent, svg:SVGElement = view.svg): Promise<CanvasRenderingContext2D> {
-    const image = new Image();
-    const { width, height } = view;
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    ctx.imageSmoothingEnabled = false;
-    ctx.canvas.width = width;
-    ctx.canvas.height = height;
-
-    const xml = new XMLSerializer().serializeToString(svg);
-    image.src = 'data:image/svg+xml;base64,' + btoa(xml);
-    image.style.display = 'none';
-
-    return new Promise((resolve) => {
-      image.onload = () => {
-        ctx.drawImage(image, 0, 0);
-        resolve(ctx);
-      };
-    });
+  viewToCanvas(): Promise<CanvasRenderingContext2D>{
+    return ImageExportService.viewToCanvas(this.view);
   }
+
+
 
 }

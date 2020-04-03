@@ -4,6 +4,7 @@ import { EraserUtils } from 'src/app/models/tools/editing-tools/eraser-tool/eras
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
+import { ImageExportService } from 'src/app/services/image-export.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -34,9 +35,10 @@ export class EraserTool extends Tool {
       }
     });
 
-    this.editorService.view.svg.parentElement.appendChild(svgCopy);// todo
+    // @ts-ignore
+    // this.editorService.view.svg.parentElement.appendChild(svgCopy);// todo
 
-    EditorService.viewToCanvas(this.editorService.view, svgCopy).then((ctx) => {
+    ImageExportService.viewToCanvas(this.editorService.view, svgCopy).then((ctx) => {
       ctx.imageSmoothingEnabled = false;
       this.ctx = ctx;
       this.initEraserView();
@@ -81,6 +83,10 @@ export class EraserTool extends Tool {
       const y = this.mousePosition.y - this.size / 2;
       this.eraserView.origin = new Coordinate(x, y);
       this.selectShapes(x, y);
+
+      this.editorService.shapes.filter(
+        (s, i) => this.selectedIndexes.indexOf(i) === -1)
+        .forEach((shape) => shape.updateProperties());
 
       this.selectedIndexes.forEach((index) => {
         const shape = this.editorService.shapes[index];

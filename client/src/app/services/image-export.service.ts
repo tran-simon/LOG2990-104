@@ -11,6 +11,27 @@ export class ImageExportService {
     private sanitizer: DomSanitizer
   ) { }
 
+  static viewToCanvas(view: DrawingSurfaceComponent, svg: SVGElement = view.svg): Promise<CanvasRenderingContext2D> {
+    const image = new Image();
+    const { width, height } = view;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.imageSmoothingEnabled = false;
+    ctx.canvas.width = width;
+    ctx.canvas.height = height;
+
+    const xml = new XMLSerializer().serializeToString(svg);
+    image.src = 'data:image/svg+xml;base64,' + btoa(xml);
+    image.style.display = 'none';
+
+    return new Promise((resolve) => {
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0);
+        resolve(ctx);
+      };
+    });
+  }
+
   exportImageElement(surface: DrawingSurfaceComponent, extension: string): () => string {
     const image = new Image();
     const canvas = document.createElement('canvas');
