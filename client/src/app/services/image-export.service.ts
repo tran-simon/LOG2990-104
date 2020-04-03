@@ -9,6 +9,27 @@ import { FilterType } from '../components/pages/export-modal/filter-type.enum';
 export class ImageExportService {
   constructor(private sanitizer: DomSanitizer) {}
 
+  static async viewToCanvas(view: DrawingSurfaceComponent, svg: SVGElement = view.svg): Promise<CanvasRenderingContext2D> {
+    const image = new Image();
+    const { width, height } = view;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.imageSmoothingEnabled = false;
+    ctx.canvas.width = width;
+    ctx.canvas.height = height;
+
+    const xml = new XMLSerializer().serializeToString(svg);
+    image.src = 'data:image/svg+xml;base64,' + btoa(xml);
+    image.style.display = 'none';
+
+    return new Promise((resolve) => {
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0);
+        resolve(ctx);
+      };
+    });
+  }
+
   safeURL(surface: DrawingSurfaceComponent): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.createDataURL(surface));
   }

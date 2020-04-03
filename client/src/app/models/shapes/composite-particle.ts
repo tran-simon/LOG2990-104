@@ -3,7 +3,7 @@ import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
-  particles: Rectangle[];
+  private readonly particles: Rectangle[];
 
   private _radius: number;
   get radius(): number {
@@ -50,9 +50,16 @@ export class CompositeParticle extends BaseShape {
       particle = new Rectangle(this.genRandomPosition(c), this.thickness);
       particle.primaryColor = this.primaryColor;
       particle.secondaryColor = this.primaryColor;
-      particle.updateProperties();
       this.particles.push(particle);
       this.svgNode.appendChild(particle.svgNode);
+      particle.updateProperties();
+    }
+  }
+
+  updateProperties(): void {
+    super.updateProperties();
+    if (this.particles) {
+      this.particles.forEach((particle) => particle.updateProperties());
     }
   }
 }

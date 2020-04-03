@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import {
   MatButtonModule,
@@ -28,6 +28,8 @@ import { ConfirmModalComponent } from './abstract-modal/confirm-modal/confirm-mo
 import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { NameInputComponent } from './inputs/name-input/name-input.component';
+import { EnumPropertyInputComponent } from './inputs/property-inputs/enum-property-input/enum-property-input.component';
+import { NumericPropertyInputComponent } from './inputs/property-inputs/numeric-property-input/numeric-property-input.component';
 import { TagInputComponent } from './inputs/tag-input/tag-input.component';
 
 @NgModule({
@@ -62,6 +64,8 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     NameInputComponent,
     ColorHistoryComponent,
     ConfirmModalComponent,
+    NumericPropertyInputComponent,
+    EnumPropertyInputComponent,
   ],
   entryComponents: [AbstractModalComponent, ConfirmModalComponent],
   exports: [
@@ -89,6 +93,8 @@ import { TagInputComponent } from './inputs/tag-input/tag-input.component';
     MatDividerModule,
     MatListModule,
     MatSelectModule,
+    NumericPropertyInputComponent,
+    EnumPropertyInputComponent,
   ],
 })
 export class SharedModule {}
