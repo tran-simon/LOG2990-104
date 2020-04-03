@@ -1,6 +1,9 @@
 /* tslint:disable:no-any no-magic-numbers */
 /* tslint:disable:no-any no-string-literal */
 import { expect } from 'chai';
+import * as sinon from 'sinon';
+
+import { Mongoose } from 'mongoose';
 
 import * as httpStatus from 'http-status-codes';
 
@@ -100,6 +103,59 @@ describe('Database Service', () => {
         done();
       });
     });
+  });
+
+  it('should return a document when searching by name', (done: Mocha.Done) => {
+    databaseService.addDrawing(testingDrawing).then((addedDoc) => {
+      databaseService.searchDrawings('test', '').then((foundDoc) => {
+        expect(foundDoc.documents[0].name).to.equal(addedDoc.documents.name);
+        done();
+      });
+    });
+  });
+
+  it('should return a document when searching by one tag', (done: Mocha.Done) => {
+    databaseService.addDrawing(testingDrawing).then((addedDoc) => {
+      databaseService.searchDrawings('', 'tag1').then((foundDoc) => {
+        expect(foundDoc.documents[0].name).to.equal(addedDoc.documents.name);
+        done();
+      });
+    });
+  });
+
+  it('should return a document when searching by one incomplete tag', (done: Mocha.Done) => {
+    databaseService.addDrawing(testingDrawing).then((addedDoc) => {
+      databaseService.searchDrawings('', 'tag').then((foundDoc) => {
+        expect(foundDoc.documents[0].name).to.equal(addedDoc.documents.name);
+        done();
+      });
+    });
+  });
+
+  it('should return a document when searching by incomplete tag array', (done: Mocha.Done) => {
+    databaseService.addDrawing(testingDrawing).then((addedDoc) => {
+      databaseService.searchDrawings('', ['tag', 'tag']).then((foundDoc) => {
+        expect(foundDoc.documents[0].name).to.equal(addedDoc.documents.name);
+        done();
+      });
+    });
+  });
+
+  it('should return a document when searching by tag array', (done: Mocha.Done) => {
+    databaseService.addDrawing(testingDrawing).then((addedDoc) => {
+      databaseService.searchDrawings('', ['tag1', 'tag2']).then((foundDoc) => {
+        expect(foundDoc.documents[0].name).to.equal(addedDoc.documents.name);
+        done();
+      });
+    });
+  });
+
+  it('should call mongoose.coonnect on the cloud connect function', (done: Mocha.Done) => {
+    const stub = sinon.stub(Mongoose.prototype, 'connect');
+    databaseService.connectDB();
+    expect(stub.called).to.equal(true);
+    stub.restore();
+    done();
   });
 
   afterEach(async () => {
