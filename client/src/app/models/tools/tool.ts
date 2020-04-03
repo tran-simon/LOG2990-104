@@ -5,7 +5,7 @@ import { MouseEventAction, MouseListenerService } from 'src/app/services/event-l
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { ToolProperties } from '../tool-properties/tool-properties';
 
-export abstract class Tool<T = ToolProperties> implements MouseHandler {
+export abstract class Tool implements MouseHandler {
   get mousePosition(): Coordinate {
     return this._mousePosition;
   }
@@ -19,13 +19,13 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
     }
     this.mouseListener = MouseListenerService.defaultMouseListener(this);
   }
-  toolProperties: T;
+  readonly toolProperties: ToolProperties;
 
-  protected keyboardListener: KeyboardListenerService;
+  protected readonly keyboardListener: KeyboardListenerService;
   private readonly mouseListener: MouseListenerService;
 
   private _mousePosition: Coordinate;
-  protected editorService: EditorService;
+  protected readonly editorService: EditorService;
   protected isActive: boolean;
 
   handleClick: MouseEventAction;
@@ -48,6 +48,10 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {
     return this.keyboardListener.handle(e);
+  }
+
+  handleUndoRedoEvent(undo: boolean): void {
+    return;
   }
 
   cancel(): void {

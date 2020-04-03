@@ -1,12 +1,12 @@
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
-import { LineJunctionType } from 'src/app/models/tool-properties/line-junction-type.enum';
-import { LineToolProperties } from 'src/app/models/tool-properties/line-tool-properties';
+import { LineJunctionType } from 'src/app/models/tool-properties/creator-tool-properties/line-junction-type.enum';
+import { LineToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/line-tool-properties';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
-export class LineTool extends CreatorTool<LineToolProperties> {
+export class LineTool extends CreatorTool {
   constructor(editorService: EditorService) {
     super(editorService);
     this.toolProperties = new LineToolProperties();
@@ -29,6 +29,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     this.keyboardListener.addEvent(KeyboardListenerService.getIdentifier('Escape'), () => {
       this.cancel();
     });
+    this.toolProperties = new LineToolProperties();
   }
 
   // tslint:disable-next-line:no-magic-numbers
@@ -36,6 +37,7 @@ export class LineTool extends CreatorTool<LineToolProperties> {
   // tslint:disable-next-line:no-magic-numbers
   static readonly MAX_DIAGONAL_LOCK_ANGLE: number = Math.PI / 3;
   static readonly MAX_VERTICAL_LOCK_ANGLE: number = Math.PI / 2;
+  toolProperties: LineToolProperties;
   shape: CompositeLine;
 
   private lockMethod: (c: Coordinate) => Coordinate;
@@ -61,10 +63,10 @@ export class LineTool extends CreatorTool<LineToolProperties> {
     if (this.shape) {
       this.shape.primaryColor = this.editorService.colorsService.primaryColor;
       this.shape.secondaryColor = this.editorService.colorsService.secondaryColor;
-      this.shape.strokeWidth = this.toolProperties.strokeWidth;
+      this.shape.strokeWidth = this.toolProperties.strokeWidth.value;
 
-      const hasPoints = this.toolProperties.junctionType === LineJunctionType.POINTS;
-      this.shape.thickness = hasPoints ? this.toolProperties.junctionDiameter : 0;
+      const hasPoints = this.toolProperties.junctionType.value === LineJunctionType.POINTS;
+      this.shape.thickness = hasPoints ? this.toolProperties.junctionDiameter.value : 0;
 
       this.shape.updateProperties();
     }

@@ -1,4 +1,4 @@
-import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
+import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 

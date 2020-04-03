@@ -97,21 +97,16 @@ mat-drawer-content {
   margin: 0 !important;
 }
 
-mat-slider{
-  width: 100%;
-  color: $accent;
-}
-
-app-number-input > label {
-  color: red;
-}
-
 .toolbar-tool-section {
   display: flex;
   padding: 25px;
   width: 300px;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.selected-tool {
+  background-color: $secondary;
 }
 
 .toolbar-option-section {
@@ -119,35 +114,6 @@ app-number-input > label {
   align-self: flex-start;
   color: $accent;
   margin-bottom: 25px;
-}
-
-.selected-tool {
-  background-color: $secondary;
-}
-
-label {
-  align-self: flex-start;
-  color: $accent;
-}
-
-mat-radio-group {
-  display: flex;
-  width: 100%;
-  margin: 10px 0;
-  justify-content: space-between;
-  flex-direction: column;
-  color: $accent;
-}
-
-mat-radio-group > mat-radio-button {
-  margin: 5px 0;
-}
-
-app-number-input {
-  width: 100%;
-}
-
-:host ::ng-deep app-number-input {
 }
 
 #color-square {

@@ -1,6 +1,8 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
+import { PolygonToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/polygon-tool-properties';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
@@ -11,8 +13,7 @@ import { PolygonToolbarComponent } from 'src/app/components/pages/editor/toolbar
 import { RectangleToolbarComponent } from 'src/app/components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
-import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
-import { PolygonToolProperties } from 'src/app/models/tool-properties/polygon-tool-properties';
+import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
 import { PolygonTool } from 'src/app/models/tools/creator-tools/shape-tools/polygon-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { ColorsService } from 'src/app/services/colors.service';
@@ -40,6 +41,7 @@ describe('PolygonTool', () => {
         SprayToolbarComponent,
         EditorComponent,
         DrawingSurfaceComponent,
+        EraserToolbarComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [EditorService],
@@ -90,7 +92,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon contour and fill', () => {
     polygonTool['_mousePosition'] = new Coordinate(50, 100);
-    properties.contourType = ContourType.FILLED_CONTOUR;
+    properties.contourType.value = ContourType.FILLED_CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     const style = polygonTool.shape.svgNode.style;
     expect(style.fill).toEqual(selectedColorsService.primaryColor.rgbString);
@@ -99,7 +101,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon fill only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = ContourType.FILLED;
+    properties.contourType.value = ContourType.FILLED;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;
@@ -109,7 +111,7 @@ describe('PolygonTool', () => {
 
   it('can draw Polygon contour only', () => {
     polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    properties.contourType = ContourType.CONTOUR;
+    properties.contourType.value = ContourType.CONTOUR;
     polygonTool['shape'] = polygonTool.createShape();
     polygonTool['updateProperties']();
     const style = polygonTool.shape.svgNode.style;

@@ -1,4 +1,4 @@
-export abstract class Command {
-  abstract execute(): void;
-  abstract undo(): void;
+export interface Command {
+  execute(): void;
+  undo(): void;
 }
