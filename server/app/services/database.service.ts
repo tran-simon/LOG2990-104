@@ -93,7 +93,7 @@ export class DatabaseService {
         drawingModel.find(
           {
             name: { $regex: '.*' + name + '.*' },
-            tags,
+            tags: { $regex: '.*' + tags + '.*' },
           }, (err: Error, docs: Drawing[]) => {
             const status = DatabaseService.determineStatus(err, docs);
             resolve({ statusCode: status, documents: docs });
