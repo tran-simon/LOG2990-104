@@ -13,10 +13,9 @@ export interface DrawingResponse<T> {
 
 @injectable()
 export class DatabaseService {
-
   private static readonly CONNECTION_OPTIONS: mongoose.ConnectionOptions = {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   };
 
   mongoMS: MongoMemoryServer;
@@ -28,14 +27,11 @@ export class DatabaseService {
   }
 
   private static determineStatus(err: Error, results: Drawing | Drawing[]): number {
-    return err ? httpStatus.INTERNAL_SERVER_ERROR :
-      results ? httpStatus.OK : httpStatus.NOT_FOUND;
+    return err ? httpStatus.INTERNAL_SERVER_ERROR : results ? httpStatus.OK : httpStatus.NOT_FOUND;
   }
 
   static handleResults(res: express.Response, results: DrawingResponse<Drawing> | DrawingResponse<Drawing[]>): void {
-    results.documents ?
-      res.status(results.statusCode).json(results.documents) :
-      res.sendStatus(results.statusCode);
+    results.documents ? res.status(results.statusCode).json(results.documents) : res.sendStatus(results.statusCode);
   }
 
   // Documentation de mongodb-memory-server sur Github
@@ -43,7 +39,6 @@ export class DatabaseService {
   async connectMS(): Promise<void> {
     this.mongoMS = new MongoMemoryServer();
     return this.mongoMS.getUri().then((mongoUri) => {
-
       mongoose.connect(mongoUri, DatabaseService.CONNECTION_OPTIONS);
 
       mongoose.connection.once('open', () => {
@@ -58,7 +53,8 @@ export class DatabaseService {
       DatabaseService.CONNECTION_OPTIONS,
       (err: mongoose.Error) => {
         err ? console.error(err.message) : console.log('Connected to MongoDB Atlas Cloud');
-      });
+      },
+    );
   }
 
   async disconnectDB(): Promise<void> {
@@ -107,7 +103,7 @@ export class DatabaseService {
 
   async updateDrawing(id: string, body: string): Promise<DrawingResponse<Drawing>> {
     return new Promise<DrawingResponse<Drawing>>((resolve) => {
-      drawingModel.findByIdAndUpdate(id, body, (err: Error, doc: Drawing, ) => {
+      drawingModel.findByIdAndUpdate(id, body, (err: Error, doc: Drawing) => {
         resolve({ statusCode: DatabaseService.determineStatus(err, doc), documents: doc });
       });
     });

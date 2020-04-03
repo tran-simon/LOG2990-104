@@ -12,18 +12,12 @@ import Types from '../types';
 
 describe('Database Service', () => {
   let databaseService: DatabaseService;
-  const testingDrawing = new drawingModel(
-    {
-      name: 'test',
-      tags: [
-        'tag1',
-        'tag2',
-        'tag3'
-      ],
-      data: 'random data',
-      previewURL: 'www'
-    }
-  );
+  const testingDrawing = new drawingModel({
+    name: 'test',
+    tags: ['tag1', 'tag2', 'tag3'],
+    data: 'random data',
+    previewURL: 'www',
+  });
 
   beforeEach(async () => {
     await testingContainer().then((instance) => {

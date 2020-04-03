@@ -39,9 +39,7 @@ describe('Server', () => {
     server.init(PROD_PORT);
 
     setTimeout(() => {
-      process.env.USER === 'root' ?
-        expect(stub.called).to.equal(false) :
-        expect(stub.called).to.equal(true);
+      process.env.USER === 'root' ? expect(stub.called).to.equal(false) : expect(stub.called).to.equal(true);
 
       stub.restore();
       done();

@@ -25,9 +25,12 @@ describe('Application', () => {
   });
 
   it('should provoke an error when accessing an unknown path in the dev environment', (done: Mocha.Done) => {
-    chai.request(application.app).get('/').then((res) => {
-      chai.expect(res.status).to.equal(httpStatus.INTERNAL_SERVER_ERROR);
-      done();
-    });
+    chai
+      .request(application.app)
+      .get('/')
+      .then((res) => {
+        chai.expect(res.status).to.equal(httpStatus.INTERNAL_SERVER_ERROR);
+        done();
+      });
   });
 });

@@ -12,12 +12,17 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint -- --fix"
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run lint"
     }
   },
   "lint-staged": {
-    "*.ts": [
-      "npm run lint",
+    "src/**/*.{ts, js, css, scss}": [
+      "prettier --tab-width 2 --print-width 140 --arrow-parens always --single-quote --trailing-comma 'all' --write",
+      "git add"
+    ],
+    "package.json": [
+      "prettier --tab-width 2 --single-quote --trailing-comma 'all' --write",
       "git add"
     ]
   },

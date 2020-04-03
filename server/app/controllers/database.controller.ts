@@ -6,11 +6,9 @@ import { DatabaseService } from '../services/database.service';
 
 @injectable()
 export class DatabaseController {
-
   router: express.Router;
 
-  constructor(
-    @inject(Types.DatabaseService) private databaseService: DatabaseService) {
+  constructor(@inject(Types.DatabaseService) private databaseService: DatabaseService) {
     this.configureRouter();
   }
 
