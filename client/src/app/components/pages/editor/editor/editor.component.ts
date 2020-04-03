@@ -205,7 +205,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    this.keyboardListener.handle(event);
+    if (!this.dialog.modalIsOpened) {
+      this.keyboardListener.handle(event);
+    }
   }
 
   openGuide(): void {
@@ -214,7 +216,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   openChooseExportSave(): void {
     const confirmDialog = this.dialog.openByName(ModalType.CHOOSE_EXPORT_SAVE);
-
     if (confirmDialog) {
       confirmDialog.afterClosed().subscribe((result) => {
         this.dialog.openByName(result);

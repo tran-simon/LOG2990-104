@@ -5,7 +5,6 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 import { EditorService } from 'src/app//services/editor.service';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ImageExportService } from 'src/app/services/image-export.service';
-import { DrawingSurfaceComponent } from '../../editor/drawing-surface/drawing-surface.component';
 import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
 
@@ -18,11 +17,11 @@ export class ExportModalComponent extends AbstractModalComponent {
   selectedExtension: ExtensionType;
   extensions: string[] = Object.values(ExtensionType);
   href: SafeResourceUrl;
-  name: string;
+  fileName: string;
   formGroup: FormGroup;
   selectedFilter: FilterType;
   filters: string[] = Object.values(FilterType);
-  previewImage: DrawingSurfaceComponent;
+  validity: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
@@ -31,17 +30,16 @@ export class ExportModalComponent extends AbstractModalComponent {
   ) {
     super(dialogRef);
     editorService.clearShapesBuffer();
-    this.name = '';
+    this.fileName = '';
     this.selectedExtension = ExtensionType.EMPTY;
     this.selectedFilter = FilterType.EMPTY;
     this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter);
     this.formGroup = new FormGroup({});
-    this.previewImage = this.editorService.view;
-    console.log(this.selectedExtension);
+    this.validity = !this.formGroup.invalid && this.selectedExtension !== '';
   }
 
   get fullName(): string {
-    return this.name + '.' + this.selectedExtension;
+    return this.fileName + '.' + this.selectedExtension;
   }
 
   addFilterToPreview(): void {
@@ -72,9 +70,9 @@ export class ExportModalComponent extends AbstractModalComponent {
   changeExtension(): void {
     if (this.selectedExtension !== ExtensionType.EMPTY) {
       this.selectedExtension === ExtensionType.SVG
-        ? (this.href = this.imageExportService.exportSVGElement(this.previewImage, this.selectedFilter))
+        ? (this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter))
         : this.imageExportService
-            .exportImageElement(this.previewImage, this.selectedExtension, this.selectedFilter)
+            .exportImageElement(this.editorService.view, this.selectedExtension, this.selectedFilter)
             .then((data: string) => {
               this.href = data;
             });
@@ -82,12 +80,16 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   submit(): void {
-    if (!this.formGroup.invalid) {
+    if (this.valid) {
       this.dialogRef.close();
     }
   }
 
+  get valid(): boolean {
+    return !this.formGroup.invalid && this.selectedExtension !== ExtensionType.EMPTY;
+  }
+
   get previewURL(): SafeResourceUrl {
-    return this.imageExportService.safeURL(this.previewImage);
+    return this.imageExportService.safeURL(this.editorService.view);
   }
 }
