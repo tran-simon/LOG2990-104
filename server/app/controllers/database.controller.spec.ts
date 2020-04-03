@@ -97,4 +97,16 @@ describe('Database Controller', () => {
         done();
       });
   });
+
+  it('should call searchDrawingss when sending a query get request to api/database/drawing/', (done: Mocha.Done) => {
+    const stub = sinon.stub(DatabaseService.prototype, 'searchDrawings').resolves({ statusCode: 200, documents: [] });
+    chai
+      .request(application.app)
+      .get('/api/database/drawing/?name=')
+      .then(() => {
+        chai.expect(stub.called).to.equal(true);
+        stub.restore();
+        done();
+      });
+  });
 });
