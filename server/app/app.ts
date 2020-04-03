@@ -12,9 +12,7 @@ export class Application {
   private readonly internalError: number = 500;
   app: express.Application;
 
-  constructor(
-    @inject(Types.APIController) private apiController: APIController,
-  ) {
+  constructor(@inject(Types.APIController) private apiController: APIController) {
     this.app = express();
 
     this.config();

@@ -12,12 +12,17 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint -- --fix"
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run lint"
     }
   },
   "lint-staged": {
-    "*.ts": [
-      "npm run lint",
+    "src/**/*.{ts, js, css, scss}": [
+      "prettier --tab-width 2 --print-width 140 --arrow-parens always --single-quote --trailing-comma 'all' --write",
+      "git add"
+    ],
+    "package.json": [
+      "prettier --tab-width 2 --single-quote --trailing-comma 'all' --write",
       "git add"
     ]
   },
@@ -56,6 +61,7 @@
     "express": "~4.17.1",
     "http-status-codes": "^1.4.0",
     "inversify": "^5.0.1",
+    "mongodb-memory-server": "^6.5.0",
     "mongoose": "^5.9.3",
     "morgan": "^1.9.1",
     "reflect-metadata": "^0.1.10",
