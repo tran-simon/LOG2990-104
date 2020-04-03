@@ -1,6 +1,6 @@
 /* tslint:disable:no-string-literal */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -115,10 +115,10 @@ describe('ExportModalComponent', () => {
     expect(spySvg).not.toHaveBeenCalled();
     expect(spyImage).toHaveBeenCalled();
   });
-  it('should close dialog because the submission is valid', () => {
-    component.selectedExtension = ExtensionType.PNG;
+  it('should not submit because the submission is not valid', () => {
+    component.selectedExtension = ExtensionType.EMPTY;
     component.fileName = '';
-    spyOnProperty(component.formGroup, 'invalid').and.returnValue(true);
+    component.formGroup = { invalid: true } as FormGroup;
     component.submit();
     expect(dialogRefCloseSpy).not.toHaveBeenCalled();
   });

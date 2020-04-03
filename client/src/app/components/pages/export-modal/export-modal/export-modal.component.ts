@@ -80,6 +80,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   submit(): void {
+    console.log('submit');
     if (this.valid) {
       this.dialogRef.close();
     }

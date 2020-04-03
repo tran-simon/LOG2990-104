@@ -33,6 +33,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
   }
 
   saveDrawing(): void {
+    console.log('submit');
     const tagValues: string[] = [];
 
     this.tags.forEach((tag: TagInputComponent) => {
