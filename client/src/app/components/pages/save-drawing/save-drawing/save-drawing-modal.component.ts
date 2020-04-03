@@ -54,6 +54,6 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
   }
 
   get previewURL(): SafeResourceUrl {
-    return this.imageExportService.exportSVGElement(this.editorService.view);
+    return this.imageExportService.safeURL(this.editorService.view);
   }
 }
