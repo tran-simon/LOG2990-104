@@ -4,5 +4,5 @@ export enum FilterType {
   BLACKWHITE = 'Noir et blanc',
   INVERT = 'Inversion',
   SATURATE = 'Saturation de couleurs',
-  SEPIA = 'sépia',
+  SEPIA = 'Sépia',
 }

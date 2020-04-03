@@ -16,6 +16,6 @@ export class NumericPropertyInputComponent extends AbstractPropertyInput<Numeric
   constructor() {
     super();
     this.allowDecimals = false;
-    this.sliderStep = NumericPropertyInputComponent.SLIDER_STEP
+    this.sliderStep = NumericPropertyInputComponent.SLIDER_STEP;
   }
 }
