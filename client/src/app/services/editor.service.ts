@@ -105,10 +105,7 @@ export class EditorService {
     }
   }
 
-  viewToCanvas(): Promise<CanvasRenderingContext2D>{
+  async viewToCanvas(): Promise<CanvasRenderingContext2D> {
     return ImageExportService.viewToCanvas(this.view);
   }
-
-
-
 }

@@ -8,6 +8,7 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./drawing-surface.component.scss'],
 })
 export class DrawingSurfaceComponent {
+  // tslint:disable-next-line:typedef
   static SHAPE_ID = 0;
   static readonly SHAPE_ID_PREFIX: string = 'shape-';
   static readonly DEFAULT_WIDTH: number = 500;
@@ -41,9 +42,9 @@ export class DrawingSurfaceComponent {
       this.shapeRightClicked.emit(shape);
     };
 
-    shape.svgNode.id = DrawingSurfaceComponent.SHAPE_ID_PREFIX + (DrawingSurfaceComponent.SHAPE_ID++);
+    shape.svgNode.id = DrawingSurfaceComponent.SHAPE_ID_PREFIX + DrawingSurfaceComponent.SHAPE_ID++;
     this.svg.appendChild(shape.svgNode);
-    }
+  }
 
   removeShape(shape: BaseShape): void {
     this.svg.removeChild(shape.svgNode);

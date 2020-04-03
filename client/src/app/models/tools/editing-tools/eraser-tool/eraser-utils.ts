@@ -14,7 +14,7 @@ export class EraserUtils {
     return Color.hex(hex);
   }
 
-  static indexFromColor(color: Color): number{
+  static indexFromColor(color: Color): number {
     return parseInt(color.hex, 16) / this.COLOR_DELTA - 1;
   }
 
@@ -33,7 +33,7 @@ export class EraserUtils {
     }
   }
 
-  static sanitizeSvgNode(node: SVGElement): void{
+  static sanitizeSvgNode(node: SVGElement): void {
     const width = node.style.strokeWidth;
     if (!width || +width < this.SELECTION_THICKNESS) {
       node.style.strokeWidth = this.SELECTION_THICKNESS.toString();
@@ -44,16 +44,16 @@ export class EraserUtils {
   static sanitizeAndAssignColorToSvgNode(node: SVGElement, id: number): void {
     const sanitizeChildNodes = (childNode: SVGElement) => {
       EraserUtils.sanitizeSvgNode(childNode);
-      EraserUtils.assignColorToShapeFromIndex(childNode,id);
+      EraserUtils.assignColorToShapeFromIndex(childNode, id);
       childNode.childNodes.forEach(sanitizeChildNodes);
     };
     sanitizeChildNodes(node);
-  };
+  }
 
   static highlightShape(shape: BaseShape): void {
     const highlightNode = (node: SVGElement) => {
-      const {strokeWidth} = node.style;
-      if (!strokeWidth || (+strokeWidth) < this.SELECTION_THICKNESS) {
+      const { strokeWidth } = node.style;
+      if (!strokeWidth || +strokeWidth < this.SELECTION_THICKNESS) {
         node.style.strokeWidth = this.SELECTION_THICKNESS.toString();
       }
 

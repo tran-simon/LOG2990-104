@@ -22,8 +22,8 @@ describe('MathUtil', () => {
     expect(MathUtil.fitAngle(-800)).toBeCloseTo(280, 5);
   });
 
-  it('can get hex', ()=>{
+  it('can get hex', () => {
     expect(MathUtil.toHex(255)).toEqual('ff');
     expect(MathUtil.toHex(255, 6)).toEqual('0000ff');
-  })
+  });
 });

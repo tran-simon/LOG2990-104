@@ -237,7 +237,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
     this._currentToolType = value;
     if (value === ToolType.Eraser) {
-      //todo
+      // todo
       (this.currentTool as EraserTool).init();
     }
   }

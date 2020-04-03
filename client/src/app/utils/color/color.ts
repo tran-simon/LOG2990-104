@@ -271,15 +271,15 @@ export class Color implements ColorComponents {
     return Math.round(this.b * 255);
   }
 
-  get rHex(): string{
+  get rHex(): string {
     return MathUtil.toHex(this.r255, 2);
   }
 
-  get gHex(): string{
+  get gHex(): string {
     return MathUtil.toHex(this.g255, 2);
   }
 
-  get bHex(): string{
+  get bHex(): string {
     return MathUtil.toHex(this.b255, 2);
   }
 }

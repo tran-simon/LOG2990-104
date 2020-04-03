@@ -19,9 +19,6 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
     }
     this.mouseListener = MouseListenerService.defaultMouseListener(this);
   }
-  afterViewChange():void{
-    return;
-  }
   toolProperties: T;
 
   protected keyboardListener: KeyboardListenerService;
@@ -37,6 +34,9 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
   handleMouseLeave: MouseEventAction;
   handleMouseMove: MouseEventAction;
   handleMouseUp: MouseEventAction;
+  afterViewChange(): void {
+    return;
+  }
 
   initMouseHandler?(): void;
 
