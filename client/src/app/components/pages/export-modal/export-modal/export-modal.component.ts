@@ -78,7 +78,13 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   submit(): void {
-    this.dialogRef.close();
+    if (this.valid) {
+      this.dialogRef.close();
+    }
+  }
+
+  get valid(): boolean {
+    return !this.formGroup.invalid && this.selectedExtension !== '';
   }
 
   get previewURL(): SafeResourceUrl {
