@@ -127,6 +127,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('z', true),
         () => {
           this.editorService.commandReceiver.undo();
+          if (this.currentTool) {
+            this.currentTool.handleUndoRedoEvent(true);
+          }
           return true;
         },
       ],
@@ -134,6 +137,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('z', true, true),
         () => {
           this.editorService.commandReceiver.redo();
+          if (this.currentTool) {
+            this.currentTool.handleUndoRedoEvent(false);
+          }
           return true;
         },
       ],

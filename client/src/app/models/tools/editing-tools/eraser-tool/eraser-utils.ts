@@ -3,7 +3,7 @@ import { Color } from 'src/app/utils/color/color';
 import { MathUtil } from 'src/app/utils/math/math-util';
 
 export class EraserUtils {
-  static readonly COLOR_DELTA: number = 10;
+  static readonly COLOR_DELTA: number = 5;
   static readonly SELECTION_THICKNESS: number = 3;
   static readonly TOLERANCE: number = 0.000001;
 

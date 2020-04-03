@@ -1,3 +1,5 @@
+import { RemoveShapesCommand } from 'src/app/models/commands/shape-commands/remove-shapes-command';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { EraserUtils } from 'src/app/models/tools/editing-tools/eraser-tool/eraser-utils';
@@ -12,24 +14,38 @@ export class EraserTool extends Tool {
   static readonly DEFAULT_SIZE: number = 25;
   size: number;
   private eraserView: Rectangle;
-  private ctx: CanvasRenderingContext2D;
+  private ctx: CanvasRenderingContext2D | undefined;
   // private selectedIndexes: number[];
   private selectedIndex: number;
+  private removedShapes: BaseShape[];
+  private clonedView: SVGElement | undefined;
 
   constructor(editorService: EditorService) {
     super(editorService);
     this.size = EraserTool.DEFAULT_SIZE;
+    this.removedShapes = [];
+  }
+
+  private erase(shape: BaseShape | undefined): void {
+    if (shape) {
+      this.editorService.removeShapeFromView(shape);
+      this.removedShapes.push(shape);
+      this.ctx = undefined;
+      this.clonedView = undefined;
+      this.init();
+      // (document.querySelector('body') as HTMLElement).style.cursor = `url('${image.src}') , auto`;
+    }
   }
 
   init(): void {
-    const svgCopy: SVGElement = this.editorService.view.svg.cloneNode(true) as SVGElement;
+    const newClonedView = this.editorService.view.svg.cloneNode(true) as SVGElement;
 
-    const background = svgCopy.querySelector('#background');
+    const background = newClonedView.querySelector('#background');
     if (background) {
       background.setAttribute('fill', Color.RED.rgbString);
     }
 
-    svgCopy.childNodes.forEach((node: SVGElement) => {
+    newClonedView.childNodes.forEach((node: SVGElement) => {
       if (node.id.startsWith('shape-')) {
         const id = node.id.split('-')[1];
         EraserUtils.sanitizeAndAssignColorToSvgNode(node, +id + 1);
@@ -37,16 +53,32 @@ export class EraserTool extends Tool {
     });
 
     // @ts-ignore
-    // this.editorService.view.svg.parentElement.appendChild(svgCopy);// todo
+    // this.editorService.view.svg.parentElement.appendChild(asvgCopy);// todo
 
-    ImageExportService.viewToCanvas(this.editorService.view, svgCopy).then((ctx) => {
+    this.clonedView = newClonedView;
+    // this.ctx = undefined;
+
+    console.log('A');
+    ImageExportService.viewToCanvas(this.editorService.view, this.clonedView).then((ctx) => {
       ctx.imageSmoothingEnabled = false;
       this.ctx = ctx;
-      this.initEraserView();
+      if (!ctx) {
+        throw new Error('Canvas context could not be loaded');
+      }
+      if (!this.eraserView) {
+        // todo: check if in buffer
+        this.initEraserView();
+      }
+      console.log('C');
     });
+    console.log('B');
+    // }
   }
 
   selectShapes(pos: Coordinate): void {
+    if (!this.clonedView) {
+      this.init();
+    }
     const { x, y } = pos;
     // this.selectedIndexes = [];
     this.selectedIndex = -1;
@@ -72,8 +104,6 @@ export class EraserTool extends Tool {
           }
         }
       }
-    } else {
-      throw new Error('Canvas context could not be loaded');
     }
   }
 
@@ -82,24 +112,49 @@ export class EraserTool extends Tool {
       if (this.eraserView) {
         this.eraserView.primaryColor = Color.WHITE;
         this.eraserView.updateProperties();
+        this.eraserView.origin = this.eraserPosition;
+        // console.log('D');
       }
 
-      this.eraserView.origin = this.eraserPosition;
       this.selectShapes(this.eraserPosition);
+      // console.log('E');
 
       // this.selectedIndexes.sort();
       // const highlightedIndex = this.selectedIndexes.pop();
       const highlightedIndex = this.selectedIndex;
 
-      this.editorService.shapes.filter((s, i) => i !== highlightedIndex).forEach((shape) => shape.updateProperties());
+      this.editorService.shapes.filter((s) => s.svgNode.id !== `shape-${highlightedIndex}`).forEach((shape) => shape.updateProperties());
 
       if (highlightedIndex !== -1) {
-        const shape = this.editorService.shapes[highlightedIndex];
+        const shape = this.editorService.shapes.filter((s) => s.svgNode.id === `shape-${highlightedIndex}`)[0];
         if (shape) {
           EraserUtils.highlightShape(shape);
         }
+        if (this.isActive) {
+          this.erase(shape);
+        }
       }
     };
+
+    this.handleMouseUp = () => {
+      if (this.isActive && this.removedShapes.length) {
+        const removeShapesCommand = new RemoveShapesCommand(this.removedShapes, this.editorService);
+        this.editorService.commandReceiver.add(removeShapesCommand);
+        this.removedShapes = [];
+      }
+      this.isActive = false;
+    };
+
+    this.handleMouseDown = (e) => {
+      this.isActive = true;
+      this.handleMouseMove(e);
+    };
+    this.handleMouseLeave = this.handleMouseUp;
+  }
+
+  handleUndoRedoEvent(undo: boolean): void {
+    super.handleUndoRedoEvent(undo);
+    this.init();
   }
 
   initEraserView(): void {
@@ -110,6 +165,7 @@ export class EraserTool extends Tool {
 
     this.editorService.addPreviewShape(this.eraserView);
   }
+
   get eraserPosition(): Coordinate {
     const x = this.mousePosition.x - this.size / 2;
     const y = this.mousePosition.y - this.size / 2;

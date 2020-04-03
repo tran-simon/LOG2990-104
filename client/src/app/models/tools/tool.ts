@@ -53,6 +53,10 @@ export abstract class Tool<T = ToolProperties> implements MouseHandler {
     return this.keyboardListener.handle(e);
   }
 
+  handleUndoRedoEvent(undo: boolean): void {
+    return;
+  }
+
   cancel(): void {
     this.isActive = false;
     this.editorService.clearShapesBuffer();

@@ -90,18 +90,32 @@ export class EditorService {
     }
   }
 
+  addShapesToBuffer(shapes: BaseShape[]): void {
+    shapes.forEach(this.addShapeToBuffer, this);
+  }
+
   addShapeToBuffer(shape: BaseShape): void {
-    this.shapesBuffer.push(shape);
-    if (this.view) {
+    if (!this.view) {
+      this.shapesBuffer.push(shape);
+    } else if (!this.view.svg.contains(shape.svgNode)) {
+      this.shapesBuffer.push(shape);
       this.view.addShape(shape);
     }
+  }
+
+  removeShapes(shapes: BaseShape[]): void {
+    shapes.forEach(this.removeShape, this);
+  }
+
+  removeShapeFromView(shape: BaseShape): void {
+    this.view.removeShape(shape);
   }
 
   removeShape(shape: BaseShape): void {
     const index = this.shapes.findIndex((s) => s === shape);
     if (index !== -1) {
-      this.shapes.splice(index, 1, shape);
-      this.view.removeShape(shape);
+      this.shapes.splice(index, 1);
+      this.removeShapeFromView(shape);
     }
   }
 

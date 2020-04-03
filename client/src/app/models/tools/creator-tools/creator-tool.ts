@@ -1,7 +1,7 @@
+import { AddShapesCommand } from 'src/app/models/commands/shape-commands/add-shapes-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { AddShapeCommand } from '../../commands/shape-commands/add-shape-command';
 import { ToolProperties } from '../../tool-properties/tool-properties';
 
 export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
@@ -33,7 +33,7 @@ export abstract class CreatorTool<T = ToolProperties> extends Tool<T> {
     this.updateProperties();
     // this.editorService.applyShapesBuffer();
     if (this.shape) {
-      this.editorService.commandReceiver.add(new AddShapeCommand(this.shape, this.editorService));
+      this.editorService.commandReceiver.add(new AddShapesCommand(this.shape, this.editorService));
     }
     this.shape = undefined;
     this.isActive = false;
