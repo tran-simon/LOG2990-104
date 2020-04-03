@@ -7,6 +7,6 @@ import { EditorComponent } from './editor/editor.component';
 @NgModule({
   imports: [SharedModule, ToolbarModule],
   declarations: [DrawingSurfaceComponent, EditorComponent],
-  exports: [EditorComponent],
+  exports: [DrawingSurfaceComponent, EditorComponent],
 })
 export class EditorModule {}

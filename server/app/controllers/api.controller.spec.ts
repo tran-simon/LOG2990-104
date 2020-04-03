@@ -3,20 +3,22 @@ import * as chai from 'chai';
 import 'chai-http';
 chai.use(require('chai-http'));
 
-import * as httpStatus from 'http-status-codes';
+import { APIController } from './api.controller';
 
-import { Application } from '../app';
-
-import { container } from '../inversify.config';
+import { testingContainer } from '../../test/test-utils';
 import Types from '../types';
 
 describe('API Controller', () => {
-  const application = container.get<Application>(Types.Application);
+  let apiController: APIController;
 
-  it('should OK on GET /', (done: Mocha.Done) => {
-    chai.request(application.app).get('/api').then((res) => {
-      chai.expect(res.status).to.equal(httpStatus.OK);
-      done();
+  beforeEach(async () => {
+    await testingContainer().then((instance) => {
+      apiController = instance[0].get<APIController>(Types.APIController);
     });
+  });
+
+  it('should instanciate correctly', (done: Mocha.Done) => {
+    chai.expect(apiController).to.be.instanceOf(APIController);
+    done();
   });
 });
