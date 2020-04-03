@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { TagListInputComponent } from './tag-list-input.component';
 
-fdescribe('TagInputComponent', () => {
+describe('TagListInputComponent', () => {
   let component: TagListInputComponent;
   let fixture: ComponentFixture<TagListInputComponent>;
 
