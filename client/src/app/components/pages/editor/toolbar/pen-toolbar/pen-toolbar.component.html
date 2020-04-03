@@ -1,12 +1,2 @@
-<div>
-
 <h3 class="toolbar-option-section">Options du crayon</h3>
-<app-number-input  allowDecimals="true"
-                  [(numberValue)]="toolProperties.strokeWidth">
-  Épaisseur du trait
-</app-number-input>
-<mat-slider [min]="toolProperties.minThickness"
-            [max]="toolProperties.maxThickness" [step]="thicknessSliderStep" thumbLabel="true"
-            [(ngModel)]="toolProperties.strokeWidth">
-</mat-slider>
-</div>
+<app-numeric-property-input [property]=toolProperties.strokeWidth>Épaisseur du trait</app-numeric-property-input>

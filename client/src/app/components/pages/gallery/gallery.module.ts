@@ -8,4 +8,4 @@ import { GalleryModalComponent } from './gallery/gallery-modal.component';
   declarations: [GalleryModalComponent, GalleryDrawingComponent],
   entryComponents: [GalleryModalComponent, GalleryDrawingComponent],
 })
-export class GalleryModule { }
+export class GalleryModule {}

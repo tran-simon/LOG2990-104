@@ -1,24 +1,10 @@
 <h3 class="toolbar-option-section">Options de la ligne</h3>
-<app-number-input allowDecimals="true"
-                  [(numberValue)]="toolProperties.strokeWidth">
+<app-numeric-property-input [property]="toolProperties.strokeWidth">
   Épaisseur de la ligne
-</app-number-input>
-<mat-slider [min]="toolProperties.minThickness"
-            [max]="toolProperties.maxThickness" [step]="thicknessSliderStep" thumbLabel="true"
-            [(ngModel)]="toolProperties.strokeWidth">
-</mat-slider>
-<app-number-input  allowDecimals="true"
-                  [(numberValue)]="toolProperties.junctionDiameter">
-  Épaisseur des points de
-  jonction
-</app-number-input>
-<mat-slider [min]="toolProperties.minDiameter"
-            [max]="toolProperties.maxDiameter" [step]="thicknessSliderStep" thumbLabel="true"
-            [(ngModel)]="toolProperties.junctionDiameter">
-</mat-slider>
-<label>Style des points de jonction</label>
-<mat-radio-group [(ngModel)]='toolProperties.junctionType'>
-  <mat-radio-button *ngFor='let junctionType of lineJunctionNames' [value]='junctionType'>
-    {{junctionType}}
-  </mat-radio-button>
-</mat-radio-group>
+</app-numeric-property-input>
+<app-numeric-property-input [property]="toolProperties.junctionDiameter">
+  Épaisseur des points de jonction
+</app-numeric-property-input>
+
+<app-enum-property-input [property]=toolProperties.junctionType>Style des points de jonction</app-enum-property-input>
+

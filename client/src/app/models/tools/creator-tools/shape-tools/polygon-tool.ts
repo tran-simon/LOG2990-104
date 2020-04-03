@@ -1,12 +1,13 @@
+import { PolygonToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/polygon-tool-properties';
 import { EditorService } from '../../../../services/editor.service';
 import { KeyboardListenerService } from '../../../../services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { Coordinate } from '../../../../utils/math/coordinate';
 import { Polygon } from '../../../shapes/polygon';
-import { PolygonToolProperties } from '../../../tool-properties/polygon-tool-properties';
 import { ShapeTool } from './shape-tool';
 
-export class PolygonTool extends ShapeTool<PolygonToolProperties> {
+export class PolygonTool extends ShapeTool {
   shape: Polygon;
+  toolProperties: PolygonToolProperties;
 
   constructor(editorService: EditorService) {
     super(editorService);
@@ -20,10 +21,11 @@ export class PolygonTool extends ShapeTool<PolygonToolProperties> {
         },
       ],
     ]);
+    this.toolProperties = new PolygonToolProperties();
   }
 
   createShape(): Polygon {
-    return new Polygon(this.initialMouseCoord, this.toolProperties.nEdges);
+    return new Polygon(this.initialMouseCoord, this.toolProperties.nEdges.value);
   }
 
   updateCurrentCoord(c: Coordinate): void {

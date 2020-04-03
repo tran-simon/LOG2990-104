@@ -1,10 +1,10 @@
+import { EllipseToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/ellipse-tool-properties';
 import { ShapeTool } from 'src/app/models/tools/creator-tools/shape-tools/shape-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { Ellipse } from '../../../shapes/ellipse';
-import { EllipseToolProperties } from '../../../tool-properties/ellipse-tool-properties';
 
-export class EllipseTool extends ShapeTool<EllipseToolProperties> {
+export class EllipseTool extends ShapeTool {
   shape: Ellipse;
 
   constructor(editorService: EditorService) {

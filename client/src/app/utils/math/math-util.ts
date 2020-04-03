@@ -1,5 +1,6 @@
 export class MathUtil {
   static readonly MAX_ANGLE: number = 360;
+  static readonly HEX_RADIX: number = 16;
 
   /**
    * Returns value greater or equal to min
@@ -27,5 +28,10 @@ export class MathUtil {
       return this.MAX_ANGLE - this.fitAngle(-angle);
     }
     return angle % this.MAX_ANGLE;
+  }
+
+  static toHex(value: number, padding: number = 0): string {
+    const hex = value.toString(this.HEX_RADIX).toLowerCase();
+    return padding ? hex.padStart(padding, '0') : hex;
   }
 }

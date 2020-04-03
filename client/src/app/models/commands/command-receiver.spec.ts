@@ -2,7 +2,7 @@
 import { Command } from './command';
 import { CommandReceiver } from './command-receiver';
 
-export class MockCommand extends Command {
+export class MockCommand implements Command {
   execute(): void {
     return;
   }

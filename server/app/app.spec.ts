@@ -5,16 +5,18 @@ chai.use(require('chai-http'));
 
 import * as httpStatus from 'http-status-codes';
 
-import { container } from './inversify.config';
+import { testingContainer } from '../test/test-utils';
 import Types from './types';
 
 import { Application } from './app';
 
-let application: Application;
-
 describe('Application', () => {
-  beforeEach(() => {
-    application = container.get<Application>(Types.Application);
+  let application: Application;
+
+  beforeEach(async () => {
+    await testingContainer().then((instance) => {
+      application = instance[0].get<Application>(Types.Application);
+    });
   });
 
   it('should instanciate as the correct type', (done: Mocha.Done) => {
@@ -23,9 +25,12 @@ describe('Application', () => {
   });
 
   it('should provoke an error when accessing an unknown path in the dev environment', (done: Mocha.Done) => {
-    chai.request(application.app).get('/').then((res) => {
-      chai.expect(res.status).to.equal(httpStatus.INTERNAL_SERVER_ERROR);
-      done();
-    });
+    chai
+      .request(application.app)
+      .get('/')
+      .then((res) => {
+        chai.expect(res.status).to.equal(httpStatus.INTERNAL_SERVER_ERROR);
+        done();
+      });
   });
 });

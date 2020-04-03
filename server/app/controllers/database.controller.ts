@@ -6,11 +6,9 @@ import { DatabaseService } from '../services/database.service';
 
 @injectable()
 export class DatabaseController {
-
   router: express.Router;
 
-  constructor(
-    @inject(Types.DatabaseService) private databaseService: DatabaseService) {
+  constructor(@inject(Types.DatabaseService) private databaseService: DatabaseService) {
     this.configureRouter();
   }
 
@@ -18,23 +16,33 @@ export class DatabaseController {
     this.router = express.Router();
 
     this.router.get('/drawings', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      this.databaseService.getAllDrawings(res);
+      this.databaseService.getAllDrawings().then((results) => {
+        DatabaseService.handleResults(res, results);
+      });
     });
 
     this.router.get('/drawings/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      this.databaseService.getDrawingById(res, req.params.id);
+      this.databaseService.getDrawingById(req.params.id).then((results) => {
+        DatabaseService.handleResults(res, results);
+      });
     });
 
     this.router.post('/drawings', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      this.databaseService.addDrawing(res, req.body);
+      this.databaseService.addDrawing(req.body).then((results) => {
+        DatabaseService.handleResults(res, results);
+      });
     });
 
     this.router.delete('/drawings/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      this.databaseService.deleteDrawing(res, req.params.id);
+      this.databaseService.deleteDrawing(req.params.id).then((results) => {
+        DatabaseService.handleResults(res, results);
+      });
     });
 
     this.router.post('/drawings/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      this.databaseService.updateDrawing(res, req.params.id, req.body);
+      this.databaseService.updateDrawing(req.params.id, req.body).then((results) => {
+        DatabaseService.handleResults(res, results);
+      });
     });
   }
 }
