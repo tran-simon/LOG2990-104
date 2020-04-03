@@ -47,6 +47,6 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   }
 
   get disableNextButton(): boolean {
-    return this.selectedSubject === this.subjects.Color;
+    return this.selectedSubject === this.subjects.Gallery;
   }
 }

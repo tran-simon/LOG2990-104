@@ -5,4 +5,13 @@ export enum GuideSubject {
   Rectangle,
   Line,
   Color,
+  Selector,
+  Spray,
+  Eraser,
+  Ellipse,
+  Polygon,
+  Pipette,
+  Exportation,
+  Save,
+  Gallery,
 }
