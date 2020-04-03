@@ -1,7 +1,8 @@
+import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
+import { EraserToolProperties } from '@tool-properties/editor-tool-properties/eraser-tool-properties';
 import { RemoveShapesCommand } from 'src/app/models/commands/shape-commands/remove-shapes-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
-import { ContourType } from 'src/app/models/tool-properties/contour-type.enum';
 import { EraserUtils } from 'src/app/models/tools/editing-tools/eraser-tool/eraser-utils';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
@@ -11,8 +12,6 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class EraserTool extends Tool {
-  static readonly DEFAULT_SIZE: number = 25;
-  size: number;
   private eraserView: Rectangle;
   private ctx: CanvasRenderingContext2D | undefined;
   // private selectedIndexes: number[];
@@ -20,9 +19,11 @@ export class EraserTool extends Tool {
   private removedShapes: BaseShape[];
   private clonedView: SVGElement | undefined;
 
+  toolProperties: EraserToolProperties;
+
   constructor(editorService: EditorService) {
     super(editorService);
-    this.size = EraserTool.DEFAULT_SIZE;
+    this.toolProperties = new EraserToolProperties();
     this.removedShapes = [];
   }
 
@@ -111,8 +112,10 @@ export class EraserTool extends Tool {
     this.handleMouseMove = () => {
       if (this.eraserView) {
         this.eraserView.primaryColor = Color.WHITE;
-        this.eraserView.updateProperties();
+        this.eraserView.height = this.size;
+        this.eraserView.width = this.size;
         this.eraserView.origin = this.eraserPosition;
+        this.eraserView.updateProperties();
         // console.log('D');
       }
 
@@ -170,5 +173,9 @@ export class EraserTool extends Tool {
     const x = this.mousePosition.x - this.size / 2;
     const y = this.mousePosition.y - this.size / 2;
     return new Coordinate(x, y);
+  }
+
+  get size(): number {
+    return this.toolProperties.eraserSize.value;
   }
 }

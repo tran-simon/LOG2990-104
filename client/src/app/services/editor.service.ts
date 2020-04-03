@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { ImageExportService } from '@services/image-export.service';
+import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
@@ -7,7 +9,6 @@ import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/re
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { ColorApplicatorTool } from 'src/app/models/tools/editing-tools/color-applicator-tool';
-import { EraserTool } from 'src/app/models/tools/editing-tools/eraser-tool';
 import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -97,7 +98,6 @@ export class EditorService {
     if (!this.view) {
       this.shapesBuffer.push(shape);
     } else if (!this.view.svg.contains(shape.svgNode)) {
-      this.shapesBuffer.push(shape);
       this.shapesBuffer.push(shape);
       this.view.addShape(shape);
     }
