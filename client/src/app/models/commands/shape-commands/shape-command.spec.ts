@@ -1,3 +1,4 @@
+/* tslint:disable:no-string-literal */
 import { ShapesCommand } from '@models/commands/shape-commands/shapes-command';
 import { Ellipse } from '@models/shapes/ellipse';
 import { Rectangle } from '@models/shapes/rectangle';
@@ -17,13 +18,13 @@ describe('ShapesCommand', () => {
   it('can create command with single shape', () => {
     const rect = new Rectangle();
     const command = new ShapesCommandImpl(rect, {} as EditorService);
-    expect(command.shapes).toEqual([rect]);
+    expect(command['shapes']).toEqual([rect]);
   });
 
-  it('can create command with multiple shapes', ()=> {
+  it('can create command with multiple shapes', () => {
     const rect = new Rectangle();
-    const ellipse =   new Ellipse();
+    const ellipse = new Ellipse();
     const command = new ShapesCommandImpl([rect, ellipse], {} as EditorService);
-    expect(command.shapes).toEqual([rect, ellipse]);
+    expect(command['shapes']).toEqual([rect, ellipse]);
   });
 });
