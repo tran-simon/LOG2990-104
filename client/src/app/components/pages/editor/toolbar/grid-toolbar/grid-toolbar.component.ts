@@ -12,6 +12,7 @@ import { EditorService } from '../../../../../services/editor.service';
 export class GridToolbarComponent extends AbstractToolbarEntry<GridToolProperties> {
   constructor(protected editorService: EditorService) {
     super(editorService, ToolType.Grid);
+    // tslint:disable-next-line:no-magic-numbers
     this.thicknessSliderStep = 5;
   }
 }
