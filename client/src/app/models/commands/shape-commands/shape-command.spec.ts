@@ -1,8 +1,8 @@
 /* tslint:disable:no-string-literal */
-import { ShapesCommand } from '@models/commands/shape-commands/shapes-command';
-import { Ellipse } from '@models/shapes/ellipse';
-import { Rectangle } from '@models/shapes/rectangle';
-import { EditorService } from '@services/editor.service';
+import { ShapesCommand } from 'src/app/models/commands/shape-commands/shapes-command';
+import { Ellipse } from 'src/app/models/shapes/ellipse';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
+import { EditorService } from 'src/app/services/editor.service';
 
 class ShapesCommandImpl extends ShapesCommand {
   execute(): void {

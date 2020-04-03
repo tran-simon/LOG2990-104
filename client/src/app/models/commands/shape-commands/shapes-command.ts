@@ -1,5 +1,5 @@
-import { Command } from '@models/commands/command';
-import { EditorService } from '@services/editor.service';
+import { Command } from 'src/app/models/commands/command';
+import { EditorService } from 'src/app/services/editor.service';
 import { BaseShape } from '../../shapes/base-shape';
 
 export abstract class ShapesCommand implements Command {

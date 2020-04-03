@@ -70,7 +70,7 @@ describe('SprayTool', () => {
   it('should addParticle after interval if active', () => {
     sprayTool.handleMouseDown(mouseDown());
     jasmine.clock().tick(SprayTool.INTERVAL_REFRESH_VALUE + 1);
-    expect(sprayTool.shape.particles.length).toEqual(1);
+    expect(sprayTool.shape['particles'].length).toEqual(1);
     sprayTool.applyShape();
   });
 

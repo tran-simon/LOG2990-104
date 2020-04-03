@@ -1,9 +1,9 @@
-import { ToolProperties } from '@tool-properties/tool-properties';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { MouseHandler } from 'src/app/services/event-listeners/mouse-listener/mouse-handler';
 import { MouseEventAction, MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { ToolProperties } from '../tool-properties/tool-properties';
 
 export abstract class Tool implements MouseHandler {
   get mousePosition(): Coordinate {
@@ -48,6 +48,10 @@ export abstract class Tool implements MouseHandler {
 
   handleKeyboardEvent(e: KeyboardEvent): boolean {
     return this.keyboardListener.handle(e);
+  }
+
+  handleUndoRedoEvent(undo: boolean): void {
+    return;
   }
 
   cancel(): void {
