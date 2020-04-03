@@ -109,7 +109,7 @@ describe('ImageExportService', () => {
     service.addFilter(fixture.componentInstance.drawingSurface, filter);
     expect(fixture.componentInstance.drawingSurface.svg.getAttribute('filter')).toEqual('sepia(100%)');
   });
-  it('should call addFilter when exporting image', () => {
+  it('should call addFilter and removeFilter when exporting image', () => {
     const addFilterSpy = spyOn(service, 'addFilter');
     const removeFilterSpy = spyOn(service, 'removeFilter');
     const filter = FilterType.BLACKWHITE;
