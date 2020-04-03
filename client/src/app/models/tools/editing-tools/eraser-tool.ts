@@ -86,7 +86,8 @@ export class EraserTool extends Tool {
   }
 
   getBboxIntersection(area: Rectangle, shape: BaseShape): Rectangle[] {
-    return shape.bboxes.filter((box: Rectangle) => this.detectBoundingBoxCollision(area, box));
+    // return shape.bboxes.filter((box: Rectangle) => this.detectBoundingBoxCollision(area, box));
+    return [];
   }
 
   getShapeIsIntersecting(area: Rectangle, shape: BaseShape): boolean {
