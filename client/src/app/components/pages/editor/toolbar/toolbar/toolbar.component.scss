@@ -24,7 +24,7 @@
 
 #toolbar-bottom-buttons{
   padding-bottom: 20px;
-  padding-top: 15px;
+  padding-top: 10px;
   background-color: $secondary;
 }
 
@@ -42,7 +42,7 @@
   height: 30px;
   width: 30px;
   position: absolute;
-  bottom: 260px;
+  bottom: 335px;
 }
 
 #toolbar-primary-color {
@@ -51,7 +51,7 @@
   width: 35px;
   z-index: 1000;
   position: absolute;
-  bottom: 210px;
+  bottom: 280px;
   right: 15px;
 }
 
@@ -61,7 +61,7 @@
   width: 35px;
   z-index: 500;
   position: absolute;
-  bottom: 200px;
+  bottom: 270px;
   left: 15px;
 }
 
@@ -118,4 +118,13 @@ mat-drawer-content {
 
 #color-square {
   width: 150px;
+}
+
+app-undo-redo {
+  width: 30px;
+  color: $accent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
 }

@@ -4,6 +4,14 @@ export class CommandReceiver {
   private _commands: Command[];
   private _revertedCommands: Command[];
 
+  get canUndo(): boolean {
+    return this._commands.length > 0;
+  }
+
+  get canRedo(): boolean {
+    return this._revertedCommands.length > 0;
+  }
+
   constructor() {
     this._commands = new Array<Command>();
     this._revertedCommands = new Array<Command>();

@@ -12,6 +12,7 @@
     </div>
   </div>
   <div id="toolbar-middle-buttons">
+
     <button id="swap-button" mat-icon-button (click)="editorService.colorsService.swapColors()">
       <mat-icon>swap_horiz</mat-icon>
     </button>
@@ -21,8 +22,10 @@
     <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
       (click)="editColor(SelectedColorType.secondary)" [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
     </div>
+
   </div>
   <div id="toolbar-bottom-buttons">
+    <app-undo-redo></app-undo-redo>
     <button id="help-button" mat-icon-button (click)="openGuide()">
       <mat-icon>help</mat-icon>
     </button>

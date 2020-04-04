@@ -23,6 +23,7 @@ import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
+import { UndoRedoComponent } from '../shared/undo-redo/undo-redo.component';
 import { AbstractModalComponent } from './abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from './abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
 import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
@@ -68,6 +69,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     ConfirmModalComponent,
     NumericPropertyInputComponent,
     EnumPropertyInputComponent,
+    UndoRedoComponent,
   ],
   entryComponents: [AbstractModalComponent, ConfirmModalComponent],
   exports: [
@@ -98,6 +100,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     MatSelectModule,
     NumericPropertyInputComponent,
     EnumPropertyInputComponent,
+    UndoRedoComponent,
   ],
 })
 export class SharedModule {}
