@@ -17,7 +17,6 @@ export class DrawingSurfaceComponent {
   @Input() width: number;
   @Input() height: number;
   @Input() color: Color;
-
   @Output() shapeClicked: EventEmitter<BaseShape>;
   @Output() shapeRightClicked: EventEmitter<BaseShape>;
 
