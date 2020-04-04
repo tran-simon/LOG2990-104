@@ -4,10 +4,10 @@ import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@components/shared/shared.module';
-import { GalleryModule } from '../gallery.module';
-import { GalleryModalComponent } from './gallery-modal.component';
 import { Drawing } from '@models/drawing';
 import { APIService } from '@services/api.service';
+import { GalleryModule } from '../gallery.module';
+import { GalleryModalComponent } from './gallery-modal.component';
 
 fdescribe('Gallery Modal Component', () => {
   const dialogRefCloseSpy = jasmine.createSpy('close');
