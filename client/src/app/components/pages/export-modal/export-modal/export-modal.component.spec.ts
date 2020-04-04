@@ -115,13 +115,6 @@ describe('ExportModalComponent', () => {
     expect(spySvg).not.toHaveBeenCalled();
     expect(spyImage).toHaveBeenCalled();
   });
-  it('should not submit because the submission is not valid', () => {
-    component.selectedExtension = ExtensionType.EMPTY;
-    component.fileName = '';
-    component.formGroup = { invalid: true } as FormGroup;
-    component.submit();
-    expect(dialogRefCloseSpy).not.toHaveBeenCalled();
-  });
   it('should close dialog because the submission is valid', () => {
     component.selectedExtension = ExtensionType.PNG;
     component.fileName = 'test';
