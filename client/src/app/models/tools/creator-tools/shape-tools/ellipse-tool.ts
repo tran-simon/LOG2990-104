@@ -15,8 +15,8 @@ export class EllipseTool extends ShapeTool {
   }
 
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
-    this.shape.origin = origin;
     this.shape.radiusX = dimensions.x / 2;
     this.shape.radiusY = dimensions.y / 2;
+    this.shape.origin = origin;
   }
 }
