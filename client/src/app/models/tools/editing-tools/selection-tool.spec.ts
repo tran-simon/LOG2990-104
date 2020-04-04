@@ -39,7 +39,7 @@ const mouseUp = (c: Coordinate = new Coordinate()): MouseEvent => {
   } as MouseEvent;
 };
 
-fdescribe('SelectionTool', () => {
+describe('SelectionTool', () => {
   let tool: SelectionTool;
   const coord1 = new Coordinate(100, 50);
   const coord2 = new Coordinate(150, 250);
