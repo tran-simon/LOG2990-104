@@ -6,7 +6,6 @@ import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.scss'],
 })
 export class GridComponent {
   static readonly SIZE_RATIO: number = 5;
