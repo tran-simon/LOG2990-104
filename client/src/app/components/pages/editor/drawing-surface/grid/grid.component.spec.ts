@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
 import { GridComponent } from './grid.component';
 
 describe('GridComponent', () => {
@@ -20,5 +21,10 @@ describe('GridComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return opacity 0 if not visible', () => {
+    component.properties.visibility.value = GridVisibility.hidden;
+    expect(component.opacity).toEqual(0);
   });
 });
