@@ -39,7 +39,15 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
       tagValues.push(tag.value);
     });
     const preview = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.previewURL);
-    const drawing = new Drawing(this.name, tagValues, this.editorService.shapes, preview == null ? '' : preview);
+    const drawing = new Drawing(
+      this.name,
+      tagValues,
+      this.editorService.view.svg.innerHTML,
+      this.editorService.view.color.hex,
+      this.editorService.view.width,
+      this.editorService.view.height,
+      preview == null ? '' : preview,
+    );
     this.apiService.uploadDrawing(drawing);
 
     this.dialogRef.close();

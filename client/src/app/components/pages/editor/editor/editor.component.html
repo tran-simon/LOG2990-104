@@ -16,6 +16,11 @@
     (contextmenu)="handleMouseEvent($event)"
     (shapeClicked)="shapeClicked($event)"
     (shapeRightClicked)="shapeClicked($event, true)"
-  ></app-drawing-surface>
+  >
+	  <app-grid
+			  [width]=surfaceWidth
+			  [height]=surfaceHeight
+	  ></app-grid>
+  </app-drawing-surface>
 </div>
 

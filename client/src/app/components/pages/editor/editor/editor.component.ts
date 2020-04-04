@@ -1,5 +1,9 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { APIService } from '@services/api.service';
+import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
+import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
+import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
@@ -31,12 +35,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
+  drawingId: string;
   modalTypes: typeof ModalType;
 
   constructor(
     private router: ActivatedRoute,
     public editorService: EditorService,
     private dialog: ModalDialogService,
+    private apiService: APIService,
     private keyboardListener: KeyboardListenerService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
@@ -102,6 +108,31 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('+', false),
+        () => {
+          // todo: Test with 20, 21, 24, 25
+          const increment = GridProperties.GRID_SIZE_INCREMENT;
+          const size = this.editorService.gridProperties.size.value + increment;
+          this.editorService.gridProperties.size.value = Math.floor(size / increment) * increment;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('-', false),
+        () => {
+          // todo: Test with 20, 21, 24, 25
+          const increment = GridProperties.GRID_SIZE_INCREMENT;
+          const size = this.editorService.gridProperties.size.value - increment;
+          this.editorService.gridProperties.size.value = Math.ceil(size / increment) * increment;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('g', false),
+        () => {
+          this.editorService.gridProperties.visibility.value =
+            this.editorService.gridProperties.visibility.value === GridVisibility.visible ? GridVisibility.hidden : GridVisibility.visible;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('r'),
         () => {
           this.currentToolType = ToolType.ColorApplicator;
@@ -112,6 +143,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
         KeyboardListenerService.getIdentifier('e'),
         () => {
           this.currentToolType = ToolType.Eraser;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('2'),
+        () => {
+          this.currentToolType = ToolType.Ellipse;
           return false;
         },
       ],
@@ -170,11 +208,17 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
       this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
       this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
+      this.drawingId = params.id;
     });
   }
 
   ngAfterViewInit(): void {
     this.editorService.view = this.drawingSurface;
+    if (this.drawingId) {
+      this.apiService.getDrawingById(this.drawingId).then((drawing) => {
+        this.editorService.view.svg.innerHTML = drawing.data;
+      });
+    }
   }
 
   handleMouseEvent(e: MouseEvent): void {

@@ -92,7 +92,7 @@ export class CompositeLine extends BaseShape {
   }
 
   endLine(c: Coordinate): void {
-    this.removeLastPoint(); // todo - add double click timeout to avoid deleting shapes
+    this.removeLastPoint();
     this.removeLastPoint();
 
     const shouldClose = Coordinate.maxXYDistance(c, this.lineArray[0].startCoord) < CompositeLine.MAX_FINAL_SNAP_DISTANCE;

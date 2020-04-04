@@ -14,21 +14,23 @@ export class CompositeParticle extends BaseShape {
   }
 
   get width(): number {
-    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).x - this.origin.x : 0;
+    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).x - this.relativeOrigin.x : 0;
   }
 
   get height(): number {
-    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).y - this.origin.y : 0;
+    return this.particles.length > 0 ? Coordinate.maxArrayXYCoord(this.particles.map((shape) => shape.end)).y - this.relativeOrigin.y : 0;
+  }
+
+  private get relativeOrigin(): Coordinate {
+    // todo - optimize by resetting to zero and/or storing begin/end
+    return this.particles.length > 0 ? Coordinate.minArrayXYCoord(this.particles.map((shape) => shape.origin)) : new Coordinate();
   }
 
   get origin(): Coordinate {
-    return this.particles.length > 0 ? Coordinate.minArrayXYCoord(this.particles.map((shape) => shape.origin)) : new Coordinate();
+    return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    const delta = Coordinate.substract(c, this.origin);
-    this.particles.forEach((shape) => {
-      shape.origin = Coordinate.add(shape.origin, delta);
-    });
+    this.offset = Coordinate.substract(c, this.relativeOrigin);
   }
 
   constructor(radius: number = 1) {

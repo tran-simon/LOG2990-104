@@ -19,6 +19,9 @@ describe('Database Service', () => {
     name: 'test',
     tags: ['tag1', 'tag2', 'tag3'],
     data: 'random data',
+    color: '',
+    width: 0,
+    height: 0,
     previewURL: 'www',
   });
 

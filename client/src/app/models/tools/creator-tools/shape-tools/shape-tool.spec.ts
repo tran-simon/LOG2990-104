@@ -1,22 +1,15 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
+import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
+import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
+import { ToolbarModule } from '@components/pages/editor/toolbar/toolbar.module';
+import { Rectangle } from '@models/shapes/rectangle';
+import { Coordinate } from '@utils/math/coordinate';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { keyDown, keyUp } from 'src/app/components/pages/editor/editor/editor.component.spec';
-import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
-import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
-import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
-import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
-import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
-import { DrawingSurfaceComponent } from '../../../../components/pages/editor/drawing-surface/drawing-surface.component';
-import { PolygonToolbarComponent } from '../../../../components/pages/editor/toolbar/polygon-toolbar/polygon-toolbar.component';
-import { RectangleToolbarComponent } from '../../../../components/pages/editor/toolbar/rectangle-toolbar/rectangle-toolbar.component';
-import { SprayToolbarComponent } from '../../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
-import { Coordinate } from '../../../../utils/math/coordinate';
-import { Rectangle } from '../../../shapes/rectangle';
 import { ShapeTool } from './shape-tool';
 
 export class MockShapeTool extends ShapeTool {
@@ -70,20 +63,8 @@ describe('ShapeTool', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ToolbarComponent,
-        PenToolbarComponent,
-        BrushToolbarComponent,
-        RectangleToolbarComponent,
-        LineToolbarComponent,
-        EllipseToolbarComponent,
-        PolygonToolbarComponent,
-        SprayToolbarComponent,
-        EditorComponent,
-        DrawingSurfaceComponent,
-        EraserToolbarComponent,
-      ],
-      imports: [SharedModule, RouterTestingModule],
+      declarations: [EditorComponent, DrawingSurfaceComponent, GridComponent],
+      imports: [SharedModule, RouterTestingModule, ToolbarModule],
       providers: [EditorService],
     }).compileComponents();
   }));

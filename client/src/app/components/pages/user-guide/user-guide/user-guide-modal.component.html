@@ -11,18 +11,37 @@
                 Outils
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Pen)">Crayon</button>
-            <p></p>
-            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Brush)">Pinceau</button>
-            <p></p>
-            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Rectangle)">Rectangle</button>
-            <p></p>
-            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Line)">Ligne</button>
-            <p></p>
-            <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Color)">Sélecteur de couleurs
-            </button>
+            <div id="toolaccordion">
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Pen)">Crayon</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Brush)">Pinceau</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Line)">Ligne</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Color)">Sélecteur de couleurs
+              </button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Spray)">Aérosol</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Eraser)">Efface</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Pipette)">Pipette</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Selection)">Sélection d'objets</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Rectangle)">Rectangle</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Ellipse)">Ellipse</button>
+              <p></p>
+              <button mat-flat-button class="btn-cat" (click)="selectSubject(subjects.Rectangle)">Polygone</button>
+              <p></p>
+            </div>
           </mat-expansion-panel>
         </mat-accordion>
+        <button mat-raised-button (click)="selectSubject(subjects.Exportation)">Exportation du dessin</button>
+        <button mat-raised-button (click)="selectSubject(subjects.Save)">Sauvegarde du dessin</button>
+        <button mat-raised-button (click)="selectSubject(subjects.Gallery)">Galerie</button>
+        <button mat-raised-button (click)="selectSubject(subjects.Reinitialisation)">Réinitialisation</button>
       </div>
     </mat-sidenav>
 
@@ -72,6 +91,7 @@
                 </p>
                 <p>
                   À l’appui du bouton principal (bouton de gauche) de votre appareil de sélection, l’outil commencera à dessiner! Tenir enfoncé pour une trace allongée.
+                  Pour y accéder avec le clavier, tapez sur la touche 'i'.
                 </p>
                 <p>
                   -
@@ -117,6 +137,7 @@
                   L’outil tracera ensuite une ligne vers le prochain point appuyé.
                   Il est possible de fixer l’angle de traçage en appuyant sur la touche SHIFT avant de sélectionner le prochain point.
                   Pour cesser de tracer une ligne, appuyiez simplement sur BACKSPACE, ESCAPE ou deux appuis consécutifs sur le bouton principal de votre appareil de sélection.
+                  Pour y accéder avec le clavier, tapez sur la touche 'l'.
                 </p>
                 <p>
                   -
@@ -174,6 +195,7 @@
                 </p>
                 <p>
                   À l’appui du bouton principal (bouton de gauche) de votre appareil de sélection, l’outil commencera à dessiner! Tenir enfoncé pour une trace allongée.
+                  Pour y accéder avec le clavier, tapez sur la touche 'w'.
                 </p>
                 <p>
                   -
@@ -232,6 +254,7 @@
                   Pour dessiner un rectangle, simplement appuyez sur le bouton principal (bouton de gauche) de votre appareil de sélection,
                   puis traînez votre pointeur dans la direction à laquelle vous désirez dessiner.
                   À l’appui de la touche SHIFT, le rectangle en cours de traçage peut être converti dynamiquement en un carré.
+                  Pour y accéder avec le clavier, tapez sur la touche '1'.
                 </p>
                 <p>
                   -
@@ -307,8 +330,296 @@
               </div>
             </mat-list-item>
           </mat-list>
+        </div>
+
+        <div *ngSwitchCase="subjects.Spray">
+          <div class="header">
+            <h1>Aérosol</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="sprayContent">
+            <mat-list-item style="display: block;">
+              <div class="mat-list-text">
+                <p>
+                  Description:
+                </p>
+                <p>
+                  Dessinez votre dessin comme si vous aviez une canne aérosol!
+                  Cet outil vous permet de laisser place à votre imagination et tracer une ligne de taille, texture et couleur ajustable sans assistance ou restriction.
+                <p>
+                  -
+                </p>
+                <p>
+                  Utilisation:
+                </p>
+                <p>
+                  À l’appui du bouton principal (bouton de gauche) de votre appareil de sélection, l’outil commencera à dessiner! Tenir enfoncé pour une trace allongée.
+                  Pour y accéder avec le clavier, tapez sur la touche 'a'.
+                </p>
+                <p>
+                  -
+                </p>
+                <p>
+                  Propriétés:
+                </p>
+                <p>
+                  Rayon du jet - Il est possible de modifier le rayon du jet à l’aide de la fenêtre modale ou « side-bar » d’outils.
+                  Vous n’avez qu’à sélectionner l’icône de l’outil aérosol et modifier la valeur «  Rayon du jet » apparaissant sous la forme d’une glissière ou d’une entrée numérique.
+                </p>
+                <p>
+                  Débit du jet - Il est possible de modifier le rayon du jet à l’aide de la fenêtre modale ou « side-bar » d’outils.
+                  Vous n’avez qu’à sélectionner l’icône de l’outil aérosol et modifier la valeur « Débit du jet » apparaissant sous la forme d’une glissière ou d’une entrée numérique.
+                </p>
+                <p>
+                  -
+                </p>
+                <p>
+                  Couleurs:
+                </p>
+                <p>
+                  -
+                </p>
+                <p>
+                  Il est possible de modifier la couleur du jet en modifiant la couleur principale du sélectionneur de couleur.
+                  La couleur des points de jonction correspond à la couleur secondaire sélectionnée.
+                </p>
+              </div>
+            </mat-list-item>
+          </mat-list>
 
         </div>
+
+        <div *ngSwitchCase="subjects.Eraser">
+          <div class="header">
+            <h1>Efface</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="eraserContent">
+            <mat-list-item style="display: block;">
+              <div class="mat-list-text">
+                <p>
+                  Description:
+                </p>
+                <p>
+                  Effacez vos erreurs!
+                  Cet outil vous permet d'effacer les traits et formes qui ne vous plaisent plus.
+                <p>
+                  -
+                </p>
+                <p>
+                  Utilisation:
+                </p>
+                <p>
+                  À l’appui du bouton principal (bouton de gauche) de votre appareil de sélection, l’outil commencera à effacer! Tenir enfoncé pour effacer un élément du dessin.
+                  Pour y accéder avec le clavier, tapez sur la touche 'e'.
+                </p>
+                <p>
+                  -
+                </p>
+                <p>
+                  Propriétés:
+                </p>
+                <p>
+                  Taille de l'efface - Il est possible de modifier la taille de l'efface à l’aide de la fenêtre modale ou « side-bar » d’outils.
+                  Vous n’avez qu’à sélectionner l’icône de l’outil efface et modifier la valeur «  Taille de l'efface » apparaissant sous la forme d’une glissière ou d’une entrée numérique.
+                </p>
+              </div>
+            </mat-list-item>
+          </mat-list>
+
+        </div>
+        <div *ngSwitchCase="subjects.Pipette">
+          <div class="header">
+            <h1>Pipette de couleurs</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="pipetteContent">
+            <mat-list-item style="display: block;">
+              <div class="mat-list-text">
+                <p>
+                  Description:
+                </p>
+                <p>
+                  Changez de couleurs avec la pipette de couleurs!
+                  Cet outil vous permet de sélectionner la coleur d'un élément de votre dessin pour la définir comme votre couleur principale.
+                  Vous pourez voir la nouvelle couleur dans le sélecteur de couleurs.
+                <p>
+                  -
+                </p>
+                <p>
+                  Utilisation:
+                </p>
+                <p>
+                  À l’appui du bouton principal (bouton de gauche) de votre appareil de sélection et clickez sur n'importe quel objet pour sélectionner sa couleur.
+                  Pour y accéder avec le clavier, tapez sur la touche 'i'.
+                </p>
+              </div>
+            </mat-list-item>
+          </mat-list>
+
+        </div>
+
+        <div *ngSwitchCase="subjects.Selection">
+          <div class="header">
+            <h1>Sélection d'objets</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="selectionContent">
+            <mat-list-item style="display: block;">
+              <div class="mat-list-text">
+                <p>
+                  Description:
+                </p>
+                <p>
+                  Sélectionnez les éléments que vous avez dessinez!
+                  Cet outil vous permet de sélectionner des élément de votre dessin.
+                  Vous pourez voir la nouvelle couleur dans le sélecteur de couleurs.
+                <p>
+                  -
+                </p>
+                <p>
+                  Utilisation:
+                </p>
+                <p>
+                  À l’appui du bouton principal (bouton de gauche) de votre appareil de sélection et puis traînez le rectangle de sélection qui apparaîtrera sur votre écr
+                  an dans la direction à laquelle vous désirez sélectionner. Vous pourrez ensuite déplacer les éléments sélectionnés.
+                  Pour y accéder avec le clavier, tapez sur la touche 's'.
+                </p>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <div *ngSwitchCase="subjects.Ellipse">
+          <div class="header">
+            <h1>ellipse</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="ellipseContent">
+            <mat-list-item style="display: block;">
+              <div class="mat-list-text">
+                <p>
+                  Description:
+                </p>
+                <p>
+                  Cet outil vous permet de tracer une ellipse plein, vide, avec ou sans bordure en une simple traîne de la souris!
+                <p>
+                  -
+                </p>
+                <p>
+                  Utilisation:
+                </p>
+                <p>
+                  Pour dessiner une ellipse, simplement appuyez sur le bouton principal (bouton de gauche) de votre appareil de sélection,
+                  puis traînez votre pointeur dans la direction à laquelle vous désirez dessiner.
+                  À l’appui de la touche SHIFT, l'ellipse en cours de traçage peut être converti dynamiquement en un cercle.
+                  Pour y accéder avec le clavier, tapez sur la touche '2'.
+                </p>
+                <p>
+                  -
+                </p>
+                <p>
+                  Propriétés:
+                </p>
+                <p>
+                  Épaisseur du trait - Il est possible de modifier l’épaisseur du trait de contour à l’aide de la fenêtre modale ou « side-bar » d’outils.
+                  Vous n’avez qu’à sélectionner l’icône de l’outil ellipse et modifier la valeur « Épaisseur du trait de contour » apparaissant sous la forme d’une glissière ou d’une entrée numérique.
+                </p>
+                <p>
+                  Type de tracé – Pour modifier le type de tracé de votre ellipse, vous n’avez qu’à sélectionner l’icône du ellipse et sélectionner l’un des trois types afficher à l’écran.
+                </p>
+                <p>
+                  -
+                </p>
+                <p>
+                  Couleurs:
+                </p>
+                <p>
+                  Il est possible de modifier la couleur de remplissage en modifiant la couleur principale du sélectionneur de couleur.
+                  La couleur du contour correspond à la couleur secondaire sélectionnée.
+                </p>
+              </div>
+            </mat-list-item>
+          </mat-list>
+
+        </div>
+
+        <div *ngSwitchCase="subjects.Exportation">
+
+          <div class="header">
+            <h1>Exportation</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="exportationContent">
+            <mat-list-item>
+              <p>
+                Vous pouvez maintenant exporter votre dessin sur votre ordinateur. trois formats de fichiers différents vous sont offerts: SVG, PNG et JPG.
+                Vous pouvez aussi appliquer 5 filtres différents: noir et blanc, saturation des couleurs, flou, sepia et inversion des couleurs.
+                Pour accéder à l'exportation, il suffit de taper sur les touches ctrl+e ou clicker sur l'icône de sauvegarde qui vous permettera de choisir
+                entre la sauvegarde et l'exportation.
+              </p>
+            </mat-list-item>
+
+          </mat-list>
+
+        </div>
+
+        <div *ngSwitchCase="subjects.Save">
+
+          <div class="header">
+            <h1>Sauvegarde du dessin</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="saveContent">
+            <mat-list-item>
+              <p>
+                Vous pouvez maintenant sauvegarder votre dessin sur la gallery du site.
+                Vous pouvez aussi ajouter des étiquettes/tags associer au dessin. Elles ne sont pas obligatoires.
+                Pour accéder à la sauvegarde, il suffit de taper sur les touches ctrl+s ou clicker sur l'icône de sauvegarde qui vous permettera de choisir
+                entre la sauvegarde et l'exportation.
+              </p>
+            </mat-list-item>
+
+          </mat-list>
+
+        </div>
+
+        <div *ngSwitchCase="subjects.Gallery">
+
+          <div class="header">
+            <h1>Galerie</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="saveContent">
+            <mat-list-item>
+              <p>
+                Vous pouvez maintenant aller voir vos dessins sauvegardés sur la galerie. Il suffit de l'ouvrir à partir de l'acceuil.
+                Vous pouvez aussi faire des recherches par tags ou par nom pour trouver un dessin spécifique.
+              </p>
+            </mat-list-item>
+
+          </mat-list>
+
+        </div>
+
+        <div *ngSwitchCase="subjects.Reinitialisation">
+
+          <div class="header">
+            <h1>Réinitialiser le dessin</h1>
+          </div>
+          <mat-divider></mat-divider>
+          <mat-list id="reContent">
+            <mat-list-item>
+              <p>
+                Pour réinitialiser le dessin, il suffit de taper sur les touches ctrl+o.
+              </p>
+            </mat-list-item>
+
+          </mat-list>
+
+        </div>
+
+
         <mat-divider></mat-divider>
       </div>
 
