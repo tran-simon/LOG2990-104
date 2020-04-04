@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+import { CommandReceiver } from '@models/commands/command-receiver';
 import { ImageExportService } from '@services/image-export.service';
+import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
+import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
+import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
+import { SelectionTool } from '@tools/editing-tools/selection-tool';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
@@ -13,10 +18,6 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
-import { CommandReceiver } from '../models/commands/command-receiver';
-import { PolygonTool } from '../models/tools/creator-tools/shape-tools/polygon-tool';
-import { SprayTool } from '../models/tools/creator-tools/spray-tool/spray-tool';
-import { SelectionTool } from '../models/tools/editing-tools/selection-tool';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class EditorService {
   private previewShapes: BaseShape[];
   private readonly _commandReceiver: CommandReceiver;
 
+  readonly gridProperties: GridProperties;
   view: DrawingSurfaceComponent;
 
   get commandReceiver(): CommandReceiver {
@@ -45,6 +47,7 @@ export class EditorService {
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
     this.selectedShapes = new Array<BaseShape>();
+    this.gridProperties = new GridProperties();
   }
 
   private initTools(): void {

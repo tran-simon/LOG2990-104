@@ -12,3 +12,11 @@ app-drawing-surface {
   left: 60px;
   top: 0;
 }
+
+app-grid{
+  position: absolute;
+  margin: 4px;
+  top: 4px;
+  left: 4px;
+  pointer-events: none;
+}

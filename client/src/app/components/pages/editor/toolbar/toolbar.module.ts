@@ -6,6 +6,7 @@ import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EllipseToolbarComponent } from './ellipse-toolbar/ellipse-toolbar.component';
+import { GridToolbarComponent } from './grid-toolbar/grid-toolbar.component';
 import { PolygonToolbarComponent } from './polygon-toolbar/polygon-toolbar.component';
 import { RectangleToolbarComponent } from './rectangle-toolbar/rectangle-toolbar.component';
 import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
@@ -21,6 +22,7 @@ import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
     PolygonToolbarComponent,
     SprayToolbarComponent,
     EraserToolbarComponent,
+    GridToolbarComponent,
   ],
   imports: [SharedModule],
   exports: [
@@ -29,6 +31,7 @@ import { SprayToolbarComponent } from './spray-toolbar/spray-toolbar.component';
     BrushToolbarComponent,
     RectangleToolbarComponent,
     LineToolbarComponent,
+    GridToolbarComponent,
     EllipseToolbarComponent,
     PolygonToolbarComponent,
     SprayToolbarComponent,

@@ -4,11 +4,9 @@ import { MatDialogRef } from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
+import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
+import { ToolbarModule } from '@components/pages/editor/toolbar/toolbar.module';
 import { of } from 'rxjs';
-import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
-import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
-import { PenToolbarComponent } from 'src/app/components/pages/editor/toolbar/pen-toolbar/pen-toolbar.component';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
@@ -29,10 +27,6 @@ import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-import { EllipseToolbarComponent } from '../toolbar/ellipse-toolbar/ellipse-toolbar.component';
-import { PolygonToolbarComponent } from '../toolbar/polygon-toolbar/polygon-toolbar.component';
-import { RectangleToolbarComponent } from '../toolbar/rectangle-toolbar/rectangle-toolbar.component';
-import { SprayToolbarComponent } from '../toolbar/spray-toolbar/spray-toolbar.component';
 import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 
@@ -62,22 +56,8 @@ describe('EditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SharedModule],
-      declarations: [
-        EditorComponent,
-        DrawingSurfaceComponent,
-        ToolbarComponent,
-        PenToolbarComponent,
-        RectangleToolbarComponent,
-        BrushToolbarComponent,
-        LineToolbarComponent,
-        EllipseToolbarComponent,
-        CreateDrawingModalComponent,
-        UserGuideModalComponent,
-        PolygonToolbarComponent,
-        SprayToolbarComponent,
-        EraserToolbarComponent,
-      ],
+      imports: [RouterTestingModule, SharedModule, ToolbarModule],
+      declarations: [DrawingSurfaceComponent, UserGuideModalComponent, EditorComponent, GridComponent, CreateDrawingModalComponent],
       providers: [
         EditorService,
         {
