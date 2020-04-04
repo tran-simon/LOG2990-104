@@ -9,7 +9,7 @@ import { APIService } from '@services/api.service';
 import { GalleryModule } from '../gallery.module';
 import { GalleryModalComponent } from './gallery-modal.component';
 
-fdescribe('Gallery Modal Component', () => {
+describe('Gallery Modal Component', () => {
   const dialogRefCloseSpy = jasmine.createSpy('close');
   const routerSpy = jasmine.createSpyObj('Router', {
     navigate: new Promise<boolean>(() => {
