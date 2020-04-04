@@ -116,7 +116,7 @@ export class SelectionTool extends SimpleSelectionTool {
       if (this.isActive) {
         this.isActive = false;
         if (this.moveSelectionMode) {
-          this.moveSelectionMode = false; // todo - move?
+          this.moveSelectionMode = false;
           this.endMove();
         }
         this.applyBoundingBox();
@@ -163,7 +163,7 @@ export class SelectionTool extends SimpleSelectionTool {
         keyMoveDelta = Coordinate.add(keyMoveDelta, this.calculateKeyboardMove(this.keyPresses));
         this.move(keyMoveDelta);
       }, SelectionMove.KEYBOARD_INTERVAL);
-    }, SelectionMove.KEYBOARD_TIMEOUT);
+    }, SelectionMove.KEYBOARD_TIMEOUT - SelectionMove.KEYBOARD_INTERVAL);
   }
 
   private endKeyboardMove(): void {
