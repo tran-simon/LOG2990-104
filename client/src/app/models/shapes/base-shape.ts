@@ -5,6 +5,7 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 export abstract class BaseShape {
   static readonly CSS_NONE: string = 'none';
   readonly svgNode: SVGElement;
+  id: number;
   private _offset: Coordinate;
 
   thickness: number;

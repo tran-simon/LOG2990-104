@@ -42,6 +42,7 @@ export class DrawingSurfaceComponent {
     };
 
     shape.svgNode.id = DrawingSurfaceComponent.SHAPE_ID_PREFIX + DrawingSurfaceComponent.SHAPE_ID++;
+    shape.id = DrawingSurfaceComponent.SHAPE_ID;
     this.svg.appendChild(shape.svgNode);
   }
 

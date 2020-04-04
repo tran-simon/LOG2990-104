@@ -122,6 +122,14 @@ export class EditorService {
     }
   }
 
+  findShapeById(id: string): BaseShape | undefined {
+    const matchingShapes = this.shapes.filter((shape) => shape.svgNode.id === id);
+    if (matchingShapes.length > 1) {
+      throw new Error('Shape Id collision error');
+    }
+    return matchingShapes.length ? matchingShapes[0] : undefined;
+  }
+
   async viewToCanvas(): Promise<CanvasRenderingContext2D> {
     return ImageExportService.viewToCanvas(this.view);
   }
