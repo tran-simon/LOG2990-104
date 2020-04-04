@@ -47,4 +47,18 @@ describe('CommandReceiver', () => {
     expect(commandReceiver['_commands'].length).toEqual(1);
     expect(executeSpy).toHaveBeenCalledTimes(2);
   });
+
+  it('canUndo if as commands', () => {
+    const command = new MockCommand();
+    expect(commandReceiver.canUndo).toEqual(false);
+    commandReceiver.add(command);
+    expect(commandReceiver.canUndo).toEqual(true);
+  });
+
+  it('canRedo if as reverted commands', () => {
+    const revertedCommand = new MockCommand();
+    expect(commandReceiver.canRedo).toEqual(false);
+    commandReceiver['_revertedCommands'].push(revertedCommand);
+    expect(commandReceiver.canRedo).toEqual(true);
+  });
 });
