@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material';
 
 import { UndoRedoComponent } from './undo-redo.component';
 
@@ -8,6 +9,7 @@ describe('UndoRedoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatIconModule],
       declarations: [UndoRedoComponent],
     }).compileComponents();
   }));
