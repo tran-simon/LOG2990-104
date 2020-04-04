@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { APIService } from '@services/api.service';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
@@ -32,12 +33,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
+  drawingId: string;
   modalTypes: typeof ModalType;
 
   constructor(
     private router: ActivatedRoute,
     public editorService: EditorService,
     private dialog: ModalDialogService,
+    private apiService: APIService,
     private keyboardListener: KeyboardListenerService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
@@ -171,11 +174,17 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
       this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
       this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
+      this.drawingId = params.id;
     });
   }
 
   ngAfterViewInit(): void {
     this.editorService.view = this.drawingSurface;
+    if (this.drawingId) {
+      this.apiService.getDrawingById(this.drawingId).then((drawing) => {
+        this.editorService.view.svg.innerHTML = drawing.data;
+      });
+    }
   }
 
   handleMouseEvent(e: MouseEvent): void {

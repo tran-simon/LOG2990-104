@@ -23,7 +23,7 @@ export class APIService {
       const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE;
 
       const reqHeaders = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-      this.http.post(url, JSON.stringify(drawing), { responseType: 'text', headers: reqHeaders }).subscribe(() => {
+      this.http.post(url, drawing, { responseType: 'text', headers: reqHeaders }).subscribe(() => {
         resolve();
       });
     });
@@ -35,6 +35,15 @@ export class APIService {
 
       this.http.get<Drawing[]>(url).subscribe((drawings: Drawing[]) => {
         resolve(drawings);
+      });
+    });
+  }
+
+  async getDrawingById(id: string): Promise<Drawing> {
+    return new Promise<Drawing>((resolve) => {
+      const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE + '/' + id;
+      this.http.get<Drawing>(url).subscribe((drawing: Drawing) => {
+        resolve(drawing);
       });
     });
   }
