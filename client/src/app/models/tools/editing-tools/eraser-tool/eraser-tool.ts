@@ -57,7 +57,9 @@ export class EraserTool extends Tool {
     this.clonedView = newClonedView;
 
     ImageExportService.viewToCanvas(this.editorService.view, this.clonedView).then((ctx) => {
-      ctx.imageSmoothingEnabled = false;
+      if (ctx) {
+        ctx.imageSmoothingEnabled = false;
+      }
       this.ctx = ctx;
       if (!this.editorService.view.svg.contains(this.eraserView.svgNode)) {
         this.initEraserView();

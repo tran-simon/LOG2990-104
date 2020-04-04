@@ -192,7 +192,12 @@ describe('EraserTool', () => {
   });
 
   it('creates a copy of the view with assigned colors on init', () => {
-    const viewToCanvasSpy = spyOn(ImageExportService, 'viewToCanvas');
+    const viewToCanvasSpy = spyOn(ImageExportService, 'viewToCanvas').and.returnValue(
+      new Promise<CanvasRenderingContext2D>((resolve) => {
+        resolve();
+        return;
+      }),
+    );
     const sanitizeSpy = spyOn(EraserUtils, 'sanitizeAndAssignColorToSvgNode');
 
     const rect = new Rectangle();
