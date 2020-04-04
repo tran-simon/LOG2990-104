@@ -54,16 +54,6 @@ describe('PolygonTool', () => {
     expect(polygonTool['forceEqualDimensions']).toEqual(true);
   });
 
-  it('can resize and reposition Polygon', () => {
-    // todo - rework when tool is refactored
-    /*polygonTool['_mousePosition'] = new Coordinate(100, 100);
-    polygonTool['shape'] = polygonTool.createShape();
-    polygonTool.resizeShape(new Coordinate(75, 50), new Coordinate(125, 125));
-    expect(polygonTool.shape.origin).toEqual(new Coordinate(125, 125));
-    expect(polygonTool.shape.width).toEqual(75);
-    expect(polygonTool.shape.height).toEqual(50);*/
-  });
-
   it('can draw Polygon contour and fill', () => {
     polygonTool['_mousePosition'] = new Coordinate(50, 100);
     properties.contourType.value = ContourType.FILLED_CONTOUR;
