@@ -1,4 +1,5 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
+import { Rectangle } from '@models/shapes/rectangle';
 import { Coordinate } from '../../utils/math/coordinate';
 import { CompositeParticle } from './composite-particle';
 
@@ -27,5 +28,29 @@ describe('CompositeParticle', () => {
   });
   it('should init with origin at 0,0', () => {
     expect(compositeParticle.origin).toEqual(new Coordinate());
+  });
+  it('should set origin relative to relative origin', () => {
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(5, 5), 1, 1));
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(10, 10), 1, 1));
+    compositeParticle.origin = new Coordinate(5, 5);
+    expect(compositeParticle.origin).toEqual(new Coordinate(5, 5));
+  });
+  it('should init with no offset', () => {
+    expect(compositeParticle.offset).toEqual(compositeParticle.origin);
+  });
+  it('should have width determined by extremes of x', () => {
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(), 1, 1));
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(10, 10), 1, 1));
+    expect(compositeParticle.width).toEqual(11);
+  });
+  it('should have height determined by extremes of y', () => {
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(), 1, 1));
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(10, 10), 1, 1));
+    expect(compositeParticle.height).toEqual(11);
+  });
+  it('should have relative origin to min particle', () => {
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(), 1, 1));
+    compositeParticle['particles'].push(new Rectangle(new Coordinate(10, 10), 1, 1));
+    expect(compositeParticle['relativeOrigin']).toEqual(new Coordinate());
   });
 });

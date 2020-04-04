@@ -22,7 +22,6 @@ export class CompositeParticle extends BaseShape {
   }
 
   private get relativeOrigin(): Coordinate {
-    // todo - optimize by resetting to zero and/or storing begin/end
     return this.particles.length > 0 ? Coordinate.minArrayXYCoord(this.particles.map((shape) => shape.origin)) : new Coordinate();
   }
 
