@@ -6,11 +6,13 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { BaseShape } from '../../shapes/base-shape';
 import { Rectangle } from '../../shapes/rectangle';
+import { SelectionMove } from './selection-move.enum';
 import { SelectionTool } from './selection-tool';
 
 /* tslint:disable:no-string-literal */
 /* tslint:disable:no-magic-numbers */
 /* tslint:disable:no-any */
+/* tslint:disable:max-file-line-count */
 
 const mouseDown = (c: Coordinate = new Coordinate(), rightClick: boolean = false): MouseEvent => {
   return {
@@ -106,6 +108,81 @@ describe('SelectionTool', () => {
     tool.handleMouseEvent(mouseUp());
     expect(applySpy).toHaveBeenCalled();
     expect(tool['isActive']).toBeFalsy();
+  });
+
+  it('can calculate keyboard move', () => {
+    const up = [true, false, false, false];
+    const upRight = [true, true, false, false];
+    const upRightDown = [true, true, true, false];
+    const upRightDownLeft = [true, true, true, true];
+    const dist = SelectionMove.KEYBOARD_MOVE_DISTANCE;
+
+    expect(tool['calculateKeyboardMove'](up)).toEqual(new Coordinate(0, -dist));
+    expect(tool['calculateKeyboardMove'](upRight)).toEqual(new Coordinate(dist, -dist));
+    expect(tool['calculateKeyboardMove'](upRightDown)).toEqual(new Coordinate(dist, 0));
+    expect(tool['calculateKeyboardMove'](upRightDownLeft)).toEqual(new Coordinate(0, 0));
+  });
+
+  it('can handle keyboard move', () => {
+    const startSpy = spyOn<any>(tool, 'startKeyboardMove');
+    const endSpy = spyOn<any>(tool, 'endKeyboardMove');
+
+    tool['handleKeyboardMove'](0, false); // end
+    tool['handleKeyboardMove'](1, true); // start
+    tool['handleKeyboardMove'](0, true); // start
+    tool['handleKeyboardMove'](1, false); // start
+    tool['handleKeyboardMove'](0, false); // end
+
+    expect(startSpy).toHaveBeenCalledTimes(3);
+    expect(endSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('can start keyboard move', () => {
+    jasmine.clock().install();
+    const moveSpy = spyOn<any>(tool, 'move');
+    tool['initBoundingBox']();
+    tool.editorService.selectedShapes.push(new Rectangle());
+    tool['startKeyboardMove']();
+    expect(moveSpy).toHaveBeenCalledTimes(1);
+
+    jasmine.clock().tick(SelectionMove.KEYBOARD_TIMEOUT + 5);
+    expect(moveSpy).toHaveBeenCalledTimes(2);
+    jasmine.clock().tick(SelectionMove.KEYBOARD_INTERVAL + 5);
+    expect(moveSpy).toHaveBeenCalledTimes(3);
+
+    jasmine.clock().uninstall();
+  });
+
+  it('can end keyboard move', () => {
+    const endSpy = spyOn<any>(tool, 'endMove');
+    const tSpy = spyOn(window, 'clearTimeout');
+    const iSpy = spyOn(window, 'clearInterval');
+    const timeout = 23;
+    const interval = 12;
+
+    tool['keyTimeout'] = timeout;
+    tool['keyInterval'] = interval;
+    tool['endKeyboardMove']();
+
+    expect(endSpy).toHaveBeenCalled();
+    expect(tSpy).toHaveBeenCalledWith(timeout);
+    expect(iSpy).toHaveBeenCalledWith(interval);
+    expect(tool['keyTimeout']).toEqual(0);
+    expect(tool['keyInterval']).toEqual(0);
+  });
+
+  it('can move selected shapes', () => {
+    tool['initBoundingBox']();
+    tool.editorService.selectedShapes.push(new Rectangle());
+    tool['startMove']();
+    const moveSpy = spyOn(tool['moveCommand'], 'execute');
+
+    tool['move']();
+    expect(tool['moveCommand'].delta).toEqual(Coordinate.substract(tool['mousePosition'], tool['initialMouseCoord']));
+    const c = new Coordinate(50, 75);
+    tool['move'](c);
+    expect(tool['moveCommand'].delta).toEqual(c);
+    expect(moveSpy).toHaveBeenCalledTimes(2);
   });
 
   it('can select single shape', () => {
