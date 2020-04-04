@@ -26,6 +26,7 @@ export abstract class ShapeTool extends CreatorTool {
         },
       ],
     ]);
+    this.toolProperties = new ShapeToolProperties();
   }
   protected previewArea: Rectangle;
   private forceEqualDimensions: boolean;
