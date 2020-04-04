@@ -21,6 +21,9 @@
     <div id="toolbar-secondary-color" [style.background-color]="secondaryColor.hexString"
       (click)="editColor(SelectedColorType.secondary)" [ngStyle]="{'z-index':drawer.opened && selectedColor ? 2 : 0}">
     </div>
+    <button id="toolbar-grid-button" mat-icon-button (click)="editGrid()">
+      <mat-icon>grid_on</mat-icon>
+    </button>
   </div>
   <div id="toolbar-bottom-buttons">
     <button id="help-button" mat-icon-button (click)="openGuide()">
@@ -29,15 +32,12 @@
     <button id="save-button" mat-icon-button (click)="openChooseExportSave()">
       <mat-icon>save</mat-icon>
     </button>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
   </div>
 </div>
 <mat-drawer-container>
   <mat-drawer #drawer mode="side">
     <mat-drawer-content [ngSwitch]="currentToolType">
-      <div *ngIf=!showColorPicker>
+      <div *ngIf=!toolbarType>
         <app-pen-toolbar *ngSwitchCase='ToolType.Pen' class='toolbar-tool-section'></app-pen-toolbar>
         <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
         <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>
@@ -47,7 +47,7 @@
         <app-spray-toolbar *ngSwitchCase='ToolType.Spray' class='toolbar-tool-section'></app-spray-toolbar>
         <app-eraser-toolbar *ngSwitchCase='ToolType.Eraser' class='toolbar-tool-section'></app-eraser-toolbar>
       </div>
-      <div *ngIf=showColorPicker [ngSwitch]="SelectedColorType" class="toolbar-tool-section">
+      <div *ngIf='toolbarType === ToolbarType.colorPicker' [ngSwitch]="SelectedColorType" class="toolbar-tool-section">
         <h3 class="toolbar-option-section">Options du color picker</h3>
         <label *ngSwitchCase="SelectedColorType.primary">Couleur primaire</label>
         <label *ngSwitchCase="SelectedColorType.secondary">Couleur secondaire</label>
@@ -56,6 +56,9 @@
         <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme
           couleur de fond
         </button>
+      </div>
+      <div *ngIf='toolbarType === ToolbarType.grid'>
+        <app-grid-toolbar class='toolbar-tool-section'></app-grid-toolbar>
       </div>
     </mat-drawer-content>
   </mat-drawer>
