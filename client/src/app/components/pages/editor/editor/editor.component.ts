@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { APIService } from '@services/api.service';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
-import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
