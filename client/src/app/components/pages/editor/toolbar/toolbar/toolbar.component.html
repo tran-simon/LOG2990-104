@@ -12,6 +12,7 @@
     </div>
   </div>
   <div id="toolbar-middle-buttons">
+
     <button id="swap-button" mat-icon-button (click)="editorService.colorsService.swapColors()">
       <mat-icon>swap_horiz</mat-icon>
     </button>
@@ -24,8 +25,10 @@
     <button id="toolbar-grid-button" mat-icon-button (click)="editGrid()">
       <mat-icon>grid_on</mat-icon>
     </button>
+
   </div>
   <div id="toolbar-bottom-buttons">
+    <app-undo-redo></app-undo-redo>
     <button id="help-button" mat-icon-button (click)="openGuide()">
       <mat-icon>help</mat-icon>
     </button>
