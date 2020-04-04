@@ -1,10 +1,9 @@
 /* tslint:disable:no-string-literal */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import createSpy = jasmine.createSpy;
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { EditorModule } from '../../editor/editor.module';
@@ -12,6 +11,7 @@ import { EditorComponent } from '../../editor/editor/editor.component';
 import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
 import { ExportModalComponent } from './export-modal.component';
+import createSpy = jasmine.createSpy;
 
 describe('ExportModalComponent', () => {
   let component: ExportModalComponent;
