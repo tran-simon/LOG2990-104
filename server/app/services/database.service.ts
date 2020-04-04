@@ -121,7 +121,15 @@ export class DatabaseService {
 
   async addDrawing(body: Drawing): Promise<DrawingResponse<Drawing>> {
     return new Promise<DrawingResponse<Drawing>>((resolve) => {
-      const drawing = { name: body.name, tags: body.tags, data: JSON.stringify(body.data), previewURL: body.previewURL } as Drawing;
+      const drawing = {
+        name: body.name,
+        tags: body.tags,
+        data: body.data,
+        color: body.color,
+        width: body.width,
+        height: body.height,
+        previewURL: body.previewURL
+      } as Drawing;
       const model = new drawingModel(drawing);
       model.save((err: mongoose.Error, doc: Drawing) => {
         const status = err ? httpStatus.INTERNAL_SERVER_ERROR : httpStatus.OK;

@@ -15,6 +15,7 @@ import {
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -50,6 +51,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     MatSidenavModule,
     MatExpansionModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
     MatListModule,
     HttpClientModule,
     MatSelectModule,
@@ -96,6 +98,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     AlphaComponent,
     MatExpansionModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
     MatListModule,
     MatSelectModule,
     NumericPropertyInputComponent,

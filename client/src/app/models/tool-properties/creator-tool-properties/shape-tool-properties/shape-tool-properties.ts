@@ -2,7 +2,7 @@ import { EnumProperty } from '@tool-properties/props/enum-property/enum-property
 import { ContourType } from 'src/app/models/tool-properties/creator-tool-properties/contour-type.enum';
 import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-tool-properties/creator-tool-properties';
 
-export abstract class ShapeToolProperties extends CreatorToolProperties {
+export class ShapeToolProperties extends CreatorToolProperties {
   static readonly MIN_THICKNESS: number = 1;
   static readonly MAX_THICKNESS: number = 10;
 

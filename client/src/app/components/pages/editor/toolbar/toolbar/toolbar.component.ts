@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
+import { ToolbarType } from '@components/pages/editor/toolbar/toolbar/toolbar-type.enum';
 
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
@@ -14,7 +15,7 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent {
-  static readonly SLIDER_STEP: number = 0.1;// todo
+  static readonly SLIDER_STEP: number = 0.1; // todo
 
   @Input() stepThickness: number;
 
@@ -31,7 +32,8 @@ export class ToolbarComponent {
   SelectedColorType: typeof SelectedColorType = SelectedColorType;
   selectedColor: SelectedColorType;
 
-  showColorPicker: boolean;
+  ToolbarType: typeof ToolbarType = ToolbarType;
+  toolbarType: ToolbarType;
 
   @ViewChild('drawer', { static: false })
   private readonly drawer: MatDrawer;
@@ -44,10 +46,10 @@ export class ToolbarComponent {
   constructor(private router: Router, public editorService: EditorService) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
     this.editorBackgroundChanged = new EventEmitter<Color>();
-    this.showColorPicker = false;
     this.selectedColor = SelectedColorType.primary;
     this.guideButtonClicked = new EventEmitter<boolean>();
     this.chooseExportSaveButtonClicked = new EventEmitter<boolean>();
+    this.toolbarType = ToolbarType.other;
 
     this.toolbarIcons = new Map<ToolType | string, string>([
       [ToolType.Pen, 'edit'],
@@ -77,7 +79,7 @@ export class ToolbarComponent {
 
   handleColorChanged(eventColor: Color): void {
     this.color = eventColor;
-    this.showColorPicker = false;
+    this.toolbarType = ToolbarType.other;
     this.close();
   }
 
@@ -93,15 +95,20 @@ export class ToolbarComponent {
     const type = selection as ToolType;
     if (type) {
       this.currentToolType = type;
-      this.showColorPicker = false;
+      this.toolbarType = ToolbarType.other;
       this.currentToolTypeChange.emit(type);
     }
   }
 
   editColor(selectedColorType: SelectedColorType): void {
-    this.showColorPicker = true;
+    this.toolbarType = ToolbarType.colorPicker;
     this.open();
     this.selectedColor = selectedColorType;
+  }
+
+  editGrid(): void {
+    this.toolbarType = ToolbarType.grid;
+    this.open();
   }
 
   navigate(path: string): void {

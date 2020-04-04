@@ -1,7 +1,8 @@
-/* tslint:disable: no-magic-numbers */
+/* tslint:disable: no-magic-numbers no-string-literal no-any*/
+import { Coordinate } from 'src/app/utils/math/coordinate';
 import { Polygon } from './polygon';
 
-describe('Polygon', () => {
+fdescribe('Polygon', () => {
   let polygon: Polygon;
   beforeEach(() => {
     polygon = new Polygon();
@@ -30,18 +31,43 @@ describe('Polygon', () => {
     expect(polygon.interiorAngle !== initialAngle).toBe(true);
     expect(polygon.interiorAngle).toBe(Math.PI / 3);
   });
-  it('should have positive height value on negative input', () => {
-    polygon.height = -1;
-    expect(polygon.height).toBe(1);
+  it('should give a height of 0', () => {
+    expect(polygon.height).toEqual(0);
   });
-  it('should have positive width value on negative input', () => {
-    polygon.width = -1;
-    expect(polygon.width).toBe(1);
+  it('should give a height of 0', () => {
+    expect(polygon.height).toEqual(0);
   });
-  it('Should have is center at half width and half height', () => {
-    polygon.width = 1;
-    polygon.height = 1;
-    expect(polygon.center.x).toBe(0.5);
-    expect(polygon.center.y).toBe(0.5);
+  it('should have a height of 50 or width of 50', () => {
+    const spy = spyOn<any>(polygon, 'applyPoints').and.callThrough();
+    polygon.updatePoints(new Coordinate(50, 50), new Coordinate());
+    expect([Math.round(polygon.height), Math.round(polygon.width)]).toContain(50);
+    expect(spy).toHaveBeenCalledWith(Coordinate.abs(new Coordinate(50, 50)));
+  });
+  it('should set attribute points', () => {
+    polygon['points'].push(new Coordinate(50, 50));
+    polygon.drawPoints();
+    expect(polygon.svgNode.getAttribute('points')).toEqual('50,50 ');
+  });
+  it('Should be the right origin', () => {
+    polygon['points'].push(new Coordinate(50, 50));
+    polygon['points'].push(new Coordinate(20, 10));
+    polygon['points'].push(new Coordinate(10, 30));
+    expect(polygon.origin.x).toEqual(polygon['relativeOrigin'].x + polygon.offset.x);
+    expect(polygon.origin.y).toEqual(polygon['relativeOrigin'].y + polygon.offset.y);
+  });
+  it('should reset origin because x dimension is negative', () => {
+    polygon.updatePoints(new Coordinate(-50, 50), new Coordinate());
+    expect(Math.round(polygon.origin.x)).toEqual(Math.round(polygon.origin.x + Coordinate.abs(new Coordinate(-50, 50)).x - polygon.width));
+    expect(polygon.origin.y).toEqual(polygon.origin.y);
+  });
+  it('should reset origin because y dimension is negative', () => {
+    polygon.updatePoints(new Coordinate(50, -50), new Coordinate());
+    expect(Math.round(polygon.origin.y)).toEqual(Math.round(polygon.origin.y + Coordinate.abs(new Coordinate(-50, 50)).y - polygon.width));
+    expect(polygon.origin.x).toEqual(polygon.origin.x);
+  });
+  it('should return early', () => {
+    const applySpy = spyOn<any>(polygon, 'applyPoints');
+    polygon.updatePoints(new Coordinate(0, 0), new Coordinate());
+    expect(applySpy).not.toHaveBeenCalled();
   });
 });

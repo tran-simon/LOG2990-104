@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import createSpy = jasmine.createSpy;
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { EditorModule } from '../../editor/editor.module';
@@ -12,6 +11,7 @@ import { EditorComponent } from '../../editor/editor/editor.component';
 import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
 import { ExportModalComponent } from './export-modal.component';
+import createSpy = jasmine.createSpy;
 
 describe('ExportModalComponent', () => {
   let component: ExportModalComponent;
@@ -114,13 +114,6 @@ describe('ExportModalComponent', () => {
     component.changeExtension();
     expect(spySvg).not.toHaveBeenCalled();
     expect(spyImage).toHaveBeenCalled();
-  });
-  it('should close dialog because the submission is valid', () => {
-    component.selectedExtension = ExtensionType.PNG;
-    component.fileName = '';
-    spyOnProperty(component.formGroup, 'invalid').and.returnValue(true);
-    component.submit();
-    expect(dialogRefCloseSpy).not.toHaveBeenCalled();
   });
   it('should close dialog because the submission is valid', () => {
     component.selectedExtension = ExtensionType.PNG;

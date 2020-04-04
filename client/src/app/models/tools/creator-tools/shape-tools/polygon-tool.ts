@@ -28,11 +28,15 @@ export class PolygonTool extends ShapeTool {
     return new Polygon(this.initialMouseCoord, this.toolProperties.nEdges.value);
   }
 
+  updateCurrentCoord(c: Coordinate): void {
+    this.previewArea.origin = this.initialMouseCoord;
+    this.previewArea.end = c;
+    const delta = Coordinate.substract(c, this.initialMouseCoord);
+    this.resizeShape(delta, this.previewArea.origin);
+  }
+
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
-    this.shape.origin = origin;
-    this.shape.width = dimensions.x;
-    this.shape.height = dimensions.y;
-    this.shape.updatePoints();
+    this.shape.updatePoints(dimensions, origin);
     this.shape.drawPoints();
   }
 }

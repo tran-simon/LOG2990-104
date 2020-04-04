@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Drawing } from '../models/drawing';
 
 @Injectable({
@@ -19,31 +18,56 @@ export class APIService {
     APIService.API_DRAWINGS_QUERY_ROUTE = '/drawing';
   }
 
-  uploadDrawing(drawing: Drawing): void {
-    const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE;
+  async uploadDrawing(drawing: Drawing): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE;
 
-    const reqHeaders = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    this.http.post(url, JSON.stringify(drawing), { responseType: 'text', headers: reqHeaders }).subscribe();
-  }
-
-  getAllDrawings(): Observable<Drawing[]> {
-    const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE;
-
-    return this.http.get<Drawing[]>(url);
-  }
-
-  searchDrawings(name: string, tags: string): Observable<Drawing[]> {
-    let url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_QUERY_ROUTE + '?name=' + name;
-
-    tags.split(',').forEach((tag) => {
-      url += '&tag=' + tag;
+      const reqHeaders = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+      this.http.post(url, drawing, { responseType: 'text', headers: reqHeaders }).subscribe(() => {
+        resolve();
+      });
     });
-
-    return this.http.get<Drawing[]>(url);
   }
 
-  deleteDrawing(id: string): void {
-    const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE + '/' + id;
-    this.http.delete(url, { responseType: 'text' }).subscribe();
+  async getAllDrawings(): Promise<Drawing[]> {
+    return new Promise<Drawing[]>((resolve) => {
+      const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE;
+
+      this.http.get<Drawing[]>(url).subscribe((drawings: Drawing[]) => {
+        resolve(drawings);
+      });
+    });
+  }
+
+  async getDrawingById(id: string): Promise<Drawing> {
+    return new Promise<Drawing>((resolve) => {
+      const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE + '/' + id;
+      this.http.get<Drawing>(url).subscribe((drawing: Drawing) => {
+        resolve(drawing);
+      });
+    });
+  }
+
+  async searchDrawings(name: string, tags: string): Promise<Drawing[]> {
+    return new Promise<Drawing[]>((resolve) => {
+      let url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_QUERY_ROUTE + '?name=' + name;
+
+      tags.split(',').forEach((tag) => {
+        url += '&tag=' + tag;
+      });
+
+      this.http.get<Drawing[]>(url).subscribe((drawings: Drawing[]) => {
+        resolve(drawings);
+      });
+    });
+  }
+
+  async deleteDrawing(id: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const url = APIService.API_BASE_URL + APIService.API_DATABASE_ROUTE + APIService.API_DRAWINGS_ROUTE + '/' + id;
+      this.http.delete(url, { responseType: 'text' }).subscribe(() => {
+        resolve();
+      });
+    });
   }
 }
