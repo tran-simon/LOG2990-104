@@ -1,7 +1,6 @@
 import { Coordinate } from '../../utils/math/coordinate';
 import { MathUtil } from '../../utils/math/math-util';
 import { BaseShape } from './base-shape';
-import { Rectangle } from './rectangle';
 
 export class Polygon extends BaseShape {
   static readonly MIN_POLY_EDGES: number = 3;
@@ -34,7 +33,6 @@ export class Polygon extends BaseShape {
   }
 
   private get relativeOrigin(): Coordinate {
-    // todo - optimize by resetting to zero and/or storing begin/end
     return this.points.length > 0 ? Coordinate.minArrayXYCoord(this.points) : new Coordinate();
   }
 
@@ -59,36 +57,34 @@ export class Polygon extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  updatePoints(dimensions: Coordinate, delta: Coordinate, box: Rectangle): void {
-    // todo - refactor
+  private applyPoints(dimensions: Coordinate): void {
     let angle = Polygon.ORIENTATION_ANGLE;
     this.points.length = 0;
-
-    if (dimensions.x === 0 || dimensions.y === 0) {
-      return;
-    }
-
     for (let i = 0; i < this.nEdges; i++) {
       angle += this.interiorAngle;
       this.points.push(this.coordRelativeToInCircle(angle, dimensions));
     }
+  }
 
-    const ratio = Math.max(this.width / dimensions.x, this.height / dimensions.y);
-    dimensions = new Coordinate(dimensions.x / ratio, dimensions.y / ratio);
+  updatePoints(dimensions: Coordinate, origin: Coordinate): void {
+    const absDimensions = Coordinate.abs(dimensions);
+    if (dimensions.x === 0 || dimensions.y === 0) {
+      return;
+    }
+    this.applyPoints(absDimensions);
 
-    for (let i = 0; i < this.nEdges; i++) {
-      angle += this.interiorAngle;
-      this.points[i] = this.coordRelativeToInCircle(angle, dimensions);
+    const offsetRatio = Math.max(this.width / absDimensions.x, this.height / absDimensions.y);
+    if (offsetRatio !== 1) {
+      this.applyPoints(new Coordinate(absDimensions.x / offsetRatio, absDimensions.y / offsetRatio));
     }
 
-    this.origin = box.origin;
+    this.origin = origin;
 
-    if (delta.y < 0) {
-      this.origin = new Coordinate(this.origin.x, this.origin.y + box.height - this.height);
+    if (dimensions.y < 0) {
+      this.origin = new Coordinate(this.origin.x, this.origin.y + absDimensions.y - this.height);
     }
-
-    if (delta.x < 0) {
-      this.origin = new Coordinate(this.origin.x + box.width - this.width, this.origin.y);
+    if (dimensions.x < 0) {
+      this.origin = new Coordinate(this.origin.x + absDimensions.x - this.width, this.origin.y);
     }
   }
 

@@ -29,24 +29,14 @@ export class PolygonTool extends ShapeTool {
   }
 
   updateCurrentCoord(c: Coordinate): void {
-    // todo - refactor
     this.previewArea.origin = this.initialMouseCoord;
     this.previewArea.end = c;
-
-    let dimensions: Coordinate;
     const delta = Coordinate.substract(c, this.initialMouseCoord);
-
-    dimensions = new Coordinate(this.previewArea.width, this.previewArea.height);
-
-    this.shape.updatePoints(dimensions, delta, this.previewArea);
-    this.shape.drawPoints();
+    this.resizeShape(delta, this.previewArea.origin);
   }
 
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
-    // this.shape.origin = origin;
-    /*this.shape.width = dimensions.x;
-    this.shape.height = dimensions.y;*/
-    // this.shape.updatePoints(dimensions, origin, this.previewArea);
+    this.shape.updatePoints(dimensions, origin);
     this.shape.drawPoints();
   }
 }
