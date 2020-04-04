@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal*/
+/*tslint:disable:no-string-literal no-magic-numbers*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 import { By } from '@angular/platform-browser';
@@ -6,6 +6,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { RouterTestingModule } from '@angular/router/testing';
 import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
 import { ToolbarModule } from '@components/pages/editor/toolbar/toolbar.module';
+import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
 import { of } from 'rxjs';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
@@ -30,19 +31,21 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 
-export const keyDown = (key: string, shiftKey: boolean = false): KeyboardEvent => {
+export const keyDown = (key: string, shiftKey: boolean = false, ctrlKey: boolean = false): KeyboardEvent => {
   return {
     key,
     type: 'keydown',
     shiftKey,
+    ctrlKey,
   } as KeyboardEvent;
 };
 
-export const keyUp = (key: string, shiftKey: boolean = false): KeyboardEvent => {
+export const keyUp = (key: string, shiftKey: boolean = false, ctrlKey: boolean = false): KeyboardEvent => {
   return {
     key,
     type: 'keyup',
     shiftKey,
+    ctrlKey,
   } as KeyboardEvent;
 };
 
@@ -152,6 +155,48 @@ describe('EditorComponent', () => {
   it('should select the eraser tool when typing e', () => {
     keyboardListener.handle(keyDown('e'));
     expect(component.currentToolType).toEqual(ToolType.Eraser);
+  });
+
+  it('should decrement grid size when typing -', () => {
+    component.editorService.gridProperties.size.value = 20;
+    keyboardListener.handle(keyDown('-', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(15);
+  });
+
+  it('should decrement grid size and set to highest multiple of 5 when typing -', () => {
+    component.editorService.gridProperties.size.value = 21;
+    keyboardListener.handle(keyDown('-', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(20);
+    component.editorService.gridProperties.size.value = 24;
+    keyboardListener.handle(keyDown('-', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(20);
+    component.editorService.gridProperties.size.value = 25;
+    keyboardListener.handle(keyDown('-', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(20);
+  });
+
+  it('should increment grid size when typing +', () => {
+    component.editorService.gridProperties.size.value = 20;
+    keyboardListener.handle(keyDown('+', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(25);
+  });
+
+  it('should increment grid size and set to highest multiple of 5 when typing +', () => {
+    component.editorService.gridProperties.size.value = 21;
+    keyboardListener.handle(keyDown('+', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(25);
+    component.editorService.gridProperties.size.value = 24;
+    keyboardListener.handle(keyDown('+', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(25);
+    component.editorService.gridProperties.size.value = 25;
+    keyboardListener.handle(keyDown('+', false, false));
+    expect(component.editorService.gridProperties.size.value).toEqual(30);
+  });
+
+  it('should set grid visible when typing g', () => {
+    component.editorService.gridProperties.visibility.value = GridVisibility.hidden;
+    keyboardListener.handle(keyDown('g', false, false));
+    expect(component.editorService.gridProperties.visibility.value).toEqual(GridVisibility.visible);
   });
 
   it('should select the line tool', () => {
