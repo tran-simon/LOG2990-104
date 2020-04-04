@@ -15,6 +15,7 @@ export class GalleryModalComponent extends AbstractModalComponent {
   drawings: Drawing[];
   nameQuery: string;
   tagsQuery: string;
+  isLoading: boolean;
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>, private apiService: APIService, private router: Router) {
     super(dialogRef);
@@ -22,17 +23,22 @@ export class GalleryModalComponent extends AbstractModalComponent {
     this.drawings = [];
     this.nameQuery = '';
     this.tagsQuery = '';
+    this.isLoading = true;
     this.fetchDrawings();
   }
 
   updateDrawings(): void {
+    this.isLoading = true;
     this.apiService.searchDrawings(this.nameQuery, this.tagsQuery.replace(/ /g, '')).then((drawings) => {
+      this.isLoading = false;
       this.drawings = drawings;
     });
   }
 
   fetchDrawings(): void {
+    this.isLoading = true;
     this.apiService.getAllDrawings().then((drawings) => {
+      this.isLoading = false;
       this.drawings = drawings;
     });
   }
