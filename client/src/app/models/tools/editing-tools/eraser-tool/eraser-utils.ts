@@ -15,7 +15,7 @@ export class EraserUtils {
   }
 
   static indexFromColor(color: Color): number {
-    return parseInt(color.hex, 16) / this.COLOR_DELTA - 1;
+    return parseInt(color.hex, 16) / this.COLOR_DELTA;
   }
 
   static assignColorToShapeFromIndex(node: SVGElement, index: number): void {

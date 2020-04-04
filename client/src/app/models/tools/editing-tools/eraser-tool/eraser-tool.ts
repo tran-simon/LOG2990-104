@@ -21,7 +21,7 @@ export class EraserTool extends Tool {
 
   toolProperties: EraserToolProperties;
 
-  constructor(editorService: EditorService) {
+  constructor(public editorService: EditorService) {
     super(editorService);
     this.toolProperties = new EraserToolProperties();
     this.removedShapes = [];
@@ -46,6 +46,7 @@ export class EraserTool extends Tool {
       background.setAttribute('fill', Color.RED.rgbString);
     }
 
+    console.log(newClonedView.childNodes);
     newClonedView.childNodes.forEach((node: SVGElement) => {
       if (node.id.startsWith('shape-')) {
         const id = node.id.split('-')[1];
@@ -58,9 +59,6 @@ export class EraserTool extends Tool {
     ImageExportService.viewToCanvas(this.editorService.view, this.clonedView).then((ctx) => {
       ctx.imageSmoothingEnabled = false;
       this.ctx = ctx;
-      if (!ctx) {
-        throw new Error('Canvas context could not be loaded');
-      }
       if (!this.editorService.view.svg.contains(this.eraserView.svgNode)) {
         this.initEraserView();
       }
@@ -68,9 +66,6 @@ export class EraserTool extends Tool {
   }
 
   selectShapes(pos: Coordinate): void {
-    // if (!this.clonedView) {
-    //   this.init();
-    // }
     const { x, y } = pos;
     this.selectedIndexes = [];
     if (this.ctx) {
@@ -83,7 +78,7 @@ export class EraserTool extends Tool {
             continue;
           }
 
-          const index = EraserUtils.indexFromColor(color);
+          const index = EraserUtils.indexFromColor(color) - 1;
           const delta = Math.abs(index - Math.round(index));
           if (delta > EraserUtils.TOLERANCE) {
             continue;
@@ -107,19 +102,7 @@ export class EraserTool extends Tool {
         this.eraserView.updateProperties();
       }
 
-      this.selectShapes(this.eraserPosition);
-
-      this.editorService.shapes.filter((s, i) => this.selectedIndexes.indexOf(i) === -1).forEach((shape) => shape.updateProperties());
-
-      this.selectedIndexes.forEach((index) => {
-        const shape = this.editorService.findShapeById(DrawingSurfaceComponent.SHAPE_ID_PREFIX + index);
-        if (shape) {
-          EraserUtils.highlightShape(shape);
-        }
-        if (this.isActive) {
-          this.erase(shape);
-        }
-      });
+      this.updateSelection();
     };
 
     this.handleMouseUp = () => {
@@ -136,6 +119,28 @@ export class EraserTool extends Tool {
       this.handleMouseMove(e);
     };
     this.handleMouseLeave = this.handleMouseUp;
+  }
+
+  updateSelection(): void {
+    this.selectShapes(this.eraserPosition);
+
+    this.getShapesNotSelected().forEach((shape) => shape.updateProperties());
+
+    this.selectedIndexes.forEach(this.highlightShapeForId, this);
+  }
+
+  getShapesNotSelected(): BaseShape[] {
+    return this.editorService.shapes.filter((s) => this.selectedIndexes.indexOf(s.id) === -1);
+  }
+
+  highlightShapeForId(id: number): void {
+    const shape = this.editorService.findShapeById(DrawingSurfaceComponent.SHAPE_ID_PREFIX + id);
+    if (shape) {
+      EraserUtils.highlightShape(shape);
+      if (this.isActive) {
+        this.erase(shape);
+      }
+    }
   }
 
   handleUndoRedoEvent(undo: boolean): void {
