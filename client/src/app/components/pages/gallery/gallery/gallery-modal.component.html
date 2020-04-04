@@ -6,7 +6,8 @@
   </div>
   <div id="main-container" content>
     <div id="empty-content-message" *ngIf="drawings.length == 0">Aucun dessin n'a été trouvé.</div>
-    <app-gallery-drawing class="drawing-container" *ngFor="let drawing of drawings" [drawing]="drawing">
+    <app-gallery-drawing class="drawing-container" *ngFor="let drawing of drawings" [drawing]="drawing"
+      (chosen)="chooseDrawing($event)">
     </app-gallery-drawing>
   </div>
   <div actions>
