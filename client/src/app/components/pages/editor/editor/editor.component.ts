@@ -144,6 +144,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('2'),
+        () => {
+          this.currentToolType = ToolType.Ellipse;
+          return false;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('o', true),
         () => {
           this.openCreateModal();

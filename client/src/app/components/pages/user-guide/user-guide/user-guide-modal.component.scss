@@ -9,7 +9,7 @@ mat-sidenav {
  background-color: cornflowerblue;
  width: 250px;
  min-height: 90%;
- overflow: hidden;
+ overflow: scroll;
 }
 #main_content {
  margin-bottom: 75px;
@@ -30,6 +30,7 @@ mat-sidenav {
  align-items: center;
  position: fixed;
 }
+
 
 #mat-sidenav-cat > button {
  width: 100%;
@@ -81,4 +82,53 @@ mat-sidenav {
   justify-content: space-between;
   align-items: center;
   height: 400px;
+}
+#sprayContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#eraserContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#pipetteContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#selectionContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#ellipseContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 370px;
+}
+#exportationContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#saveContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#reContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+  width: 850px;
 }
