@@ -10,7 +10,7 @@ import { EditorService } from 'src/app/services/editor.service';
 import { Rectangle } from '../../shapes/rectangle';
 import { MoveShapeCommand } from './move-shape-command';
 
-fdescribe('RemoveShapesCommand', () => {
+describe('RemoveShapesCommand', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let editor: EditorComponent;
   beforeEach(async(() => {

@@ -2,7 +2,7 @@
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { Polygon } from './polygon';
 
-fdescribe('Polygon', () => {
+describe('Polygon', () => {
   let polygon: Polygon;
   beforeEach(() => {
     polygon = new Polygon();
