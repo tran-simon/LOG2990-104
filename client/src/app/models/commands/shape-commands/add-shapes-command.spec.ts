@@ -2,6 +2,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
+import { SprayToolbarComponent } from '@components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
@@ -14,7 +15,6 @@ import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolba
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { AddShapesCommand } from 'src/app/models/commands/shape-commands/add-shapes-command';
 import { EditorService } from 'src/app/services/editor.service';
-import { SprayToolbarComponent } from '../../../components/pages/editor/toolbar/spray-toolbar/spray-toolbar.component';
 import { Rectangle } from '../../shapes/rectangle';
 
 describe('AddShapesCommand', () => {

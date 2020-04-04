@@ -5,7 +5,7 @@ import { MathUtil } from 'src/app/utils/math/math-util';
 export class EraserUtils {
   static readonly COLOR_DELTA: number = 5;
   static readonly SELECTION_THICKNESS: number = 3;
-  static readonly TOLERANCE: number = 0.000001;
+  static readonly TOLERANCE: number = 0.000000001;
 
   static colorFromIndex(index: number): Color {
     /* disabling tslint because 6 is the number of 0s to append to a hex color */

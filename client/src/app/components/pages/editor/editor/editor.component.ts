@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
@@ -243,9 +242,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.currentTool.cancel();
     }
     this._currentToolType = value;
-    if (value === ToolType.Eraser) {
-      // todo
-      (this.currentTool as EraserTool).init();
+    if (this.currentTool) {
+      this.currentTool.onSelect();
     }
   }
 }
