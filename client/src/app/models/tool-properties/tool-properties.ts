@@ -1,7 +1,5 @@
-export abstract class ToolProperties {
-  toolName: string;
+import { Property, PropertyType } from '@tool-properties/props/property';
 
-  protected constructor(toolName: string) {
-    this.toolName = toolName;
-  }
+export abstract class ToolProperties {// todo: make interface? remove signature?
+  [properties: string]: Property<PropertyType>;
 }

@@ -1,33 +1,71 @@
-import { ShapeProperties } from 'src/app/models/shape-properties';
+import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
+import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
-  protected _origin: Coordinate;
-  protected _svgNode: SVGElement;
+  static readonly CSS_NONE: string = 'none';
+  readonly svgNode: SVGElement;
+  id: number;
+  private _offset: Coordinate;
 
-  properties: ShapeProperties;
-
-  get svgNode(): SVGElement {
-    return this._svgNode;
-  }
+  thickness: number;
+  strokeWidth: number;
+  secondaryColor: Color;
+  primaryColor: Color;
+  contourType: ContourType;
 
   abstract get origin(): Coordinate;
   abstract set origin(c: Coordinate);
 
+  abstract get width(): number;
+  abstract get height(): number;
+
+  get offset(): Coordinate {
+    return this._offset;
+  }
+
+  set offset(c: Coordinate) {
+    this._offset = c;
+    this.applyTransform();
+  }
+
+  get center(): Coordinate {
+    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
+  }
+
+  set center(c: Coordinate) {
+    this.origin = new Coordinate(c.x - this.width / 2, c.y - this.height / 2);
+  }
+
+  get end(): Coordinate {
+    return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
+  }
+
   constructor(type: string) {
-    this._svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
-    this.properties = new ShapeProperties();
-    this._origin = new Coordinate();
+    this.svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
+    this._offset = new Coordinate();
+    this.thickness = 1;
+    this.strokeWidth = 1;
+    this.secondaryColor = Color.BLACK;
+    this.primaryColor = Color.WHITE;
+    this.contourType = ContourType.FILLED_CONTOUR;
 
     this.updateProperties();
   }
 
+  private applyTransform(): void {
+    this.svgNode.setAttribute('transform', 'translate(' + this.offset.x + ' ' + this.offset.y + ')');
+  }
+
   updateProperties(): void {
-    this._svgNode.style.strokeWidth = this.properties.strokeWidth.toString();
-    this._svgNode.style.strokeOpacity = this.properties.strokeOpacity.toString();
-    this._svgNode.style.stroke = this.properties.strokeColor.rgbString;
-    this._svgNode.style.fillOpacity = this.properties.fillColor.a.toString();
-    this._svgNode.style.fill = this.properties.fillColor.rgbString;
-    this._svgNode.style.visibility = this.properties.visibility;
+    const hasStroke = this.contourType !== ContourType.FILLED;
+    const hasFill = this.contourType !== ContourType.CONTOUR;
+
+    this.svgNode.style.strokeWidth = this.strokeWidth.toString();
+    this.svgNode.style.strokeOpacity = this.secondaryColor.a.toString();
+    this.svgNode.style.fillOpacity = this.primaryColor.a.toString();
+
+    this.svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.CSS_NONE;
+    this.svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.CSS_NONE;
   }
 }

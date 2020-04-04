@@ -19,7 +19,7 @@ pipelines:
                   - npm install
                   - npm run build:prod
                   - npm run lint
-                  - npm run test -- --browsers ChromeHeadlessNoSandbox
+                  - npm run coverage -- --browsers ChromeHeadlessNoSandbox
                   - popd
               artifacts:
                   - ~/client/out

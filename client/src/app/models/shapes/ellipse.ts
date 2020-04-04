@@ -2,6 +2,7 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class Ellipse extends BaseShape {
+  private _origin: Coordinate;
   private _radiusX: number;
   private _radiusY: number;
 
@@ -29,14 +30,22 @@ export class Ellipse extends BaseShape {
 
   set origin(c: Coordinate) {
     this._origin = c;
-    this.svgNode.setAttribute('cx', this._origin.x.toString());
-    this.svgNode.setAttribute('cy', this._origin.y.toString());
+    this.svgNode.setAttribute('cx', this.center.x.toString());
+    this.svgNode.setAttribute('cy', this.center.y.toString());
   }
 
-  constructor(origin = new Coordinate(), rx: number = 0, ry: number = rx) {
+  get width(): number {
+    return this.radiusX * 2;
+  }
+
+  get height(): number {
+    return this.radiusY * 2;
+  }
+
+  constructor(center: Coordinate = new Coordinate(), rx: number = 0, ry: number = rx) {
     super('ellipse');
-    this.origin = origin;
     this.radiusX = rx;
     this.radiusY = ry;
+    this.center = center;
   }
 }

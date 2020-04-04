@@ -1,0 +1,18 @@
+export enum GuideSubject {
+  Welcome,
+  Pen,
+  Brush,
+  Line,
+  Color,
+  Spray,
+  Eraser,
+  Pipette,
+  Selection,
+  Rectangle,
+  Ellipse,
+  Polygon,
+  Exportation,
+  Save,
+  Gallery,
+  Reinitialisation,
+}

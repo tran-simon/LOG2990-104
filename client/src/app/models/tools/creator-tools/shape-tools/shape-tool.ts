@@ -1,53 +1,67 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { ShapeToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/shape-tool-properties';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
+import { EditorService } from 'src/app/services/editor.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
+import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class ShapeTool extends CreatorTool {
-  protected previewArea: Rectangle;
-  private forceEqualDimensions: boolean;
-  private initialMouseCoord: Coordinate;
-
-  constructor(drawingSurface: DrawingSurfaceComponent) {
-    super(drawingSurface);
+  protected constructor(editorService: EditorService) {
+    super(editorService);
 
     this.previewArea = new Rectangle();
     this.forceEqualDimensions = false;
-
-    this.keyboardEventHandler = {
-      shift_shift: () => {
-        this.setEqualDimensions(true);
-        return false;
-      },
-      shift_up: () => {
-        this.setEqualDimensions(false);
-        return false;
-      },
-    } as KeyboardEventHandler;
+    this.keyboardListener.addEvents([
+      [
+        KeyboardListenerService.getIdentifier('Shift', false, true),
+        () => {
+          this.setEqualDimensions(true);
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('Shift', false, false, 'keyup'),
+        () => {
+          this.setEqualDimensions(false);
+        },
+      ],
+    ]);
+    this.toolProperties = new ShapeToolProperties();
   }
+  protected previewArea: Rectangle;
+  private forceEqualDimensions: boolean;
+  protected initialMouseCoord: Coordinate;
+  toolProperties: ShapeToolProperties;
 
-  abstract initShape(c: Coordinate): void;
   abstract resizeShape(origin: Coordinate, dimensions: Coordinate): void;
 
-  handleToolMouseEvent(e: MouseEvent): void {
-    // todo - make a proper mouse manager
-    const mouseCoord = new Coordinate(e.offsetX, e.offsetY);
+  protected startShape(): void {
+    this.initialMouseCoord = this.mousePosition;
+    super.startShape();
+    this.updateCurrentCoord(this.mousePosition);
+    this.previewArea.primaryColor = Color.TRANSPARENT;
+    this.previewArea.updateProperties();
+    this.editorService.addPreviewShape(this.previewArea);
+  }
 
-    if (this.isActive) {
-      if (e.type === 'mouseup') {
-        this.isActive = false;
-        this.removePreviewArea();
-      } else if (e.type === 'mousemove') {
-        this.updateCurrentCoord(mouseCoord);
+  initMouseHandler(): void {
+    this.handleMouseMove = () => {
+      if (this.isActive) {
+        this.updateCurrentCoord(this.mousePosition);
       }
-    } else if (e.type === 'mousedown') {
-      this.isActive = true;
-      this.initialMouseCoord = mouseCoord;
-      this.previewArea = new Rectangle(mouseCoord);
-      this.drawPreviewArea();
-      this.initShape(mouseCoord);
-    }
+    };
+
+    this.handleMouseDown = () => {
+      if (!this.isActive) {
+        this.startShape();
+      }
+    };
+
+    this.handleMouseUp = () => {
+      if (this.isActive) {
+        this.applyShape();
+      }
+    };
   }
 
   setEqualDimensions(value: boolean): void {
@@ -57,37 +71,42 @@ export abstract class ShapeTool extends CreatorTool {
     }
   }
 
-  drawPreviewArea(): void {
-    this.drawingSurface.svg.nativeElement.appendChild(this.previewArea.svgNode);
-  }
-
-  removePreviewArea(): void {
-    this.drawingSurface.svg.nativeElement.removeChild(this.previewArea.svgNode);
-  }
-
   updateCurrentCoord(c: Coordinate): void {
-    const delta = Coordinate.substract(c, this.initialMouseCoord);
-    const previewDimensions = Coordinate.abs(delta);
-    let dimensions = new Coordinate(previewDimensions.x, previewDimensions.y);
-    let origin = Coordinate.minXYCoord(c, this.initialMouseCoord);
+    this.previewArea.origin = this.initialMouseCoord;
+    this.previewArea.end = c;
 
-    this.previewArea.origin = origin;
-    this.previewArea.width = previewDimensions.x;
-    this.previewArea.height = previewDimensions.y;
+    let dimensions: Coordinate;
+    let origin = Coordinate.copy(this.previewArea.origin);
+    const delta = Coordinate.substract(c, this.initialMouseCoord);
 
     if (this.forceEqualDimensions) {
-      const minDimension = Math.min(dimensions.x, dimensions.y);
+      const minDimension = Math.min(this.previewArea.width, this.previewArea.height);
       dimensions = new Coordinate(minDimension, minDimension);
+    } else {
+      dimensions = new Coordinate(this.previewArea.width, this.previewArea.height);
     }
 
     if (delta.y < 0) {
-      origin = new Coordinate(origin.x, origin.y + previewDimensions.y - dimensions.y);
+      origin = new Coordinate(origin.x, origin.y + this.previewArea.height - dimensions.y);
     }
 
     if (delta.x < 0) {
-      origin = new Coordinate(origin.x + previewDimensions.x - dimensions.x, origin.y);
+      origin = new Coordinate(origin.x + this.previewArea.width - dimensions.x, origin.y);
     }
 
     this.resizeShape(dimensions, origin);
+  }
+
+  protected updateProperties(): void {
+    if (this.shape) {
+      const { contourType, strokeWidth } = this.toolProperties;
+      const { primaryColor, secondaryColor } = this.editorService.colorsService;
+
+      this.shape.contourType = contourType.value;
+      this.shape.strokeWidth = strokeWidth.value;
+      this.shape.primaryColor = primaryColor;
+      this.shape.secondaryColor = secondaryColor;
+      this.shape.updateProperties();
+    }
   }
 }

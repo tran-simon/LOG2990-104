@@ -1,14 +1,26 @@
-<div id="editor-container">
+<div id="editor-container" (mouseup)='handleMouseEvent($event)'>
   <app-toolbar #toolbar id='toolbar'
-  (toolChanged)="handleToolChanged($event)"
-  (editorBackgroundChanged)="changeBackground($event)"
-  (mouseleave)="toolbar.drawer.close()"
+    [(currentToolType)]=currentToolType
+    (editorBackgroundChanged)="changeBackground($event)"
+    (mouseleave)="setToolbarState(false)"
+    (guideButtonClicked)="openGuide()"
+    (chooseExportSaveButtonClicked)="openChooseExportSave()"
+    (mouseenter)='setToolbarState(true)'
   ></app-toolbar>
   <app-drawing-surface #drawingSurface [color]="surfaceColor" [width]="surfaceWidth" [height]="surfaceHeight"
     (dblclick)="handleMouseEvent($event)"
     (mousedown)="handleMouseEvent($event)"
+    (click)="handleMouseEvent($event)"
     (mousemove)="handleMouseEvent($event)"
-    (mouseup)="handleMouseEvent($event)"
     (mouseleave)="handleMouseEvent($event)"
-  ></app-drawing-surface>
+    (contextmenu)="handleMouseEvent($event)"
+    (shapeClicked)="shapeClicked($event)"
+    (shapeRightClicked)="shapeClicked($event, true)"
+  >
+	  <app-grid
+			  [width]=surfaceWidth
+			  [height]=surfaceHeight
+	  ></app-grid>
+  </app-drawing-surface>
 </div>
+

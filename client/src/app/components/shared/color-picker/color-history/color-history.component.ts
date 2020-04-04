@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { ColorsService } from 'src/app/services/colors.service';
+import { EditorService } from 'src/app/services/editor.service';
 import { Color } from 'src/app/utils/color/color';
 
 @Component({
@@ -8,32 +9,22 @@ import { Color } from 'src/app/utils/color/color';
   styleUrls: ['./color-history.component.scss'],
 })
 export class ColorHistoryComponent {
-  static readonly MAX_HISTORY_LENGTH = 10;
-  private static COLOR_HISTORY: Color[] = new Array<Color>(ColorHistoryComponent.MAX_HISTORY_LENGTH).fill(Color.WHITE);
-
   @Output() colorSelectedEvent: EventEmitter<Color>;
 
-  constructor(private selectedColors: SelectedColorsService) {
+  constructor(private editorService: EditorService) {
     this.colorSelectedEvent = new EventEmitter<Color>();
   }
 
-  static push(color: Color): Color | undefined {
-    return this.COLOR_HISTORY.push(color) > this.MAX_HISTORY_LENGTH ? this.COLOR_HISTORY.shift() : undefined;
-  }
-  static getColorHistory(): Color[] {
-    return this.COLOR_HISTORY;
-  }
-
   get colorHistory(): Color[] {
-    return ColorHistoryComponent.getColorHistory();
+    return ColorsService.getColorHistory();
   }
 
   onClick(color: Color): void {
-    this.selectedColors.primaryColor = color;
+    this.editorService.colorsService.primaryColor = color;
     this.colorSelectedEvent.emit(color);
   }
   onRightClick(color: Color): void {
-    this.selectedColors.secondaryColor = color;
+    this.editorService.colorsService.secondaryColor = color;
     this.colorSelectedEvent.emit(color);
   }
 }

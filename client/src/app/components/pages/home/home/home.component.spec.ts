@@ -1,59 +1,45 @@
+/* tslint:disable:no-string-literal */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
 import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { SharedModule } from '../../../shared/shared.module';
 
 import { HomeComponent } from './home.component';
 import createSpyObj = jasmine.createSpyObj;
 
-import Spy = jasmine.Spy;
-
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let dialogOpenSpy: Spy;
   const routerSpy = createSpyObj('Router', ['navigate']);
-
-  let afterClosedFunc: () => void;
-  const matDialogRefMock = {
-    close: () => {
-      afterClosedFunc();
-    },
-    afterClosed: () => {
-      return {
-        subscribe: (func: () => void) => {
-          afterClosedFunc = func;
-        },
-      };
-    },
-  } as MatDialogRef<AbstractModalComponent>;
+  const modalDialogServiceSpy = createSpyObj('ModalDialogService', ['openByName']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule],
-      declarations: [HomeComponent, CreateDrawingModalComponent],
+      declarations: [HomeComponent, CreateDrawingModalComponent, UserGuideModalComponent],
       providers: [
         {
           provide: Router,
           useValue: routerSpy,
         },
+        {
+          provide: ModalDialogService,
+          useValue: modalDialogServiceSpy,
+        },
       ],
     })
-      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [CreateDrawingModalComponent] } })
+      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [CreateDrawingModalComponent, UserGuideModalComponent] } })
       .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
-
-    dialogOpenSpy = spyOn(component.dialog, 'open').and.returnValue(matDialogRefMock);
 
     fixture.detectChanges();
   });
@@ -62,40 +48,23 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call openCreateModal on create button clicked', () => {
-    const openCreateModalSpy = spyOn(component, 'openModal');
+  it('should call openModal on create button clicked', () => {
+    const openModalSpy = spyOn(component, 'openModal');
     fixture.debugElement.nativeElement.querySelector('#btn-create').click();
-    expect(openCreateModalSpy).toHaveBeenCalled();
+    expect(openModalSpy).toHaveBeenCalled();
   });
 
-  it('should open modal when openCreateModal is called', () => {
+  it('should open modal when openModal is called', () => {
     component.openModal();
-    expect(dialogOpenSpy).toHaveBeenCalled();
+    expect(component['dialog'].openByName).toHaveBeenCalledWith(ModalType.CREATE);
   });
 
   it('should open guide modal correctly', () => {
-    component.openModal('help');
-    expect(dialogOpenSpy).toHaveBeenCalledWith(UserGuideModalComponent, {});
+    component.openModal(ModalType.GUIDE);
+    expect(component['dialog'].openByName).toHaveBeenCalledWith(ModalType.GUIDE);
   });
 
-  it('should not open modal if already opened', () => {
-    component.openModal();
-    component.openModal();
-    expect(dialogOpenSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should open second modal after first one is closed', () => {
-    component.openModal();
-    expect(component.modalIsOpened).toEqual(true);
-
-    component.dialogRef.close();
-    expect(component.modalIsOpened).toEqual(false);
-
-    component.openModal();
-    expect(dialogOpenSpy).toHaveBeenCalledTimes(2);
-  });
-
-  it('should call openCreateModal on guide button clicked', () => {
+  it('should call openModal on guide button clicked', () => {
     const openModalSpy = spyOn(component, 'openModal');
     fixture.debugElement.nativeElement.querySelector('#btn-guide').click();
     expect(openModalSpy).toHaveBeenCalledWith('help');
@@ -115,7 +84,7 @@ describe('HomeComponent', () => {
   /* keyboard shortcuts */
 
   it('should handle keyboard event', () => {
-    const keyDownSpy = spyOn(KeyboardListener, 'keyEvent');
+    const keyDownSpy = spyOn(component['keyboardListener'], 'handle');
 
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
 
@@ -123,9 +92,9 @@ describe('HomeComponent', () => {
   });
 
   it('can open modal with keyboard shortcut', () => {
-    const openCreateModalSpy = spyOn(component, 'openModal');
+    const openModalSpy = spyOn(component, 'openModal');
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'o', ctrlKey: true }));
-    expect(openCreateModalSpy).toHaveBeenCalled();
+    expect(openModalSpy).toHaveBeenCalled();
   });
 
   it('can open gallery with keyboard shortcut', () => {

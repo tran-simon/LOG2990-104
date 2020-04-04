@@ -9,7 +9,7 @@ mat-sidenav {
  background-color: cornflowerblue;
  width: 250px;
  min-height: 90%;
- overflow: hidden;
+ overflow: scroll;
 }
 #main_content {
  margin-bottom: 75px;
@@ -31,18 +31,104 @@ mat-sidenav {
  position: fixed;
 }
 
+
 #mat-sidenav-cat > button {
  width: 100%;
 }
 .btn-cat {
  width: 100%;
 }
-#buttonBack{
- width: 100%;
- background-color: cornflowerblue;
+.header {
+  font-family: lato, monospace;
+  font-size: 2.2em;
+  font-style: normal;
+  align-items: center;
+  text-align: center;
+  height: 100px;
 }
-#buttonHome{
- width: 100%;
- background-color: cornflowerblue;
+#welcomeContent{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 300px;
 }
-
+#penContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 300px;
+}
+#lineContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#brushContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#rectangleContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 370px;
+}
+#colorContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 400px;
+}
+#sprayContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#eraserContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#pipetteContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#selectionContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#ellipseContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 370px;
+}
+#exportationContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#saveContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+}
+#reContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 420px;
+  width: 850px;
+}

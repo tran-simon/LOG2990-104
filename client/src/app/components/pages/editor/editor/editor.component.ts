@@ -1,140 +1,230 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CreatorTool } from 'src/app/models/tools/creator-tools/creator-tool';
-import { LineTool } from 'src/app/models/tools/creator-tools/line-tool';
-import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
-import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool';
-import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool';
-import { SelectedColorsService } from 'src/app/services/selected-colors.service';
+import { APIService } from '@services/api.service';
+import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
+import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
+import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
+import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
+import { Tool } from 'src/app/models/tools/tool';
+import { ToolType } from 'src/app/models/tools/tool-type.enum';
+import { EditorService } from 'src/app/services/editor.service';
+import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
+import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
+import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
+import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
-import { KeyboardEventHandler } from 'src/app/utils/events/keyboard-event-handler';
-import { KeyboardListener } from 'src/app/utils/events/keyboard-listener';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
-
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
-import { ToolbarComponent } from '../toolbar/toolbar.component';
-
-export interface EditorParams {
-  width: string;
-  height: string;
-  color: string;
-}
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
+  providers: [KeyboardListenerService, MouseListenerService],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-  private readonly keyboardEventHandler: KeyboardEventHandler;
-
-  @ViewChild('toolbar', { static: false })
-  toolbar: ToolbarComponent;
-
   @ViewChild('drawingSurface', { static: false })
   drawingSurface: DrawingSurfaceComponent;
 
-  currentTool: CreatorTool;
+  @ViewChild('toolbar', { static: false }) toolbar: ToolbarComponent;
+
+  private _currentToolType: ToolType;
+
   surfaceColor: Color;
   surfaceWidth: number;
   surfaceHeight: number;
+  drawingId: string;
+  modalTypes: typeof ModalType;
 
-  constructor(private router: ActivatedRoute, private selectedColors: SelectedColorsService) {
-    this.surfaceColor = Color.WHITE;
-    this.surfaceWidth = 0;
-    this.surfaceHeight = 0;
-    this.keyboardEventHandler = {
-      l: () => {
-        this.selectLineTool(this.toolbar.lineProperties);
-        return false;
-      },
-      c: () => {
-        this.selectPenTool(this.toolbar.penProperties);
-        return false;
-      },
-      w: () => {
-        this.selectBrushTool(this.toolbar.brushProperties);
-        return false;
-      },
-      1: () => {
-        this.selectRectangleTool(this.toolbar.rectangleProperties);
-        return false; // todo - enable default behavior when typing in text field
-      },
-      def: (e) => {
-        return this.currentTool.handleKeyboardEvent(e);
-      },
-    } as KeyboardEventHandler;
+  constructor(
+    private router: ActivatedRoute,
+    public editorService: EditorService,
+    private dialog: ModalDialogService,
+    private apiService: APIService,
+    private keyboardListener: KeyboardListenerService,
+  ) {
+    this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
+    this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
+    this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
+    this.modalTypes = ModalType;
+
+    this.keyboardListener.addEvents([
+      [
+        KeyboardListenerService.getIdentifier('l'),
+        () => {
+          this.currentToolType = ToolType.Line;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('3'),
+        () => {
+          this.currentToolType = ToolType.Polygon;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('a'),
+        () => {
+          this.currentToolType = ToolType.Spray;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('c'),
+        () => {
+          this.currentToolType = ToolType.Pen;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('w'),
+        () => {
+          this.currentToolType = ToolType.Brush;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('1'),
+        () => {
+          this.currentToolType = ToolType.Rectangle;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('i'),
+        () => {
+          this.currentToolType = ToolType.Pipette;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('s'),
+        () => {
+          this.currentToolType = ToolType.Select;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('a', true),
+        () => {
+          (this.editorService.tools.get(ToolType.Select) as SelectionTool).selectAll();
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('+', false),
+        () => {
+          // todo: Test with 20, 21, 24, 25
+          const increment = GridProperties.GRID_SIZE_INCREMENT;
+          const size = this.editorService.gridProperties.size.value + increment;
+          this.editorService.gridProperties.size.value = Math.floor(size / increment) * increment;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('-', false),
+        () => {
+          // todo: Test with 20, 21, 24, 25
+          const increment = GridProperties.GRID_SIZE_INCREMENT;
+          const size = this.editorService.gridProperties.size.value - increment;
+          this.editorService.gridProperties.size.value = Math.ceil(size / increment) * increment;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('g', false),
+        () => {
+          this.editorService.gridProperties.visibility.value =
+            this.editorService.gridProperties.visibility.value === GridVisibility.visible ? GridVisibility.hidden : GridVisibility.visible;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('r'),
+        () => {
+          this.currentToolType = ToolType.ColorApplicator;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('e'),
+        () => {
+          this.currentToolType = ToolType.Eraser;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('2'),
+        () => {
+          this.currentToolType = ToolType.Ellipse;
+          return false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('o', true),
+        () => {
+          this.openCreateModal();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('z', true),
+        () => {
+          this.editorService.commandReceiver.undo();
+          if (this.currentTool) {
+            this.currentTool.handleUndoRedoEvent(true);
+          }
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('z', true, true),
+        () => {
+          this.editorService.commandReceiver.redo();
+          if (this.currentTool) {
+            this.currentTool.handleUndoRedoEvent(false);
+          }
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('e', true),
+        () => {
+          this.dialog.openByName(ModalType.EXPORT);
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('s', true),
+        () => {
+          this.dialog.openByName(ModalType.SAVE);
+          return true;
+        },
+      ],
+    ]);
+
+    this.keyboardListener.defaultEventAction = (e) => {
+      return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
+    };
+
+    this.currentToolType = ToolType.Pen;
   }
 
   ngOnInit(): void {
     this.router.params.subscribe((params) => {
-      this.surfaceWidth = params.width ? +params.width : 500;
-      this.surfaceHeight = params.height ? +params.height : 300;
-      this.surfaceColor = params.color ? Color.hex(params.color) : Color.WHITE;
+      this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
+      this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
+      this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
+      this.drawingId = params.id;
     });
   }
 
   ngAfterViewInit(): void {
-    this.selectPenTool(this.toolbar.lineProperties);
+    this.editorService.view = this.drawingSurface;
+    if (this.drawingId) {
+      this.apiService.getDrawingById(this.drawingId).then((drawing) => {
+        this.editorService.view.svg.innerHTML = drawing.data;
+      });
+    }
   }
 
   handleMouseEvent(e: MouseEvent): void {
-    this.currentTool.handleMouseEvent(e);
-  }
-
-  handleToolChanged(toolEvent: ToolProperties): void {
-    switch (toolEvent.toolName) {
-      case 'Pen':
-        this.selectPenTool(toolEvent);
-        break;
-      case 'Brush':
-        this.selectBrushTool(toolEvent);
-        break;
-      case 'Rectangle':
-        this.selectRectangleTool(toolEvent);
-        break;
-      case 'Line':
-        this.selectLineTool(toolEvent);
-        break;
+    if (this.currentTool) {
+      this.currentTool.handleMouseEvent(e);
     }
   }
-
-  selectPenTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Pen) {
-      this.toolbar.currentTool = this.toolbar.tools.Pen;
-    } else {
-      this.currentTool = new PenTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
-    }
-  }
-
-  selectBrushTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Brush) {
-      this.toolbar.currentTool = this.toolbar.tools.Brush;
-    } else {
-      this.currentTool = new BrushTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
-    }
-  }
-
-  selectRectangleTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Rectangle) {
-      this.toolbar.currentTool = this.toolbar.tools.Rectangle;
-    } else {
-      this.currentTool = new RectangleTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
-    }
-  }
-
-  selectLineTool(properties: ToolProperties): void {
-    if (this.toolbar.currentTool !== this.toolbar.tools.Line) {
-      this.toolbar.currentTool = this.toolbar.tools.Line;
-    } else {
-      this.currentTool = new LineTool(this.drawingSurface, this.selectedColors);
-      this.currentTool.toolProperties = properties;
-    }
-  }
-
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;
   }
@@ -142,11 +232,61 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    KeyboardListener.keyEvent(event, this.keyboardEventHandler);
+    if (!this.dialog.modalIsOpened) {
+      this.keyboardListener.handle(event);
+    }
   }
 
-  @HostListener('contextmenu', ['$event'])
-  onRightClick(e: MouseEvent): void {
-    e.preventDefault();
+  openGuide(): void {
+    this.dialog.openByName(ModalType.GUIDE);
+  }
+
+  openChooseExportSave(): void {
+    const confirmDialog = this.dialog.openByName(ModalType.CHOOSE_EXPORT_SAVE);
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        this.dialog.openByName(result);
+      });
+    }
+  }
+
+  openCreateModal(): void {
+    const confirmDialog = this.dialog.openByName(ModalType.CONFIRM);
+    if (confirmDialog) {
+      confirmDialog.afterClosed().subscribe((result) => {
+        if (result) {
+          this.dialog.openByName(ModalType.CREATE);
+        }
+      });
+    }
+  }
+
+  shapeClicked(shape: BaseShape, rightClick: boolean = false): void {
+    if (this.currentTool instanceof SimpleSelectionTool) {
+      (this.currentTool as SimpleSelectionTool).selectShape(shape, rightClick);
+    }
+  }
+
+  setToolbarState(opened: boolean): void {
+    opened ? this.toolbar.open() : this.toolbar.close();
+    this.keyboardListener.listening = !(opened || this.dialog.modalIsOpened);
+  }
+
+  get currentTool(): Tool | undefined {
+    return this.editorService.tools.get(this.currentToolType);
+  }
+
+  get currentToolType(): ToolType {
+    return this._currentToolType;
+  }
+
+  set currentToolType(value: ToolType) {
+    if (this.currentTool) {
+      this.currentTool.cancel();
+    }
+    this._currentToolType = value;
+    if (this.currentTool) {
+      this.currentTool.onSelect();
+    }
   }
 }

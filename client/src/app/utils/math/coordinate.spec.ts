@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 describe('Coordinate', () => {
@@ -39,6 +40,20 @@ describe('Coordinate', () => {
     const coord2: Coordinate = new Coordinate(3, 5);
     const expectedCoord: Coordinate = new Coordinate(3, -23);
     expect(Coordinate.minXYCoord(coord1, coord2)).toEqual(expectedCoord);
+  });
+  it('should return other coordinate if one is undefined on minXYCoord', () => {
+    const coord: Coordinate = new Coordinate(3, 5);
+    // @ts-ignore
+    expect(Coordinate.minXYCoord(undefined, coord)).toEqual(coord);
+    // @ts-ignore
+    expect(Coordinate.minXYCoord(coord, undefined)).toEqual(coord);
+  });
+  it('should return other coordinate if one is undefined on maxXYCoord', () => {
+    const coord: Coordinate = new Coordinate(3, 5);
+    // @ts-ignore
+    expect(Coordinate.maxXYCoord(undefined, coord)).toEqual(coord);
+    // @ts-ignore
+    expect(Coordinate.maxXYCoord(coord, undefined)).toEqual(coord);
   });
   it('Should give the minimum distance between coordinates', () => {
     const coord1: Coordinate = new Coordinate(7, -23);

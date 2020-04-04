@@ -1,29 +1,50 @@
-import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
+import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
-import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
 import { Tool } from 'src/app/models/tools/tool';
+import { EditorService } from 'src/app/services/editor.service';
 
 export abstract class CreatorTool extends Tool {
-  protected isActive: boolean;
-  protected abstract _toolProperties: ToolProperties;
+  abstract shape: BaseShape | undefined;
+  abstract createShape(): BaseShape;
 
-  abstract get shape(): BaseShape;
+  protected constructor(editorService: EditorService, isActive: boolean = false) {
+    super(editorService);
+    this.isActive = isActive;
+  }
+  protected abstract updateProperties(): void;
 
-  set toolProperties(properties: ToolProperties) {
-    this._toolProperties = properties;
+  handleMouseEvent(e: MouseEvent): boolean {
+    const result = super.handleMouseEvent(e);
+    if (this.isActive) {
+      this.updateProperties();
+    }
+    return result;
   }
 
-  protected constructor(drawingSurface: DrawingSurfaceComponent) {
-    super(drawingSurface);
+  protected startShape(): void {
+    this.isActive = true;
+    this.shape = this.createShape();
+    this.updateProperties();
+    this.addShape();
+  }
+
+  applyShape(): void {
+    this.updateProperties();
+    if (this.shape) {
+      this.editorService.commandReceiver.add(new AddShapesCommand(this.shape, this.editorService));
+    }
+    this.shape = undefined;
     this.isActive = false;
   }
 
-  drawShape(): void {
-    this.drawingSurface.svg.nativeElement.appendChild(this.shape.svgNode);
+  addShape(): void {
+    if (this.shape) {
+      this.editorService.addShapeToBuffer(this.shape);
+    }
   }
 
   cancelShape(): void {
-    this.drawingSurface.svg.nativeElement.removeChild(this.shape.svgNode);
+    this.editorService.clearShapesBuffer();
     this.isActive = false;
   }
 }

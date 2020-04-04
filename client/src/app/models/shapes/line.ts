@@ -26,18 +26,24 @@ export class Line extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return this._origin;
+    return Coordinate.minXYCoord(this.startCoord, this.endCoord);
   }
 
   set origin(c: Coordinate) {
-    this._origin = c;
+    const delta = Coordinate.substract(c, this.origin);
+    this.startCoord = Coordinate.add(this.startCoord, delta);
+    this.endCoord = Coordinate.add(this.endCoord, delta);
   }
 
-  get center(): Coordinate {
-    return new Coordinate((this._startCoord.x + this._endCoord.x) / 2, (this._startCoord.y + this._endCoord.y) / 2);
+  get width(): number {
+    return Math.abs(this.endCoord.x - this.startCoord.x);
   }
 
-  constructor(startCoord = new Coordinate(), endCoord = startCoord) {
+  get height(): number {
+    return Math.abs(this.endCoord.y - this.startCoord.y);
+  }
+
+  constructor(startCoord: Coordinate = new Coordinate(), endCoord: Coordinate = startCoord) {
     super('line');
     this.startCoord = startCoord;
     this.endCoord = endCoord;

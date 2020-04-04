@@ -1,14 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
-import { BrushGuideComponent } from 'src/app/components/pages/user-guide/brush-guide/brush-guide.component';
-import { ColorGuideComponent } from 'src/app/components/pages/user-guide/color-guide/color-guide.component';
-import { LineGuideComponent } from 'src/app/components/pages/user-guide/line-guide/line-guide.component';
-import { PenGuideComponent } from 'src/app/components/pages/user-guide/pen-guide/pen-guide.component';
-import { RectangleGuideComponent } from 'src/app/components/pages/user-guide/rectangle-guide/rectangle-guide.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 import { Router } from '@angular/router';
-import { GuideSubject, UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
-import { WelcomeComponent } from 'src/app/components/pages/user-guide/welcome/welcome.component';
+import { GuideSubject } from 'src/app/components/pages/user-guide/user-guide/guide-subject.enum';
+import { UserGuideModalComponent } from 'src/app/components/pages/user-guide/user-guide/user-guide-modal.component';
 import { SharedModule } from '../../../shared/shared.module';
 import createSpyObj = jasmine.createSpyObj;
 import createSpy = jasmine.createSpy;
@@ -22,20 +18,14 @@ describe('UserGuideComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [
-        UserGuideModalComponent,
-        WelcomeComponent,
-        PenGuideComponent,
-        LineGuideComponent,
-        BrushGuideComponent,
-        RectangleGuideComponent,
-        ColorGuideComponent,
-      ],
+      declarations: [UserGuideModalComponent],
       providers: [
         { provide: MatDialogRef, useValue: { close: dialogRefCloseSpy } },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    })
+      .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -63,6 +53,7 @@ describe('UserGuideComponent', () => {
 
   it('nextSubject should call selectSubject and openCategories', () => {
     const selectSubjectSpy = spyOn(component, 'selectSubject');
+    // tslint:disable-next-line:no-any
     const openCategoriesSpy = spyOn<any>(component, 'openCategories');
     component.nextSubject();
     expect(selectSubjectSpy).toHaveBeenCalled();
@@ -71,6 +62,7 @@ describe('UserGuideComponent', () => {
 
   it('previousSubject should call selectSubject and openCategories because the subject is not Bienvenue', () => {
     const selectSubjectSpy = spyOn(component, 'selectSubject').and.callThrough();
+    // tslint:disable-next-line:no-any
     const openCategoriesSpy = spyOn<any>(component, 'openCategories').and.callThrough();
 
     component.selectedSubject = component.subjects.Brush;

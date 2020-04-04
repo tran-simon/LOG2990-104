@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { MathUtil } from './math-util';
 
 describe('MathUtil', () => {
@@ -19,5 +20,10 @@ describe('MathUtil', () => {
   it('can fit angle smaller than 0', () => {
     expect(MathUtil.fitAngle(-100)).toBeCloseTo(260, 5);
     expect(MathUtil.fitAngle(-800)).toBeCloseTo(280, 5);
+  });
+
+  it('can get hex', () => {
+    expect(MathUtil.toHex(255)).toEqual('ff');
+    expect(MathUtil.toHex(255, 6)).toEqual('0000ff');
   });
 });

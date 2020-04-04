@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +11,7 @@ import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/
 import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
 import { HexInputComponent } from 'src/app/components/shared/inputs/hex-input/hex-input.component';
 import { NumberInputComponent } from 'src/app/components/shared/inputs/number-input/number-input.component';
+import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 
 import { ColorPickerComponent } from './color-picker.component';
@@ -215,7 +217,7 @@ describe('ColorPickerComponent', () => {
     component.color = Color.GREEN;
 
     fixture.debugElement.nativeElement.querySelector('#btn-confirm').click();
-    expect(ColorHistoryComponent.getColorHistory()[9]).toEqual(Color.GREEN);
+    expect(ColorsService.getColorHistory()[9]).toEqual(Color.GREEN);
   });
 
   it('emits colorChanged on confirm', () => {

@@ -1,0 +1,29 @@
+<app-abstract-modal>
+  <div content>
+    <img id="preview" [src]="previewURL">
+    <form [formGroup]="formGroup">
+      <app-name-input id="inputName" [formGroup]="formGroup" [(value)]="fileName" required=true>Nom du fichier
+      </app-name-input>
+      <mat-form-field [formGroup]="formGroup">
+        <mat-label>Extension</mat-label>
+        <mat-select [(value)]="selectedExtension" required=true name="extensions" (selectionChange)="changeExtension()" required=true>
+          <mat-option *ngFor="let ext of extensions" [value]="ext">
+            {{ext}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [formGroup]="formGroup">
+        <mat-label>Filtres</mat-label>
+        <mat-select [(value)]="selectedFilter" name="extensions" (selectionChange)="addFilterToPreview()">
+          <mat-option *ngFor="let filter of filters" [value]="filter">
+            {{filter}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+  <div actions>
+    <a mat-stroked-button [disabled]="!valid" id="save-button" [href]="valid ? href : ''" [download]="fullName"
+      (click)="submit()">Sauvegarder</a>
+  </div>
+</app-abstract-modal>

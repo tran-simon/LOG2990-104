@@ -1,7 +1,8 @@
+/* tslint:disable:no-magic-numbers */
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { Line } from 'src/app/models/shapes/line';
-import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
+import { Ellipse } from './ellipse';
 
 describe('CompositeLine', () => {
   let cLine: CompositeLine;
@@ -13,7 +14,7 @@ describe('CompositeLine', () => {
     cLine = new CompositeLine();
   });
   it('Should init with line with only (0, 0) coordinates', () => {
-    expect(cLine.origin).toEqual(coordZero);
+    expect(cLine.center).toEqual(coordZero);
   });
   it('Should call addPoint when confirming point', () => {
     const addPointSpy = spyOn(cLine, 'addPoint');
@@ -32,9 +33,9 @@ describe('CompositeLine', () => {
     expect(cLine.lineArray.pop()).toEqual(new Line(coord1));
     expect(cLine.svgNode.querySelector('line')).toBeTruthy();
   });
-  it('Should add junction at the end of junctionArray and add propreties to the new junction', () => {
+  it('Should add junction at the end of junctionArray', () => {
     cLine.addJunction(coord1);
-    expect(cLine.currentJunction.svgNode.style.fill).toEqual(Color.BLACK.rgbString);
+    expect(cLine.currentJunction).toEqual(new Ellipse(coord1));
     expect(cLine.svgNode.querySelector('ellipse')).toBeTruthy();
   });
   it('Should update the current line', () => {
@@ -81,8 +82,8 @@ describe('CompositeLine', () => {
     expect(removeChildSpy).toHaveBeenCalledWith(lastJunction.svgNode);
     expect(cLine.removeLastPoint).toBeTruthy();
   });
-  it('Should set origin to given cooridinate', () => {
+  it('Should set origin to given coordinate', () => {
     cLine.origin = coord2;
-    expect(cLine.lineArray[0].startCoord).toEqual(coord2);
+    expect(cLine.origin).toEqual(coord2);
   });
 });

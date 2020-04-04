@@ -1,8 +1,9 @@
+/* tslint:disable:no-magic-numbers */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomInputComponent } from 'src/app/components/shared/inputs/custom-input/custom-input.component';
+import { CustomInputComponent } from '@components/shared/inputs/custom-input/custom-input.component';
 
 import { NumberInputComponent } from './number-input.component';
 

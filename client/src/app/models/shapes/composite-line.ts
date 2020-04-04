@@ -1,11 +1,10 @@
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Ellipse } from 'src/app/models/shapes/ellipse';
 import { Line } from 'src/app/models/shapes/line';
-import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class CompositeLine extends BaseShape {
-  readonly MAX_FINAL_SNAP_DISTANCE = 3;
+  static readonly MAX_FINAL_SNAP_DISTANCE: number = 3;
 
   lineArray: Line[];
   junctionArray: Ellipse[];
@@ -18,12 +17,23 @@ export class CompositeLine extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return this.lineArray[0].startCoord;
+    return Coordinate.minArrayXYCoord(this.junctionArray.map((shape) => shape.origin));
   }
 
   set origin(c: Coordinate) {
-    this._origin = c;
-    this.lineArray[0].startCoord = c;
+    const delta = Coordinate.substract(c, this.origin);
+    const shapes: BaseShape[] = this.lineArray as BaseShape[];
+    shapes.concat(this.junctionArray as BaseShape[]).forEach((shape) => {
+      shape.origin = Coordinate.add(shape.origin, delta);
+    });
+  }
+
+  get width(): number {
+    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).x - this.origin.x;
+  }
+
+  get height(): number {
+    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y;
   }
 
   constructor(initCoord: Coordinate = new Coordinate()) {
@@ -38,19 +48,19 @@ export class CompositeLine extends BaseShape {
   updateProperties(): void {
     if (this.lineArray) {
       this.lineArray.forEach((line) => {
-        line.properties.strokeColor = this.properties.strokeColor;
-        line.properties.strokeOpacity = this.properties.strokeColor.a;
-        line.properties.strokeWidth = this.properties.strokeWidth;
+        line.secondaryColor = this.primaryColor;
+        line.strokeWidth = this.strokeWidth;
         line.updateProperties();
       });
     }
     if (this.junctionArray) {
       this.junctionArray.forEach((junction) => {
-        junction.properties.fillColor = this.properties.fillColor;
-        junction.properties.strokeOpacity = this.properties.fillColor.a;
-        junction.properties.strokeWidth = 0;
-        junction.radiusX = this.properties.thickness;
-        junction.radiusY = this.properties.thickness;
+        const center: Coordinate = Coordinate.copy(junction.center);
+        junction.primaryColor = this.secondaryColor;
+        junction.strokeWidth = 0;
+        junction.radiusX = this.thickness;
+        junction.radiusY = this.thickness;
+        junction.center = center;
         junction.updateProperties();
       });
     }
@@ -82,10 +92,11 @@ export class CompositeLine extends BaseShape {
   }
 
   endLine(c: Coordinate): void {
-    this.removeLastPoint(); // todo - add double click timeout to avoid deleting shapes
+    this.removeLastPoint();
     this.removeLastPoint();
 
-    if (Coordinate.maxXYDistance(c, this.lineArray[0].startCoord) < this.MAX_FINAL_SNAP_DISTANCE) {
+    const shouldClose = Coordinate.maxXYDistance(c, this.lineArray[0].startCoord) < CompositeLine.MAX_FINAL_SNAP_DISTANCE;
+    if (shouldClose) {
       this.updateCurrentCoord(this.lineArray[0].startCoord);
     } else {
       this.addJunction(this.currentLine.endCoord);
@@ -104,9 +115,7 @@ export class CompositeLine extends BaseShape {
   }
 
   addJunction(c: Coordinate): void {
-    const junction = new Ellipse(c, 2); // todo - use editor properties
-    junction.properties.fillColor = Color.BLACK;
-    junction.updateProperties();
+    const junction = new Ellipse(c);
 
     this.junctionArray.push(junction);
     this.svgNode.appendChild(junction.svgNode);
