@@ -62,6 +62,7 @@ export class ToolbarComponent {
       [ToolType.Spray, 'blur_on'],
       [ToolType.ColorApplicator, 'color_lens'],
       [ToolType.Select, 'near_me'],
+      [ToolType.Eraser, 'delete_outline'],
     ]);
   }
 
