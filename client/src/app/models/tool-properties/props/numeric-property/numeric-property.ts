@@ -1,7 +1,8 @@
 import { Property } from '@tool-properties/props/property';
-import { MathUtil } from '@utils/math/math-util';
+import { MathUtils } from '@utils/math/math-utils';
 
-export class NumericProperty implements Property<number> {// todo setter?
+export class NumericProperty implements Property<number> {
+  // todo setter?
   private _value: number;
   minValue: number;
   maxValue: number;
@@ -17,6 +18,6 @@ export class NumericProperty implements Property<number> {// todo setter?
   }
 
   set value(value: number) {
-    this._value = MathUtil.fit(value, this.minValue, this.maxValue);
+    this._value = MathUtils.fit(value, this.minValue, this.maxValue);
   }
 }

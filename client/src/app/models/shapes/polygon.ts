@@ -1,5 +1,5 @@
 import { Coordinate } from '@utils/math/coordinate';
-import { MathUtil } from '@utils/math/math-util';
+import { MathUtils } from '@utils/math/math-utils';
 import { BaseShape } from './base-shape';
 
 export class Polygon extends BaseShape {
@@ -20,7 +20,7 @@ export class Polygon extends BaseShape {
     return this._nEdges;
   }
   set nEdges(nEdges: number) {
-    this._nEdges = nEdges ? MathUtil.fit(nEdges, Polygon.MIN_POLY_EDGES, Polygon.MAX_POLY_EDGES) : Polygon.MIN_POLY_EDGES;
+    this._nEdges = nEdges ? MathUtils.fit(nEdges, Polygon.MIN_POLY_EDGES, Polygon.MAX_POLY_EDGES) : Polygon.MIN_POLY_EDGES;
     this._interiorAngle = (2 * Math.PI) / this.nEdges;
   }
 

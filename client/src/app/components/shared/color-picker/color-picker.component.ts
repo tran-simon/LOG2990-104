@@ -6,7 +6,7 @@ import { ColorsService } from 'src/app/services/colors.service';
 import { Color } from 'src/app/utils/color/color';
 import { ColorComponents } from 'src/app/utils/color/color-components';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { MathUtil } from 'src/app/utils/math/math-util';
+import { MathUtils } from 'src/app/utils/math/math-utils';
 
 @Component({
   selector: 'app-color-picker',
@@ -44,13 +44,13 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   calculateIndicatorPosition(): Coordinate {
-    return new Coordinate((this.color.h / MathUtil.MAX_ANGLE) * this.size, this.color.s * this.size);
+    return new Coordinate((this.color.h / MathUtils.MAX_ANGLE) * this.size, this.color.s * this.size);
   }
 
   draw(): void {
     if (this.renderingContext) {
       for (let i = 0; i < this.size; i++) {
-        const h = (i / this.size) * MathUtil.MAX_ANGLE;
+        const h = (i / this.size) * MathUtils.MAX_ANGLE;
         const gradient = this.renderingContext.createLinearGradient(0, 0, 0, this.size);
         gradient.addColorStop(0, Color.getHslString(h, 0, 1 / 2));
         gradient.addColorStop(1, Color.getHslString(h, 1, 1 / 2));
@@ -72,7 +72,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   calculateColorFromMouseEvent(event: MouseEvent): Color {
-    const h = (event.offsetX / this.size) * MathUtil.MAX_ANGLE;
+    const h = (event.offsetX / this.size) * MathUtils.MAX_ANGLE;
     const s = event.offsetY / this.size;
     return Color.hsl(h, s, this.color.l, this.color.a);
   }

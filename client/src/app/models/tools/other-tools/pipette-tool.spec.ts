@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
 import { ToolbarModule } from '@components/pages/editor/toolbar/toolbar.module';
-import { EditorUtil } from '@utils/color/editor-util';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
@@ -49,38 +49,36 @@ describe('PipetteTool', () => {
   });
 
   it('can pick primary color', (done) => {
-    spyOn(EditorUtil, 'colorAtPoint').and.returnValue(
+    spyOn(EditorUtils, 'colorAtPoint').and.returnValue(
       new Promise<Color>((resolve) => {
         resolve(Color.BLUE);
+        done();
       }),
     );
 
-    pipetteTool['pickColor'](new Coordinate(), SelectedColorType.primary).finally(() => {
-      done();
-    });
+    pipetteTool['pickColor'](new Coordinate(), SelectedColorType.primary);
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(pipetteTool['editorService']['colorsService'].primaryColor).toEqual(Color.BLUE);
-      expect(EditorUtil.colorAtPoint).toHaveBeenCalled();
+      expect(EditorUtils.colorAtPoint).toHaveBeenCalled();
     });
   });
 
   it('can pick primary color', (done) => {
-    spyOn(EditorUtil, 'colorAtPoint').and.returnValue(
+    spyOn(EditorUtils, 'colorAtPoint').and.returnValue(
       new Promise<Color>((resolve) => {
         resolve(Color.BLUE);
+        done();
       }),
     );
 
-    pipetteTool['pickColor'](new Coordinate(), SelectedColorType.secondary).finally(() => {
-      done();
-    });
+    pipetteTool['pickColor'](new Coordinate(), SelectedColorType.secondary);
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(pipetteTool['editorService']['colorsService'].secondaryColor).toEqual(Color.BLUE);
-      expect(EditorUtil.colorAtPoint).toHaveBeenCalled();
+      expect(EditorUtils.colorAtPoint).toHaveBeenCalled();
     });
   });
 });

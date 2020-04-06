@@ -3,10 +3,10 @@ import { FilterType } from '@components/pages/export-modal/filter-type.enum';
 import { Color } from '@utils/color/color';
 import { Coordinate } from '@utils/math/coordinate';
 
-export class EditorUtil {
+export class EditorUtils {
   static async colorAtPoint(view: DrawingSurfaceComponent, position: Coordinate): Promise<Color> {
-    return EditorUtil.viewToCanvas(view).then(async (ctx) => {
-      const color = EditorUtil.colorAtPointInCanvas(ctx, position);
+    return EditorUtils.viewToCanvas(view).then(async (ctx) => {
+      const color = EditorUtils.colorAtPointInCanvas(ctx, position);
       return new Promise<Color>((resolve) => {
         resolve(color);
       });

@@ -10,7 +10,7 @@ import { mouseDown, mouseMove, mouseUp } from '@tools/creator-tools/stroke-tools
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { EraserUtils } from '@tools/editing-tools/eraser-tool/eraser-utils';
 import { Color } from '@utils/color/color';
-import { EditorUtil } from '@utils/color/editor-util';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Coordinate } from '@utils/math/coordinate';
 
 describe('EraserTool', () => {
@@ -137,7 +137,7 @@ describe('EraserTool', () => {
   });
 
   it('can detect collisions', () => {
-    spyOn(EditorUtil, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtils, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
     // @ts-ignore
@@ -149,7 +149,7 @@ describe('EraserTool', () => {
   });
 
   it('does not select objects that do not collide', () => {
-    spyOn(EditorUtil, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtils, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
     spyOn(EraserUtils, 'indexFromColor').and.returnValue(1);
@@ -177,7 +177,7 @@ describe('EraserTool', () => {
   });
 
   it('does not select shape if color difference is greater than tolerance', () => {
-    spyOn(EditorUtil, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtils, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
     // @ts-ignore
@@ -191,7 +191,7 @@ describe('EraserTool', () => {
   });
 
   it('creates a copy of the view with assigned colors on init', () => {
-    const viewToCanvasSpy = spyOn(EditorUtil, 'viewToCanvas').and.returnValue(
+    const viewToCanvasSpy = spyOn(EditorUtils, 'viewToCanvas').and.returnValue(
       new Promise<CanvasRenderingContext2D>((resolve) => {
         resolve();
         return;

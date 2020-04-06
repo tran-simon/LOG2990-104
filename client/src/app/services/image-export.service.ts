@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FilterType } from '@components/pages/export-modal/filter-type.enum';
-import { EditorUtil } from '@utils/color/editor-util';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 
 @Injectable({
@@ -11,15 +11,15 @@ export class ImageExportService {
   constructor(private sanitizer: DomSanitizer) {}
 
   safeURL(surface: DrawingSurfaceComponent): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(EditorUtil.createDataURL(surface));
+    return this.sanitizer.bypassSecurityTrustResourceUrl(EditorUtils.createDataURL(surface));
   }
 
   async exportImageElement(surface: DrawingSurfaceComponent, extension: string, filter: FilterType): Promise<string> {
     return new Promise<string>((resolve) => {
       const image = new Image();
       const canvas = document.createElement('canvas');
-      EditorUtil.addFilter(surface, filter);
-      image.src = EditorUtil.createDataURL(surface);
+      EditorUtils.addFilter(surface, filter);
+      image.src = EditorUtils.createDataURL(surface);
       const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
       image.onload = (): void => {
         canvas.width = surface.width;
@@ -27,15 +27,15 @@ export class ImageExportService {
         ctx.drawImage(image, 0, 0);
         resolve(canvas.toDataURL(`image/${extension}`));
       };
-      EditorUtil.removeFilter(surface);
+      EditorUtils.removeFilter(surface);
     });
   }
 
   exportSVGElement(surface: DrawingSurfaceComponent, filter: FilterType): SafeResourceUrl {
     let dataUrl: SafeResourceUrl;
-    EditorUtil.addFilter(surface, filter);
+    EditorUtils.addFilter(surface, filter);
     dataUrl = this.safeURL(surface);
-    EditorUtil.removeFilter(surface);
+    EditorUtils.removeFilter(surface);
     return dataUrl;
   }
 }

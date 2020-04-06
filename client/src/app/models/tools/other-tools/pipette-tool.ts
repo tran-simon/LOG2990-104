@@ -1,5 +1,5 @@
 import { Color } from '@utils/color/color';
-import { EditorUtil } from '@utils/color/editor-util';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
@@ -14,7 +14,7 @@ export class PipetteTool extends Tool {
   }
 
   private pickColor(position: Coordinate, selectedColorType: SelectedColorType): void {
-    EditorUtil.colorAtPoint(this.editorService.view, position).then((color: Color) =>
+    EditorUtils.colorAtPoint(this.editorService.view, position).then((color: Color) =>
       this.editorService.colorsService.setColorByTypeAndUpdateHistory(color, selectedColorType),
     );
   }

@@ -2,13 +2,13 @@
 import createSpyObj = jasmine.createSpyObj;
 import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
 import { Color } from '@utils/color/color';
-import { EditorUtil } from '@utils/color/editor-util';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Coordinate } from '@utils/math/coordinate';
 
-describe('EditorUtil', () => {
+describe('EditorUtils', () => {
   it('can get color at a position in a canvas', () => {
     const context: CanvasRenderingContext2D = createSpyObj('canvasContext', { getImageData: { data: [100, 200, 255] } });
-    const color = EditorUtil.colorAtPointInCanvas(context, new Coordinate());
+    const color = EditorUtils.colorAtPointInCanvas(context, new Coordinate());
 
     expect(color.r255).toEqual(100);
     expect(color.g255).toEqual(200);
@@ -20,14 +20,14 @@ describe('EditorUtil', () => {
     const promise: Promise<CanvasRenderingContext2D> = new Promise<CanvasRenderingContext2D>((resolve) => {
       resolve(context);
     });
-    spyOn(EditorUtil, 'viewToCanvas').and.returnValue(promise);
-    spyOn(EditorUtil, 'colorAtPointInCanvas').and.returnValue(Color.BLUE);
+    spyOn(EditorUtils, 'viewToCanvas').and.returnValue(promise);
+    spyOn(EditorUtils, 'colorAtPointInCanvas').and.returnValue(Color.BLUE);
 
     const view = {} as DrawingSurfaceComponent;
-    EditorUtil.colorAtPoint(view, new Coordinate()).then((color) => {
+    EditorUtils.colorAtPoint(view, new Coordinate()).then((color) => {
       expect(color).toEqual(Color.BLUE);
-      expect(EditorUtil.viewToCanvas).toHaveBeenCalledWith(view);
-      expect(EditorUtil.colorAtPointInCanvas).toHaveBeenCalledWith(context, new Coordinate());
+      expect(EditorUtils.viewToCanvas).toHaveBeenCalledWith(view);
+      expect(EditorUtils.colorAtPointInCanvas).toHaveBeenCalledWith(context, new Coordinate());
       done();
     });
   });
