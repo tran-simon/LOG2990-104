@@ -1,5 +1,5 @@
-import { Coordinate } from '../../utils/math/coordinate';
-import { MathUtil } from '../../utils/math/math-util';
+import { Coordinate } from '@utils/math/coordinate';
+import { MathUtil } from '@utils/math/math-util';
 import { BaseShape } from './base-shape';
 
 export class Polygon extends BaseShape {
@@ -8,7 +8,7 @@ export class Polygon extends BaseShape {
   // tslint:disable-next-line:no-magic-numbers
   static readonly ORIENTATION_ANGLE: number = (3 * Math.PI) / 2;
 
-  private points: Coordinate[];
+  private readonly points: Coordinate[];
   private _interiorAngle: number;
 
   get interiorAngle(): number {
@@ -50,7 +50,7 @@ export class Polygon extends BaseShape {
     this.nEdges = nEdges;
   }
 
-  private coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
+  private static coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
     const minDimension = Math.min(dimensions.x, dimensions.y);
     const x = minDimension / 2 + (minDimension / 2) * Math.cos(angle);
     const y = minDimension / 2 + (minDimension / 2) * Math.sin(angle);
@@ -62,7 +62,7 @@ export class Polygon extends BaseShape {
     this.points.length = 0;
     for (let i = 0; i < this.nEdges; i++) {
       angle += this.interiorAngle;
-      this.points.push(this.coordRelativeToInCircle(angle, dimensions));
+      this.points.push(Polygon.coordRelativeToInCircle(angle, dimensions));
     }
   }
 

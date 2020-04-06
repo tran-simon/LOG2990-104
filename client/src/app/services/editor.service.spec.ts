@@ -1,14 +1,14 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { TestBed } from '@angular/core/testing';
 import { BaseShape } from '@models/shapes/base-shape';
+import { Ellipse } from '@models/shapes/ellipse';
+import { Line } from '@models/shapes/line';
 import { Polygon } from '@models/shapes/polygon';
+import { Rectangle } from '@models/shapes/rectangle';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
-import { Ellipse } from '../models/shapes/ellipse';
-import { Line } from '../models/shapes/line';
-import { Rectangle } from '../models/shapes/rectangle';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
 import createSpyObj = jasmine.createSpyObj;
@@ -67,7 +67,7 @@ describe('EditorService', () => {
 
   it('can add multiple shapes', () => {
     const addedShapes: BaseShape[] = [];
-    const addShapeSpy = spyOn(service, 'addShapeToBuffer').and.callFake((shape)=> {
+    const addShapeSpy = spyOn(service, 'addShapeToBuffer').and.callFake((shape) => {
       addedShapes.push(shape);
     });
     const shapes = [new Rectangle(), new CompositeLine()];
@@ -78,9 +78,9 @@ describe('EditorService', () => {
 
   it('can remove multiple shapes', () => {
     const removedShapes: BaseShape[] = [];
-    const removeShapeSpy = spyOn(service, 'removeShape').and.callFake((shape)=> {
-    removedShapes.push(shape);
-  });
+    const removeShapeSpy = spyOn(service, 'removeShape').and.callFake((shape) => {
+      removedShapes.push(shape);
+    });
     const shapes = [new Rectangle(), new CompositeLine()];
     service.removeShapes(shapes);
     expect(removeShapeSpy).toHaveBeenCalledTimes(2);
@@ -144,5 +144,24 @@ describe('EditorService', () => {
   it('can clear selection', () => {
     service.clearSelection();
     expect(service.selectedShapes).toEqual([]);
+  });
+
+  it('can find shape by id', () => {
+    const rect = new Rectangle();
+    rect.svgNode.id = 'ID';
+    service['shapes'].push(rect);
+    expect(service.findShapeById('ID')).toEqual(rect);
+    expect(service.findShapeById('invalid')).toEqual(undefined);
+  });
+
+  it('throws an error if findShapeById finds multiple shapes with the same id', () => {
+    const ellipse = new Ellipse();
+    ellipse.svgNode.id = 'ID';
+    const rect = new Rectangle();
+    rect.svgNode.id = 'ID';
+    service['shapes'].push(rect);
+    service['shapes'].push(ellipse);
+
+    expect(() => service.findShapeById('ID')).toThrowError('Shape Id collision error');
   });
 });

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CommandReceiver } from '@models/commands/command-receiver';
-import { ImageExportService } from '@services/image-export.service';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
+import { ColorFillTool } from '@tools/editing-tools/color-fill-tool/color-fill-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { SelectionTool } from '@tools/editing-tools/selection-tool';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -23,16 +23,6 @@ import { ColorsService } from 'src/app/services/colors.service';
   providedIn: 'root',
 })
 export class EditorService {
-  readonly tools: Map<ToolType, Tool>;
-  readonly selectedShapes: BaseShape[];
-  readonly shapes: BaseShape[];
-  private shapesBuffer: BaseShape[];
-  private previewShapes: BaseShape[];
-  private readonly _commandReceiver: CommandReceiver;
-
-  readonly gridProperties: GridProperties;
-  view: DrawingSurfaceComponent;
-
   get commandReceiver(): CommandReceiver {
     return this._commandReceiver;
   }
@@ -49,6 +39,15 @@ export class EditorService {
     this.selectedShapes = new Array<BaseShape>();
     this.gridProperties = new GridProperties();
   }
+  readonly tools: Map<ToolType, Tool>;
+  readonly selectedShapes: BaseShape[];
+  readonly shapes: BaseShape[];
+  private shapesBuffer: BaseShape[];
+  private previewShapes: BaseShape[];
+  private readonly _commandReceiver: CommandReceiver;
+
+  readonly gridProperties: GridProperties;
+  view: DrawingSurfaceComponent;
 
   private initTools(): void {
     this.tools.set(ToolType.Pen, new PenTool(this));
@@ -62,6 +61,7 @@ export class EditorService {
     this.tools.set(ToolType.Spray, new SprayTool(this));
     this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
     this.tools.set(ToolType.Eraser, new EraserTool(this));
+    this.tools.set(ToolType.ColorFill, new ColorFillTool(this));
   }
 
   applyShapesBuffer(): void {
@@ -128,9 +128,5 @@ export class EditorService {
       throw new Error('Shape Id collision error');
     }
     return matchingShapes.length ? matchingShapes[0] : undefined;
-  }
-
-  async viewToCanvas(): Promise<CanvasRenderingContext2D> {
-    return ImageExportService.viewToCanvas(this.view);
   }
 }

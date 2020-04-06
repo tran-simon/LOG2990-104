@@ -61,6 +61,7 @@ export class ToolbarComponent {
       [ToolType.Polygon, 'category'],
       [ToolType.Spray, 'blur_on'],
       [ToolType.ColorApplicator, 'color_lens'],
+      [ToolType.ColorFill, 'format_paint'],
       [ToolType.Select, 'near_me'],
       [ToolType.Eraser, 'delete_outline'],
     ]);

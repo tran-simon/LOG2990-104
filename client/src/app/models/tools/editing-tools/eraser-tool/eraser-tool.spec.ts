@@ -5,13 +5,12 @@ import { SharedModule } from '@components/shared/shared.module';
 import { Ellipse } from '@models/shapes/ellipse';
 import { Rectangle } from '@models/shapes/rectangle';
 import { EditorService } from '@services/editor.service';
-import { ImageExportService } from '@services/image-export.service';
 import { NumericProperty } from '@tool-properties/props/numeric-property/numeric-property';
 import { mouseDown, mouseMove, mouseUp } from '@tools/creator-tools/stroke-tools/stroke-tool.spec';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { EraserUtils } from '@tools/editing-tools/eraser-tool/eraser-utils';
-import { PipetteTool } from '@tools/other-tools/pipette-tool';
 import { Color } from '@utils/color/color';
+import { EditorUtil } from '@utils/color/editor-util';
 import { Coordinate } from '@utils/math/coordinate';
 
 describe('EraserTool', () => {
@@ -138,7 +137,7 @@ describe('EraserTool', () => {
   });
 
   it('can detect collisions', () => {
-    spyOn(PipetteTool, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtil, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
     // @ts-ignore
@@ -150,7 +149,7 @@ describe('EraserTool', () => {
   });
 
   it('does not select objects that do not collide', () => {
-    spyOn(PipetteTool, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtil, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
     spyOn(EraserUtils, 'indexFromColor').and.returnValue(1);
@@ -178,7 +177,7 @@ describe('EraserTool', () => {
   });
 
   it('does not select shape if color difference is greater than tolerance', () => {
-    spyOn(PipetteTool, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtil, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
     // @ts-ignore
@@ -192,7 +191,7 @@ describe('EraserTool', () => {
   });
 
   it('creates a copy of the view with assigned colors on init', () => {
-    const viewToCanvasSpy = spyOn(ImageExportService, 'viewToCanvas').and.returnValue(
+    const viewToCanvasSpy = spyOn(EditorUtil, 'viewToCanvas').and.returnValue(
       new Promise<CanvasRenderingContext2D>((resolve) => {
         resolve();
         return;

@@ -132,6 +132,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('b'),
+        () => {
+          this.currentToolType = ToolType.ColorFill;
+          return false;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('r'),
         () => {
           this.currentToolType = ToolType.ColorApplicator;
