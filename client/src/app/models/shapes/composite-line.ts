@@ -21,7 +21,7 @@ export class CompositeLine extends BaseShape {
   }
 
   set origin(c: Coordinate) {
-    const delta = Coordinate.substract(c, this.origin);
+    const delta = Coordinate.subtract(c, this.origin);
     const shapes: BaseShape[] = this.lineArray as BaseShape[];
     shapes.concat(this.junctionArray as BaseShape[]).forEach((shape) => {
       shape.origin = Coordinate.add(shape.origin, delta);

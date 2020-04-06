@@ -1,22 +1,27 @@
-export class Coordinate {
-  readonly x: number;
-  readonly y: number;
+import { Direction } from '@utils/math/direction.enum';
 
+export class Coordinate {
   constructor(x: number = 0.0, y: number = 0.0) {
     this.x = x;
     this.y = y;
   }
 
+  readonly x: number;
+  readonly y: number;
+
   static add(c1: Coordinate, c2: Coordinate): Coordinate {
     return new Coordinate(c1.x + c2.x, c1.y + c2.y);
   }
 
-  static substract(c1: Coordinate, c2: Coordinate): Coordinate {
+  static subtract(c1: Coordinate, c2: Coordinate): Coordinate {
     return new Coordinate(c1.x - c2.x, c1.y - c2.y);
+  }
+  static apply(c: Coordinate, operation: (component: number) => number): Coordinate {
+    return new Coordinate(operation(c.x), operation(c.y));
   }
 
   static abs(c: Coordinate): Coordinate {
-    return new Coordinate(Math.abs(c.x), Math.abs(c.y));
+    return this.apply(c, Math.abs);
   }
 
   static copy(c: Coordinate): Coordinate {
@@ -69,5 +74,22 @@ export class Coordinate {
 
   static angle(c1: Coordinate, c2: Coordinate): number {
     return Math.atan2(c1.y - c2.y, Math.abs(c1.x - c2.x));
+  }
+
+  neighbor(direction: Direction): Coordinate {
+    switch (direction) {
+      case Direction.North:
+        return Coordinate.add(this, new Coordinate(0, 1));
+      case Direction.East:
+        return Coordinate.add(this, new Coordinate(1, 0));
+      case Direction.South:
+        return Coordinate.add(this, new Coordinate(0, -1));
+      case Direction.West:
+        return Coordinate.add(this, new Coordinate(-1, 0));
+    }
+  }
+
+  toString(): string {
+    return `[${this.x};${this.y}]`;
   }
 }

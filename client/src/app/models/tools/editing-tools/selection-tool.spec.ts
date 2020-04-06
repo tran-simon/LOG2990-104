@@ -178,7 +178,7 @@ describe('SelectionTool', () => {
     const moveSpy = spyOn(tool['moveCommand'], 'execute');
 
     tool['move']();
-    expect(tool['moveCommand'].delta).toEqual(Coordinate.substract(tool['mousePosition'], tool['initialMouseCoord']));
+    expect(tool['moveCommand'].delta).toEqual(Coordinate.subtract(tool['mousePosition'], tool['initialMouseCoord']));
     const c = new Coordinate(50, 75);
     tool['move'](c);
     expect(tool['moveCommand'].delta).toEqual(c);

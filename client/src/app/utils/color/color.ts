@@ -148,19 +148,6 @@ export class Color implements ColorComponents {
     return Color.rgb255(r, g, b, a);
   }
 
-  /* Utility methods */
-
-  get hex(): string {
-    const r = MathUtils.toHex(this.r255, 2);
-    const g = MathUtils.toHex(this.g255, 2);
-    const b = MathUtils.toHex(this.b255, 2);
-    return `${r}${g}${b}`;
-  }
-
-  get negative(): Color {
-    return Color.rgb(1 - this.r, 1 - this.g, 1 - this.b);
-  }
-
   /* private static methods to get HSL components from RGB*/
 
   /**
@@ -225,6 +212,23 @@ export class Color implements ColorComponents {
   static getHslString(h: number, s: number, l: number): string {
     // tslint:disable-next-line:no-magic-numbers
     return `hsl(${h}, ${s * 100}%, ${l * 100}%)`;
+  }
+
+  /* Utility methods */
+
+  compare(color: Color): boolean {
+    return this.rgbString === color.rgbString;
+  }
+
+  get hex(): string {
+    const r = MathUtils.toHex(this.r255, 2);
+    const g = MathUtils.toHex(this.g255, 2);
+    const b = MathUtils.toHex(this.b255, 2);
+    return `${r}${g}${b}`;
+  }
+
+  get negative(): Color {
+    return Color.rgb(1 - this.r, 1 - this.g, 1 - this.b);
   }
 
   /**

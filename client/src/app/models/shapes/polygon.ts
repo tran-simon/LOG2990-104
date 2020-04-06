@@ -40,7 +40,7 @@ export class Polygon extends BaseShape {
     return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.offset = Coordinate.subtract(c, this.relativeOrigin);
   }
 
   constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {

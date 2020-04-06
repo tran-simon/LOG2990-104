@@ -30,7 +30,7 @@ export class Line extends BaseShape {
   }
 
   set origin(c: Coordinate) {
-    const delta = Coordinate.substract(c, this.origin);
+    const delta = Coordinate.subtract(c, this.origin);
     this.startCoord = Coordinate.add(this.startCoord, delta);
     this.endCoord = Coordinate.add(this.endCoord, delta);
   }
