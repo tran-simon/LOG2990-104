@@ -1,3 +1,4 @@
+/* tslint:disable:max-file-line-count */ // todo : distribute functionnality into multiple subtool
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';

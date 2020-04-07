@@ -3,21 +3,6 @@ import { MathUtil } from '../../utils/math/math-util';
 import { BaseShape } from './base-shape';
 
 export class Polygon extends BaseShape {
-  static readonly MIN_POLY_EDGES: number = 3;
-  static readonly MAX_POLY_EDGES: number = 12;
-  // tslint:disable-next-line:no-magic-numbers
-  static readonly ORIENTATION_ANGLE: number = (3 * Math.PI) / 2;
-
-  private points: Coordinate[];
-  private _interiorAngle: number;
-
-  protected cloneProperties(shape: Polygon): void {
-    super.cloneProperties(shape);
-    shape.points.push(...this.points);
-    shape.origin = this.origin;
-    shape.drawPoints();
-  }
-
   get copy(): Polygon {
     const copy = new Polygon(this.origin, this.nEdges);
     this.cloneProperties(copy);
@@ -27,8 +12,6 @@ export class Polygon extends BaseShape {
   get interiorAngle(): number {
     return this._interiorAngle;
   }
-
-  private _nEdges: number;
   get nEdges(): number {
     return this._nEdges;
   }
@@ -61,6 +44,22 @@ export class Polygon extends BaseShape {
     this.points = new Array<Coordinate>();
     this.origin = origin;
     this.nEdges = nEdges;
+  }
+  static readonly MIN_POLY_EDGES: number = 3;
+  static readonly MAX_POLY_EDGES: number = 12;
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly ORIENTATION_ANGLE: number = (3 * Math.PI) / 2;
+
+  private points: Coordinate[];
+  private _interiorAngle: number;
+
+  private _nEdges: number;
+
+  protected cloneProperties(shape: Polygon): void {
+    super.cloneProperties(shape);
+    shape.points.push(...this.points);
+    shape.origin = this.origin;
+    shape.drawPoints();
   }
 
   private coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
