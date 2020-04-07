@@ -25,6 +25,8 @@ import { ColorsService } from 'src/app/services/colors.service';
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
   readonly selectedShapes: BaseShape[];
+  readonly clipboard: BaseShape[];
+  readonly duplicationBuffer: BaseShape[];
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
   private previewShapes: BaseShape[];
@@ -48,6 +50,7 @@ export class EditorService {
     this.previewShapes = new Array<BaseShape>();
     this.selectedShapes = new Array<BaseShape>();
     this.gridProperties = new GridProperties();
+    this.clipboard = new Array<BaseShape>();
   }
 
   private initTools(): void {
@@ -86,6 +89,14 @@ export class EditorService {
     this.selectedShapes.length = 0;
   }
 
+  clearClipboard(): void {
+    this.clipboard.length = 0;
+  }
+
+  clearDuplicationBuffer(): void {
+    this.duplicationBuffer.length = 0;
+  }
+
   addPreviewShape(shape: BaseShape): void {
     this.previewShapes.push(shape);
     if (this.view) {
@@ -115,7 +126,12 @@ export class EditorService {
   }
 
   removeShape(shape: BaseShape): void {
-    const index = this.shapes.findIndex((s) => s === shape);
+    let index = this.shapes.findIndex((s) => s === shape);
+    if (index !== -1) {
+      this.shapes.splice(index, 1);
+      this.removeShapeFromView(shape);
+    }
+    index = this.selectedShapes.findIndex((s) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
       this.removeShapeFromView(shape);

@@ -3,8 +3,23 @@ import { BrushTextureType } from 'src/app/models/tool-properties/creator-tool-pr
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class BrushPath extends Path {
-  constructor(c: Coordinate) {
+  readonly filter: BrushTextureType;
+
+  constructor(c: Coordinate, filter: BrushTextureType = BrushTextureType.TEXTURE_1) {
     super(c);
+    this.filter = filter;
+  }
+
+  protected cloneProperties(shape: BrushPath): void {
+    super.cloneProperties(shape);
+    shape.changeFilter(this.filter);
+  }
+
+  get copy(): BrushPath {
+    const copy = new BrushPath(this.points[0]);
+    this.cloneProperties(copy);
+    copy.updateProperties();
+    return copy;
   }
 
   changeFilter(filter: BrushTextureType): void {

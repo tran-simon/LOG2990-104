@@ -19,6 +19,15 @@ export abstract class BaseShape {
 
   abstract get width(): number;
   abstract get height(): number;
+  abstract get copy(): BaseShape;
+
+  protected cloneProperties(shape: BaseShape): void {
+    shape.contourType = this.contourType;
+    shape.primaryColor = this.primaryColor;
+    shape.secondaryColor = this.secondaryColor;
+    shape.thickness = this.thickness;
+    shape.strokeWidth = this.strokeWidth;
+  }
 
   get offset(): Coordinate {
     return this._offset;

@@ -21,6 +21,6 @@ export class BrushTool extends StrokeTool {
   }
 
   createShape(): BrushPath {
-    return new BrushPath(this.mousePosition);
+    return new BrushPath(this.mousePosition, this.toolProperties.texture.value);
   }
 }

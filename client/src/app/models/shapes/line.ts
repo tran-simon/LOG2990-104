@@ -5,6 +5,19 @@ export class Line extends BaseShape {
   private _startCoord: Coordinate;
   private _endCoord: Coordinate;
 
+  protected cloneProperties(shape: Line): void {
+    super.cloneProperties(shape);
+    shape.startCoord = this.startCoord;
+    shape.endCoord = this.endCoord;
+  }
+
+  get copy(): Line {
+    const copy = new Line(this.startCoord, this.endCoord);
+    this.cloneProperties(copy);
+    copy.updateProperties();
+    return copy;
+  }
+
   get startCoord(): Coordinate {
     return this._startCoord;
   }

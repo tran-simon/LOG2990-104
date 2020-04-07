@@ -1,3 +1,4 @@
+import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
@@ -14,14 +15,14 @@ export class SelectionTool extends SimpleSelectionTool {
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
   private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
   private readonly SELECT_AREA_DASHARRAY: string = '5';
-
+  private readonly PASTED_OFFSET: number = 5;
   private boundingBox: BoundingBox;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean; // todo - create states
   private moveSelectionMode: boolean;
   private previouslySelectedShapes: BaseShape[];
-
+  private nbPasted: number;
   private keyPresses: boolean[] = [];
   private keyInterval: number;
   private keyTimeout: number;
@@ -39,7 +40,7 @@ export class SelectionTool extends SimpleSelectionTool {
     super(editorService);
     this.reverseSelectionMode = false;
     this.previouslySelectedShapes = new Array<BaseShape>();
-
+    this.nbPasted = 1;
     this.keyboardListener.addEvents([
       [
         KeyboardListenerService.getIdentifier('ArrowUp'),
@@ -89,7 +90,78 @@ export class SelectionTool extends SimpleSelectionTool {
           this.handleKeyboardMove(SelectionMove.LEFT, false);
         },
       ],
+      [
+        KeyboardListenerService.getIdentifier('c', true, false, 'keyup'),
+        () => {
+          this.copySelectedShapes();
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('v', true, false, 'keyup'),
+        () => {
+          this.pasteClipboard();
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('x', true, false, 'keyup'),
+        () => {
+          this.cutSelectedShapes();
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('d', false, true, 'keyup'),
+        () => {
+          this.duplicateSelectedShapes();
+        },
+      ],
     ]);
+  }
+  // todo : fix boundingbox shifting
+  // todo : add missing copy implementation
+  // todo : implement "do not modify clipboard on duplicate"
+  // todo : fix invisible selection after operation
+  pasteClipboard(buffer: BaseShape[] = this.editorService.clipboard): void {
+    if (buffer.length > 0) {
+      this.editorService.clearSelection();
+      const pastedShapes = Array<BaseShape>();
+      buffer.forEach((shape: BaseShape) => {
+        const copy = shape.copy;
+        copy.offset = new Coordinate(this.nbPasted * this.PASTED_OFFSET, this.nbPasted * this.PASTED_OFFSET);
+        pastedShapes.push(copy);
+        this.nbPasted++;
+      });
+      this.editorService.commandReceiver.add(new AddShapesCommand(pastedShapes, this.editorService));
+      pastedShapes.forEach((shape: BaseShape) => {
+        this.editorService.selectedShapes.push(shape);
+      });
+      this.updateBoundingBox();
+    }
+  }
+
+  cutSelectedShapes(): void {
+    if (this.editorService.selectedShapes.length > 0) {
+      this.editorService.clearClipboard();
+      this.editorService.selectedShapes.forEach((shape: BaseShape) => {
+        this.editorService.clipboard.push(shape);
+        this.editorService.removeShape(shape);
+      });
+      this.editorService.clearSelection();
+      this.updateBoundingBox();
+    }
+  }
+
+  copySelectedShapes(buffer: BaseShape[] = this.editorService.clipboard): void {
+    if (this.editorService.selectedShapes.length > 0) {
+      this.editorService.clearClipboard();
+      this.editorService.selectedShapes.forEach((shape: BaseShape) => {
+        buffer.push(shape.copy);
+      });
+    }
+  }
+
+  duplicateSelectedShapes(): void {
+    this.copySelectedShapes();
+    this.pasteClipboard();
   }
 
   initMouseHandler(): void {
