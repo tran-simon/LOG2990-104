@@ -3,10 +3,22 @@ import { Color } from '@utils/color/color';
 import { Coordinate } from '@utils/math/coordinate';
 import { ColorFillUtils, ColorGetter, ColorSetter } from './color-fill-utils';
 
+// todo: test higher tolerance
 describe('ColorFillUtils', () => {
   let data: number[][];
   const valueToColor = (value: number): Color => {
-    return value ? (value === 2 ? Color.RED : Color.WHITE) : Color.BLACK;
+    switch (value) {
+      case 0:
+        return Color.BLACK;
+      case 1:
+        return Color.WHITE;
+      case 2:
+        return Color.RED;
+      case 3:
+        return Color.rgb(0, 0, 1);
+      default:
+        return Color.BLUE;
+    }
   };
 
   const colorToValue = (color: Color): number => {
@@ -21,7 +33,7 @@ describe('ColorFillUtils', () => {
     }
   };
 
-  /* returns Black for 0, White for 1, Red for 2*/
+  /* returns Black for 0, White for 1, Red for 1/3*/
   const getColor: ColorGetter = (point) => {
     if (point.x < 0 || point.y < 0 || point.y >= 10 || point.x >= 10) {
       return undefined;
@@ -50,7 +62,7 @@ describe('ColorFillUtils', () => {
     util = new ColorFillUtils(getColor, setColor);
     data = [
       [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+      [3, 3, 1, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
       [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
@@ -69,8 +81,8 @@ describe('ColorFillUtils', () => {
   it('can flood fill a square bordered by the bounds', () => {
     const expectedData: number[][] = [
       [2, 2, 1, 0, 0, 0, 0, 0, 0, 0],
-      [2, 2, 1, 0, 0, 0, 0, 0, 0, 0],
-      [2, 2, 1, 0, 0, 0, 0, 0, 0, 0],
+      [3, 3, 1, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
       [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
       [0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
@@ -84,10 +96,46 @@ describe('ColorFillUtils', () => {
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 
+  it('can flood fill a square bordered by the bounds with high tolerance', () => {
+    const expectedData: number[][] = [
+      [2, 2, 1, 0, 0, 0, 0, 0, 0, 0],
+      [2, 2, 1, 0, 0, 0, 0, 0, 0, 0],
+      [2, 2, 1, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+      [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
+      [0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
+      [0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+
+    util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2), 1 / 3);
+    expect(dataToString(data)).toEqual(dataToString(expectedData));
+  });
+
+  it('can flood fill a square bordered by the bounds with low tolerance', () => {
+    const expectedData: number[][] = [
+      [2, 2, 1, 0, 0, 0, 0, 0, 0, 0],
+      [3, 3, 1, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+      [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
+      [0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
+      [0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+
+    util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2), 0.1);
+    expect(dataToString(data)).toEqual(dataToString(expectedData));
+  });
+
   it('can flood fill a line', () => {
     const expectedData: number[][] = [
       [0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+      [3, 3, 2, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
       [2, 2, 2, 0, 0, 1, 1, 1, 0, 0],
       [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
@@ -105,7 +153,7 @@ describe('ColorFillUtils', () => {
   it('can flood fill a triangle', () => {
     const expectedData: number[][] = [
       [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+      [3, 3, 1, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
       [0, 0, 0, 0, 1, 1, 2, 1, 1, 0],
@@ -123,7 +171,7 @@ describe('ColorFillUtils', () => {
   it('can flood fill outside', () => {
     const expectedData: number[][] = [
       [0, 0, 1, 2, 2, 2, 2, 2, 2, 2],
-      [0, 0, 1, 2, 2, 2, 2, 2, 2, 2],
+      [3, 3, 1, 2, 2, 2, 2, 2, 2, 2],
       [0, 0, 1, 2, 2, 2, 2, 2, 2, 2],
       [1, 1, 1, 2, 2, 1, 1, 1, 2, 2],
       [2, 2, 2, 2, 1, 1, 0, 1, 1, 2],

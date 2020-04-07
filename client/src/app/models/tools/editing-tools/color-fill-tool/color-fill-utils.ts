@@ -11,6 +11,7 @@ export class ColorFillUtils {
   private node: Coordinate;
   private targetColor: Color;
   private replacementColor: Color;
+  private tolerance: number;
 
   constructor(getColor: ColorGetter, setColor: ColorSetter) {
     this.getColor = getColor;
@@ -20,7 +21,7 @@ export class ColorFillUtils {
   updateNode(node: Coordinate, direction: Direction): Coordinate | undefined {
     const neighbor = node.neighbor(direction);
     const neighborColor = this.getColor(neighbor);
-    if (!neighborColor || !neighborColor.compare(this.targetColor)) {
+    if (!neighborColor || !neighborColor.compare(this.targetColor, this.tolerance)) {
       return undefined;
     }
     this.setColor(neighbor, this.replacementColor);
@@ -41,16 +42,14 @@ export class ColorFillUtils {
     update(Direction.West);
   }
 
-  floodFill(node: Coordinate, targetColor: Color, replacementColor: Color): void {
+  floodFill(node: Coordinate, targetColor: Color, replacementColor: Color, tolerance: number = 0): void {
     this.node = node;
     this.targetColor = targetColor;
     this.replacementColor = replacementColor;
+    this.tolerance = tolerance;
 
-    const nodeColor = this.getColor(this.node);
     const targetIsReplacement = this.targetColor.compare(this.replacementColor);
-    const nodeColorIsNotTarget = !nodeColor || !nodeColor.compare(this.targetColor);
-
-    if (!targetIsReplacement && !nodeColorIsNotTarget) {
+    if (!targetIsReplacement) {
       this.setColor(this.node, this.replacementColor);
       const Q: Coordinate[] = [this.node];
       while (Q.length !== 0) {

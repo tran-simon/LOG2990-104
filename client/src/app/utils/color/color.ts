@@ -216,8 +216,23 @@ export class Color implements ColorComponents {
 
   /* Utility methods */
 
-  compare(color: Color): boolean {
-    return this.rgbString === color.rgbString;
+  /**
+   * Find the euclidean difference between this color and c2
+   * @param c2 the color to compare this to
+   * @return the difference value between 0 and 1
+   */
+  difference(c2: Color): number {
+    const r2 = Math.pow(c2.r - this.r, 2);
+    const g2 = Math.pow(c2.g - this.g, 2);
+    const b2 = Math.pow(c2.b - this.b, 2);
+
+    /* divide by 3 to get a value between 0 and 1 */
+    // tslint:disable-next-line:no-magic-numbers
+    return (r2 + g2 + b2) / 3;
+  }
+
+  compare(c2: Color, tolerance: number = 0): boolean {
+    return tolerance ? this.difference(c2) <= tolerance : this.rgbString === c2.rgbString;
   }
 
   get hex(): string {
