@@ -18,7 +18,6 @@
 //   });
 //   let component: GalleryModalComponent;
 //   let fixture: ComponentFixture<GalleryModalComponent>;
-
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
 //       imports: [SharedModule, RouterTestingModule, GalleryModule],
@@ -28,7 +27,6 @@
 //       ],
 //     }).compileComponents();
 //   }));
-
 //   beforeEach(() => {
 //     fixture = TestBed.createComponent(GalleryModalComponent);
 //     component = fixture.componentInstance;
