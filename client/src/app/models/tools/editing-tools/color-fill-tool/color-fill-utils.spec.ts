@@ -3,7 +3,6 @@ import { Color } from '@utils/color/color';
 import { Coordinate } from '@utils/math/coordinate';
 import { ColorFillUtils, ColorGetter, ColorSetter } from './color-fill-utils';
 
-// todo: test higher tolerance
 describe('ColorFillUtils', () => {
   let data: number[][];
   const valueToColor = (value: number): Color => {
@@ -111,6 +110,24 @@ describe('ColorFillUtils', () => {
     ];
 
     util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2), 1 / 3);
+    expect(dataToString(data)).toEqual(dataToString(expectedData));
+  });
+
+  it('can flood fill a square bordered by the bounds with highest tolerance', () => {
+    const expectedData: number[][] = [
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+    ];
+
+    util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2), 1);
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 

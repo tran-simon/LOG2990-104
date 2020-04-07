@@ -21,11 +21,15 @@ export class ColorFillUtils {
   updateNode(node: Coordinate, direction: Direction): Coordinate | undefined {
     const neighbor = node.neighbor(direction);
     const neighborColor = this.getColor(neighbor);
-    if (!neighborColor || !neighborColor.compare(this.targetColor, this.tolerance)) {
-      return undefined;
+    if (neighborColor) {
+      const neighborIsTarget = neighborColor.compare(this.targetColor, this.tolerance);
+      const neighborIsReplacement = neighborColor.compare(this.replacementColor);
+      if (neighborIsTarget && !neighborIsReplacement) {
+        this.setColor(neighbor, this.replacementColor);
+        return neighbor;
+      }
     }
-    this.setColor(neighbor, this.replacementColor);
-    return neighbor;
+    return undefined;
   }
 
   updateNodes(node: Coordinate, queue: Coordinate[]): void {
