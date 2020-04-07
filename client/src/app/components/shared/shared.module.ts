@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
 import { ColorLightnessComponent } from 'src/app/components/shared/color-picker/color-strip/color-lightness/color-lightness.component';
@@ -55,6 +56,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     MatListModule,
     HttpClientModule,
     MatSelectModule,
+    MatTreeModule,
   ],
   declarations: [
     AbstractModalComponent,
