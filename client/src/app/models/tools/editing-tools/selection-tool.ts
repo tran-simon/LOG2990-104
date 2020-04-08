@@ -1,6 +1,7 @@
 /* tslint:disable:max-file-line-count */ // todo : distribute functionnality into multiple subtool
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
+import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
@@ -115,6 +116,12 @@ export class SelectionTool extends SimpleSelectionTool {
           this.duplicateSelectedShapes();
         },
       ],
+      [
+        KeyboardListenerService.getIdentifier('delete', false, false, 'keyup'),
+        () => {
+          this.deleteSelectedShapes();
+        },
+      ],
     ]);
   }
 
@@ -168,6 +175,16 @@ export class SelectionTool extends SimpleSelectionTool {
   duplicateSelectedShapes(): void {
     this.copySelectedShapes(this.editorService.duplicationBuffer);
     this.pasteClipboard(this.editorService.duplicationBuffer);
+  }
+
+  deleteSelectedShapes(): void {
+    if (this.editorService.selectedShapes.length > 0) {
+      this.editorService.selectedShapes.forEach((shape: BaseShape) => {
+        this.editorService.commandReceiver.add(new RemoveShapesCommand(shape, this.editorService));
+        this.removeSelectedShape(shape);
+      });
+      this.updateSelection();
+    }
   }
 
   initMouseHandler(): void {

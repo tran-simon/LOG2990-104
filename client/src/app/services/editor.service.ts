@@ -69,6 +69,43 @@ export class EditorService {
     this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
     this.tools.set(ToolType.Eraser, new EraserTool(this));
   }
+  // todo : redo this part entirely
+  copy(): void {
+    const tool = this.tools.get(ToolType.Select) as SelectionTool;
+    if (tool) {
+      tool.copySelectedShapes();
+    }
+  }
+  cut(): void {
+    const tool = this.tools.get(ToolType.Select) as SelectionTool;
+    if (tool) {
+      tool.cutSelectedShapes();
+    }
+  }
+  duplicate(): void {
+    const tool = this.tools.get(ToolType.Select) as SelectionTool;
+    if (tool) {
+      tool.duplicateSelectedShapes();
+    }
+  }
+  paste(): void {
+    const tool = this.tools.get(ToolType.Select) as SelectionTool;
+    if (tool) {
+      tool.pasteClipboard();
+    }
+  }
+  selectAll(): void {
+    const tool = this.tools.get(ToolType.Select) as SelectionTool;
+    if (tool) {
+      tool.selectAll();
+    }
+  }
+  delete(): void {
+    const tool = this.tools.get(ToolType.Select) as SelectionTool;
+    if (tool) {
+      tool.deleteSelectedShapes();
+    }
+  }
 
   applyShapesBuffer(): void {
     this.shapes.push(...this.shapesBuffer);
