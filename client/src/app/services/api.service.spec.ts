@@ -1,5 +1,5 @@
 // tslint:disable: no-string-literal
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Drawing } from '@models/drawing';
 import { of } from 'rxjs';
@@ -8,13 +8,12 @@ import { APIService } from './api.service';
 describe('APIService', () => {
   let apiService: APIService;
 
-  beforeEach(() =>
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-    }),
-  );
-
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [APIService],
+      imports: [HttpClientTestingModule],
+    });
+
     apiService = TestBed.get(APIService);
   });
 

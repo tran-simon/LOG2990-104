@@ -109,13 +109,14 @@ describe('ImageExportService', () => {
     service.addFilter(fixture.componentInstance.drawingSurface, filter);
     expect(fixture.componentInstance.drawingSurface.svg.getAttribute('filter')).toEqual('sepia(100%)');
   });
-  it('should call addFilter and removeFilter when exporting image', () => {
+  it('should call addFilter and removeFilter when exporting image', (done) => {
     const addFilterSpy = spyOn(service, 'addFilter');
     const removeFilterSpy = spyOn(service, 'removeFilter');
     const filter = FilterType.BLACKWHITE;
     service.exportImageElement(fixture.componentInstance.drawingSurface, 'png', filter).then(() => {
       expect(addFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface, filter);
       expect(removeFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface);
+      done();
     });
   });
 });

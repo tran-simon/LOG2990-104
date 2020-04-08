@@ -1,5 +1,8 @@
 {
-    "extends": "tslint:recommended",
+    "extends": [
+        "tslint:recommended",
+        "tslint-defocus"
+    ],
     "rules": {
         "array-type": [true, "array"],
         "arrow-parens": true,
@@ -68,7 +71,8 @@
                     "typeLiterals": "ignore"
                 }
             }
-        ]
+        ],
+        "defocus": true
     },
     "brace-style": [
         true,

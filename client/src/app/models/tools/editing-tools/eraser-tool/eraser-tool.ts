@@ -46,7 +46,6 @@ export class EraserTool extends Tool {
       background.setAttribute('fill', Color.RED.rgbString);
     }
 
-    console.log(newClonedView.childNodes);
     newClonedView.childNodes.forEach((node: SVGElement) => {
       if (node.id.startsWith('shape-')) {
         const id = node.id.split('-')[1];
