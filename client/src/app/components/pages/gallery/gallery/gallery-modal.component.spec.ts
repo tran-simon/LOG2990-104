@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@components/shared/shared.module';
 import { Drawing } from '@models/drawing';
+import { APIService } from '@services/api.service';
 import { GalleryModule } from '../gallery.module';
 import { GalleryModalComponent } from './gallery-modal.component';
 
@@ -17,6 +18,7 @@ describe('Gallery Modal Component', () => {
   });
   let component: GalleryModalComponent;
   let fixture: ComponentFixture<GalleryModalComponent>;
+  let getAllDrawingsSpy: jasmine.Spy;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,7 +31,7 @@ describe('Gallery Modal Component', () => {
 
     fixture = TestBed.createComponent(GalleryModalComponent);
 
-    spyOn(GalleryModalComponent.prototype, 'fetchDrawings');
+    getAllDrawingsSpy = spyOn(APIService.prototype, 'getAllDrawings').and.returnValue(Promise.resolve([]));
 
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -60,5 +62,19 @@ describe('Gallery Modal Component', () => {
 
       expect(dialogRefCloseSpy).toHaveBeenCalled();
     });
+  });
+
+  it('should call getAllDrawings when fetchDrawings is called', () => {
+    component.fetchDrawings();
+
+    expect(getAllDrawingsSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should call searchDrawings on updateDrawings', () => {
+    const spy = spyOn(APIService.prototype, 'searchDrawings').and.returnValue(Promise.resolve([]));
+
+    component.updateDrawings();
+
+    expect(spy).toHaveBeenCalled();
   });
 });
