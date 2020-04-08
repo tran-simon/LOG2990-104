@@ -70,6 +70,9 @@ button {
   height: 50px;
   color: $accent;
 }
+button:disabled {
+  opacity: 50%;
+}
 
 #back-button {
   width: 60px;

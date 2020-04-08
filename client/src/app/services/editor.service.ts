@@ -26,6 +26,7 @@ export class EditorService {
   readonly tools: Map<ToolType, Tool>;
   readonly selectedShapes: BaseShape[];
   readonly clipboard: BaseShape[];
+  readonly pastedBuffer: BaseShape[];
   readonly duplicationBuffer: BaseShape[];
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
@@ -51,6 +52,8 @@ export class EditorService {
     this.selectedShapes = new Array<BaseShape>();
     this.gridProperties = new GridProperties();
     this.clipboard = new Array<BaseShape>();
+    this.pastedBuffer = new Array<BaseShape>();
+    this.duplicationBuffer = new Array<BaseShape>();
   }
 
   private initTools(): void {
@@ -93,8 +96,8 @@ export class EditorService {
     this.clipboard.length = 0;
   }
 
-  clearDuplicationBuffer(): void {
-    this.duplicationBuffer.length = 0;
+  clearPastedBuffer(): void {
+    this.pastedBuffer.length = 0;
   }
 
   addPreviewShape(shape: BaseShape): void {
@@ -126,16 +129,16 @@ export class EditorService {
   }
 
   removeShape(shape: BaseShape): void {
-    let index = this.shapes.findIndex((s) => s === shape);
+    const index = this.shapes.findIndex((s) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
       this.removeShapeFromView(shape);
     }
-    index = this.selectedShapes.findIndex((s) => s === shape);
+    /*index = this.selectedShapes.findIndex((s) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
       this.removeShapeFromView(shape);
-    }
+    }*/
   }
 
   findShapeById(id: string): BaseShape | undefined {

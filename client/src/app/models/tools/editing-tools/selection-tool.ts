@@ -16,7 +16,7 @@ export class SelectionTool extends SimpleSelectionTool {
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
   private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
   private readonly SELECT_AREA_DASHARRAY: string = '5';
-  private readonly PASTED_OFFSET: number = 5;
+  private readonly PASTED_OFFSET: number = 10;
   private boundingBox: BoundingBox;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
@@ -41,7 +41,7 @@ export class SelectionTool extends SimpleSelectionTool {
     super(editorService);
     this.reverseSelectionMode = false;
     this.previouslySelectedShapes = new Array<BaseShape>();
-    this.nbPasted = 1;
+    this.nbPasted = this.PASTED_OFFSET;
     this.keyboardListener.addEvents([
       [
         KeyboardListenerService.getIdentifier('ArrowUp'),
@@ -117,31 +117,34 @@ export class SelectionTool extends SimpleSelectionTool {
       ],
     ]);
   }
-  // todo : fix boundingbox shifting
-  // todo : add missing copy implementation
-  // todo : implement "do not modify clipboard on duplicate"
-  // todo : fix invisible selection after operation
+
   pasteClipboard(buffer: BaseShape[] = this.editorService.clipboard): void {
     if (buffer.length > 0) {
       this.editorService.clearSelection();
-      const pastedShapes = Array<BaseShape>();
       buffer.forEach((shape: BaseShape) => {
         const copy = shape.copy;
-        copy.offset = new Coordinate(this.nbPasted * this.PASTED_OFFSET, this.nbPasted * this.PASTED_OFFSET);
-        pastedShapes.push(copy);
-        this.nbPasted++;
+        copy.origin = Coordinate.add(copy.origin, new Coordinate(this.nbPasted, this.nbPasted));
+        if (copy.origin.x > this.editorService.view.width || copy.origin.y > this.editorService.view.height) {
+          copy.origin = Coordinate.copy(this.editorService.pastedBuffer[0].origin);
+          this.nbPasted = 0;
+        }
+        this.editorService.commandReceiver.add(new AddShapesCommand(copy, this.editorService));
+        this.editorService.pastedBuffer.push(copy);
       });
-      this.editorService.commandReceiver.add(new AddShapesCommand(pastedShapes, this.editorService));
-      pastedShapes.forEach((shape: BaseShape) => {
-        this.editorService.selectedShapes.push(shape);
-      });
+      for (let i = this.editorService.pastedBuffer.length - buffer.length; i < this.editorService.pastedBuffer.length; i++) {
+        this.addSelectedShape(this.editorService.pastedBuffer[i]);
+      }
+      this.nbPasted += this.PASTED_OFFSET;
       this.updateBoundingBox();
+      this.applyBoundingBox();
     }
   }
 
   cutSelectedShapes(): void {
     if (this.editorService.selectedShapes.length > 0) {
+      this.nbPasted = this.PASTED_OFFSET;
       this.editorService.clearClipboard();
+      this.editorService.clearPastedBuffer();
       this.editorService.selectedShapes.forEach((shape: BaseShape) => {
         this.editorService.clipboard.push(shape);
         this.editorService.removeShape(shape);
@@ -153,7 +156,9 @@ export class SelectionTool extends SimpleSelectionTool {
 
   copySelectedShapes(buffer: BaseShape[] = this.editorService.clipboard): void {
     if (this.editorService.selectedShapes.length > 0) {
-      this.editorService.clearClipboard();
+      this.nbPasted = this.PASTED_OFFSET;
+      buffer.length = 0;
+      this.editorService.clearPastedBuffer();
       this.editorService.selectedShapes.forEach((shape: BaseShape) => {
         buffer.push(shape.copy);
       });
@@ -161,8 +166,8 @@ export class SelectionTool extends SimpleSelectionTool {
   }
 
   duplicateSelectedShapes(): void {
-    this.copySelectedShapes();
-    this.pasteClipboard();
+    this.copySelectedShapes(this.editorService.duplicationBuffer);
+    this.pasteClipboard(this.editorService.duplicationBuffer);
   }
 
   initMouseHandler(): void {
@@ -363,8 +368,14 @@ export class SelectionTool extends SimpleSelectionTool {
       this.boundingBox.origin = this.editorService.selectedShapes[0].origin;
       this.boundingBox.end = this.editorService.selectedShapes[0].end;
       this.editorService.selectedShapes.forEach((shape) => {
-        this.boundingBox.start = Coordinate.minXYCoord(this.boundingBox.origin, shape.origin);
-        this.boundingBox.end = Coordinate.maxXYCoord(this.boundingBox.end, shape.end);
+        this.boundingBox.start = Coordinate.minXYCoord(
+          this.boundingBox.origin,
+          Coordinate.substract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),
+        );
+        this.boundingBox.end = Coordinate.maxXYCoord(
+          this.boundingBox.end,
+          Coordinate.add(shape.end, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),
+        );
       });
     } else {
       this.boundingBox.origin = new Coordinate();

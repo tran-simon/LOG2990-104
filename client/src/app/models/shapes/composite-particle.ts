@@ -3,9 +3,10 @@ import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
-  private readonly particles: Rectangle[];
-
-  private _radius: number;
+  // todo: copy for composite particle
+  get copy(): CompositeParticle {
+    return this;
+  }
   get radius(): number {
     return this._radius;
   }
@@ -36,6 +37,13 @@ export class CompositeParticle extends BaseShape {
     super('g');
     this.particles = [];
     this.radius = radius;
+  }
+  private readonly particles: Rectangle[];
+
+  private _radius: number;
+
+  protected cloneProperties(shape: CompositeParticle): void {
+    super.cloneProperties(shape);
   }
 
   private genRandomPosition(c: Coordinate): Coordinate {

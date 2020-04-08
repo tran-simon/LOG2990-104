@@ -8,6 +8,10 @@ export class CompositeLine extends BaseShape {
 
   lineArray: Line[];
   junctionArray: Ellipse[];
+  // todo: copy for CompositeLine
+  get copy(): CompositeLine {
+    return this;
+  }
 
   get currentLine(): Line {
     return this.lineArray[this.lineArray.length - 1];
