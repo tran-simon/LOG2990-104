@@ -41,7 +41,7 @@ describe('Gallery Modal Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should route correctly when a drawing is chosen', () => {
+  it('should route correctly when a drawing is chosen', (done) => {
     routerSpy.navigate.and.returnValue(Promise.resolve());
 
     const drawing = new Drawing('testDrawing', [], '', 'ff0000', 100, 100, '', '123');
@@ -59,6 +59,7 @@ describe('Gallery Modal Component', () => {
           id: '123',
         },
       ]);
+      done();
 
       expect(dialogRefCloseSpy).toHaveBeenCalled();
     });
