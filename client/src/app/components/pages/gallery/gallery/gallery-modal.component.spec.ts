@@ -1,5 +1,5 @@
 // tslint:disable: no-magic-numbers
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,8 +18,9 @@ describe('Gallery Modal Component', () => {
   });
   let component: GalleryModalComponent;
   let fixture: ComponentFixture<GalleryModalComponent>;
+  let getAllDrawingsSpy: jasmine.Spy;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, RouterTestingModule, GalleryModule],
       providers: [
@@ -27,10 +28,11 @@ describe('Gallery Modal Component', () => {
         { provide: Router, useValue: routerSpy },
       ],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(GalleryModalComponent);
+
+    getAllDrawingsSpy = spyOn(APIService.prototype, 'getAllDrawings').and.returnValue(Promise.resolve([]));
+
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -39,7 +41,7 @@ describe('Gallery Modal Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should route correctly when a drawing is chosen', () => {
+  it('should route correctly when a drawing is chosen', (done) => {
     routerSpy.navigate.and.returnValue(Promise.resolve());
 
     const drawing = new Drawing('testDrawing', [], '', 'ff0000', 100, 100, '', '123');
@@ -57,20 +59,19 @@ describe('Gallery Modal Component', () => {
           id: '123',
         },
       ]);
+      done();
 
       expect(dialogRefCloseSpy).toHaveBeenCalled();
     });
   });
 
   it('should call getAllDrawings when fetchDrawings is called', () => {
-    const spy = spyOn(APIService.prototype, 'getAllDrawings').and.returnValue(Promise.resolve([]));
-
     component.fetchDrawings();
 
-    expect(spy).toHaveBeenCalled();
+    expect(getAllDrawingsSpy).toHaveBeenCalledTimes(2);
   });
 
-  it('should call searchDrawings when updateDrawings is called', () => {
+  it('should call searchDrawings on updateDrawings', () => {
     const spy = spyOn(APIService.prototype, 'searchDrawings').and.returnValue(Promise.resolve([]));
 
     component.updateDrawings();

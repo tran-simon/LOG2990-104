@@ -23,6 +23,16 @@ import { ColorsService } from 'src/app/services/colors.service';
   providedIn: 'root',
 })
 export class EditorService {
+  readonly tools: Map<ToolType, Tool>;
+  readonly selectedShapes: BaseShape[];
+  readonly shapes: BaseShape[];
+  private shapesBuffer: BaseShape[];
+  private previewShapes: BaseShape[];
+  private readonly _commandReceiver: CommandReceiver;
+
+  readonly gridProperties: GridProperties;
+  view: DrawingSurfaceComponent;
+
   get commandReceiver(): CommandReceiver {
     return this._commandReceiver;
   }
@@ -39,15 +49,6 @@ export class EditorService {
     this.selectedShapes = new Array<BaseShape>();
     this.gridProperties = new GridProperties();
   }
-  readonly tools: Map<ToolType, Tool>;
-  readonly selectedShapes: BaseShape[];
-  readonly shapes: BaseShape[];
-  private shapesBuffer: BaseShape[];
-  private previewShapes: BaseShape[];
-  private readonly _commandReceiver: CommandReceiver;
-
-  readonly gridProperties: GridProperties;
-  view: DrawingSurfaceComponent;
 
   private initTools(): void {
     this.tools.set(ToolType.Pen, new PenTool(this));
