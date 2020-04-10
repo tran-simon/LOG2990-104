@@ -34,4 +34,8 @@ export class MathUtil {
     const hex = value.toString(this.HEX_RADIX).toLowerCase();
     return padding ? hex.padStart(padding, '0') : hex;
   }
+
+  static toRad(angle: number): number {
+    return (angle / this.MAX_ANGLE) * Math.PI * 2;
+  }
 }
