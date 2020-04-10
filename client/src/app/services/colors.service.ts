@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SelectedColorType } from 'src/app/services/selected-color-type.enum';
 import { Color } from 'src/app/utils/color/color';
-import { MathUtil } from 'src/app/utils/math/math-util';
+import { MathUtils } from 'src/app/utils/math/math-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -45,11 +45,11 @@ export class ColorsService {
   }
 
   getColor(index: SelectedColorType): Color {
-    return this._colors[MathUtil.fit(index)];
+    return this._colors[MathUtils.fit(index)];
   }
 
   setColorByType(color: Color, type: SelectedColorType): void {
-    this._colors[MathUtil.fit(type)] = color;
+    this._colors[MathUtils.fit(type)] = color;
   }
 
   setColorByTypeAndUpdateHistory(color: Color, type: SelectedColorType): void {

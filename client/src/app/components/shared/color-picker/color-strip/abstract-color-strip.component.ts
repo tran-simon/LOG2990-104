@@ -2,7 +2,7 @@ import { EventEmitter, Input, Output } from '@angular/core';
 import { AbstractCanvasDrawer } from 'src/app/components/shared/color-picker/abstract-canvas-drawer/abstract-canvas-drawer';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
-import { MathUtil } from 'src/app/utils/math/math-util';
+import { MathUtils } from 'src/app/utils/math/math-utils';
 
 export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
   static readonly DEFAULT_LENGTH: number = 300;
@@ -73,7 +73,7 @@ export abstract class AbstractColorStripComponent extends AbstractCanvasDrawer {
   }
 
   calculateMouseEventValue(event: MouseEvent): number {
-    return MathUtil.fit(this.isVertical ? event.offsetY / this.height : event.offsetX / this.width);
+    return MathUtils.fit(this.isVertical ? event.offsetY / this.height : event.offsetX / this.width);
   }
 
   calculateColorFromMouseEvent(event: MouseEvent): Color {
