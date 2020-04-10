@@ -1,3 +1,4 @@
+import { ShapeStates } from '@models/shapes/shape-states.enum';
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
@@ -8,6 +9,7 @@ export abstract class BaseShape {
   id: number;
   private _offset: Coordinate;
 
+  state: ShapeStates;
   thickness: number;
   strokeWidth: number;
   secondaryColor: Color;
@@ -21,7 +23,7 @@ export abstract class BaseShape {
   abstract get height(): number;
   abstract get copy(): BaseShape;
 
-  protected cloneProperties(shape: BaseShape): void {
+  cloneProperties(shape: BaseShape): void {
     shape.contourType = this.contourType;
     shape.primaryColor = this.primaryColor;
     shape.secondaryColor = this.secondaryColor;
@@ -58,6 +60,7 @@ export abstract class BaseShape {
     this.secondaryColor = Color.BLACK;
     this.primaryColor = Color.WHITE;
     this.contourType = ContourType.FILLED_CONTOUR;
+    this.state = ShapeStates.NONE;
 
     this.updateProperties();
   }

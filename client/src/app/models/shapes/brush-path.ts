@@ -10,15 +10,15 @@ export class BrushPath extends Path {
     this.filter = filter;
   }
 
-  protected cloneProperties(shape: BrushPath): void {
+  cloneProperties(shape: BrushPath): void {
     super.cloneProperties(shape);
     shape.changeFilter(this.filter);
+    shape.updateProperties();
   }
 
   get copy(): BrushPath {
     const copy = new BrushPath(this.points[0]);
     this.cloneProperties(copy);
-    copy.updateProperties();
     return copy;
   }
 

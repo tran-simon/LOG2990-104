@@ -1,7 +1,5 @@
 /* tslint:disable:max-file-line-count */ // todo : distribute functionnality into multiple subtool
-import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
-import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
@@ -14,17 +12,16 @@ import { Rectangle } from '../../shapes/rectangle';
 import { SelectionMove } from './selection-move.enum';
 
 export class SelectionTool extends SimpleSelectionTool {
+  static readonly PASTED_OFFSET: number = 10;
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
   private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
   private readonly SELECT_AREA_DASHARRAY: string = '5';
-  private readonly PASTED_OFFSET: number = 10;
   private boundingBox: BoundingBox;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean; // todo - create states
   private moveSelectionMode: boolean;
   private previouslySelectedShapes: BaseShape[];
-  private nbPasted: number;
   private keyPresses: boolean[] = [];
   private keyInterval: number;
   private keyTimeout: number;
@@ -42,7 +39,6 @@ export class SelectionTool extends SimpleSelectionTool {
     super(editorService);
     this.reverseSelectionMode = false;
     this.previouslySelectedShapes = new Array<BaseShape>();
-    this.nbPasted = this.PASTED_OFFSET;
     this.keyboardListener.addEvents([
       [
         KeyboardListenerService.getIdentifier('ArrowUp'),
@@ -95,102 +91,48 @@ export class SelectionTool extends SimpleSelectionTool {
       [
         KeyboardListenerService.getIdentifier('c', true, false, 'keyup'),
         () => {
-          this.copySelectedShapes();
+          this.editorService.copySelectedShapes();
         },
       ],
       [
         KeyboardListenerService.getIdentifier('v', true, false, 'keyup'),
         () => {
-          this.pasteClipboard();
+          this.editorService.pasteClipboard();
         },
       ],
       [
         KeyboardListenerService.getIdentifier('x', true, false, 'keyup'),
         () => {
-          this.cutSelectedShapes();
+          this.editorService.cutSelectedShapes();
         },
       ],
       [
         KeyboardListenerService.getIdentifier('d', false, true, 'keyup'),
         () => {
-          this.duplicateSelectedShapes();
+          this.editorService.duplicateSelectedShapes();
         },
       ],
       [
         KeyboardListenerService.getIdentifier('delete', false, false, 'keyup'),
         () => {
-          this.deleteSelectedShapes();
+          this.editorService.deleteSelectedShapes();
         },
       ],
     ]);
   }
 
-  pasteClipboard(buffer: BaseShape[] = this.editorService.clipboard): void {
-    if (buffer.length > 0) {
-      this.editorService.clearSelection();
-      buffer.forEach((shape: BaseShape) => {
-        const copy = shape.copy;
-        copy.origin = Coordinate.add(copy.origin, new Coordinate(this.nbPasted, this.nbPasted));
-        if (copy.origin.x > this.editorService.view.width || copy.origin.y > this.editorService.view.height) {
-          copy.origin = Coordinate.copy(this.editorService.pastedBuffer[0].origin);
-          this.nbPasted = 0;
-        }
-        this.editorService.commandReceiver.add(new AddShapesCommand(copy, this.editorService));
-        this.editorService.pastedBuffer.push(copy);
-      });
-      for (let i = this.editorService.pastedBuffer.length - buffer.length; i < this.editorService.pastedBuffer.length; i++) {
-        this.addSelectedShape(this.editorService.pastedBuffer[i]);
-      }
-      this.nbPasted += this.PASTED_OFFSET;
-      this.updateBoundingBox();
-      this.applyBoundingBox();
-    }
-  }
-
-  cutSelectedShapes(): void {
-    if (this.editorService.selectedShapes.length > 0) {
-      this.nbPasted = this.PASTED_OFFSET;
-      this.editorService.clearClipboard();
-      this.editorService.clearPastedBuffer();
-      this.editorService.selectedShapes.forEach((shape: BaseShape) => {
-        this.editorService.clipboard.push(shape);
-        this.editorService.removeShape(shape);
-      });
-      this.editorService.clearSelection();
-      this.updateBoundingBox();
-    }
-  }
-
-  copySelectedShapes(buffer: BaseShape[] = this.editorService.clipboard): void {
-    if (this.editorService.selectedShapes.length > 0) {
-      this.nbPasted = this.PASTED_OFFSET;
-      buffer.length = 0;
-      this.editorService.clearPastedBuffer();
-      this.editorService.selectedShapes.forEach((shape: BaseShape) => {
-        buffer.push(shape.copy);
-      });
-    }
-  }
-
-  duplicateSelectedShapes(): void {
-    this.copySelectedShapes(this.editorService.duplicationBuffer);
-    this.pasteClipboard(this.editorService.duplicationBuffer);
-  }
-
-  deleteSelectedShapes(): void {
-    if (this.editorService.selectedShapes.length > 0) {
-      this.editorService.selectedShapes.forEach((shape: BaseShape) => {
-        this.editorService.commandReceiver.add(new RemoveShapesCommand(shape, this.editorService));
-        this.removeSelectedShape(shape);
-      });
-      this.updateSelection();
-    }
+  handleUndoRedoEvent(undo: boolean): void {
+    super.handleUndoRedoEvent(undo);
+    this.editorService.clearSelection();
+    this.updateBoundingBox();
+    this.applyBoundingBox();
   }
 
   initMouseHandler(): void {
     this.handleMouseDown = (e: MouseEvent) => {
       if (!this.isActive) {
         this.isActive = true;
+        this.editorService.duplicationBuffer.length = 0;
         if (this.boundingBox && SelectionTool.detectPointCollision(this.mousePosition, this.boundingBox)) {
           this.startMove(this.mousePosition);
         } else if (e.button === MouseListenerService.BUTTON_LEFT) {
@@ -210,11 +152,12 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
+        this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
+        this.applyBoundingBox();
         if (this.moveSelectionMode) {
           this.moveSelectionMode = false;
           this.endMove();
         }
-        this.applyBoundingBox();
       }
     };
   }
@@ -296,6 +239,8 @@ export class SelectionTool extends SimpleSelectionTool {
       this.addSelectedShape(shape);
       this.updateBoundingBox();
     }
+    this.applyBoundingBox();
+    this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
   }
 
   selectAll(): void {
@@ -339,7 +284,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.initBoundingBox();
   }
 
-  private applyBoundingBox(): void {
+  applyBoundingBox(): void {
     this.editorService.clearShapesBuffer();
     this.editorService.addPreviewShape(this.boundingBox);
   }
@@ -349,7 +294,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.updateBoundingBox();
   }
 
-  private addSelectedShape(shape: BaseShape): void {
+  addSelectedShape(shape: BaseShape): void {
     const index = this.editorService.selectedShapes.indexOf(shape);
     if (index === -1) {
       this.editorService.selectedShapes.push(shape);
@@ -376,11 +321,10 @@ export class SelectionTool extends SimpleSelectionTool {
         reverse ? this.reverseSelection(shape, this.previouslySelectedShapes) : this.addSelectedShape(shape);
       }
     });
-
     this.updateBoundingBox();
   }
 
-  private updateBoundingBox(): void {
+  updateBoundingBox(): void {
     if (this.editorService.selectedShapes.length > 0) {
       this.boundingBox.origin = this.editorService.selectedShapes[0].origin;
       this.boundingBox.end = this.editorService.selectedShapes[0].end;

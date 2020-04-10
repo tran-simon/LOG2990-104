@@ -55,7 +55,7 @@ export class Polygon extends BaseShape {
 
   private _nEdges: number;
 
-  protected cloneProperties(shape: Polygon): void {
+  cloneProperties(shape: Polygon): void {
     super.cloneProperties(shape);
     shape.points.push(...this.points);
     shape.origin = this.origin;

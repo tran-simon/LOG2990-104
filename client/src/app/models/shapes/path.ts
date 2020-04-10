@@ -6,16 +6,16 @@ export class Path extends BaseShape {
   private _trace: string;
   protected points: Coordinate[];
 
-  protected cloneProperties(shape: Path): void {
+  cloneProperties(shape: Path): void {
     super.cloneProperties(shape);
     shape.points.push(...this.points);
     shape.trace = this.trace;
+    shape.updateProperties();
   }
 
   get copy(): Path {
     const copy = new Path(this.points[0]);
     this.cloneProperties(copy);
-    copy.updateProperties();
     return copy;
   }
 

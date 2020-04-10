@@ -6,16 +6,16 @@ export class Rectangle extends BaseShape {
   private _height: number;
   private _width: number;
 
-  protected cloneProperties(shape: Rectangle): void {
+  cloneProperties(shape: Rectangle): void {
     super.cloneProperties(shape);
     shape.width = this.width;
     shape.height = this.height;
+    shape.updateProperties();
   }
 
   get copy(): Rectangle {
     const copy = new Rectangle(this.origin, this.width, this.height);
     this.cloneProperties(copy);
-    copy.updateProperties();
     return copy;
   }
 

@@ -5,8 +5,11 @@ import { Rectangle } from './rectangle';
 export class CompositeParticle extends BaseShape {
   // todo: copy for composite particle
   get copy(): CompositeParticle {
-    return this;
+    const copy = new CompositeParticle(this.radius);
+    this.cloneProperties(copy);
+    return copy;
   }
+
   get radius(): number {
     return this._radius;
   }
@@ -42,8 +45,13 @@ export class CompositeParticle extends BaseShape {
 
   private _radius: number;
 
-  protected cloneProperties(shape: CompositeParticle): void {
+  cloneProperties(shape: CompositeParticle): void {
     super.cloneProperties(shape);
+    this.particles.forEach((particle: Rectangle) => {
+      const copy = particle.copy;
+      shape.particles.push(copy);
+      shape.svgNode.appendChild(copy.svgNode);
+    });
   }
 
   private genRandomPosition(c: Coordinate): Coordinate {
@@ -68,7 +76,7 @@ export class CompositeParticle extends BaseShape {
   updateProperties(): void {
     super.updateProperties();
     if (this.particles) {
-      this.particles.forEach((particle) => particle.updateProperties());
+      this.particles.forEach((particle: Rectangle) => particle.updateProperties());
     }
   }
 }
