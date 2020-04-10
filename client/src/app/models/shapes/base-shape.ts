@@ -1,5 +1,5 @@
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
-import { MathUtil } from '@utils/math/math-util';
+import { MathUtils } from '@utils/math/math-utils';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -67,7 +67,7 @@ export abstract class BaseShape {
   }
 
   protected applyTransform(): void {
-    const angle = -MathUtil.toRad(this.rotation);
+    const angle = -MathUtils.toRad(this.rotation);
     const offsetX = Math.cos(angle) * this.offset.x + Math.sin(angle) * this.offset.y;
     const offsetY = Math.cos(angle) * this.offset.y - Math.sin(angle) * this.offset.x;
     let transformStr = `translate(${offsetX},${offsetY})`;

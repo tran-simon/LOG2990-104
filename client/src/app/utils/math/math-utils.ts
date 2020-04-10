@@ -1,4 +1,4 @@
-export class MathUtil {
+export class MathUtils {
   static readonly MAX_ANGLE: number = 360;
   static readonly HEX_RADIX: number = 16;
 
@@ -20,7 +20,7 @@ export class MathUtil {
    * Returns value lower or equal to max and greater or equal to min
    */
   static fit(value: number, min: number = 0, max: number = 1): number {
-    return MathUtil.fitLower(MathUtil.fitUpper(value, max), min);
+    return MathUtils.fitLower(MathUtils.fitUpper(value, max), min);
   }
 
   static fitAngle(angle: number): number {

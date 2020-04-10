@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditorParams } from '@components/pages/editor/editor/editor-params';
@@ -11,7 +11,7 @@ import { APIService } from 'src/app/services/api.service';
   templateUrl: './gallery-modal.component.html',
   styleUrls: ['./gallery-modal.component.scss'],
 })
-export class GalleryModalComponent extends AbstractModalComponent {
+export class GalleryModalComponent extends AbstractModalComponent implements AfterViewInit {
   drawings: Drawing[];
   nameQuery: string;
   tagsQuery: string;
@@ -24,6 +24,9 @@ export class GalleryModalComponent extends AbstractModalComponent {
     this.nameQuery = '';
     this.tagsQuery = '';
     this.isLoading = true;
+  }
+
+  ngAfterViewInit(): void {
     this.fetchDrawings();
   }
 

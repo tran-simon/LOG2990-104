@@ -1,7 +1,7 @@
 import { BaseShape } from '@models/shapes/base-shape';
 import { EditorService } from '@services/editor.service';
 import { Coordinate } from '@utils/math/coordinate';
-import { MathUtil } from '@utils/math/math-util';
+import { MathUtils } from '@utils/math/math-utils';
 import { ShapesCommand } from './shapes-command';
 
 export class RotateShapeCommand extends ShapesCommand {
@@ -31,7 +31,7 @@ export class RotateShapeCommand extends ShapesCommand {
 
   private applyRotationOffset(shape: BaseShape, angle: number, center: Coordinate): void {
     shape.rotation += angle;
-    angle = -MathUtil.toRad(angle);
+    angle = -MathUtils.toRad(angle);
     const shapeAngle = -Coordinate.angle(shape.center, center) + angle;
 
     const delta = Coordinate.distance(shape.center, center);

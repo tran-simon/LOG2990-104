@@ -8,13 +8,12 @@ import { APIService } from './api.service';
 describe('APIService', () => {
   let apiService: APIService;
 
-  beforeEach(() =>
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    }),
-  );
-
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [APIService],
+      imports: [HttpClientTestingModule],
+    });
+
     apiService = TestBed.get(APIService);
   });
 
