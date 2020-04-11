@@ -55,7 +55,10 @@ export class EditorUtils {
   /**
    *  https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
    */
-  static colorAtPointFromUint8ClampedArray(data: Uint8ClampedArray, point: Coordinate, width: number): Color {
+  static colorAtPointFromUint8ClampedArray(data: Uint8ClampedArray | undefined, point: Coordinate, width: number): Color | undefined {
+    if (!data) {
+      return undefined;
+    }
     const getColorIndicesForCoord = (x: number, y: number) => {
       const dataSize = 4;
       const rIndex = y * (width * dataSize) + x * dataSize;
