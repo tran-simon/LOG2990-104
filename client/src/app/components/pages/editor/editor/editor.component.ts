@@ -296,4 +296,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.currentTool.onSelect();
     }
   }
+
+  get loading(): boolean {
+    return this.editorService.loading;
+  }
 }

@@ -38,6 +38,7 @@ export class EraserTool extends Tool {
   }
 
   init(): void {
+    this.editorService.loading = true;
     const newClonedView = this.editorService.view.svg.cloneNode(true) as SVGElement;
 
     const background = newClonedView.querySelector('#background');
@@ -54,15 +55,17 @@ export class EraserTool extends Tool {
 
     this.clonedView = newClonedView;
 
-    EditorUtils.viewToCanvas(this.editorService.view, this.clonedView).then((ctx) => {
-      if (ctx) {
-        ctx.imageSmoothingEnabled = false;
-      }
-      this.ctx = ctx;
-      if (!this.editorService.view.svg.contains(this.eraserView.svgNode)) {
-        this.initEraserView();
-      }
-    });
+    EditorUtils.viewToCanvas(this.editorService.view, this.clonedView)
+      .then((ctx) => {
+        if (ctx) {
+          ctx.imageSmoothingEnabled = false;
+        }
+        this.ctx = ctx;
+        if (!this.editorService.view.svg.contains(this.eraserView.svgNode)) {
+          this.initEraserView();
+        }
+      })
+      .finally(() => (this.editorService.loading = false));
   }
 
   selectShapes(pos: Coordinate): void {

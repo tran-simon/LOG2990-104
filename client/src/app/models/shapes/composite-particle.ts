@@ -57,6 +57,16 @@ export class CompositeParticle extends BaseShape {
     }
   }
 
+  addSingleParticle(c: Coordinate): void {
+    const particle = new Rectangle(c, 1, 1);
+    particle.primaryColor = this.primaryColor;
+    particle.secondaryColor = this.primaryColor;
+
+    particle.updateProperties();
+    this.svgNode.appendChild(particle.svgNode);
+    this.particles.push(particle);
+  }
+
   updateProperties(): void {
     super.updateProperties();
     if (this.particles) {

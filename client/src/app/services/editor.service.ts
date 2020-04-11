@@ -32,6 +32,7 @@ export class EditorService {
 
   readonly gridProperties: GridProperties;
   view: DrawingSurfaceComponent;
+  loading: boolean;
 
   get commandReceiver(): CommandReceiver {
     return this._commandReceiver;
@@ -48,6 +49,7 @@ export class EditorService {
     this.previewShapes = new Array<BaseShape>();
     this.selectedShapes = new Array<BaseShape>();
     this.gridProperties = new GridProperties();
+    this.loading = false;
   }
 
   private initTools(): void {

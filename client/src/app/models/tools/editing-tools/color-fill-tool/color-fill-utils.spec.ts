@@ -91,7 +91,7 @@ describe('ColorFillUtils', () => {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2));
+    util.floodFillScanLine(new Coordinate(), valueToColor(0), valueToColor(2));
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 
@@ -109,7 +109,7 @@ describe('ColorFillUtils', () => {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2), 1 / 3);
+    util.floodFillScanLine(new Coordinate(), valueToColor(0), valueToColor(2), 1 / 3);
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 
@@ -127,7 +127,7 @@ describe('ColorFillUtils', () => {
       [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
     ];
 
-    util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2), 1);
+    util.floodFillScanLine(new Coordinate(), valueToColor(0), valueToColor(2), 1);
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 
@@ -145,7 +145,7 @@ describe('ColorFillUtils', () => {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    util.floodFill(new Coordinate(), valueToColor(0), valueToColor(2), 0.1);
+    util.floodFillScanLine(new Coordinate(), valueToColor(0), valueToColor(2), 0.1);
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 
@@ -163,7 +163,7 @@ describe('ColorFillUtils', () => {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    util.floodFill(new Coordinate(2, 0), valueToColor(1), valueToColor(2));
+    util.floodFillScanLine(new Coordinate(2, 0), valueToColor(1), valueToColor(2));
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 
@@ -181,7 +181,7 @@ describe('ColorFillUtils', () => {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    util.floodFill(new Coordinate(6, 5), valueToColor(0), valueToColor(2));
+    util.floodFillScanLine(new Coordinate(6, 5), valueToColor(0), valueToColor(2));
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
 
@@ -199,7 +199,84 @@ describe('ColorFillUtils', () => {
       [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
     ];
 
-    util.floodFill(new Coordinate(3, 0), valueToColor(0), valueToColor(2));
+    util.floodFillScanLine(new Coordinate(3, 0), valueToColor(0), valueToColor(2));
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
+
+  it('can scan line', () => {
+    /*
+    Scanning row with y=4
+    [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
+     */
+    util['targetColor'] = valueToColor(0);
+    util['replacementColor'] = valueToColor(2);
+    const res = util.scanLine(0, 9, 4);
+
+    expect(res[0]).toEqual([0, 3]);
+    expect(res[1]).toEqual([6, 6]);
+    expect(res[2]).toEqual([9, 9]);
+  });
+
+  // it('can flood fill a triangle 2', () => {
+  //   const expectedData: number[][] = [
+  //     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+  //     [3, 3, 1, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+  //     [1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+  //     [0, 0, 0, 0, 1, 1, 2, 1, 1, 0],
+  //     [0, 0, 0, 1, 1, 2, 2, 2, 1, 1],
+  //     [0, 0, 0, 1, 2, 2, 2, 2, 2, 1],
+  //     [0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   ];
+  //
+  //     util['targetColor'] = valueToColor(0);
+  //     util['replacementColor'] = valueToColor(2);
+  //     util.floodFillScanLine(new Coordinate(6, 5))
+  //   // util.floodFill(new Coordinate(6, 5), valueToColor(0), valueToColor(2));
+  //   expect(dataToString(data)).toEqual(dataToString(expectedData));
+  // });
+  //
+  //
+  // it('can flood fill outside1', () => {
+  //   const expectedData: number[][] = [
+  //     [0, 0, 1, 2, 2, 2, 2, 2, 2, 2],
+  //     [3, 3, 1, 2, 2, 2, 2, 2, 2, 2],
+  //     [0, 0, 1, 2, 2, 2, 2, 2, 2, 2],
+  //     [1, 1, 1, 2, 2, 1, 1, 1, 2, 2],
+  //     [2, 2, 2, 2, 1, 1, 0, 1, 1, 2],
+  //     [2, 2, 2, 1, 1, 0, 0, 0, 1, 1],
+  //     [2, 2, 2, 1, 0, 0, 0, 0, 0, 1],
+  //     [2, 2, 2, 1, 1, 1, 1, 1, 1, 1],
+  //     [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+  //     [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+  //   ];
+  //
+  //   util['targetColor'] = valueToColor(0);
+  //   util['replacementColor'] = valueToColor(2);
+  //   util.floodFillScanLine(new Coordinate(3, 0))
+  //   expect(dataToString(data)).toEqual(dataToString(expectedData));
+  //   console.log(dataToString(data));
+  // });
+
+  // it('can flood fill outside 1 ', () => {
+  //   const expectedData: number[][] = [
+  //     [0, 0, 1, 2, 2, 2, 2, 2, 2, 2],
+  //     [3, 3, 1, 2, 2, 2, 2, 2, 2, 2],
+  //     [0, 0, 1, 2, 2, 2, 2, 2, 2, 2],
+  //     [1, 1, 1, 2, 2, 1, 1, 1, 2, 2],
+  //     [2, 2, 2, 2, 1, 1, 0, 1, 1, 2],
+  //     [2, 2, 2, 1, 1, 0, 0, 0, 1, 1],
+  //     [2, 2, 2, 1, 0, 0, 0, 0, 0, 1],
+  //     [2, 2, 2, 1, 1, 1, 1, 1, 1, 1],
+  //     [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+  //     [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+  //   ];
+  //
+  //   util['targetColor'] = valueToColor(0);
+  //   util['replacementColor'] = valueToColor(2);
+  //   util.floodFillLine(new Coordinate(3, 2))
+  //   expect(dataToString(data)).toEqual(dataToString(expectedData));
+  // });
 });
