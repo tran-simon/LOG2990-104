@@ -1,3 +1,5 @@
+import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
+import { ImageShape } from '@models/shapes/image-shape';
 import { EditorService } from '@services/editor.service';
 import { FillToolProperties } from '@tool-properties/editor-tool-properties/fill-tool-properties';
 import { ColorFillUtils, ColorGetter, ColorSetter } from '@tools/editing-tools/color-fill-tool/color-fill-utils';
@@ -44,7 +46,11 @@ export class ColorFillTool extends Tool {
           this.colorData = ctx.getImageData(0, 0, width, height).data;
           this.floodFill();
         })
-        .finally(() => (this.editorService.loading = false));
+        .finally(() => {
+          const shape = ImageShape.fromCanvas(this.drawingCanvas);
+          this.editorService.commandReceiver.add(new AddShapesCommand(shape, this.editorService));
+          this.editorService.loading = false;
+        });
     };
   }
 
@@ -64,8 +70,6 @@ export class ColorFillTool extends Tool {
           replacementColor,
           this.toolProperties.tolerance.value / FillToolProperties.TOLERANCE_MAX,
         );
-
-        this.editorService.view.svg.appendChild(EditorUtils.canvasToSvg(this.drawingCanvas));
       }
     }
   }

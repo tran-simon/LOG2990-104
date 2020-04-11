@@ -1,6 +1,5 @@
 import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
 import { FilterType } from '@components/pages/export-modal/filter-type.enum';
-import { BaseShape } from '@models/shapes/base-shape';
 import { Color } from '@utils/color/color';
 import { Coordinate } from '@utils/math/coordinate';
 
@@ -17,18 +16,6 @@ export class EditorUtils {
   static colorAtPointInCanvas(canvasContext: CanvasRenderingContext2D, point: Coordinate): Color {
     const colorData = canvasContext.getImageData(point.x, point.y, 1, 1).data;
     return Color.rgb255(colorData[0], colorData[1], colorData[2]);
-  }
-
-  /**
-   * Based on http://www.graphicalweb.org/2010/papers/62-From_SVG_to_Canvas_and_Back/#canvas_to_svg
-   */
-  static canvasToSvg(canvas: HTMLCanvasElement): SVGImageElement {
-    const imgDataUrl = canvas.toDataURL('image/png');
-
-    const svgImage: SVGImageElement = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, 'image') as SVGImageElement;
-
-    svgImage.setAttributeNS(BaseShape.XLINK_NAMESPACE_URL, 'xlink:href', imgDataUrl);
-    return svgImage;
   }
 
   static async viewToCanvas(view: DrawingSurfaceComponent, svg: SVGElement = view.svg): Promise<CanvasRenderingContext2D> {

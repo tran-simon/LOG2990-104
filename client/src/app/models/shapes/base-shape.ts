@@ -5,7 +5,6 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 export abstract class BaseShape {
   static readonly CSS_NONE: string = 'none';
   static readonly SVG_NAMESPACE_URL: string = 'http://www.w3.org/2000/svg';
-  static readonly XLINK_NAMESPACE_URL: string = 'http://www.w3.org/1999/xlink';
   readonly svgNode: SVGElement;
   id: number;
   private _offset: Coordinate;
