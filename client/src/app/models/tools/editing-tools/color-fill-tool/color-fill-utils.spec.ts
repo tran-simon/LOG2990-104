@@ -208,8 +208,8 @@ describe('ColorFillUtils', () => {
     Scanning row with y=4
     [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
      */
-    util['targetColor'] = valueToColor(0);
-    util['replacementColor'] = valueToColor(2);
+    util.targetColor = valueToColor(0);
+    util.replacementColor = valueToColor(2);
     const res = util.scanLine(0, 9, 4);
 
     expect(res[0]).toEqual([0, 3]);

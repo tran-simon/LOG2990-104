@@ -9,10 +9,6 @@ export class Coordinate {
   readonly x: number;
   readonly y: number;
 
-  inBounds(upper: Coordinate, lower: Coordinate = new Coordinate()): boolean {
-    return this.x >= lower.x && this.x <= upper.x && this.y >= lower.x && this.y <= upper.x;
-  }
-
   static add(c1: Coordinate, c2: Coordinate): Coordinate {
     return new Coordinate(c1.x + c2.x, c1.y + c2.y);
   }
@@ -78,6 +74,10 @@ export class Coordinate {
 
   static angle(c1: Coordinate, c2: Coordinate): number {
     return Math.atan2(c1.y - c2.y, Math.abs(c1.x - c2.x));
+  }
+
+  inBounds(upper: Coordinate, lower: Coordinate = new Coordinate()): boolean {
+    return this.x >= lower.x && this.x <= upper.x && this.y >= lower.x && this.y <= upper.x;
   }
 
   neighbor(direction: Direction): Coordinate {

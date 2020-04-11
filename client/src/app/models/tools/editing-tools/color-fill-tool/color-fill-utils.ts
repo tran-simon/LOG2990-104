@@ -49,7 +49,7 @@ export class ColorFillUtils {
    * @param y the line to inspect
    */
   scanLine(x0: number, x1: number = x0, y: number): number[][] {
-    //todo: remove
+    // todo: remove
     const res = [];
     let left = x0;
     let length = 0;
@@ -66,6 +66,41 @@ export class ColorFillUtils {
       }
     }
     return res;
+  }
+
+  private updateNodes(node: Coordinate, queue: Coordinate[]): void {
+    const update = (direction: Direction): void => {
+      const res = this.updateNode(node, direction);
+      if (res) {
+        queue.push(res);
+      }
+    };
+
+    update(Direction.North);
+    update(Direction.East);
+    update(Direction.South);
+    update(Direction.West);
+  }
+
+  floodFill(node: Coordinate, targetColor: Color, replacementColor: Color, tolerance: number = 0): void {
+    if (!this.getColor || !this.setColor) {
+      throw new Error('ColorFillUtils::floodFill error: missing required methods getColor or setColor');
+    }
+
+    this.node = node;
+    this.targetColor = targetColor;
+    this.replacementColor = replacementColor;
+    this.tolerance = tolerance;
+
+    const targetIsReplacement = this.targetColor.compare(this.replacementColor);
+    if (!targetIsReplacement) {
+      this.setColor(this.node, this.replacementColor);
+      const Q: Coordinate[] = [this.node];
+      while (Q.length !== 0) {
+        const n: Coordinate = Q.shift() as Coordinate;
+        this.updateNodes(n, Q);
+      }
+    }
   }
 
   /**
@@ -112,41 +147,6 @@ export class ColorFillUtils {
           bellow = false;
         }
         x1++;
-      }
-    }
-  }
-
-  private updateNodes(node: Coordinate, queue: Coordinate[]): void {
-    const update = (direction: Direction): void => {
-      let res = this.updateNode(node, direction);
-      if (res) {
-        queue.push(res);
-      }
-    };
-
-    update(Direction.North);
-    update(Direction.East);
-    update(Direction.South);
-    update(Direction.West);
-  }
-
-  floodFill(node: Coordinate, targetColor: Color, replacementColor: Color, tolerance: number = 0): void {
-    if (!this.getColor || !this.setColor) {
-      throw new Error('ColorFillUtils::floodFill error: missing required methods getColor or setColor');
-    }
-
-    this.node = node;
-    this.targetColor = targetColor;
-    this.replacementColor = replacementColor;
-    this.tolerance = tolerance;
-
-    const targetIsReplacement = this.targetColor.compare(this.replacementColor);
-    if (!targetIsReplacement) {
-      this.setColor(this.node, this.replacementColor);
-      const Q: Coordinate[] = [this.node];
-      while (Q.length !== 0) {
-        const n: Coordinate = Q.shift() as Coordinate;
-        this.updateNodes(n, Q);
       }
     }
   }

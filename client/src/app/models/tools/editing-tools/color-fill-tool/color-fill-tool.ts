@@ -1,4 +1,3 @@
-import { CompositeParticle } from '@models/shapes/composite-particle';
 import { EditorService } from '@services/editor.service';
 import { ColorFillUtils, ColorGetter, ColorSetter } from '@tools/editing-tools/color-fill-tool/color-fill-utils';
 import { Tool } from '@tools/tool';
@@ -16,6 +15,8 @@ export class ColorFillTool extends Tool {
   private colorData: Uint8ClampedArray;
   private pointsToColorize: Map<string, Coordinate>;
 
+  private drawingCanvas: HTMLCanvasElement;
+
   constructor(editorService: EditorService) {
     super(editorService);
     this.colorFillUtils = new ColorFillUtils();
@@ -25,10 +26,14 @@ export class ColorFillTool extends Tool {
   initMouseHandler(): void {
     this.handleClick = () => {
       this.editorService.loading = true;
+      this.drawingCanvas = document.createElement('CANVAS') as HTMLCanvasElement;
+      const { width, height } = this.editorService.view;
+      this.drawingCanvas.width = width;
+      this.drawingCanvas.height = height;
+
       EditorUtils.viewToCanvas(this.editorService.view)
         .then((ctx) => {
           this.context = ctx;
-          const { width, height } = this.editorService.view;
           this.colorData = ctx.getImageData(0, 0, width, height).data;
           this.floodFill();
         })
@@ -40,31 +45,24 @@ export class ColorFillTool extends Tool {
     if (this.context) {
       const targetColor = this.getColor(this.context)(this.mousePosition);
       const replacementColor = this.editorService.colorsService.primaryColor;
-      const tolerance = 0; //todo
+      const tolerance = 0; // todo
       this.pointsToColorize.clear();
 
-      if (targetColor) {
-        const shape = new CompositeParticle();
-        shape.primaryColor = replacementColor;
-        shape.updateProperties();
+      this.drawingContext.fillStyle = replacementColor.rgbString;
 
-        this.editorService.addShapeToBuffer(shape);
+      if (targetColor) {
         this.colorFillUtils.getColor = this.getColor(this.context);
-        this.colorFillUtils.setColor = this.setColor();
+        this.colorFillUtils.setColor = this.setColor(this.drawingContext);
         this.colorFillUtils.floodFillScanLine(this.mousePosition, targetColor, replacementColor, tolerance);
 
-        this.pointsToColorize.forEach((coord) => {
-          shape.addSingleParticle(coord);
-        });
-
-        shape.updateProperties();
-        this.editorService.applyShapesBuffer();
+        this.editorService.view.svg.appendChild(EditorUtils.canvasToSvg(this.drawingCanvas));
       }
     }
   }
 
-  private setColor(): ColorSetter {
+  private setColor(drawingContext: CanvasRenderingContext2D): ColorSetter {
     return (point: Coordinate) => {
+      drawingContext.fillRect(point.x, point.y, 1, 1);
       this.pointsToColorize.set(point.toString(), point);
     };
   }
@@ -74,20 +72,11 @@ export class ColorFillTool extends Tool {
     return (point: Coordinate): Color | undefined => {
       const inBounds = point.inBounds(new Coordinate(width, height));
       const nodeNotSet = !this.pointsToColorize.get(point.toString());
-      if (inBounds && nodeNotSet && context) {
-        /* https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas */
-        const getColorIndicesForCoord = (x: number, y: number, width: number) => {
-          const rIndex = y * (width * 4) + x * 4;
-          return [rIndex, rIndex + 1, rIndex + 2, rIndex + 3];
-        };
-
-        const indices = getColorIndicesForCoord(point.x, point.y, width);
-        const r = this.colorData[indices[0]];
-        const g = this.colorData[indices[1]];
-        const b = this.colorData[indices[2]];
-        return Color.rgb255(r, g, b);
-      }
-      return undefined;
+      return inBounds && nodeNotSet && context ? EditorUtils.colorAtPointFromUint8ClampedArray(this.colorData, point, width) : undefined;
     };
+  }
+
+  private get drawingContext(): CanvasRenderingContext2D {
+    return this.drawingCanvas.getContext('2d') as CanvasRenderingContext2D;
   }
 }
