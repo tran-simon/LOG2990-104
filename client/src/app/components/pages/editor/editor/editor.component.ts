@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { APIService } from '@services/api.service';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
@@ -41,7 +40,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     private router: ActivatedRoute,
     public editorService: EditorService,
     private dialog: ModalDialogService,
-    private apiService: APIService,
     private keyboardListener: KeyboardListenerService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
@@ -221,15 +219,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.editorService.view = this.drawingSurface;
     if (this.drawingId) {
-      this.apiService.getDrawingById(this.drawingId).then((drawing) => {
-        Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
-          const type = (shapeData as BaseShape).type;
-          const shape = EditorService.createShape(type);
-          shape.readElement(JSON.stringify(shapeData));   // todo - fix
-          this.editorService.addShapeToBuffer(shape);
-        });
-        this.editorService.applyShapesBuffer();
-      });
+      this.editorService.importDrawing(this.drawingId);
     }
   }
 

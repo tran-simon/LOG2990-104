@@ -27,6 +27,7 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
+import { APIService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,7 @@ export class EditorService {
     return this._commandReceiver;
   }
 
-  constructor(public colorsService: ColorsService) {
+  constructor(public colorsService: ColorsService, private apiService: APIService) {
     this._commandReceiver = new CommandReceiver();
 
     this.tools = new Map<ToolType, Tool>();
@@ -84,9 +85,21 @@ export class EditorService {
     }
   }
 
-  exportShapes(): string {
+  exportDrawing(): string {
     return JSON.stringify(this.shapes, (key, value) => {
       return key === 'svgNode' ? undefined : value;
+    });
+  }
+
+  importDrawing(drawingId: string): void {
+    this.apiService.getDrawingById(drawingId).then((drawing) => {
+      Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
+        const type = (shapeData as BaseShape).type;
+        const shape = EditorService.createShape(type);
+        shape.readElement(JSON.stringify(shapeData));   // todo - fix
+        this.addShapeToBuffer(shape);
+      });
+      this.applyShapesBuffer();
     });
   }
 
