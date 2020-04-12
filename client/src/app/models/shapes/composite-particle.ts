@@ -3,6 +3,7 @@ import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
+  static readonly PARTICLE_RADIUS: number = 4;
   private readonly particles: Rectangle[];
   private _radius: number;
 
@@ -64,7 +65,7 @@ export class CompositeParticle extends BaseShape {
   }
 
   addParticle(c: Coordinate): void {
-    const particle = new Rectangle(c, this.thickness);
+    const particle = new Rectangle(c, CompositeParticle.PARTICLE_RADIUS);
     particle.primaryColor = this.primaryColor;
     particle.secondaryColor = this.primaryColor;
     this.particles.push(particle);

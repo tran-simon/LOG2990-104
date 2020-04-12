@@ -1,9 +1,7 @@
 <h3 class="toolbar-option-section">Options de la grille</h3>
-<app-numeric-property-input
-  [property]=properties.size
->Taille des carrés
+<app-numeric-property-input suffix="px" [property]=properties.size>
+  Taille des carrés
 </app-numeric-property-input>
-
 <app-numeric-property-input [sliderStep]=0.1 [property]=properties.opacity>
   Opacité
 </app-numeric-property-input>
