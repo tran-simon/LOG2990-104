@@ -3,10 +3,9 @@ import { CreatorToolProperties } from 'src/app/models/tool-properties/creator-to
 
 export class SprayToolProperties extends CreatorToolProperties {
   static readonly MIN_SPRAY_RADIUS: number = 10;
-  static readonly MAX_SPRAY_RADIUS: number = 100;
+  static readonly MAX_SPRAY_RADIUS: number = 50;
   static readonly MIN_SPRAY_FREQUENCY: number = 1;
-  static readonly MAX_SPRAY_FREQUENCY: number = 100;
-
+  static readonly MAX_SPRAY_FREQUENCY: number = 50;
   frequency: NumericProperty;
 
   constructor() {
