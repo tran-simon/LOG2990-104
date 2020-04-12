@@ -79,10 +79,10 @@ export class Color implements ColorComponents {
 
       const f = (n: number) => {
         // tslint:disable-next-line:no-magic-numbers
-        const k = (n + h / 30) % 12;
-        const A = s * Math.min(l, 1 - l);
+        const k = (n + this.h / 30) % 12;
+        const A = this.s * Math.min(this.l, 1 - this.l);
         // tslint:disable-next-line:no-magic-numbers
-        return l - A * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return this.l - A * Math.max(Math.min(k - 3, 9 - k, 1), -1);
       };
       this.r = f(0);
       // tslint:disable-next-line:no-magic-numbers
@@ -258,7 +258,7 @@ export class Color implements ColorComponents {
    */
   get rgbString(): string {
     // tslint:disable-next-line:no-magic-numbers
-    return `rgb(${this.r * 255}, ${this.g * 255}, ${this.b * 255})`;
+    return `rgb(${Math.round(this.r * 255)}, ${Math.round(this.g * 255)}, ${Math.round(this.b * 255)})`;
   }
 
   get hslString(): string {

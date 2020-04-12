@@ -98,9 +98,10 @@ describe('Color', () => {
   });
 
   it('can compare colors', () => {
-    const color1 = Color.hsl(120, 40, 34);
+    const color1 = Color.hsl(120, 0.4, 0.34);
     const color2 = Color.rgb255(52, 121, 52);
-    const color3 = Color.hsl(120, 40, 35);
+    const color3 = Color.hsl(120, 0.4, 0.35);
+    expect(color1.compare(color1)).toBeTruthy();
     expect(color1.compare(color2)).toBeTruthy();
     expect(color1.compare(color3)).toBeFalsy();
     expect(color2.compare(color3)).toBeFalsy();

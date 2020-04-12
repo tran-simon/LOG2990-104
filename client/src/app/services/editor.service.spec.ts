@@ -147,21 +147,22 @@ describe('EditorService', () => {
   });
 
   it('can find shape by id', () => {
+    BaseShape['SHAPE_ID'] = 5;
     const rect = new Rectangle();
-    rect.svgNode.id = 'ID';
     service['shapes'].push(rect);
-    expect(service.findShapeById('ID')).toEqual(rect);
-    expect(service.findShapeById('invalid')).toEqual(undefined);
+    expect(service.findShapeById(5)).toEqual(rect);
+    expect(service.findShapeById(10)).not.toBeDefined();
   });
 
   it('throws an error if findShapeById finds multiple shapes with the same id', () => {
+    BaseShape['SHAPE_ID'] = 5;
     const ellipse = new Ellipse();
-    ellipse.svgNode.id = 'ID';
-    const rect = new Rectangle();
-    rect.svgNode.id = 'ID';
-    service['shapes'].push(rect);
+    BaseShape['SHAPE_ID'] = 5;
+    const ellipse1 = new Ellipse();
+    ellipse1.svgNode.id = 'ID';
+    service['shapes'].push(ellipse1);
     service['shapes'].push(ellipse);
 
-    expect(() => service.findShapeById('ID')).toThrowError('Shape Id collision error');
+    expect(() => service.findShapeById(5)).toThrowError('Shape Id collision error');
   });
 });
