@@ -55,5 +55,6 @@ export class Line extends BaseShape {
     const data = JSON.parse(json) as this;
     this.startCoord = data._startCoord;
     this.endCoord = data._endCoord;
+    this.applyTransform();
   }
 }

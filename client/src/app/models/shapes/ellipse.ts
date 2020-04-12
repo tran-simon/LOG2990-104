@@ -56,5 +56,6 @@ export class Ellipse extends BaseShape {
     this.radiusX = data._radiusX;
     this.radiusY = data._radiusY;
     this.origin = data._origin;
+    this.applyTransform();
   }
 }

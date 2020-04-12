@@ -47,6 +47,7 @@ export class CompositeParticle extends BaseShape {
       particle.readElement(JSON.stringify(p));      // todo - fix
       this.addParticle(particle.center);
     });
+    this.applyTransform();
   }
 
   private genRandomPosition(c: Coordinate): Coordinate {

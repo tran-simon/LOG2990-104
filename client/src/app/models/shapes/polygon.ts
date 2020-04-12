@@ -65,6 +65,7 @@ export class Polygon extends BaseShape {
     this.points.length = 0;
     this.points.push(...data.points);
     this.drawPoints();
+    this.applyTransform();
   }
 
   private applyPoints(dimensions: Coordinate): void {

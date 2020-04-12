@@ -40,5 +40,6 @@ export class BrushPath extends Path {
     super.readElement(json);
     const data = JSON.parse(json) as this;
     this.filter = data._filter;
+    this.applyTransform();
   }
 }

@@ -65,5 +65,6 @@ export class Rectangle extends BaseShape {
     this.origin = data._origin;
     this.width = data._width;
     this.height = data._height;
+    this.applyTransform();
   }
 }

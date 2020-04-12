@@ -56,6 +56,7 @@ export class Path extends BaseShape {
     data.points.forEach((p) => {
       this.addPoint(p);
     });
+    this.applyTransform();
   }
 
   addPoint(c: Coordinate): void {
