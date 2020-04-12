@@ -7,7 +7,7 @@
   <span *ngIf="prefix" matPrefix>{{prefix}}</span>
   <input #input matInput (focus)='onFocus()' (keyup)="onChange(input.value)" (blur)='onBlur(input.value)'
     [value]='value' [formControl]="formControl" id="{{id}}">
-  <span *ngIf="suffix" matSuffix>{{suffix}}</span>
+  <span id="suffix" *ngIf="suffix" matSuffix>{{suffix}}</span>
 
   <div *ngIf="invalid" class="alert alert-danger">
     <mat-error *ngFor="let error of errors">

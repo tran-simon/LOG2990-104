@@ -3,6 +3,7 @@ import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
+  static readonly PARTICLE_RADIUS: number = 4;
   private readonly particles: Rectangle[];
 
   private _radius: number;
@@ -48,8 +49,8 @@ export class CompositeParticle extends BaseShape {
 
   addParticle(c: Coordinate = new Coordinate(), frequency: number = 1): void {
     let particle: Rectangle;
-    for (let i = 0; i < frequency; i++) {
-      particle = new Rectangle(this.genRandomPosition(c), this.thickness);
+    for (let i = 0; i < (frequency || 1); i++) {
+      particle = new Rectangle(this.genRandomPosition(c), CompositeParticle.PARTICLE_RADIUS);
       particle.primaryColor = this.primaryColor;
       particle.secondaryColor = this.primaryColor;
       this.particles.push(particle);
