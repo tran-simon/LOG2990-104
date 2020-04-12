@@ -3,10 +3,12 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
+  // tslint:disable-next-line:typedef
+  private static SHAPE_ID = 0;
   static readonly CSS_NONE: string = 'none';
   static readonly SVG_NAMESPACE_URL: string = 'http://www.w3.org/2000/svg';
   readonly svgNode: SVGElement;
-  id: number;
+  readonly id: number;
   private _offset: Coordinate;
 
   thickness: number;
@@ -44,6 +46,9 @@ export abstract class BaseShape {
 
   constructor(type: string) {
     this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, type) as SVGElement;
+    this.id = BaseShape.SHAPE_ID++;
+    this.svgNode.id = `shape-${type}-${this.id}`;
+
     this._offset = new Coordinate();
     this.thickness = 1;
     this.strokeWidth = 1;
@@ -68,5 +73,20 @@ export abstract class BaseShape {
 
     this.svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.CSS_NONE;
     this.svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.CSS_NONE;
+  }
+
+  highlight(color: Color, thickness: number): void {
+    const highlightNode = (node: SVGElement) => {
+      const { strokeWidth } = node.style;
+      if (!strokeWidth || +strokeWidth < thickness) {
+        node.style.strokeWidth = thickness.toString();
+      }
+
+      node.style.stroke = color.rgbString;
+      node.style.strokeOpacity = '1';
+      node.childNodes.forEach(highlightNode);
+    };
+
+    highlightNode(this.svgNode);
   }
 }

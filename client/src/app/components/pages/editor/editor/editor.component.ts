@@ -109,7 +109,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [
         KeyboardListenerService.getIdentifier('+', false),
         () => {
-          // todo: Test with 20, 21, 24, 25
           const increment = GridProperties.GRID_SIZE_INCREMENT;
           const size = this.editorService.gridProperties.size.value + increment;
           this.editorService.gridProperties.size.value = Math.floor(size / increment) * increment;
@@ -118,7 +117,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [
         KeyboardListenerService.getIdentifier('-', false),
         () => {
-          // todo: Test with 20, 21, 24, 25
           const increment = GridProperties.GRID_SIZE_INCREMENT;
           const size = this.editorService.gridProperties.size.value - increment;
           this.editorService.gridProperties.size.value = Math.ceil(size / increment) * increment;

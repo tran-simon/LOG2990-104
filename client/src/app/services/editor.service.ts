@@ -125,8 +125,8 @@ export class EditorService {
     }
   }
 
-  findShapeById(id: string): BaseShape | undefined {
-    const matchingShapes = this.shapes.filter((shape) => shape.svgNode.id === id);
+  findShapeById(id: number): BaseShape | undefined {
+    const matchingShapes = this.shapes.filter((shape) => shape.id === id);
     if (matchingShapes.length > 1) {
       throw new Error('Shape Id collision error');
     }

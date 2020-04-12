@@ -1,4 +1,3 @@
-import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { EraserToolProperties } from '@tool-properties/editor-tool-properties/eraser-tool-properties';
 import { EditorUtils } from '@utils/color/editor-utils';
@@ -48,7 +47,7 @@ export class EraserTool extends Tool {
 
     newClonedView.childNodes.forEach((node: SVGElement) => {
       if (node.id.startsWith('shape-')) {
-        const id = node.id.split('-')[1];
+        const id = node.id.split('-').pop() as string;
         EraserUtils.sanitizeAndAssignColorToSvgNode(node, +id + 1);
       }
     });
@@ -137,9 +136,9 @@ export class EraserTool extends Tool {
   }
 
   highlightShapeForId(id: number): void {
-    const shape = this.editorService.findShapeById(DrawingSurfaceComponent.SHAPE_ID_PREFIX + id);
+    const shape = this.editorService.findShapeById(id);
     if (shape) {
-      EraserUtils.highlightShape(shape);
+      shape.highlight(Color.RED, EraserUtils.SELECTION_THICKNESS);
       if (this.isActive) {
         this.erase(shape);
       }
