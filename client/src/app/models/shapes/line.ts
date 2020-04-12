@@ -33,6 +33,7 @@ export class Line extends BaseShape {
     const delta = Coordinate.substract(c, this.origin);
     this.startCoord = Coordinate.add(this.startCoord, delta);
     this.endCoord = Coordinate.add(this.endCoord, delta);
+    this.applyTransform();
   }
 
   get width(): number {
