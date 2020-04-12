@@ -1,6 +1,6 @@
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Color } from 'src/app/utils/color/color';
-import { MathUtil } from 'src/app/utils/math/math-util';
+import { MathUtils } from 'src/app/utils/math/math-utils';
 
 export class EraserUtils {
   static readonly COLOR_DELTA: number = 5;
@@ -10,7 +10,7 @@ export class EraserUtils {
   static colorFromIndex(index: number): Color {
     /* disabling tslint because 6 is the number of 0s to append to a hex color */
     // tslint:disable-next-line:no-magic-numbers
-    const hex: string = MathUtil.toHex(index * this.COLOR_DELTA, 6);
+    const hex: string = MathUtils.toHex(index * this.COLOR_DELTA, 6);
     return Color.hex(hex);
   }
 

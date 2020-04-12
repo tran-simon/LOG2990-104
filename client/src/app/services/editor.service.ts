@@ -3,10 +3,10 @@ import { CommandReceiver } from '@models/commands/command-receiver';
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
 import { ShapeStates } from '@models/shapes/shape-states.enum';
-import { ImageExportService } from '@services/image-export.service';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
+import { ColorFillTool } from '@tools/editing-tools/color-fill-tool/color-fill-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { SelectionTool } from '@tools/editing-tools/selection-tool';
 import { Coordinate } from '@utils/math/coordinate';
@@ -80,6 +80,7 @@ export class EditorService {
     this.tools.set(ToolType.Spray, new SprayTool(this));
     this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
     this.tools.set(ToolType.Eraser, new EraserTool(this));
+    this.tools.set(ToolType.ColorFill, new ColorFillTool(this));
   }
 
   // todo : redo this part entirely
@@ -231,9 +232,5 @@ export class EditorService {
       throw new Error('Shape Id collision error');
     }
     return matchingShapes.length ? matchingShapes[0] : undefined;
-  }
-
-  async viewToCanvas(): Promise<CanvasRenderingContext2D> {
-    return ImageExportService.viewToCanvas(this.view);
   }
 }

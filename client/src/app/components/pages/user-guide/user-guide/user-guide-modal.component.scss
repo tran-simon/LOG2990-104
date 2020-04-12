@@ -6,10 +6,8 @@ mat-sidenav, mat-sidenav-content {
  padding: 16px;
 }
 mat-sidenav {
- background-color: cornflowerblue;
  width: 250px;
  min-height: 90%;
- overflow: scroll;
 }
 #main_content {
  margin-bottom: 75px;
@@ -25,18 +23,32 @@ mat-sidenav {
  bottom: 50px;
 }
 #mat-sidenav-cat {
- display: flex;
- flex-direction: column;
- align-items: center;
- position: fixed;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
 }
 
-
-#mat-sidenav-cat > button {
+.mat-expansion-panel-header{
+  font-weight: 500;
+}
+#mat-sidenav-cat > mat-accordion {
+  width: 100%;
+}
+.btn-title {
+  height: 48px;
  width: 100%;
+ font-weight: 500;
+ text-align: initial;
 }
 .btn-cat {
+  height: 48px;
  width: 100%;
+ font-weight: 100;
+ text-align: initial;
 }
 .header {
   font-family: lato, monospace;
@@ -63,19 +75,19 @@ mat-sidenav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
+  height: 480px;
 }
 #brushContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
+  height: 450px;
 }
 #rectangleContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 370px;
+  height: 400px;
 }
 #colorContent{
   display: flex;
@@ -93,42 +105,55 @@ mat-sidenav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
+  height: 380px;
 }
 #pipetteContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
+  height: 330px;
 }
 #selectionContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
+  height: 330px;
 }
 #ellipseContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 370px;
+  height: 400px;
+}
+#polygoneContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 410px;
 }
 #exportationContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
+  height: 350px;
 }
 #saveContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
+  height: 300px;
 }
+#galerieContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 275px;
+}
+
 #reContent{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 420px;
-  width: 850px;
+  height: 275px;
+  min-width: 1000px;
 }

@@ -45,6 +45,7 @@ export class Rectangle extends BaseShape {
     this._origin = c;
     this.svgNode.setAttribute('x', this._origin.x.toString());
     this.svgNode.setAttribute('y', this._origin.y.toString());
+    this.applyTransform();
   }
 
   set start(c: Coordinate) {

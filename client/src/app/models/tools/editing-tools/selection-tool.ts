@@ -1,5 +1,6 @@
-/* tslint:disable:max-file-line-count */ // todo : distribute functionnality into multiple subtool
+/* tslint:disable:max-file-line-count */ // todo : distribute functionality into multiple sub-tool
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
+import { RotateShapeCommand } from '@models/commands/shape-commands/rotate-shape-command';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
@@ -16,16 +17,22 @@ export class SelectionTool extends SimpleSelectionTool {
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
   private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
   private readonly SELECT_AREA_DASHARRAY: string = '5';
+
   private boundingBox: BoundingBox;
   private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean; // todo - create states
   private moveSelectionMode: boolean;
   private previouslySelectedShapes: BaseShape[];
+
   private keyPresses: boolean[] = [];
   private keyInterval: number;
   private keyTimeout: number;
   private moveCommand: MoveShapeCommand;
+
+  private readonly ROTATION_AMOUNT: number = 15;
+  private shiftKey: boolean;
+  private altKey: boolean;
 
   static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
     return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
@@ -39,6 +46,10 @@ export class SelectionTool extends SimpleSelectionTool {
     super(editorService);
     this.reverseSelectionMode = false;
     this.previouslySelectedShapes = new Array<BaseShape>();
+
+    this.shiftKey = false;
+    this.altKey = false;
+
     this.keyboardListener.addEvents([
       [
         KeyboardListenerService.getIdentifier('ArrowUp'),
@@ -118,6 +129,43 @@ export class SelectionTool extends SimpleSelectionTool {
           this.editorService.deleteSelectedShapes();
         },
       ],
+      // BEGIN ROTATION
+      [
+        KeyboardListenerService.getIdentifier('Shift', false, true),
+        () => {
+          this.shiftKey = true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('Shift', false, false, 'keyup'),
+        () => {
+          this.shiftKey = false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('Alt'),
+        () => {
+          this.altKey = true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('Alt', false, true), // todo - add a wildcard for keyboard events
+        () => {
+          this.altKey = true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('Alt', false, false, 'keyup'),
+        () => {
+          this.altKey = false;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('Alt', false, true, 'keyup'),
+        () => {
+          this.altKey = false;
+        },
+      ],
     ]);
   }
 
@@ -128,7 +176,27 @@ export class SelectionTool extends SimpleSelectionTool {
     this.applyBoundingBox();
   }
 
+  private rotateSelection(angle: number, individual: boolean = false): void {
+    const center = individual ? undefined : this.boundingBox.center;
+    const shapes = new Array<BaseShape>();
+    shapes.push(...this.editorService.selectedShapes);
+    const rotationCommand = new RotateShapeCommand(shapes, this.editorService, angle, center);
+
+    this.editorService.commandReceiver.add(rotationCommand);
+    this.boundingBox.rotation += angle;
+  }
+
+  // END ROTATION
+
   initMouseHandler(): void {
+    this.handleWheel = (e: WheelEvent) => {
+      let angle = this.altKey ? 1 : this.ROTATION_AMOUNT;
+      if (e.deltaY < 0) {
+        angle = -angle;
+      }
+      this.rotateSelection(angle, this.shiftKey);
+    };
+
     this.handleMouseDown = (e: MouseEvent) => {
       if (!this.isActive) {
         this.isActive = true;
@@ -158,6 +226,7 @@ export class SelectionTool extends SimpleSelectionTool {
           this.moveSelectionMode = false;
           this.endMove();
         }
+        this.applyBoundingBox();
       }
     };
   }

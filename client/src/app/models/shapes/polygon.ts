@@ -1,8 +1,21 @@
-import { Coordinate } from '../../utils/math/coordinate';
-import { MathUtil } from '../../utils/math/math-util';
+import { Coordinate } from '@utils/math/coordinate';
+import { MathUtils } from '@utils/math/math-utils';
 import { BaseShape } from './base-shape';
 
 export class Polygon extends BaseShape {
+  static readonly MIN_POLY_EDGES: number = 3;
+  static readonly MAX_POLY_EDGES: number = 12;
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly ORIENTATION_ANGLE: number = (3 * Math.PI) / 2;
+  private readonly points: Coordinate[];
+  private _interiorAngle: number;
+  private _nEdges: number;
+  static coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
+    const minDimension = Math.min(dimensions.x, dimensions.y);
+    const x = minDimension / 2 + (minDimension / 2) * Math.cos(angle);
+    const y = minDimension / 2 + (minDimension / 2) * Math.sin(angle);
+    return new Coordinate(x, y);
+  }
   get copy(): Polygon {
     const copy = new Polygon(this.origin, this.nEdges);
     this.cloneProperties(copy);
@@ -16,7 +29,7 @@ export class Polygon extends BaseShape {
     return this._nEdges;
   }
   set nEdges(nEdges: number) {
-    this._nEdges = nEdges ? MathUtil.fit(nEdges, Polygon.MIN_POLY_EDGES, Polygon.MAX_POLY_EDGES) : Polygon.MIN_POLY_EDGES;
+    this._nEdges = nEdges ? MathUtils.fit(nEdges, Polygon.MIN_POLY_EDGES, Polygon.MAX_POLY_EDGES) : Polygon.MIN_POLY_EDGES;
     this._interiorAngle = (2 * Math.PI) / this.nEdges;
   }
 
@@ -37,6 +50,7 @@ export class Polygon extends BaseShape {
   }
   set origin(c: Coordinate) {
     this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.applyTransform();
   }
 
   constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
@@ -45,15 +59,6 @@ export class Polygon extends BaseShape {
     this.origin = origin;
     this.nEdges = nEdges;
   }
-  static readonly MIN_POLY_EDGES: number = 3;
-  static readonly MAX_POLY_EDGES: number = 12;
-  // tslint:disable-next-line:no-magic-numbers
-  static readonly ORIENTATION_ANGLE: number = (3 * Math.PI) / 2;
-
-  private points: Coordinate[];
-  private _interiorAngle: number;
-
-  private _nEdges: number;
 
   cloneProperties(shape: Polygon): void {
     super.cloneProperties(shape);
@@ -62,19 +67,12 @@ export class Polygon extends BaseShape {
     shape.drawPoints();
   }
 
-  private coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
-    const minDimension = Math.min(dimensions.x, dimensions.y);
-    const x = minDimension / 2 + (minDimension / 2) * Math.cos(angle);
-    const y = minDimension / 2 + (minDimension / 2) * Math.sin(angle);
-    return new Coordinate(x, y);
-  }
-
   private applyPoints(dimensions: Coordinate): void {
     let angle = Polygon.ORIENTATION_ANGLE;
     this.points.length = 0;
     for (let i = 0; i < this.nEdges; i++) {
       angle += this.interiorAngle;
-      this.points.push(this.coordRelativeToInCircle(angle, dimensions));
+      this.points.push(Polygon.coordRelativeToInCircle(angle, dimensions));
     }
   }
 

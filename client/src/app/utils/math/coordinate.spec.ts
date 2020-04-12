@@ -71,6 +71,6 @@ describe('Coordinate', () => {
     const coord1: Coordinate = new Coordinate(10, 5);
     const coord2: Coordinate = new Coordinate(8, 3);
     const expectedValue: number = Math.PI / 4;
-    expect(Coordinate.angle(coord1, coord2)).toEqual(expectedValue);
+    expect(Coordinate.absAngle(coord1, coord2)).toEqual(expectedValue);
   });
 });

@@ -1,14 +1,13 @@
 import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { EraserToolProperties } from '@tool-properties/editor-tool-properties/eraser-tool-properties';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { RemoveShapesCommand } from 'src/app/models/commands/shape-commands/remove-shapes-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { EraserUtils } from 'src/app/models/tools/editing-tools/eraser-tool/eraser-utils';
-import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { EditorService } from 'src/app/services/editor.service';
-import { ImageExportService } from 'src/app/services/image-export.service';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -55,7 +54,7 @@ export class EraserTool extends Tool {
 
     this.clonedView = newClonedView;
 
-    ImageExportService.viewToCanvas(this.editorService.view, this.clonedView).then((ctx) => {
+    EditorUtils.viewToCanvas(this.editorService.view, this.clonedView).then((ctx) => {
       if (ctx) {
         ctx.imageSmoothingEnabled = false;
       }
@@ -72,7 +71,7 @@ export class EraserTool extends Tool {
     if (this.ctx) {
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
-          const color = PipetteTool.colorAtPointInCanvas(this.ctx, new Coordinate(x + i, y + j));
+          const color = EditorUtils.colorAtPointInCanvas(this.ctx, new Coordinate(x + i, y + j));
 
           /* ignore the color if there's red (to avoid issues with antialiasing) */
           if (color.r > 0) {

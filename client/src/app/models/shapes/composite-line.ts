@@ -30,6 +30,7 @@ export class CompositeLine extends BaseShape {
     shapes.concat(this.junctionArray as BaseShape[]).forEach((shape) => {
       shape.origin = Coordinate.add(shape.origin, delta);
     });
+    this.applyTransform();
   }
 
   get width(): number {

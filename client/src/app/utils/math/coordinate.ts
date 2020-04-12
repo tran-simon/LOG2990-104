@@ -67,7 +67,16 @@ export class Coordinate {
     return Math.min(Math.abs(c1.x - c2.x), Math.abs(c1.y - c2.y));
   }
 
-  static angle(c1: Coordinate, c2: Coordinate): number {
+  static distance(c1: Coordinate, c2: Coordinate): number {
+    return Math.sqrt(Math.pow(c1.x - c2.x, 2) + Math.pow(c1.y - c2.y, 2));
+  }
+
+  static absAngle(c1: Coordinate, c2: Coordinate): number {
     return Math.atan2(c1.y - c2.y, Math.abs(c1.x - c2.x));
+  }
+
+  static angle(c1: Coordinate, c2: Coordinate): number {
+    // todo - rename
+    return Math.atan2(c1.y - c2.y, c1.x - c2.x);
   }
 }

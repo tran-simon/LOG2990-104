@@ -23,6 +23,7 @@ export class BoundingBox extends BaseShape {
   set origin(c: Coordinate) {
     this.outline.origin = c;
     this.updateControlPoints();
+    this.applyTransform();
   }
 
   get width(): number {

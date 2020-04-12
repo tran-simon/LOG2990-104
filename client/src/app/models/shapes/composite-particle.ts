@@ -9,7 +9,10 @@ export class CompositeParticle extends BaseShape {
     this.cloneProperties(copy);
     return copy;
   }
+  static readonly PARTICLE_RADIUS: number = 4;
+  private readonly particles: Rectangle[];
 
+  private _radius: number;
   get radius(): number {
     return this._radius;
   }
@@ -34,6 +37,7 @@ export class CompositeParticle extends BaseShape {
   }
   set origin(c: Coordinate) {
     this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.applyTransform();
   }
 
   constructor(radius: number = 1) {
@@ -41,9 +45,6 @@ export class CompositeParticle extends BaseShape {
     this.particles = [];
     this.radius = radius;
   }
-  private readonly particles: Rectangle[];
-
-  private _radius: number;
 
   cloneProperties(shape: CompositeParticle): void {
     super.cloneProperties(shape);
@@ -63,8 +64,8 @@ export class CompositeParticle extends BaseShape {
 
   addParticle(c: Coordinate = new Coordinate(), frequency: number = 1): void {
     let particle: Rectangle;
-    for (let i = 0; i < frequency; i++) {
-      particle = new Rectangle(this.genRandomPosition(c), this.thickness);
+    for (let i = 0; i < (frequency || 1); i++) {
+      particle = new Rectangle(this.genRandomPosition(c), CompositeParticle.PARTICLE_RADIUS);
       particle.primaryColor = this.primaryColor;
       particle.secondaryColor = this.primaryColor;
       this.particles.push(particle);

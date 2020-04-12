@@ -39,6 +39,7 @@ export class Ellipse extends BaseShape {
     this._origin = c;
     this.svgNode.setAttribute('cx', this.center.x.toString());
     this.svgNode.setAttribute('cy', this.center.y.toString());
+    this.applyTransform();
   }
 
   get width(): number {
