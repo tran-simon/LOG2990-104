@@ -6,6 +6,7 @@ export type MouseEventAction = EventAction<MouseEvent>;
 @Injectable()
 export class MouseListenerService extends AbstractEventListenerService<MouseEvent> {
   static readonly EVENT_DBLCLICK: string = 'dblclick';
+  static readonly EVENT_WHEEL: string = 'wheel';
   static readonly EVENT_MOUSEMOVE: string = 'mousemove';
   static readonly EVENT_MOUSEDOWN: string = 'mousedown';
   static readonly EVENT_MOUSEUP: string = 'mouseup';
@@ -19,6 +20,7 @@ export class MouseListenerService extends AbstractEventListenerService<MouseEven
     const mouseListenerService = new MouseListenerService();
     mouseListenerService.addEvents([
       [this.EVENT_DBLCLICK, handler.handleDblClick],
+      [this.EVENT_WHEEL, handler.handleWheel],
       [this.EVENT_MOUSEMOVE, handler.handleMouseMove],
       [this.EVENT_MOUSEDOWN, handler.handleMouseDown],
       [this.EVENT_MOUSEUP, handler.handleMouseUp],

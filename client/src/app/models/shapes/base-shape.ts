@@ -1,4 +1,5 @@
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
+import { MathUtils } from '@utils/math/math-utils';
 import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -7,6 +8,7 @@ export abstract class BaseShape {
   readonly svgNode: SVGElement;
   id: number;
   private _offset: Coordinate;
+  private _rotation: number;
 
   thickness: number;
   strokeWidth: number;
@@ -29,12 +31,22 @@ export abstract class BaseShape {
     this.applyTransform();
   }
 
+  get rotation(): number {
+    return this._rotation;
+  }
+
+  set rotation(angle: number) {
+    this._rotation = angle;
+    this.applyTransform();
+  }
+
   get center(): Coordinate {
     return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
   }
 
   set center(c: Coordinate) {
     this.origin = new Coordinate(c.x - this.width / 2, c.y - this.height / 2);
+    this.applyTransform();
   }
 
   get end(): Coordinate {
@@ -44,6 +56,7 @@ export abstract class BaseShape {
   constructor(type: string) {
     this.svgNode = document.createElementNS('http://www.w3.org/2000/svg', type);
     this._offset = new Coordinate();
+    this._rotation = 0;
     this.thickness = 1;
     this.strokeWidth = 1;
     this.secondaryColor = Color.BLACK;
@@ -53,8 +66,15 @@ export abstract class BaseShape {
     this.updateProperties();
   }
 
-  private applyTransform(): void {
-    this.svgNode.setAttribute('transform', 'translate(' + this.offset.x + ' ' + this.offset.y + ')');
+  protected applyTransform(): void {
+    const angle = -MathUtils.toRad(this.rotation);
+    const offsetX = Math.cos(angle) * this.offset.x + Math.sin(angle) * this.offset.y;
+    const offsetY = Math.cos(angle) * this.offset.y - Math.sin(angle) * this.offset.x;
+    let transformStr = `translate(${offsetX},${offsetY})`;
+    if (this.center && this.rotation) {
+      transformStr += `,rotate(${this.rotation},${this.center.x},${this.center.y})`;
+    }
+    this.svgNode.setAttribute('transform', transformStr);
   }
 
   updateProperties(): void {
