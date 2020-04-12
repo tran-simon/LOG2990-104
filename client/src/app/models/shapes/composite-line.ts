@@ -36,13 +36,30 @@ export class CompositeLine extends BaseShape {
     return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y;
   }
 
-  constructor(initCoord: Coordinate = new Coordinate()) {
+  constructor(initCoord?: Coordinate) {
     super('g');
 
     this.lineArray = [];
     this.junctionArray = [];
 
-    this.addPoint(initCoord);
+    if(initCoord) {
+      this.addPoint(initCoord);
+    }
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    data.junctionArray.forEach((j, index) => {
+      const junction = new Ellipse();
+      junction.readElement(JSON.stringify(j));      // todo - fix
+      if(index === 0) {
+        this.addPoint(junction.center);
+      } else {
+        this.updateCurrentCoord(junction.center);
+        this.confirmPoint();
+      }
+    });
   }
 
   updateProperties(): void {
@@ -116,7 +133,6 @@ export class CompositeLine extends BaseShape {
 
   addJunction(c: Coordinate): void {
     const junction = new Ellipse(c);
-
     this.junctionArray.push(junction);
     this.svgNode.appendChild(junction.svgNode);
   }

@@ -17,7 +17,7 @@ export class SprayTool extends CreatorTool {
   startShape(): void {
     super.startShape();
     this.interval = window.setInterval(() => {
-      this.shape.addParticle(this.mousePosition, this.toolProperties.frequency.value);
+      this.shape.spray(this.mousePosition, this.toolProperties.frequency.value);
     }, SprayTool.INTERVAL_REFRESH_VALUE);
   }
 

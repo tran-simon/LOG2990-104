@@ -40,10 +40,21 @@ export class Path extends BaseShape {
     }
   }
 
-  constructor(c: Coordinate) {
+  constructor(c?: Coordinate) {
     super('path');
     this.points = new Array<Coordinate>();
-    this.addPoint(c);
+    if(c) {
+      this.addPoint(c);
+    }
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.points.length = 0;
+    data.points.forEach((p) => {
+      this.addPoint(p);
+    });
   }
 
   addPoint(c: Coordinate): void {

@@ -48,4 +48,11 @@ export class Line extends BaseShape {
     this.startCoord = startCoord;
     this.endCoord = endCoord;
   }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.startCoord = data._startCoord;
+    this.endCoord = data._endCoord;
+  }
 }

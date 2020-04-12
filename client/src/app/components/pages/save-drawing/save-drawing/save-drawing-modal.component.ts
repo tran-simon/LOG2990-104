@@ -42,7 +42,7 @@ export class SaveDrawingModalComponent extends AbstractModalComponent {
     const drawing = new Drawing(
       this.name,
       tagValues,
-      this.editorService.view.svg.innerHTML,
+      this.editorService.exportShapes(),
       this.editorService.view.color.hex,
       this.editorService.view.width,
       this.editorService.view.height,

@@ -222,7 +222,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.editorService.view = this.drawingSurface;
     if (this.drawingId) {
       this.apiService.getDrawingById(this.drawingId).then((drawing) => {
-        this.editorService.view.svg.innerHTML = drawing.data;
+        Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
+          const type = (shapeData as BaseShape).type;
+          const shape = EditorService.createShape(type);
+          shape.readElement(JSON.stringify(shapeData));   // todo - fix
+          this.editorService.addShapeToBuffer(shape);
+        });
+        this.editorService.applyShapesBuffer();
       });
     }
   }

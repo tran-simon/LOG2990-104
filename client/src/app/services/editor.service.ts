@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CommandReceiver } from '@models/commands/command-receiver';
+import { BoundingBox } from '@models/shapes/bounding-box';
+import { BrushPath } from '@models/shapes/brush-path';
+import { CompositeLine } from '@models/shapes/composite-line';
+import { CompositeParticle } from '@models/shapes/composite-particle';
+import { Ellipse } from '@models/shapes/ellipse';
+import { Line } from '@models/shapes/line';
+import { Path } from '@models/shapes/path';
+import { Polygon } from '@models/shapes/polygon';
+import { Rectangle } from '@models/shapes/rectangle';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
@@ -48,6 +57,37 @@ export class EditorService {
     this.previewShapes = new Array<BaseShape>();
     this.selectedShapes = new Array<BaseShape>();
     this.gridProperties = new GridProperties();
+  }
+
+  static createShape(type: string): BaseShape {  // todo - make standalone class to reduce dependencies?
+    switch(type) {
+      case 'BoundingBox':
+        return new BoundingBox();
+      case 'BrushPath':
+        return new BrushPath();
+      case 'CompositeLine':
+        return new CompositeLine();
+      case 'CompositeParticle':
+        return new CompositeParticle();
+      case 'Ellipse':
+        return new Ellipse();
+      case 'Line':
+        return new Line();
+      case 'Path':
+        return new Path();
+      case 'Polygon':
+        return new Polygon();
+      case 'Rectangle':
+        return new Rectangle();
+      default :
+        throw new Error('Shape type not found');
+    }
+  }
+
+  exportShapes(): string {
+    return JSON.stringify(this.shapes, (key, value) => {
+      return key === 'svgNode' ? undefined : value;
+    });
   }
 
   private initTools(): void {

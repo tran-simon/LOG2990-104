@@ -4,8 +4,8 @@ import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
   private readonly particles: Rectangle[];
-
   private _radius: number;
+
   get radius(): number {
     return this._radius;
   }
@@ -38,6 +38,16 @@ export class CompositeParticle extends BaseShape {
     this.radius = radius;
   }
 
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    data.particles.forEach((p) => {
+      const particle = new Rectangle();
+      particle.readElement(JSON.stringify(p));      // todo - fix
+      this.addParticle(particle.center);
+    });
+  }
+
   private genRandomPosition(c: Coordinate): Coordinate {
     const angle = Math.random() * (2 * Math.PI);
     const x = c.x + Math.random() * this.radius * Math.cos(angle);
@@ -45,16 +55,19 @@ export class CompositeParticle extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  addParticle(c: Coordinate = new Coordinate(), frequency: number = 1): void {
-    let particle: Rectangle;
+  spray(center: Coordinate = new Coordinate(), frequency: number = 1): void {
     for (let i = 0; i < frequency; i++) {
-      particle = new Rectangle(this.genRandomPosition(c), this.thickness);
-      particle.primaryColor = this.primaryColor;
-      particle.secondaryColor = this.primaryColor;
-      this.particles.push(particle);
-      this.svgNode.appendChild(particle.svgNode);
-      particle.updateProperties();
+      this.addParticle(this.genRandomPosition(center));
     }
+  }
+
+  addParticle(c: Coordinate): void {
+    const particle = new Rectangle(c, this.thickness);
+    particle.primaryColor = this.primaryColor;
+    particle.secondaryColor = this.primaryColor;
+    this.particles.push(particle);
+    this.svgNode.appendChild(particle.svgNode);
+    particle.updateProperties();
   }
 
   updateProperties(): void {

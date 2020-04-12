@@ -48,4 +48,12 @@ export class Ellipse extends BaseShape {
     this.radiusY = ry;
     this.center = center;
   }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.radiusX = data._radiusX;
+    this.radiusY = data._radiusY;
+    this.origin = data._origin;
+  }
 }
