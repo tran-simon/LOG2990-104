@@ -4,7 +4,7 @@ import { CompositeParticle } from '../../../shapes/composite-particle';
 import { CreatorTool } from '../creator-tool';
 
 export class SprayTool extends CreatorTool {
-  static readonly INTERVAL_REFRESH_VALUE: number = 15;
+  static readonly INTERVAL_REFRESH_VALUE: number = 20;
   shape: CompositeParticle;
   private interval: number;
   toolProperties: SprayToolProperties;
@@ -16,6 +16,7 @@ export class SprayTool extends CreatorTool {
 
   startShape(): void {
     super.startShape();
+    this.shape.addParticle(this.mousePosition, this.toolProperties.frequency.value);
     this.interval = window.setInterval(() => {
       this.shape.addParticle(this.mousePosition, this.toolProperties.frequency.value);
     }, SprayTool.INTERVAL_REFRESH_VALUE);

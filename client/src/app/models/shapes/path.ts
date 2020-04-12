@@ -38,6 +38,7 @@ export class Path extends BaseShape {
         this.addPoint(point);
       });
     }
+    this.applyTransform();
   }
 
   constructor(c: Coordinate) {

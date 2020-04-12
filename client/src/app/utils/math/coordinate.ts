@@ -1,13 +1,13 @@
 import { Direction } from '@utils/math/direction.enum';
 
 export class Coordinate {
+  readonly x: number;
+  readonly y: number;
+
   constructor(x: number = 0.0, y: number = 0.0) {
     this.x = x;
     this.y = y;
   }
-
-  readonly x: number;
-  readonly y: number;
 
   static add(c1: Coordinate, c2: Coordinate): Coordinate {
     return new Coordinate(c1.x + c2.x, c1.y + c2.y);
@@ -72,8 +72,17 @@ export class Coordinate {
     return Math.min(Math.abs(c1.x - c2.x), Math.abs(c1.y - c2.y));
   }
 
-  static angle(c1: Coordinate, c2: Coordinate): number {
+  static distance(c1: Coordinate, c2: Coordinate): number {
+    return Math.sqrt(Math.pow(c1.x - c2.x, 2) + Math.pow(c1.y - c2.y, 2));
+  }
+
+  static absAngle(c1: Coordinate, c2: Coordinate): number {
     return Math.atan2(c1.y - c2.y, Math.abs(c1.x - c2.x));
+  }
+
+  static angle(c1: Coordinate, c2: Coordinate): number {
+    // todo - rename
+    return Math.atan2(c1.y - c2.y, c1.x - c2.x);
   }
 
   inBounds(upper: Coordinate, lower: Coordinate = new Coordinate()): boolean {

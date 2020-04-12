@@ -78,7 +78,7 @@ export class LineTool extends CreatorTool {
 
   determineLockMethod(): (c: Coordinate) => Coordinate {
     if (this.isActive) {
-      const angle = Math.abs(Coordinate.angle(this.shape.currentLine.startCoord, this.shape.currentLine.endCoord));
+      const angle = Math.abs(Coordinate.absAngle(this.shape.currentLine.startCoord, this.shape.currentLine.endCoord));
       if (angle <= LineTool.MAX_HORIZONTAL_LOCK_ANGLE) {
         return this.calculateHorizontalLock;
       } else if (angle <= LineTool.MAX_DIAGONAL_LOCK_ANGLE) {
