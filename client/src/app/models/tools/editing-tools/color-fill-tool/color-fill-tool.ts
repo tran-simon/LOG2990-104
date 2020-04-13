@@ -43,9 +43,7 @@ export class ColorFillTool extends Tool {
         .finally(() => {
           const shape = new CompositeParticle();
           shape.primaryColor = this.replacementColor;
-          this.pointsToColorize.forEach((point) => {
-            shape.addParticle(point, 1);
-          });
+          this.pointsToColorize.forEach(shape.addParticle, shape);
 
           this.editorService.commandReceiver.add(new AddShapesCommand(shape, this.editorService));
 

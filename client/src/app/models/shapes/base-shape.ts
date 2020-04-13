@@ -58,11 +58,11 @@ export abstract class BaseShape {
     return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
   }
 
-  constructor(svgType: string) {
-    this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, svgType);
+  constructor(svgType: string, id?: number) {
+    this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, svgType) as SVGElement;
     this.svgNode.setAttribute(BaseShape.TYPE_ATTRIBUTE, this.constructor.name);
     this.type = this.constructor.name;
-    this.id = BaseShape.SHAPE_ID++;
+    this.id = id ? id : BaseShape.SHAPE_ID++;
     this.svgNode.id = `shape-${svgType}-${this.id}`;
 
     this._offset = new Coordinate();
@@ -78,7 +78,6 @@ export abstract class BaseShape {
 
   readElement(json: string): void {
     const data = JSON.parse(json) as this;
-    this.id = data.id;
     this.offset = data._offset;
     this.rotation = data._rotation;
 

@@ -41,8 +41,8 @@ export class Path extends BaseShape {
     this.applyTransform();
   }
 
-  constructor(c?: Coordinate) {
-    super('path');
+  constructor(c?: Coordinate, id?: number) {
+    super('path', id);
     this.points = new Array<Coordinate>();
     if (c) {
       this.addPoint(c);

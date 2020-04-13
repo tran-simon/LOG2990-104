@@ -1,20 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CommandReceiver } from '@models/commands/command-receiver';
-import { BoundingBox } from '@models/shapes/bounding-box';
-import { BrushPath } from '@models/shapes/brush-path';
-import { CompositeLine } from '@models/shapes/composite-line';
-import { CompositeParticle } from '@models/shapes/composite-particle';
-import { Ellipse } from '@models/shapes/ellipse';
-import { Line } from '@models/shapes/line';
-import { Path } from '@models/shapes/path';
-import { Polygon } from '@models/shapes/polygon';
-import { Rectangle } from '@models/shapes/rectangle';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
 import { ColorFillTool } from '@tools/editing-tools/color-fill-tool/color-fill-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { SelectionTool } from '@tools/editing-tools/selection-tool';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
@@ -62,32 +54,6 @@ export class EditorService {
     this.loading = false;
   }
 
-  static createShape(type: string): BaseShape {
-    // todo - make standalone class to reduce dependencies?
-    switch (type) {
-      case 'BoundingBox':
-        return new BoundingBox();
-      case 'BrushPath':
-        return new BrushPath();
-      case 'CompositeLine':
-        return new CompositeLine();
-      case 'CompositeParticle':
-        return new CompositeParticle();
-      case 'Ellipse':
-        return new Ellipse();
-      case 'Line':
-        return new Line();
-      case 'Path':
-        return new Path();
-      case 'Polygon':
-        return new Polygon();
-      case 'Rectangle':
-        return new Rectangle();
-      default:
-        throw new Error('Shape type not found');
-    }
-  }
-
   exportDrawing(): string {
     return JSON.stringify(this.shapes, (key, value) => {
       return key === 'svgNode' ? undefined : value;
@@ -97,8 +63,8 @@ export class EditorService {
   importDrawing(drawingId: string, apiService: APIService): void {
     apiService.getDrawingById(drawingId).then((drawing) => {
       Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
-        const type = (shapeData as BaseShape).type;
-        const shape = EditorService.createShape(type);
+        const { type, id } = shapeData as BaseShape;
+        const shape = EditorUtils.createShape(type, id);
         shape.readElement(JSON.stringify(shapeData)); // todo - fix
         this.addShapeToBuffer(shape);
       });

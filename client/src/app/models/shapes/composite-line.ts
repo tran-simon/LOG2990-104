@@ -37,8 +37,8 @@ export class CompositeLine extends BaseShape {
     return this.junctionArray.length > 0 ? Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y : 0;
   }
 
-  constructor(initCoord?: Coordinate) {
-    super('g');
+  constructor(initCoord?: Coordinate, id?: number) {
+    super('g', id);
 
     this.lineArray = [];
     this.junctionArray = [];

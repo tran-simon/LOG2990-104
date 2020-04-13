@@ -45,8 +45,8 @@ export class Polygon extends BaseShape {
     this.applyTransform();
   }
 
-  constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
-    super('polygon');
+  constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES, id?: number) {
+    super('polygon', id);
     this.points = new Array<Coordinate>();
     this.origin = origin;
     this.nEdges = nEdges;

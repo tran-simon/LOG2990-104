@@ -30,8 +30,8 @@ export class BrushPath extends Path {
     }
   }
 
-  constructor(c: Coordinate = new Coordinate()) {
-    super(c);
+  constructor(c: Coordinate = new Coordinate(), id?: number) {
+    super(c, id);
     this._filter = BrushTextureType.TEXTURE_1;
   }
 

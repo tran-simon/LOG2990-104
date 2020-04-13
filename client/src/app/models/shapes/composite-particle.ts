@@ -34,8 +34,8 @@ export class CompositeParticle extends BaseShape {
     this.applyTransform();
   }
 
-  constructor(radius: number = 1) {
-    super('g');
+  constructor(radius: number = 1, id?: number) {
+    super('g', id);
     this.particles = [];
     this.radius = radius;
   }
