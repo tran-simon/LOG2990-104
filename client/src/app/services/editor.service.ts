@@ -108,15 +108,18 @@ export class EditorService {
     });
   }
 
-  importDrawingById(drawingId: string, apiService: APIService): void {
-    apiService.getDrawingById(drawingId).then((drawing) => {
-      Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
-        const type = (shapeData as BaseShape).type;
-        const shape = EditorService.createShape(type);
-        shape.readElement(JSON.stringify(shapeData)); // todo - fix
-        this.addShapeToBuffer(shape);
+  async importDrawingById(drawingId: string, apiService: APIService): Promise<void> {
+    return new Promise<void>((resolve) => {
+      apiService.getDrawingById(drawingId).then((drawing) => {
+        Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
+          const type = (shapeData as BaseShape).type;
+          const shape = EditorService.createShape(type);
+          shape.readElement(JSON.stringify(shapeData)); // todo - fix
+          this.addShapeToBuffer(shape);
+        });
+        this.applyShapesBuffer();
+        resolve();
       });
-      this.applyShapesBuffer();
     });
   }
 

@@ -226,11 +226,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.editorService.view = this.drawingSurface;
     if (this.drawingId === LocalSaveService.LOCAL_DRAWING_ID) {
       this.editorService.importLocalDrawing();
+      this.editorService.saveLocally();
     } else if (this.drawingId) {
-      this.editorService.importDrawingById(this.drawingId, this.apiService);
+      this.editorService.importDrawingById(this.drawingId, this.apiService).then(() => {
+        this.editorService.saveLocally();
+      });
     }
-    this.editorService.saveLocally();
-    console.log(this.editorService.shapes); // BUG when loading drawing from gallery, exiting and continuing
   }
 
   handleMouseEvent(e: MouseEvent): void {
