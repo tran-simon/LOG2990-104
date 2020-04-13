@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Drawing } from '@models/drawing';
 import { APIService } from '@services/api.service';
 import { LocalSaveService } from '@services/localsave.service';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
@@ -36,6 +37,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceWidth: number;
   surfaceHeight: number;
   drawingId: string;
+  drawing: Drawing;
   modalTypes: typeof ModalType;
 
   constructor(
@@ -43,7 +45,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     public editorService: EditorService,
     private dialog: ModalDialogService,
     private keyboardListener: KeyboardListenerService,
-    private localSaveService: LocalSaveService,
     private apiService: APIService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
@@ -221,11 +222,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.editorService.resetDrawing();
     this.editorService.view = this.drawingSurface;
-    if (this.drawingId) {
-      this.editorService.importDrawing(this.drawingId, this.apiService);
+    if (this.drawingId === LocalSaveService.LOCAL_DRAWING_ID) {
+      this.editorService.importLocalDrawing();
+    } else if (this.drawingId) {
+      this.editorService.importDrawingById(this.drawingId, this.apiService);
     }
-    this.localSaveService.takeSnapchot();
+    this.editorService.saveLocally();
+    console.log(this.editorService.shapes); // BUG when loading drawing from gallery, exiting and continuing
   }
 
   handleMouseEvent(e: MouseEvent): void {
@@ -233,6 +238,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.currentTool.handleMouseEvent(e);
     }
   }
+
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;
   }

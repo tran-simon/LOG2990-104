@@ -1,28 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Drawing } from '@models/drawing';
-import { EditorService } from './editor.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalSaveService {
+  static readonly LOCAL_DRAWING_ID: string = 'localsave';
+
   private _drawing: Drawing;
 
-  constructor(private editorService: EditorService) {}
+  takeSnapshot(drawing: Drawing): void {
+    localStorage.setItem(LocalSaveService.LOCAL_DRAWING_ID, JSON.stringify(drawing));
+  }
 
-  takeSnapchot(): void {
-    this._drawing = new Drawing(
-      'localsave',
-      [],
-      '', // this.editor.exportDrawing(),
-      this.editorService.view.color.toString(),
-      this.editorService.view.width,
-      this.editorService.view.height,
-      '',
-    );
+  loadDrawing(): void {
+    const localsave: string | null = localStorage.getItem(LocalSaveService.LOCAL_DRAWING_ID);
+    if (localsave) {
+      this._drawing = JSON.parse(localsave) as Drawing;
+    }
   }
 
   get drawing(): Drawing {
+    this.loadDrawing();
     return this._drawing;
   }
 }

@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { EditorParams } from '@components/pages/editor/editor/editor-params';
 import { LocalSaveService } from '@services/localsave.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
@@ -62,6 +63,12 @@ export class HomeComponent {
   }
 
   continueDrawing(): void {
-    console.log(this.localSaveService.drawing);
+    const params: EditorParams = {
+      width: this.localSaveService.drawing.width.toString(),
+      height: this.localSaveService.drawing.height.toString(),
+      color: this.localSaveService.drawing.color,
+      id: LocalSaveService.LOCAL_DRAWING_ID,
+    };
+    this.router.navigate(['/'], { skipLocationChange: true }).then(() => this.router.navigate(['edit', params]));
   }
 }

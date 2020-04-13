@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CommandReceiver } from '@models/commands/command-receiver';
+import { Drawing } from '@models/drawing';
 import { BoundingBox } from '@models/shapes/bounding-box';
 import { BrushPath } from '@models/shapes/brush-path';
 import { CompositeLine } from '@models/shapes/composite-line';
@@ -28,6 +29,7 @@ import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
 import { APIService } from './api.service';
+import { LocalSaveService } from './localsave.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,8 +49,11 @@ export class EditorService {
     return this._commandReceiver;
   }
 
-  constructor(public colorsService: ColorsService) {
+  constructor(public colorsService: ColorsService, private localSaveService: LocalSaveService) {
     this._commandReceiver = new CommandReceiver();
+    this.commandReceiver.on('action', () => {
+      this.saveLocally();
+    });
 
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
@@ -86,13 +91,24 @@ export class EditorService {
     }
   }
 
+  resetDrawing(): void {
+    this.shapesBuffer.length = 0;
+    this.shapes.length = 0;
+    this.previewShapes.length = 0;
+    this.selectedShapes.length = 0;
+
+    setTimeout(() => {
+      this.commandReceiver.clear();
+    });
+  }
+
   exportDrawing(): string {
     return JSON.stringify(this.shapes, (key, value) => {
       return key === 'svgNode' ? undefined : value;
     });
   }
 
-  importDrawing(drawingId: string, apiService: APIService): void {
+  importDrawingById(drawingId: string, apiService: APIService): void {
     apiService.getDrawingById(drawingId).then((drawing) => {
       Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
         const type = (shapeData as BaseShape).type;
@@ -102,6 +118,22 @@ export class EditorService {
       });
       this.applyShapesBuffer();
     });
+  }
+
+  importLocalDrawing(): void {
+    Object.values(JSON.parse(this.localSaveService.drawing.data)).forEach((shapeData) => {
+      const type = (shapeData as BaseShape).type;
+      const shape = EditorService.createShape(type);
+      shape.readElement(JSON.stringify(shapeData)); // todo - fix
+      this.addShapeToBuffer(shape);
+    });
+    this.applyShapesBuffer();
+  }
+
+  saveLocally(): void {
+    this.localSaveService.takeSnapshot(
+      new Drawing('localsave', [], this.exportDrawing(), this.view.color.hex, this.view.width, this.view.height, ''),
+    );
   }
 
   private initTools(): void {
