@@ -1,5 +1,5 @@
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
-import { MaskedShape } from '@models/shapes/masked-shape';
+import { CompositeParticle } from '@models/shapes/composite-particle';
 import { EditorService } from '@services/editor.service';
 import { FillToolProperties } from '@tool-properties/editor-tool-properties/fill-tool-properties';
 import { ColorFillUtils, ColorGetter, ColorSetter } from '@tools/editing-tools/color-fill-tool/color-fill-utils';
@@ -41,30 +41,17 @@ export class ColorFillTool extends Tool {
           this.floodFill();
         })
         .finally(() => {
-          this.applyShape();
+          const shape = new CompositeParticle();
+          shape.primaryColor = this.replacementColor;
+          this.pointsToColorize.forEach((point) => {
+            shape.addParticle(point, 1);
+          });
+
+          this.editorService.commandReceiver.add(new AddShapesCommand(shape, this.editorService));
+
           this.editorService.loading = false;
         });
     };
-  }
-
-  private applyShape(): void {
-    const maskCanvas = document.createElement('CANVAS') as HTMLCanvasElement;
-    if (this.minPoint && this.maxPoint) {
-      maskCanvas.width = this.maxPoint.x - this.minPoint.x;
-      maskCanvas.height = this.maxPoint.y - this.minPoint.y;
-      const context = maskCanvas.getContext('2d') as CanvasRenderingContext2D;
-
-      context.fillStyle = Color.WHITE.rgbString;
-      this.pointsToColorize.forEach((point) => {
-        const coord = Coordinate.subtract(point, this.minPoint as Coordinate);
-        context.fillRect(coord.x, coord.y, 1, 1);
-      });
-
-      const maskedShape = MaskedShape.fromCanvas(maskCanvas, this.minPoint);
-      maskedShape.primaryColor = this.replacementColor;
-      maskedShape.updateProperties();
-      this.editorService.commandReceiver.add(new AddShapesCommand(maskedShape, this.editorService));
-    }
   }
 
   private floodFill(): void {
