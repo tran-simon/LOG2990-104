@@ -47,7 +47,7 @@ export class EditorService {
     return this._commandReceiver;
   }
 
-  constructor(public colorsService: ColorsService, private apiService: APIService) {
+  constructor(public colorsService: ColorsService) {
     this._commandReceiver = new CommandReceiver();
 
     this.tools = new Map<ToolType, Tool>();
@@ -91,8 +91,8 @@ export class EditorService {
     });
   }
 
-  importDrawing(drawingId: string): void {
-    this.apiService.getDrawingById(drawingId).then((drawing) => {
+  importDrawing(drawingId: string, apiService: APIService): void {
+    apiService.getDrawingById(drawingId).then((drawing) => {
       Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
         const type = (shapeData as BaseShape).type;
         const shape = EditorService.createShape(type);

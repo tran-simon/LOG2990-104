@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { APIService } from '@services/api.service';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
@@ -41,6 +42,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     public editorService: EditorService,
     private dialog: ModalDialogService,
     private keyboardListener: KeyboardListenerService,
+    private apiService: APIService
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
@@ -219,7 +221,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.editorService.view = this.drawingSurface;
     if (this.drawingId) {
-      this.editorService.importDrawing(this.drawingId);
+      this.editorService.importDrawing(this.drawingId, this.apiService);
     }
   }
 
