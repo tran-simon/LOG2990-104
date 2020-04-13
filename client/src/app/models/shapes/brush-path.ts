@@ -36,9 +36,8 @@ export class BrushPath extends Path {
     this._filter = BrushTextureType.TEXTURE_1;
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readElement(data: BrushPath): void {
+    super.readElement(data);
     this.filter = data._filter;
     this.applyTransform();
   }

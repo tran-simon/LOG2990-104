@@ -70,8 +70,7 @@ export abstract class BaseShape {
     this.updateProperties();
   }
 
-  readElement(json: string): void {
-    const data = JSON.parse(json) as this;
+  readElement(data: BaseShape): void {
     this.id = data.id;
     this.offset = data._offset;
     this.rotation = data._rotation;

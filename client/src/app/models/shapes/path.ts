@@ -49,9 +49,8 @@ export class Path extends BaseShape {
     }
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readElement(data: Path): void {
+    super.readElement(data);
     this.points.length = 0;
     data.points.forEach((p) => {
       this.addPoint(p);

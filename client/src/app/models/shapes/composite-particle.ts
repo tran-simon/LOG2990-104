@@ -40,12 +40,11 @@ export class CompositeParticle extends BaseShape {
     this.radius = radius;
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readElement(data: CompositeParticle): void {
+    super.readElement(data);
     data.particles.forEach((p) => {
       const particle = new Rectangle();
-      particle.readElement(JSON.stringify(p));      // todo - fix
+      particle.readElement(p);
       this.addParticle(particle.center);
     });
     this.applyTransform();

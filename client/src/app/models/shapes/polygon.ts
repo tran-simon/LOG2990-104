@@ -59,9 +59,8 @@ export class Polygon extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readElement(data: Polygon): void {
+    super.readElement(data);
     this.points.length = 0;
     this.points.push(...data.points);
     this.drawPoints();

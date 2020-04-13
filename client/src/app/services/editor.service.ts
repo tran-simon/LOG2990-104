@@ -96,7 +96,7 @@ export class EditorService {
       Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
         const type = (shapeData as BaseShape).type;
         const shape = EditorService.createShape(type);
-        shape.readElement(JSON.stringify(shapeData));   // todo - fix
+        shape.readElement(shapeData as BaseShape);
         this.addShapeToBuffer(shape);
       });
       this.applyShapesBuffer();

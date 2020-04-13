@@ -48,12 +48,11 @@ export class CompositeLine extends BaseShape {
     }
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readElement(data: CompositeLine): void {
+    super.readElement(data);
     data.junctionArray.forEach((j, index) => {
       const junction = new Ellipse();
-      junction.readElement(JSON.stringify(j));      // todo - fix
+      junction.readElement(j);
       if(index === 0) {
         this.addPoint(junction.center);
       } else {

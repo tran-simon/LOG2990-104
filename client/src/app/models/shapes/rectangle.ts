@@ -59,9 +59,8 @@ export class Rectangle extends BaseShape {
     this.height = height;
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readElement(data: Rectangle): void {
+    super.readElement(data);
     this.origin = data._origin;
     this.width = data._width;
     this.height = data._height;
