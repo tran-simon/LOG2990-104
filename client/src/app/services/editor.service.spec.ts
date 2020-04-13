@@ -12,6 +12,7 @@ import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
 import createSpyObj = jasmine.createSpyObj;
+import { LocalSaveService } from './localsave.service';
 
 describe('EditorService', () => {
   let service: EditorService;
@@ -26,7 +27,7 @@ describe('EditorService', () => {
   });
 
   beforeEach(() => {
-    service = new EditorService(new ColorsService());
+    service = new EditorService(new ColorsService(), new LocalSaveService());
     line = new Line();
     rectangle = new Rectangle();
     service.view = createSpyObj('view', ['addShape', 'removeShape', 'svg']);
