@@ -107,6 +107,10 @@ export class Color implements ColorComponents {
     return new Color({ ...color, a }, true);
   }
 
+  static copy(c: Color): Color {
+    return new Color({ ...c }, true);
+  }
+
   /**
    * Creates a color from RGBA values
    * @param r red from 0 to 1
