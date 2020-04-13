@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { LocalSaveService } from '@services/localsave.service';
 import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
@@ -15,7 +16,12 @@ export class HomeComponent {
   modalIsOpened: boolean;
   guideModalType: ModalType;
 
-  constructor(private router: Router, private dialog: ModalDialogService, private keyboardListener: KeyboardListenerService) {
+  constructor(
+    private router: Router,
+    private dialog: ModalDialogService,
+    private keyboardListener: KeyboardListenerService,
+    private localSaveService: LocalSaveService,
+  ) {
     this.previousDrawings = false;
     this.modalIsOpened = false;
     this.guideModalType = ModalType.GUIDE;
@@ -53,5 +59,9 @@ export class HomeComponent {
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent): void {
     this.keyboardListener.handle(event);
+  }
+
+  continueDrawing(): void {
+    console.log(this.localSaveService.drawing);
   }
 }

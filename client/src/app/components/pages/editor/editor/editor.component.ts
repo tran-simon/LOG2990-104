@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { APIService } from '@services/api.service';
+import { LocalSaveService } from '@services/localsave.service';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
@@ -43,6 +44,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     private dialog: ModalDialogService,
     private apiService: APIService,
     private keyboardListener: KeyboardListenerService,
+    private localSaveService: LocalSaveService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
@@ -225,6 +227,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         this.editorService.view.svg.innerHTML = drawing.data;
       });
     }
+    this.localSaveService.takeSnapchot();
   }
 
   handleMouseEvent(e: MouseEvent): void {
