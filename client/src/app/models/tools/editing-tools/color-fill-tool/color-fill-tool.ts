@@ -38,21 +38,24 @@ export class ColorFillTool extends Tool {
       EditorUtils.viewToCanvas(this.editorService.view)
         .then((ctx) => {
           this.colorData = ctx.getImageData(0, 0, width, height).data;
+          console.log(this.colorData);
           this.floodFill();
+          this.applyShape();
         })
         .finally(() => {
-          const shape = new CompositeParticle();
-          shape.primaryColor = this.replacementColor;
-          this.pointsToColorize.forEach(shape.addParticle, shape);
-
-          this.editorService.commandReceiver.add(new AddShapesCommand(shape, this.editorService));
-
           this.editorService.loading = false;
         });
     };
   }
 
-  private floodFill(): void {
+  applyShape(): void {
+    const shape = new CompositeParticle();
+    shape.primaryColor = this.replacementColor;
+    this.pointsToColorize.forEach(shape.addParticle, shape);
+    this.editorService.commandReceiver.add(new AddShapesCommand(shape, this.editorService));
+  }
+
+  floodFill(): void {
     const targetColor = this.getColor()(this.mousePosition);
     this.replacementColor = this.editorService.colorsService.primaryColor;
 

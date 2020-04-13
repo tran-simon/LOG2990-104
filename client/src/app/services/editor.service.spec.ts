@@ -27,6 +27,7 @@ describe('EditorService', () => {
 
   beforeEach(() => {
     service = new EditorService(new ColorsService());
+    BaseShape['SHAPE_ID'] = 0;
     line = new Line();
     rectangle = new Rectangle();
     service.view = createSpyObj('view', ['addShape', 'removeShape', 'svg']);
