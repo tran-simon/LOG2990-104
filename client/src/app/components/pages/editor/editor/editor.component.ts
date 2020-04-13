@@ -60,9 +60,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.editorService.view = this.drawingSurface;
     if (this.drawingId) {
-      this.apiService.getDrawingById(this.drawingId).then((drawing) => {
-        this.editorService.view.svg.innerHTML = drawing.data;
-      });
+      this.editorService.importDrawing(this.drawingId, this.apiService);
     }
   }
 

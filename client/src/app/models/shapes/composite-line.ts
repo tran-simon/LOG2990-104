@@ -17,7 +17,7 @@ export class CompositeLine extends BaseShape {
   }
 
   get origin(): Coordinate {
-    return Coordinate.minArrayXYCoord(this.junctionArray.map((shape) => shape.origin));
+    return this.junctionArray.length > 0 ? Coordinate.minArrayXYCoord(this.junctionArray.map((shape) => shape.origin)) : new Coordinate();
   }
 
   set origin(c: Coordinate) {
@@ -30,20 +30,38 @@ export class CompositeLine extends BaseShape {
   }
 
   get width(): number {
-    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).x - this.origin.x;
+    return this.junctionArray.length > 0 ? Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).x - this.origin.x : 0;
   }
 
   get height(): number {
-    return Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y;
+    return this.junctionArray.length > 0 ? Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y : 0;
   }
 
-  constructor(initCoord: Coordinate = new Coordinate()) {
+  constructor(initCoord?: Coordinate) {
     super('g');
 
     this.lineArray = [];
     this.junctionArray = [];
 
-    this.addPoint(initCoord);
+    if (initCoord) {
+      this.addPoint(initCoord);
+    }
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    data.junctionArray.forEach((j, index) => {
+      const junction = new Ellipse();
+      junction.readElement(JSON.stringify(j)); // todo - fix
+      if (index === 0) {
+        this.addPoint(junction.center);
+      } else {
+        this.updateCurrentCoord(junction.center);
+        this.confirmPoint();
+      }
+    });
+    this.applyTransform();
   }
 
   updateProperties(): void {
@@ -117,7 +135,6 @@ export class CompositeLine extends BaseShape {
 
   addJunction(c: Coordinate): void {
     const junction = new Ellipse(c);
-
     this.junctionArray.push(junction);
     this.svgNode.appendChild(junction.svgNode);
   }
