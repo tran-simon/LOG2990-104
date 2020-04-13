@@ -8,8 +8,10 @@ export abstract class BaseShape {
   private static SHAPE_ID = 0;
   static readonly CSS_NONE: string = 'none';
   static readonly SVG_NAMESPACE_URL: string = 'http://www.w3.org/2000/svg';
+  static readonly TYPE_ATTRIBUTE: string = 'shape-type';
   readonly svgNode: SVGElement;
   readonly id: number;
+  readonly type: string;
   private _offset: Coordinate;
   private _rotation: number;
 
@@ -56,10 +58,12 @@ export abstract class BaseShape {
     return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
   }
 
-  constructor(type: string) {
-    this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, type) as SVGElement;
+  constructor(svgType: string) {
+    this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, svgType);
+    this.svgNode.setAttribute(BaseShape.TYPE_ATTRIBUTE, this.constructor.name);
+    this.type = this.constructor.name;
     this.id = BaseShape.SHAPE_ID++;
-    this.svgNode.id = `shape-${type}-${this.id}`;
+    this.svgNode.id = `shape-${svgType}-${this.id}`;
 
     this._offset = new Coordinate();
     this._rotation = 0;
@@ -68,6 +72,21 @@ export abstract class BaseShape {
     this.secondaryColor = Color.BLACK;
     this.primaryColor = Color.WHITE;
     this.contourType = ContourType.FILLED_CONTOUR;
+
+    this.updateProperties();
+  }
+
+  readElement(json: string): void {
+    const data = JSON.parse(json) as this;
+    this.id = data.id;
+    this.offset = data._offset;
+    this.rotation = data._rotation;
+
+    this.thickness = data.thickness;
+    this.strokeWidth = data.strokeWidth;
+    this.secondaryColor = Color.copy(data.secondaryColor);
+    this.primaryColor = Color.copy(data.primaryColor);
+    this.contourType = data.contourType;
 
     this.updateProperties();
   }

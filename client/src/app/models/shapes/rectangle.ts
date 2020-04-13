@@ -58,4 +58,13 @@ export class Rectangle extends BaseShape {
     this.width = width;
     this.height = height;
   }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.origin = data._origin;
+    this.width = data._width;
+    this.height = data._height;
+    this.applyTransform();
+  }
 }

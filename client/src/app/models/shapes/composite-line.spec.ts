@@ -12,7 +12,7 @@ describe('CompositeLine', () => {
   const coord2 = new Coordinate(17, 8);
   const coord3 = new Coordinate(2, 3);
   beforeEach(() => {
-    cLine = new CompositeLine();
+    cLine = new CompositeLine(coordZero);
   });
   it('Should init with line with only (0, 0) coordinates', () => {
     expect(cLine.center).toEqual(coordZero);
