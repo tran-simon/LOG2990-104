@@ -71,4 +71,8 @@ export class HomeComponent {
     };
     this.router.navigate(['/'], { skipLocationChange: true }).then(() => this.router.navigate(['edit', params]));
   }
+
+  get isDrawingNull(): boolean {
+    return this.localSaveService.drawing == null;
+  }
 }

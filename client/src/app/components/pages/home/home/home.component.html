@@ -12,7 +12,7 @@
       Continuer mon dessin
     </button>
     <ng-template #noPreviousDrawings>
-      <button mat-raised-button [disabled]="localSaveService.drawing == null" (click)="continueDrawing()">Continuer mon
+      <button mat-raised-button [disabled]="isDrawingNull" (click)="continueDrawing()">Continuer mon
         dessin</button>
     </ng-template>
   </div>
