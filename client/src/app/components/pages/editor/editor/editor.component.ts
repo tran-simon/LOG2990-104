@@ -1,17 +1,13 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EditorKeyboardListener } from '@components/pages/editor/editor/keyboard-listener/editor-keyboard-listener';
 import { APIService } from '@services/api.service';
-import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
-import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
-import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
-import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
 import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
@@ -21,7 +17,6 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
-  providers: [KeyboardListenerService, MouseListenerService],
 })
 export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('drawingSurface', { static: false })
@@ -30,6 +25,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @ViewChild('toolbar', { static: false }) toolbar: ToolbarComponent;
 
   private _currentToolType: ToolType;
+  private keyboardListener: EditorKeyboardListener;
 
   surfaceColor: Color;
   surfaceWidth: number;
@@ -40,171 +36,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
   constructor(
     private router: ActivatedRoute,
     public editorService: EditorService,
-    private dialog: ModalDialogService,
+    public dialog: ModalDialogService,
     private apiService: APIService,
-    private keyboardListener: KeyboardListenerService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
     this.surfaceHeight = DrawingSurfaceComponent.DEFAULT_HEIGHT;
     this.modalTypes = ModalType;
-
-    this.keyboardListener.addEvents([
-      [
-        KeyboardListenerService.getIdentifier('l'),
-        () => {
-          this.currentToolType = ToolType.Line;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('3'),
-        () => {
-          this.currentToolType = ToolType.Polygon;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('a'),
-        () => {
-          this.currentToolType = ToolType.Spray;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('c'),
-        () => {
-          this.currentToolType = ToolType.Pen;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('w'),
-        () => {
-          this.currentToolType = ToolType.Brush;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('1'),
-        () => {
-          this.currentToolType = ToolType.Rectangle;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('i'),
-        () => {
-          this.currentToolType = ToolType.Pipette;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('s'),
-        () => {
-          this.currentToolType = ToolType.Select;
-          return false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('a', true),
-        () => {
-          (this.editorService.tools.get(ToolType.Select) as SelectionTool).selectAll();
-          return false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('+', false),
-        () => {
-          // todo: Test with 20, 21, 24, 25
-          const increment = GridProperties.GRID_SIZE_INCREMENT;
-          const size = this.editorService.gridProperties.size.value + increment;
-          this.editorService.gridProperties.size.value = Math.floor(size / increment) * increment;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('-', false),
-        () => {
-          // todo: Test with 20, 21, 24, 25
-          const increment = GridProperties.GRID_SIZE_INCREMENT;
-          const size = this.editorService.gridProperties.size.value - increment;
-          this.editorService.gridProperties.size.value = Math.ceil(size / increment) * increment;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('g', false),
-        () => {
-          this.editorService.gridProperties.visibility.value =
-            this.editorService.gridProperties.visibility.value === GridVisibility.visible ? GridVisibility.hidden : GridVisibility.visible;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('b'),
-        () => {
-          this.currentToolType = ToolType.ColorFill;
-          return false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('r'),
-        () => {
-          this.currentToolType = ToolType.ColorApplicator;
-          return false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('e'),
-        () => {
-          this.currentToolType = ToolType.Eraser;
-          return false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('2'),
-        () => {
-          this.currentToolType = ToolType.Ellipse;
-          return false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('o', true),
-        () => {
-          this.openCreateModal();
-          return true;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('z', true),
-        () => {
-          this.editorService.commandReceiver.undo();
-          if (this.currentTool) {
-            this.currentTool.handleUndoRedoEvent(true);
-          }
-          return true;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('z', true, true),
-        () => {
-          this.editorService.commandReceiver.redo();
-          if (this.currentTool) {
-            this.currentTool.handleUndoRedoEvent(false);
-          }
-          return true;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('e', true),
-        () => {
-          this.dialog.openByName(ModalType.EXPORT);
-          return true;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('s', true),
-        () => {
-          this.dialog.openByName(ModalType.SAVE);
-          return true;
-        },
-      ],
-    ]);
-
-    this.keyboardListener.defaultEventAction = (e) => {
-      return this.currentTool ? this.currentTool.handleKeyboardEvent(e) : false;
-    };
+    this.keyboardListener = new EditorKeyboardListener(this);
 
     this.currentToolType = ToolType.Pen;
   }
