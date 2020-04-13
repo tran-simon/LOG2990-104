@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { HomeKeyboardListener } from '@components/pages/home/home/keyboard-listener/home-keyboard-listener';
+import { HomeKeyboardListener } from '@components/pages/home/home/home-keyboard-listener';
 import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 

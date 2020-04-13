@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EditorKeyboardListener } from '@components/pages/editor/editor/keyboard-listener/editor-keyboard-listener';
+import { EditorKeyboardListener } from '@components/pages/editor/editor/editor-keyboard-listener';
 import { APIService } from '@services/api.service';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
