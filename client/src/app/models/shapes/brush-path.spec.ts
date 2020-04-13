@@ -10,31 +10,31 @@ describe('Path', () => {
   it('Should change filter', () => {
     let brushTexture: BrushTextureType;
     brushTexture = BrushTextureType.TEXTURE_1;
-    brush.changeFilter(brushTexture);
+    brush.filter = brushTexture;
     expect(brush.svgNode.getAttribute('filter')).toEqual('url(#TEXTURE_1)');
   });
   it('Should change filter', () => {
     let brushTexture: BrushTextureType;
     brushTexture = BrushTextureType.TEXTURE_2;
-    brush.changeFilter(brushTexture);
+    brush.filter = brushTexture;
     expect(brush.svgNode.getAttribute('filter')).toEqual('url(#TEXTURE_2)');
   });
   it('Should change filter', () => {
     let brushTexture: BrushTextureType;
     brushTexture = BrushTextureType.TEXTURE_3;
-    brush.changeFilter(brushTexture);
+    brush.filter = brushTexture;
     expect(brush.svgNode.getAttribute('filter')).toEqual('url(#TEXTURE_3)');
   });
   it('Should change filter', () => {
     let brushTexture: BrushTextureType;
     brushTexture = BrushTextureType.TEXTURE_4;
-    brush.changeFilter(brushTexture);
+    brush.filter = brushTexture;
     expect(brush.svgNode.getAttribute('filter')).toEqual('url(#TEXTURE_4)');
   });
   it('Should change filter', () => {
     let brushTexture: BrushTextureType;
     brushTexture = BrushTextureType.TEXTURE_5;
-    brush.changeFilter(brushTexture);
+    brush.filter = brushTexture;
     expect(brush.svgNode.getAttribute('filter')).toEqual('url(#TEXTURE_5)');
   });
 });
