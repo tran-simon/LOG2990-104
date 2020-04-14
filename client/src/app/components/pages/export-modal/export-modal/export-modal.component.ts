@@ -19,9 +19,13 @@ export class ExportModalComponent extends AbstractModalComponent {
   href: SafeResourceUrl;
   fileName: string;
   formGroup: FormGroup;
+  sendFormGroup: FormGroup;
   selectedFilter: FilterType;
   filters: string[] = Object.values(FilterType);
   validity: boolean;
+  userName: string;
+  email: string;
+  pattern: string;
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
@@ -31,10 +35,13 @@ export class ExportModalComponent extends AbstractModalComponent {
     super(dialogRef);
     editorService.clearShapesBuffer();
     this.fileName = '';
+    this.email = '';
+    this.userName = '';
     this.selectedExtension = ExtensionType.EMPTY;
     this.selectedFilter = FilterType.EMPTY;
     this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter);
     this.formGroup = new FormGroup({});
+    this.sendFormGroup = new FormGroup({});
     this.validity = !this.formGroup.invalid && this.selectedExtension !== '';
   }
 
@@ -84,9 +91,18 @@ export class ExportModalComponent extends AbstractModalComponent {
       this.dialogRef.close();
     }
   }
+  send(): void {
+    if (this.emailValid) {
+      console.log('sending');
+      this.imageExportService.sendEmail('http://localhost:3000/sendEmail', this.userName, this.email);
+    }
+  }
 
   get valid(): boolean {
     return !this.formGroup.invalid && this.selectedExtension !== ExtensionType.EMPTY;
+  }
+  get emailValid(): boolean {
+    return this.sendFormGroup.valid && this.valid;
   }
 
   get previewURL(): SafeResourceUrl {

@@ -8,7 +8,7 @@ import { CustomInputComponent } from '../custom-input/custom-input.component';
 })
 export class NameInputComponent extends CustomInputComponent implements OnInit {
   ngOnInit(): void {
-    this.stringToMatch = '^[0-9a-zA-Z ]{0,20}$';
+    this.stringToMatch = '';
     this.format = (v: string): string => v;
     this.hintLabel = 'Lettres, espaces et nombres. Maximum 20 charactères';
     super.ngOnInit();
