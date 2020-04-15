@@ -21,7 +21,7 @@ export class CompositeLine extends BaseShape {
   }
 
   set origin(c: Coordinate) {
-    const delta = Coordinate.substract(c, this.origin);
+    const delta = Coordinate.subtract(c, this.origin);
     const shapes: BaseShape[] = this.lineArray as BaseShape[];
     shapes.concat(this.junctionArray as BaseShape[]).forEach((shape) => {
       shape.origin = Coordinate.add(shape.origin, delta);
@@ -37,8 +37,8 @@ export class CompositeLine extends BaseShape {
     return this.junctionArray.length > 0 ? Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y : 0;
   }
 
-  constructor(initCoord?: Coordinate) {
-    super('g');
+  constructor(initCoord?: Coordinate, id?: number) {
+    super('g', id);
 
     this.lineArray = [];
     this.junctionArray = [];

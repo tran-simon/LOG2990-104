@@ -4,11 +4,14 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export abstract class BaseShape {
+  // tslint:disable-next-line:typedef
+  private static SHAPE_ID = 0;
   static readonly CSS_NONE: string = 'none';
+  static readonly SVG_NAMESPACE_URL: string = 'http://www.w3.org/2000/svg';
   static readonly TYPE_ATTRIBUTE: string = 'shape-type';
   readonly svgNode: SVGElement;
+  readonly id: number;
   readonly type: string;
-  id: number;
   private _offset: Coordinate;
   private _rotation: number;
 
@@ -55,10 +58,13 @@ export abstract class BaseShape {
     return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
   }
 
-  constructor(svgType: string) {
-    this.svgNode = document.createElementNS('http://www.w3.org/2000/svg', svgType);
+  constructor(svgType: string, id?: number) {
+    this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, svgType) as SVGElement;
     this.svgNode.setAttribute(BaseShape.TYPE_ATTRIBUTE, this.constructor.name);
     this.type = this.constructor.name;
+    this.id = id ? id : BaseShape.SHAPE_ID++;
+    this.svgNode.id = `shape-${svgType}-${this.id}`;
+
     this._offset = new Coordinate();
     this._rotation = 0;
     this.thickness = 1;
@@ -72,7 +78,6 @@ export abstract class BaseShape {
 
   readElement(json: string): void {
     const data = JSON.parse(json) as this;
-    this.id = data.id;
     this.offset = data._offset;
     this.rotation = data._rotation;
 
@@ -106,5 +111,20 @@ export abstract class BaseShape {
 
     this.svgNode.style.stroke = hasStroke ? this.secondaryColor.rgbString : BaseShape.CSS_NONE;
     this.svgNode.style.fill = hasFill ? this.primaryColor.rgbString : BaseShape.CSS_NONE;
+  }
+
+  highlight(color: Color, thickness: number): void {
+    const highlightNode = (node: SVGElement) => {
+      const { strokeWidth } = node.style;
+      if (!strokeWidth || +strokeWidth < thickness) {
+        node.style.strokeWidth = thickness.toString();
+      }
+
+      node.style.stroke = color.rgbString;
+      node.style.strokeOpacity = '1';
+      node.childNodes.forEach(highlightNode);
+    };
+
+    highlightNode(this.svgNode);
   }
 }

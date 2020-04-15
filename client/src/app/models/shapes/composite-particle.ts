@@ -1,4 +1,4 @@
-import { Coordinate } from '../../utils/math/coordinate';
+import { Coordinate } from '@utils/math/coordinate';
 import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
@@ -30,12 +30,12 @@ export class CompositeParticle extends BaseShape {
     return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.offset = Coordinate.subtract(c, this.relativeOrigin);
     this.applyTransform();
   }
 
-  constructor(radius: number = 1) {
-    super('g');
+  constructor(radius: number = 1, id?: number) {
+    super('g', id);
     this.particles = [];
     this.radius = radius;
   }

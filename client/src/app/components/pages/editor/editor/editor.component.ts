@@ -36,7 +36,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   constructor(
     private router: ActivatedRoute,
     public editorService: EditorService,
-    public dialog: ModalDialogService,
+    private dialog: ModalDialogService,
     private apiService: APIService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
@@ -132,5 +132,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (this.currentTool) {
       this.currentTool.onSelect();
     }
+  }
+
+  get loading(): boolean {
+    return this.editorService.loading;
   }
 }

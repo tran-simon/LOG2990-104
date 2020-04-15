@@ -1,5 +1,15 @@
 import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
 import { FilterType } from '@components/pages/export-modal/filter-type.enum';
+import { BaseShape } from '@models/shapes/base-shape';
+import { BoundingBox } from '@models/shapes/bounding-box';
+import { BrushPath } from '@models/shapes/brush-path';
+import { CompositeLine } from '@models/shapes/composite-line';
+import { CompositeParticle } from '@models/shapes/composite-particle';
+import { Ellipse } from '@models/shapes/ellipse';
+import { Line } from '@models/shapes/line';
+import { Path } from '@models/shapes/path';
+import { Polygon } from '@models/shapes/polygon';
+import { Rectangle } from '@models/shapes/rectangle';
 import { Color } from '@utils/color/color';
 import { Coordinate } from '@utils/math/coordinate';
 
@@ -39,6 +49,28 @@ export class EditorUtils {
     });
   }
 
+  /**
+   *  https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+   */
+  static colorAtPointFromUint8ClampedArray(data: Uint8ClampedArray | undefined, point: Coordinate, width: number): Color | undefined {
+    if (!data) {
+      return undefined;
+    }
+    const getColorIndicesForCoord = (x: number, y: number) => {
+      const dataSize = 4;
+      const rIndex = y * (width * dataSize) + x * dataSize;
+
+      // tslint:disable-next-line:no-magic-numbers
+      return [rIndex, rIndex + 1, rIndex + 2, rIndex + 3];
+    };
+
+    const indices = getColorIndicesForCoord(point.x, point.y);
+    const r = data[indices[0]];
+    const g = data[indices[1]];
+    const b = data[indices[2]];
+    return Color.rgb255(r, g, b);
+  }
+
   static addFilter(surface: DrawingSurfaceComponent, filter: FilterType): void {
     switch (filter) {
       case FilterType.EMPTY:
@@ -73,5 +105,30 @@ export class EditorUtils {
     const xmlSerializer = new XMLSerializer();
     const svgString = xmlSerializer.serializeToString(surface.svg);
     return 'data:image/svg+xml,' + encodeURIComponent(svgString);
+  }
+
+  static createShape(type: string, id: number): BaseShape {
+    switch (type) {
+      case 'BoundingBox':
+        return new BoundingBox(new Coordinate(), id);
+      case 'BrushPath':
+        return new BrushPath(new Coordinate(), id);
+      case 'CompositeLine':
+        return new CompositeLine(undefined, id);
+      case 'CompositeParticle':
+        return new CompositeParticle(1, id);
+      case 'Ellipse':
+        return new Ellipse(new Coordinate(), 0, 0, id);
+      case 'Line':
+        return new Line(new Coordinate(), new Coordinate(), id);
+      case 'Path':
+        return new Path(undefined, id);
+      case 'Polygon':
+        return new Polygon(new Coordinate(), Polygon.MIN_POLY_EDGES, id);
+      case 'Rectangle':
+        return new Rectangle(new Coordinate(), 0, 0, id);
+      default:
+        throw new Error('Shape type not found');
+    }
   }
 }
