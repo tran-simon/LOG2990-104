@@ -42,7 +42,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     public editorService: EditorService,
     private dialog: ModalDialogService,
     private keyboardListener: KeyboardListenerService,
-    private apiService: APIService
+    private apiService: APIService,
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
@@ -109,7 +109,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [
         KeyboardListenerService.getIdentifier('+', false),
         () => {
-          // todo: Test with 20, 21, 24, 25
           const increment = GridProperties.GRID_SIZE_INCREMENT;
           const size = this.editorService.gridProperties.size.value + increment;
           this.editorService.gridProperties.size.value = Math.floor(size / increment) * increment;
@@ -118,7 +117,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       [
         KeyboardListenerService.getIdentifier('-', false),
         () => {
-          // todo: Test with 20, 21, 24, 25
           const increment = GridProperties.GRID_SIZE_INCREMENT;
           const size = this.editorService.gridProperties.size.value - increment;
           this.editorService.gridProperties.size.value = Math.ceil(size / increment) * increment;
@@ -293,5 +291,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     if (this.currentTool) {
       this.currentTool.onSelect();
     }
+  }
+
+  get loading(): boolean {
+    return this.editorService.loading;
   }
 }

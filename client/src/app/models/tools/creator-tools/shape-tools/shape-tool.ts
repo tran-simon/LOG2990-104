@@ -77,7 +77,7 @@ export abstract class ShapeTool extends CreatorTool {
 
     let dimensions: Coordinate;
     let origin = Coordinate.copy(this.previewArea.origin);
-    const delta = Coordinate.substract(c, this.initialMouseCoord);
+    const delta = Coordinate.subtract(c, this.initialMouseCoord);
 
     if (this.forceEqualDimensions) {
       const minDimension = Math.min(this.previewArea.width, this.previewArea.height);

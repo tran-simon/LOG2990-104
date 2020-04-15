@@ -2,6 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from '@components/shared/shared.module';
+import { BaseShape } from '@models/shapes/base-shape';
 import { Ellipse } from '@models/shapes/ellipse';
 import { Rectangle } from '@models/shapes/rectangle';
 import { EditorService } from '@services/editor.service';
@@ -49,7 +50,6 @@ describe('EraserTool', () => {
     });
 
     const ellipse = new Ellipse();
-    ellipse.id = 0;
     eraser['editorService'].shapes.push(ellipse);
     eraser['isActive'] = true;
     spyOn(eraser['editorService'], 'findShapeById').and.returnValue(ellipse);
@@ -68,7 +68,6 @@ describe('EraserTool', () => {
     });
 
     const ellipse = new Ellipse();
-    ellipse.id = 0;
     eraser['editorService'].shapes.push(ellipse);
     eraser['isActive'] = true;
     spyOn(eraser['editorService'], 'findShapeById').and.returnValue(ellipse);
@@ -108,18 +107,18 @@ describe('EraserTool', () => {
       eraser['selectedIndexes'] = [0, 1];
     });
     spyOn(eraser['editorService'], 'findShapeById').and.returnValue(shape);
-    const highlightShapeSpy = spyOn(EraserUtils, 'highlightShape').and.callThrough();
+    const highlightSpy = spyOn(shape, 'highlight').and.callThrough();
 
     eraser.updateSelection();
 
-    expect(highlightShapeSpy).toHaveBeenCalledWith(shape);
+    expect(highlightSpy).toHaveBeenCalledWith(Color.RED, 3);
     expect(shape.svgNode.style.stroke).toEqual(Color.RED.rgbString);
   });
 
   it('reverts shapes that are not selected on updateSelection', () => {
     const shape = new Rectangle();
     shape.primaryColor = Color.BLUE;
-    EraserUtils.highlightShape(shape);
+    shape.highlight(Color.RED, 3);
     spyOn(eraser, 'getShapesNotSelected').and.returnValue([shape]);
     eraser.updateSelection();
     expect(shape.svgNode.style.fill).toEqual(Color.BLUE.rgbString);
@@ -199,17 +198,16 @@ describe('EraserTool', () => {
     );
     const sanitizeSpy = spyOn(EraserUtils, 'sanitizeAndAssignColorToSvgNode');
 
+    BaseShape['SHAPE_ID'] = 6;
     const rect = new Rectangle();
 
     drawingSurface.addShape(rect);
-    rect.id = 7;
-    rect.svgNode.id = 'shape-7';
 
     eraser.editorService.view = drawingSurface;
 
     eraser.init();
 
-    expect(sanitizeSpy).toHaveBeenCalledWith(rect.svgNode, 8);
+    expect(sanitizeSpy).toHaveBeenCalledWith(rect.svgNode, 7);
     expect(viewToCanvasSpy).toHaveBeenCalled();
   });
 });
