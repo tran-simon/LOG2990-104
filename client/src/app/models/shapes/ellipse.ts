@@ -32,6 +32,7 @@ export class Ellipse extends BaseShape {
     this._origin = c;
     this.svgNode.setAttribute('cx', this.center.x.toString());
     this.svgNode.setAttribute('cy', this.center.y.toString());
+    this.applyTransform();
   }
 
   get width(): number {
@@ -47,5 +48,14 @@ export class Ellipse extends BaseShape {
     this.radiusX = rx;
     this.radiusY = ry;
     this.center = center;
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.radiusX = data._radiusX;
+    this.radiusY = data._radiusY;
+    this.origin = data._origin;
+    this.applyTransform();
   }
 }

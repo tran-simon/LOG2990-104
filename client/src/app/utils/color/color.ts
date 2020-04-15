@@ -7,8 +7,8 @@
  * Hue value will be made to keep the same angle if the value is out of bounds (ie: 400 will give a hue of 40)
  *
  */
+import { MathUtils } from '@utils/math/math-utils';
 import { ColorComponents } from 'src/app/utils/color/color-components';
-import { MathUtil } from '../math/math-util';
 
 export class Color implements ColorComponents {
   static RED: Color = Color.rgb(1);
@@ -65,17 +65,17 @@ export class Color implements ColorComponents {
   private constructor(components: ColorComponents, doNotCompute: boolean = false) {
     const { h, s, l, r, g, b, a } = components;
     if (doNotCompute) {
-      this.h = MathUtil.fitAngle(h || 0);
-      this.s = MathUtil.fit(s || 0);
-      this.l = MathUtil.fit(l || 0);
+      this.h = MathUtils.fitAngle(h || 0);
+      this.s = MathUtils.fit(s || 0);
+      this.l = MathUtils.fit(l || 0);
 
-      this.r = MathUtil.fit(r || 0);
-      this.g = MathUtil.fit(g || 0);
-      this.b = MathUtil.fit(b || 0);
+      this.r = MathUtils.fit(r || 0);
+      this.g = MathUtils.fit(g || 0);
+      this.b = MathUtils.fit(b || 0);
     } else if (!(h === undefined || s === undefined || l === undefined)) {
-      this.h = MathUtil.fitAngle(h);
-      this.s = MathUtil.fit(s);
-      this.l = MathUtil.fit(l);
+      this.h = MathUtils.fitAngle(h);
+      this.s = MathUtils.fit(s);
+      this.l = MathUtils.fit(l);
 
       const f = (n: number) => {
         // tslint:disable-next-line:no-magic-numbers
@@ -90,21 +90,25 @@ export class Color implements ColorComponents {
       // tslint:disable-next-line:no-magic-numbers
       this.b = f(4);
     } else if (!(r === undefined || g === undefined || b === undefined)) {
-      this.r = MathUtil.fit(r);
-      this.g = MathUtil.fit(g);
-      this.b = MathUtil.fit(b);
+      this.r = MathUtils.fit(r);
+      this.g = MathUtils.fit(g);
+      this.b = MathUtils.fit(b);
 
       this.h = Color.calculateHue(this.r, this.g, this.b);
       this.s = Color.calculateSaturation(this.r, this.g, this.b);
       this.l = Color.calculateLightness(this.r, this.g, this.b);
     }
-    this.a = MathUtil.fit(a || 0);
+    this.a = MathUtils.fit(a || 0);
   }
 
   /* Color creator static methods */
 
   static alpha(color: Color, a: number = 1): Color {
     return new Color({ ...color, a }, true);
+  }
+
+  static copy(c: Color): Color {
+    return new Color({...c}, true);
   }
 
   /**
@@ -151,9 +155,9 @@ export class Color implements ColorComponents {
   /* Utility methods */
 
   get hex(): string {
-    const r = MathUtil.toHex(this.r255, 2);
-    const g = MathUtil.toHex(this.g255, 2);
-    const b = MathUtil.toHex(this.b255, 2);
+    const r = MathUtils.toHex(this.r255, 2);
+    const g = MathUtils.toHex(this.g255, 2);
+    const b = MathUtils.toHex(this.b255, 2);
     return `${r}${g}${b}`;
   }
 
@@ -187,7 +191,7 @@ export class Color implements ColorComponents {
         break;
     }
     // tslint:disable-next-line:no-magic-numbers
-    return MathUtil.fitAngle(h ? 60 * h : 0);
+    return MathUtils.fitAngle(h ? 60 * h : 0);
   }
 
   /**
@@ -272,14 +276,14 @@ export class Color implements ColorComponents {
   }
 
   get rHex(): string {
-    return MathUtil.toHex(this.r255, 2);
+    return MathUtils.toHex(this.r255, 2);
   }
 
   get gHex(): string {
-    return MathUtil.toHex(this.g255, 2);
+    return MathUtils.toHex(this.g255, 2);
   }
 
   get bHex(): string {
-    return MathUtil.toHex(this.b255, 2);
+    return MathUtils.toHex(this.b255, 2);
   }
 }

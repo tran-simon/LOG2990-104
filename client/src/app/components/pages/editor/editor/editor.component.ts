@@ -41,8 +41,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     private router: ActivatedRoute,
     public editorService: EditorService,
     private dialog: ModalDialogService,
-    private apiService: APIService,
     private keyboardListener: KeyboardListenerService,
+    private apiService: APIService
   ) {
     this.surfaceColor = DrawingSurfaceComponent.DEFAULT_COLOR;
     this.surfaceWidth = DrawingSurfaceComponent.DEFAULT_WIDTH;
@@ -132,6 +132,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('b'),
+        () => {
+          this.currentToolType = ToolType.ColorFill;
+          return false;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('r'),
         () => {
           this.currentToolType = ToolType.ColorApplicator;
@@ -214,9 +221,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.editorService.view = this.drawingSurface;
     if (this.drawingId) {
-      this.apiService.getDrawingById(this.drawingId).then((drawing) => {
-        this.editorService.view.svg.innerHTML = drawing.data;
-      });
+      this.editorService.importDrawing(this.drawingId, this.apiService);
     }
   }
 

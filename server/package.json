@@ -60,12 +60,14 @@
     "debug": "^4.1.1",
     "express": "~4.17.1",
     "http-status-codes": "^1.4.0",
+    "i": "^0.3.6",
     "inversify": "^5.0.1",
     "mongodb-memory-server": "^6.5.0",
     "mongoose": "^5.9.3",
     "morgan": "^1.9.1",
     "reflect-metadata": "^0.1.10",
-    "serve-favicon": "~2.5.0"
+    "serve-favicon": "~2.5.0",
+    "tslint-defocus": "^2.0.6"
   },
   "devDependencies": {
     "@types/body-parser": "1.17.1",

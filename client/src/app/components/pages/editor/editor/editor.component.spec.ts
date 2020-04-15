@@ -1,4 +1,4 @@
-/*tslint:disable:no-string-literal no-magic-numbers*/
+/*tslint:disable:no-string-literal no-magic-numbers max-file-line-count*/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material';
 import { By } from '@angular/platform-browser';
@@ -155,6 +155,16 @@ describe('EditorComponent', () => {
   it('should select the eraser tool when typing e', () => {
     keyboardListener.handle(keyDown('e'));
     expect(component.currentToolType).toEqual(ToolType.Eraser);
+  });
+
+  it('should select the spray tool when typing a', () => {
+    keyboardListener.handle(keyDown('a'));
+    expect(component.currentToolType).toEqual(ToolType.Spray);
+  });
+
+  it('should select the color fill tool when typing b', () => {
+    keyboardListener.handle(keyDown('b'));
+    expect(component.currentToolType).toEqual(ToolType.ColorFill);
   });
 
   it('should decrement grid size when typing -', () => {

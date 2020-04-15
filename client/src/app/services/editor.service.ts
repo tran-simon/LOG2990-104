@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CommandReceiver } from '@models/commands/command-receiver';
-import { ImageExportService } from '@services/image-export.service';
+import { BoundingBox } from '@models/shapes/bounding-box';
+import { BrushPath } from '@models/shapes/brush-path';
+import { CompositeLine } from '@models/shapes/composite-line';
+import { CompositeParticle } from '@models/shapes/composite-particle';
+import { Ellipse } from '@models/shapes/ellipse';
+import { Line } from '@models/shapes/line';
+import { Path } from '@models/shapes/path';
+import { Polygon } from '@models/shapes/polygon';
+import { Rectangle } from '@models/shapes/rectangle';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
+import { ColorFillTool } from '@tools/editing-tools/color-fill-tool/color-fill-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { SelectionTool } from '@tools/editing-tools/selection-tool';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -18,6 +27,7 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
+import { APIService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +60,49 @@ export class EditorService {
     this.gridProperties = new GridProperties();
   }
 
+  static createShape(type: string): BaseShape {  // todo - make standalone class to reduce dependencies?
+    switch(type) {
+      case 'BoundingBox':
+        return new BoundingBox();
+      case 'BrushPath':
+        return new BrushPath();
+      case 'CompositeLine':
+        return new CompositeLine();
+      case 'CompositeParticle':
+        return new CompositeParticle();
+      case 'Ellipse':
+        return new Ellipse();
+      case 'Line':
+        return new Line();
+      case 'Path':
+        return new Path();
+      case 'Polygon':
+        return new Polygon();
+      case 'Rectangle':
+        return new Rectangle();
+      default :
+        throw new Error('Shape type not found');
+    }
+  }
+
+  exportDrawing(): string {
+    return JSON.stringify(this.shapes, (key, value) => {
+      return key === 'svgNode' ? undefined : value;
+    });
+  }
+
+  importDrawing(drawingId: string, apiService: APIService): void {
+    apiService.getDrawingById(drawingId).then((drawing) => {
+      Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
+        const type = (shapeData as BaseShape).type;
+        const shape = EditorService.createShape(type);
+        shape.readElement(JSON.stringify(shapeData));   // todo - fix
+        this.addShapeToBuffer(shape);
+      });
+      this.applyShapesBuffer();
+    });
+  }
+
   private initTools(): void {
     this.tools.set(ToolType.Pen, new PenTool(this));
     this.tools.set(ToolType.Brush, new BrushTool(this));
@@ -62,6 +115,7 @@ export class EditorService {
     this.tools.set(ToolType.Spray, new SprayTool(this));
     this.tools.set(ToolType.ColorApplicator, new ColorApplicatorTool(this));
     this.tools.set(ToolType.Eraser, new EraserTool(this));
+    this.tools.set(ToolType.ColorFill, new ColorFillTool(this));
   }
 
   applyShapesBuffer(): void {
@@ -128,9 +182,5 @@ export class EditorService {
       throw new Error('Shape Id collision error');
     }
     return matchingShapes.length ? matchingShapes[0] : undefined;
-  }
-
-  async viewToCanvas(): Promise<CanvasRenderingContext2D> {
-    return ImageExportService.viewToCanvas(this.view);
   }
 }

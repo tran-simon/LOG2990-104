@@ -3,6 +3,7 @@ export enum ToolType {
   Eraser = 'eraser-tool',
   Pipette = 'pipette-tool',
   ColorApplicator = 'color-applicator-tool',
+  ColorFill = 'color-fill-tool',
   Pen = 'pen-tool',
   Brush = 'brush-tool',
   Rectangle = 'rectangle-tool',
