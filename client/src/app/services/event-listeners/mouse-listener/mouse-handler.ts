@@ -2,6 +2,7 @@ import { MouseEventAction } from 'src/app/services/event-listeners/mouse-listene
 
 export interface MouseHandler {
   handleDblClick: MouseEventAction;
+  handleWheel: MouseEventAction;
   handleMouseMove: MouseEventAction;
   handleMouseDown: MouseEventAction;
   handleMouseUp: MouseEventAction;

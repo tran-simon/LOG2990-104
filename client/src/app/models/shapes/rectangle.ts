@@ -32,6 +32,7 @@ export class Rectangle extends BaseShape {
     this._origin = c;
     this.svgNode.setAttribute('x', this._origin.x.toString());
     this.svgNode.setAttribute('y', this._origin.y.toString());
+    this.applyTransform();
   }
 
   set start(c: Coordinate) {
@@ -56,5 +57,14 @@ export class Rectangle extends BaseShape {
     this.origin = origin;
     this.width = width;
     this.height = height;
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.origin = data._origin;
+    this.width = data._width;
+    this.height = data._height;
+    this.applyTransform();
   }
 }

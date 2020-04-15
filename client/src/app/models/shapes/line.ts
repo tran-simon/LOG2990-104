@@ -33,6 +33,7 @@ export class Line extends BaseShape {
     const delta = Coordinate.substract(c, this.origin);
     this.startCoord = Coordinate.add(this.startCoord, delta);
     this.endCoord = Coordinate.add(this.endCoord, delta);
+    this.applyTransform();
   }
 
   get width(): number {
@@ -47,5 +48,13 @@ export class Line extends BaseShape {
     super('line');
     this.startCoord = startCoord;
     this.endCoord = endCoord;
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.startCoord = data._startCoord;
+    this.endCoord = data._endCoord;
+    this.applyTransform();
   }
 }

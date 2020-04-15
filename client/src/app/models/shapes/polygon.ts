@@ -10,15 +10,16 @@ export class Polygon extends BaseShape {
 
   private readonly points: Coordinate[];
   private _interiorAngle: number;
+  private _nEdges: number;
 
   get interiorAngle(): number {
     return this._interiorAngle;
   }
 
-  private _nEdges: number;
   get nEdges(): number {
     return this._nEdges;
   }
+
   set nEdges(nEdges: number) {
     this._nEdges = nEdges ? MathUtils.fit(nEdges, Polygon.MIN_POLY_EDGES, Polygon.MAX_POLY_EDGES) : Polygon.MIN_POLY_EDGES;
     this._interiorAngle = (2 * Math.PI) / this.nEdges;
@@ -41,6 +42,7 @@ export class Polygon extends BaseShape {
   }
   set origin(c: Coordinate) {
     this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.applyTransform();
   }
 
   constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
@@ -55,6 +57,15 @@ export class Polygon extends BaseShape {
     const x = minDimension / 2 + (minDimension / 2) * Math.cos(angle);
     const y = minDimension / 2 + (minDimension / 2) * Math.sin(angle);
     return new Coordinate(x, y);
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.points.length = 0;
+    this.points.push(...data.points);
+    this.drawPoints();
+    this.applyTransform();
   }
 
   private applyPoints(dimensions: Coordinate): void {

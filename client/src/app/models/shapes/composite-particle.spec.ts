@@ -23,7 +23,7 @@ describe('CompositeParticle', () => {
     expect(compositeParticle.radius).toEqual(1);
   });
   it('should add frequency amount of particles on addParticle call', () => {
-    compositeParticle.addParticle(new Coordinate(), 10);
+    compositeParticle.spray(new Coordinate(), 10);
     expect(compositeParticle['particles'].length).toEqual(10);
   });
   it('should init with origin at 0,0', () => {

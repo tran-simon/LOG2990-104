@@ -30,6 +30,7 @@ export abstract class Tool implements MouseHandler {
 
   handleClick: MouseEventAction;
   handleDblClick: MouseEventAction;
+  handleWheel: MouseEventAction;
   handleMouseDown: MouseEventAction;
   handleMouseLeave: MouseEventAction;
   handleMouseMove: MouseEventAction;
