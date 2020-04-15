@@ -29,6 +29,14 @@ export const mouseDown = (c: Coordinate = new Coordinate()): MouseEvent => {
   } as MouseEvent;
 };
 
+export const click = (c: Coordinate = new Coordinate()): MouseEvent => {
+  return {
+    type: 'click',
+    offsetX: c.x,
+    offsetY: c.y,
+  } as MouseEvent;
+};
+
 export const mouseMove = (c: Coordinate = new Coordinate()): MouseEvent => {
   return {
     type: 'mousemove',

@@ -193,7 +193,7 @@ export class SelectionTool extends SimpleSelectionTool {
   private calculateKeyboardMove(keyPresses: boolean[]): Coordinate {
     let result = new Coordinate();
     if (keyPresses[SelectionMove.UP]) {
-      result = Coordinate.substract(result, this.KEYBOARD_MOVE_DOWN);
+      result = Coordinate.subtract(result, this.KEYBOARD_MOVE_DOWN);
     }
     if (keyPresses[SelectionMove.RIGHT]) {
       result = Coordinate.add(result, this.KEYBOARD_MOVE_RIGHT);
@@ -202,7 +202,7 @@ export class SelectionTool extends SimpleSelectionTool {
       result = Coordinate.add(result, this.KEYBOARD_MOVE_DOWN);
     }
     if (keyPresses[SelectionMove.LEFT]) {
-      result = Coordinate.substract(result, this.KEYBOARD_MOVE_RIGHT);
+      result = Coordinate.subtract(result, this.KEYBOARD_MOVE_RIGHT);
     }
     return result;
   }
@@ -250,7 +250,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.moveCommand = new MoveShapeCommand(moveShapes, this.editorService);
   }
 
-  private move(delta: Coordinate = Coordinate.substract(this.mousePosition, this.initialMouseCoord)): void {
+  private move(delta: Coordinate = Coordinate.subtract(this.mousePosition, this.initialMouseCoord)): void {
     this.moveCommand.delta = delta;
     this.moveCommand.execute();
   }
