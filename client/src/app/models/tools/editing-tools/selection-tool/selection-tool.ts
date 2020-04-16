@@ -1,16 +1,16 @@
 /* tslint:disable:max-file-line-count */ // todo : distribute functionality into multiple sub-tool
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { RotateShapeCommand } from '@models/commands/shape-commands/rotate-shape-command';
-import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
-import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
-import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
-import { Color } from 'src/app/utils/color/color';
-import { Coordinate } from 'src/app/utils/math/coordinate';
-import { BaseShape } from '../../shapes/base-shape';
-import { BoundingBox } from '../../shapes/bounding-box';
-import { Rectangle } from '../../shapes/rectangle';
-import { SelectionMove } from './selection-move.enum';
+import { EditorService } from '@services/editor.service';
+import { MouseListenerService } from '@services/event-listeners/mouse-listener/mouse-listener.service';
+import { SelectionMove } from '@tools/editing-tools/selection-tool/selection-move.enum';
+import { SelectionToolKeyboardEvents } from '@tools/editing-tools/selection-tool/selection-tool-keyboard-events';
+import { SimpleSelectionTool } from '@tools/editing-tools/simple-selection-tool';
+import { Color } from '@utils/color/color';
+import { Coordinate } from '@utils/math/coordinate';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { BoundingBox } from 'src/app/models/shapes/bounding-box';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
 
 export class SelectionTool extends SimpleSelectionTool {
   static readonly PASTED_OFFSET: number = 10;
@@ -23,7 +23,7 @@ export class SelectionTool extends SimpleSelectionTool {
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean; // todo - create states
   private moveSelectionMode: boolean;
-  private previouslySelectedShapes: BaseShape[];
+  previouslySelectedShapes: BaseShape[];
 
   private keyPresses: boolean[] = [];
   private keyInterval: number;
@@ -31,8 +31,8 @@ export class SelectionTool extends SimpleSelectionTool {
   private moveCommand: MoveShapeCommand;
 
   private readonly ROTATION_AMOUNT: number = 15;
-  private shiftKey: boolean;
-  private altKey: boolean;
+  shiftKey: boolean;
+  altKey: boolean;
 
   static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
     return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
@@ -50,123 +50,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.shiftKey = false;
     this.altKey = false;
 
-    this.keyboardListener.addEvents([
-      [
-        KeyboardListenerService.getIdentifier('ArrowUp'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.UP, true);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('ArrowUp', false, false, 'keyup'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.UP, false);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('ArrowRight'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.RIGHT, true);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('ArrowRight', false, false, 'keyup'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.RIGHT, false);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('ArrowDown'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.DOWN, true);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('ArrowDown', false, false, 'keyup'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.DOWN, false);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('ArrowLeft'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.LEFT, true);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('ArrowLeft', false, false, 'keyup'),
-        () => {
-          this.handleKeyboardMove(SelectionMove.LEFT, false);
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('c', true, false, 'keyup'),
-        () => {
-          this.editorService.copySelectedShapes();
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('v', true, false, 'keyup'),
-        () => {
-          this.editorService.pasteClipboard();
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('x', true, false, 'keyup'),
-        () => {
-          this.editorService.cutSelectedShapes();
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('d', false, true, 'keyup'),
-        () => {
-          this.editorService.duplicateSelectedShapes();
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('delete', false, false, 'keyup'),
-        () => {
-          this.editorService.deleteSelectedShapes();
-        },
-      ],
-      // BEGIN ROTATION
-      [
-        KeyboardListenerService.getIdentifier('Shift', false, true),
-        () => {
-          this.shiftKey = true;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('Shift', false, false, 'keyup'),
-        () => {
-          this.shiftKey = false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('Alt'),
-        () => {
-          this.altKey = true;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('Alt', false, true), // todo - add a wildcard for keyboard events
-        () => {
-          this.altKey = true;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('Alt', false, false, 'keyup'),
-        () => {
-          this.altKey = false;
-        },
-      ],
-      [
-        KeyboardListenerService.getIdentifier('Alt', false, true, 'keyup'),
-        () => {
-          this.altKey = false;
-        },
-      ],
-    ]);
+    this.keyboardListener.addEvents(SelectionToolKeyboardEvents.generateEvents(this));
   }
 
   handleUndoRedoEvent(undo: boolean): void {
@@ -234,7 +118,7 @@ export class SelectionTool extends SimpleSelectionTool {
   private calculateKeyboardMove(keyPresses: boolean[]): Coordinate {
     let result = new Coordinate();
     if (keyPresses[SelectionMove.UP]) {
-      result = Coordinate.substract(result, this.KEYBOARD_MOVE_DOWN);
+      result = Coordinate.subtract(result, this.KEYBOARD_MOVE_DOWN);
     }
     if (keyPresses[SelectionMove.RIGHT]) {
       result = Coordinate.add(result, this.KEYBOARD_MOVE_RIGHT);
@@ -243,12 +127,12 @@ export class SelectionTool extends SimpleSelectionTool {
       result = Coordinate.add(result, this.KEYBOARD_MOVE_DOWN);
     }
     if (keyPresses[SelectionMove.LEFT]) {
-      result = Coordinate.substract(result, this.KEYBOARD_MOVE_RIGHT);
+      result = Coordinate.subtract(result, this.KEYBOARD_MOVE_RIGHT);
     }
     return result;
   }
 
-  private handleKeyboardMove(key: number, isDown: boolean): void {
+  handleKeyboardMove(key: number, isDown: boolean): void {
     this.keyPresses[key] = isDown;
     this.isActive = false;
     this.keyPresses.forEach((isActive) => {
@@ -291,7 +175,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.moveCommand = new MoveShapeCommand(moveShapes, this.editorService);
   }
 
-  private move(delta: Coordinate = Coordinate.substract(this.mousePosition, this.initialMouseCoord)): void {
+  private move(delta: Coordinate = Coordinate.subtract(this.mousePosition, this.initialMouseCoord)): void {
     this.moveCommand.delta = delta;
     this.moveCommand.execute();
   }
@@ -400,7 +284,7 @@ export class SelectionTool extends SimpleSelectionTool {
       this.editorService.selectedShapes.forEach((shape) => {
         this.boundingBox.start = Coordinate.minXYCoord(
           this.boundingBox.origin,
-          Coordinate.substract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),
+          Coordinate.subtract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),
         );
         this.boundingBox.end = Coordinate.maxXYCoord(
           this.boundingBox.end,

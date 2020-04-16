@@ -49,19 +49,4 @@ export class EraserUtils {
     };
     sanitizeChildNodes(node);
   }
-
-  static highlightShape(shape: BaseShape): void {
-    const highlightNode = (node: SVGElement) => {
-      const { strokeWidth } = node.style;
-      if (!strokeWidth || +strokeWidth < this.SELECTION_THICKNESS) {
-        node.style.strokeWidth = this.SELECTION_THICKNESS.toString();
-      }
-
-      node.style.stroke = Color.RED.rgbString;
-      node.style.strokeOpacity = '1';
-      node.childNodes.forEach(highlightNode);
-    };
-
-    highlightNode(shape.svgNode);
-  }
 }

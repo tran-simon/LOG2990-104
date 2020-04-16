@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { SharedModule } from '@components/shared/shared.module';
+import { EditorService } from '@services/editor.service';
 import { SelectionToolbarComponent } from './selection-toolbar.component';
 
 describe('SelectionToolbarComponent', () => {
@@ -8,7 +10,9 @@ describe('SelectionToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule],
       declarations: [SelectionToolbarComponent],
+      providers: [EditorService],
     }).compileComponents();
   }));
 

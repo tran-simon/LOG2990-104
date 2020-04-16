@@ -10,6 +10,7 @@ export class Polygon extends BaseShape {
   private readonly points: Coordinate[];
   private _interiorAngle: number;
   private _nEdges: number;
+
   static coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
     const minDimension = Math.min(dimensions.x, dimensions.y);
     const x = minDimension / 2 + (minDimension / 2) * Math.cos(angle);
@@ -25,6 +26,7 @@ export class Polygon extends BaseShape {
   get interiorAngle(): number {
     return this._interiorAngle;
   }
+
   get nEdges(): number {
     return this._nEdges;
   }
@@ -49,12 +51,12 @@ export class Polygon extends BaseShape {
     return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.offset = Coordinate.subtract(c, this.relativeOrigin);
     this.applyTransform();
   }
 
-  constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
-    super('polygon');
+  constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES, id?: number) {
+    super('polygon', id);
     this.points = new Array<Coordinate>();
     this.origin = origin;
     this.nEdges = nEdges;
@@ -65,6 +67,15 @@ export class Polygon extends BaseShape {
     shape.points.push(...this.points);
     shape.origin = this.origin;
     shape.drawPoints();
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.points.length = 0;
+    this.points.push(...data.points);
+    this.drawPoints();
+    this.applyTransform();
   }
 
   private applyPoints(dimensions: Coordinate): void {

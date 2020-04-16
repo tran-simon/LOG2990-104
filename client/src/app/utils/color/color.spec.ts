@@ -96,4 +96,29 @@ describe('Color', () => {
     const color = Color.hsl(120, 0.5, 0.5, 0.4);
     expect(color.a).toEqual(0.4);
   });
+
+  it('can compare colors', () => {
+    const color1 = Color.hsl(120, 0.4, 0.34);
+    const color2 = Color.rgb255(52, 121, 52);
+    const color3 = Color.hsl(120, 0.4, 0.35);
+    expect(color1.compare(color1)).toBeTruthy();
+    expect(color1.compare(color2)).toBeTruthy();
+    expect(color1.compare(color3)).toBeFalsy();
+    expect(color2.compare(color3)).toBeFalsy();
+  });
+
+  it('can compare colors with tolerance', () => {
+    expect(Color.WHITE.compare(Color.BLACK, 0)).toBeFalsy();
+    expect(Color.WHITE.compare(Color.BLACK, 1)).toBeTruthy();
+    expect(Color.WHITE.compare(Color.rgb(1, 1, 0), 1 / 3)).toBeTruthy();
+    expect(Color.BLACK.compare(Color.rgb(1, 1, 0), 1 / 3)).toBeFalsy();
+    expect(Color.BLACK.compare(Color.rgb(1, 1, 0), 2 / 3)).toBeTruthy();
+  });
+
+  it('can get difference between 2 colors', () => {
+    expect(Color.RED.difference(Color.RED)).toEqual(0);
+    expect(Color.WHITE.difference(Color.BLACK)).toEqual(1);
+    expect(Color.rgb(1, 1, 0).difference(Color.BLACK)).toBeCloseTo(2 / 3);
+    expect(Color.rgb(1, 1, 0).difference(Color.WHITE)).toBeCloseTo(1 / 3);
+  });
 });
