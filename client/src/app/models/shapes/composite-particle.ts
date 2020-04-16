@@ -76,7 +76,11 @@ export class CompositeParticle extends BaseShape {
   updateProperties(): void {
     super.updateProperties();
     if (this.particles) {
-      this.particles.forEach((particle) => particle.updateProperties());
+      this.particles.forEach((particle) => {
+        particle.primaryColor = this.primaryColor;
+        particle.secondaryColor = this.primaryColor;
+        particle.updateProperties();
+      });
     }
   }
 }
