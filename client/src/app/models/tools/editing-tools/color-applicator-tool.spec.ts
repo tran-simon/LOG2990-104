@@ -22,6 +22,12 @@ describe('ColorApplicatorTool', () => {
     expect(tool).toBeTruthy();
   });
 
+  it('adds new command on application', () => {
+    const addCommandSpy = spyOn(tool['editorService'].commandReceiver, 'add');
+    tool.selectShape(new Rectangle(), false);
+    expect(addCommandSpy).toHaveBeenCalled();
+  });
+
   it('should change primary color of a shape on selectShape with left click', () => {
     tool['editorService'].colorsService.primaryColor = Color.RED;
     const shape = new Rectangle();
