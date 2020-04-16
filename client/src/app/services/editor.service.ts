@@ -60,7 +60,7 @@ export class EditorService {
     this.gridProperties = new GridProperties();
   }
 
-  static createShape(type: string): BaseShape {  // todo - make standalone class to reduce dependencies?
+  static createShape(type: string): BaseShape { // todo - make enum
     switch(type) {
       case 'BoundingBox':
         return new BoundingBox();
