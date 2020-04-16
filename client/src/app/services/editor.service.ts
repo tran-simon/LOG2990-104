@@ -5,7 +5,8 @@ import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
 import { ColorFillTool } from '@tools/editing-tools/color-fill-tool/color-fill-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
-import { SelectionTool } from '@tools/editing-tools/selection-tool';
+import { SelectionTool } from '@tools/editing-tools/selection-tool/selection-tool';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
@@ -18,6 +19,7 @@ import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
+import { APIService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +34,7 @@ export class EditorService {
 
   readonly gridProperties: GridProperties;
   view: DrawingSurfaceComponent;
+  loading: boolean;
 
   get commandReceiver(): CommandReceiver {
     return this._commandReceiver;
@@ -48,6 +51,25 @@ export class EditorService {
     this.previewShapes = new Array<BaseShape>();
     this.selectedShapes = new Array<BaseShape>();
     this.gridProperties = new GridProperties();
+    this.loading = false;
+  }
+
+  exportDrawing(): string {
+    return JSON.stringify(this.shapes, (key, value) => {
+      return key === 'svgNode' ? undefined : value;
+    });
+  }
+
+  importDrawing(drawingId: string, apiService: APIService): void {
+    apiService.getDrawingById(drawingId).then((drawing) => {
+      Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
+        const { type, id } = shapeData as BaseShape;
+        const shape = EditorUtils.createShape(type, id);
+        shape.readElement(JSON.stringify(shapeData)); // todo - fix
+        this.addShapeToBuffer(shape);
+      });
+      this.applyShapesBuffer();
+    });
   }
 
   private initTools(): void {
@@ -123,8 +145,8 @@ export class EditorService {
     }
   }
 
-  findShapeById(id: string): BaseShape | undefined {
-    const matchingShapes = this.shapes.filter((shape) => shape.svgNode.id === id);
+  findShapeById(id: number): BaseShape | undefined {
+    const matchingShapes = this.shapes.filter((shape) => shape.id === id);
     if (matchingShapes.length > 1) {
       throw new Error('Shape Id collision error');
     }

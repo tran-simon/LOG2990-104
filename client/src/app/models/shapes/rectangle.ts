@@ -52,10 +52,19 @@ export class Rectangle extends BaseShape {
     this.height = end.y - this.origin.y;
   }
 
-  constructor(origin: Coordinate = new Coordinate(), width: number = 0, height: number = width) {
-    super('rect');
+  constructor(origin: Coordinate = new Coordinate(), width: number = 0, height: number = width, id?: number) {
+    super('rect', id);
     this.origin = origin;
     this.width = width;
     this.height = height;
+  }
+
+  readElement(json: string): void {
+    super.readElement(json);
+    const data = JSON.parse(json) as this;
+    this.origin = data._origin;
+    this.width = data._width;
+    this.height = data._height;
+    this.applyTransform();
   }
 }

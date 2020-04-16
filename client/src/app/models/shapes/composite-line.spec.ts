@@ -1,4 +1,5 @@
-/* tslint:disable:no-magic-numbers */
+/* tslint:disable:no-magic-numbers no-string-literal */
+import { BaseShape } from '@models/shapes/base-shape';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { Line } from 'src/app/models/shapes/line';
 import { Coordinate } from 'src/app/utils/math/coordinate';
@@ -11,7 +12,7 @@ describe('CompositeLine', () => {
   const coord2 = new Coordinate(17, 8);
   const coord3 = new Coordinate(2, 3);
   beforeEach(() => {
-    cLine = new CompositeLine();
+    cLine = new CompositeLine(coordZero);
   });
   it('Should init with line with only (0, 0) coordinates', () => {
     expect(cLine.center).toEqual(coordZero);
@@ -29,13 +30,19 @@ describe('CompositeLine', () => {
     expect(addJunctionSpy).toHaveBeenCalledWith(coord1);
   });
   it('Should add line at the end of lineArray', () => {
+    BaseShape['SHAPE_ID'] = 0;
     cLine.addLine(coord1);
-    expect(cLine.lineArray.pop()).toEqual(new Line(coord1));
+    BaseShape['SHAPE_ID'] = 0;
+    const line = new Line(coord1);
+    expect(cLine.lineArray.pop()).toEqual(line);
     expect(cLine.svgNode.querySelector('line')).toBeTruthy();
   });
   it('Should add junction at the end of junctionArray', () => {
+    BaseShape['SHAPE_ID'] = 0;
     cLine.addJunction(coord1);
-    expect(cLine.currentJunction).toEqual(new Ellipse(coord1));
+    BaseShape['SHAPE_ID'] = 0;
+    const ellipse = new Ellipse(coord1);
+    expect(cLine.currentJunction).toEqual(ellipse);
     expect(cLine.svgNode.querySelector('ellipse')).toBeTruthy();
   });
   it('Should update the current line', () => {
