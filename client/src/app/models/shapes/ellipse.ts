@@ -12,6 +12,10 @@ export class Ellipse extends BaseShape {
     copy.updateProperties();
     return copy;
   }
+  cloneProperties(shape: Ellipse): void {
+    super.cloneProperties(shape);
+    shape.origin = Coordinate.copy(this.origin);
+  }
 
   get radiusX(): number {
     return this._radiusX;
