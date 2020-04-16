@@ -1,4 +1,4 @@
-<div id="color-picker" >
+<div id="color-picker">
   <div *ngIf=showHistory>
     <app-color-history (colorSelectedEvent)='closed.emit()'></app-color-history>
   </div>
@@ -23,58 +23,60 @@
     </div>
   </div>
 
-  <form #form [formGroup]="formGroup" >
-    <app-hex-input  #redinput
-      id="red-color-input"
-      [errorMessages]="hexInputErrorMessages"
-      [maxLength]=2
-      [value]="color.rHex"
-      (valueChange)="rgbChange(redinput.value, 'r')"
-      [formGroup]="formGroup">
-      R:
-    </app-hex-input>
-    <app-hex-input #greeninput
-      id="green-color-input"
-      [errorMessages]="hexInputErrorMessages"
-      [maxLength]=2
-      [value]="color.gHex"
-      (valueChange)="rgbChange(greeninput.value, 'g')"
-      [formGroup]="formGroup">
-      V:
-    </app-hex-input>
-    <app-hex-input #blueinput
-      id="blue-color-input"
-      [errorMessages]="hexInputErrorMessages"
-      [maxLength]=2
-      [value]="color.bHex"
-      (valueChange)="rgbChange(blueinput.value, 'b')"
-      [formGroup]="formGroup">
-      B:
-    </app-hex-input>
-    <app-hex-input #hexinput
-      id="hex-color-input"
-      [length]=6
-      prefix="#"
-      [errorMessages]="hexInputErrorMessages"
-      [value]="color.hex"
-      (valueChange)="hexChange(hexinput.value)"
-      [formGroup]="formGroup">Hex:
-    </app-hex-input>
-  </form>
-  <div id='alpha-form'>
-    <app-alpha [color]='color'
-      [length]=225
-      (colorChanged)="alphaChangeColor($event)"
-      [isVertical]="false"
-    ></app-alpha>
-    <app-number-input #alphainput
-      max=100
-      min=0
-      (valueChange)=alphaChange(alphainput.value)
-      [value]='alpha'
+  <div id='color-components'>
+    <form #form [formGroup]="formGroup" >
+      <app-hex-input  #redinput
+        id="red-color-input"
+        [errorMessages]="hexInputErrorMessages"
+        [maxLength]=2
+        [value]="color.rHex"
+        (valueChange)="rgbChange(redinput.value, 'r')"
+        [formGroup]="formGroup">
+        R:
+      </app-hex-input>
+      <app-hex-input #greeninput
+        id="green-color-input"
+        [errorMessages]="hexInputErrorMessages"
+        [maxLength]=2
+        [value]="color.gHex"
+        (valueChange)="rgbChange(greeninput.value, 'g')"
+        [formGroup]="formGroup">
+        V:
+      </app-hex-input>
+      <app-hex-input #blueinput
+        id="blue-color-input"
+        [errorMessages]="hexInputErrorMessages"
+        [maxLength]=2
+        [value]="color.bHex"
+        (valueChange)="rgbChange(blueinput.value, 'b')"
+        [formGroup]="formGroup">
+        B:
+      </app-hex-input>
+      <app-hex-input #hexinput
+        id="hex-color-input"
+        [length]=6
+        prefix="#"
+        [errorMessages]="hexInputErrorMessages"
+        [value]="color.hex"
+        (valueChange)="hexChange(hexinput.value)"
+        [formGroup]="formGroup">Hex:
+      </app-hex-input>
+    </form>
+    <div id='alpha-form'>
+      <app-alpha [color]='color'
+        [length]=225
+        (colorChanged)="alphaChangeColor($event)"
+        [isVertical]="true"
+      ></app-alpha>
+      <app-number-input #alphainput
+        max=100
+        min=0
+        (valueChange)=alphaChange(alphainput.value)
+        [value]='alpha'
 
-    >Alpha:</app-number-input>
-
+      >Alpha:
+      </app-number-input>
+    </div>
   </div>
   <div *ngIf=showHistory id='buttons'>
     <button mat-raised-button id='btn-cancel' (click)='cancel()' [disabled]=colorHasChanged>Annuler</button>

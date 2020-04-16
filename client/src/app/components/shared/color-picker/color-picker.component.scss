@@ -1,48 +1,53 @@
 canvas {
-  margin-top:1rem;
-  border-style: solid
+  margin-top: 1rem;
+  border-style: solid;
+  width: 294px;
 }
-#lightness-section{
+
+#lightness-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
-  #color-preview{
+
+  #color-preview {
     border-style: solid;
     width: 50px;
     height: 50px;
   }
 }
 
-form{
+#color-components {
   display: flex;
-  app-hex-input{
-    width: 15%;
-    margin-right: 1rem;
+  justify-content: space-between;
+
+  form {
+    display: flex;
+    flex-direction: column;
   }
-  #hex-color-input{
-    flex-grow: 1;
-    margin-right: 0;
+
+  #alpha-form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    app-alpha {
+      align-self: flex-end;
+    }
+
+    app-number-input {
+      width: 58px;
+      margin-top: 0.5rem;
+    }
   }
 }
 
-#alpha-form{
-  display: flex;
-  align-content: center;
-  app-alpha{
-    margin-right: 0.5rem;
-  }
-  app-number-input{
-    width: 0;
-    margin-right: 0;
-    flex-grow: 1;
-  }
-}
 #buttons {
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
-  button{
+
+  button {
     width: 40%;
   }
 
