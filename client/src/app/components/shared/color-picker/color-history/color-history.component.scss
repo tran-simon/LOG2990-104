@@ -1,7 +1,8 @@
 #color-history {
-  float: left;
-  border-style: solid;
+  display: flex;
+  justify-content: space-between;
   .color-history-button{
+    border-style: solid;
     cursor: pointer;
     width:20px;
     height:20px;

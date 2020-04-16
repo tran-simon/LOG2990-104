@@ -10,15 +10,21 @@
       (mousedown)="onMouseDown($event)">
     </canvas>
 
-    <app-color-lightness [color]="color"
-      (colorChanged)="colorChange($event)"
-      [isVertical]="isVertical"
-    ></app-color-lightness>
+    <div id='lightness-section'>
+      <app-color-lightness [color]="color"
+        [length]=225
+        (colorChanged)="colorChange($event)"
+        [isVertical]="isVertical"
+      ></app-color-lightness>
+      <div id='color-preview'
+        [style.opacity]=color.a
+        [style.background-color]=color.rgbString
+      ></div>
+    </div>
   </div>
 
-  <form [formGroup]="formGroup" >
+  <form #form [formGroup]="formGroup" >
     <app-hex-input  #redinput
-      required=true
       id="red-color-input"
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
@@ -28,7 +34,6 @@
       R:
     </app-hex-input>
     <app-hex-input #greeninput
-      required=true
       id="green-color-input"
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
@@ -38,7 +43,6 @@
       V:
     </app-hex-input>
     <app-hex-input #blueinput
-      required=true
       id="blue-color-input"
       [errorMessages]="hexInputErrorMessages"
       [maxLength]=2
@@ -49,7 +53,6 @@
     </app-hex-input>
     <app-hex-input #hexinput
       id="hex-color-input"
-      required=true
       [length]=6
       prefix="#"
       [errorMessages]="hexInputErrorMessages"
@@ -58,12 +61,23 @@
       [formGroup]="formGroup">Hex:
     </app-hex-input>
   </form>
-  <app-alpha [color]='color'
-    (colorChanged)="alphaChange($event)"
-    [isVertical]="false"
-  ></app-alpha>
-  <div *ngIf=showHistory>
-    <button id='btn-cancel' (click)='cancel()'>Annuler</button>
-    <button id='btn-confirm' (click)='confirm()'>Confirmer</button>
+  <div id='alpha-form'>
+    <app-alpha [color]='color'
+      [length]=225
+      (colorChanged)="alphaChangeColor($event)"
+      [isVertical]="false"
+    ></app-alpha>
+    <app-number-input #alphainput
+      max=100
+      min=0
+      (valueChange)=alphaChange(alphainput.value)
+      [value]='alpha'
+
+    >Alpha:</app-number-input>
+
+  </div>
+  <div *ngIf=showHistory id='buttons'>
+    <button mat-raised-button id='btn-cancel' (click)='cancel()' [disabled]=colorHasChanged>Annuler</button>
+    <button mat-raised-button id='btn-confirm' (click)='confirm()' [disabled]=!colorHasChanged>Confirmer</button>
   </div>
 </div>
