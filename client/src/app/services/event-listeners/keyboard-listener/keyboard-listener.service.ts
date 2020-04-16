@@ -1,7 +1,5 @@
-import { Injectable } from '@angular/core';
 import { AbstractEventListenerService } from 'src/app/services/event-listeners/abstract-event-listener.service';
 
-@Injectable()
 export class KeyboardListenerService extends AbstractEventListenerService<KeyboardEvent> {
   static getIdentifier(key: string, ctrlKey: boolean = false, shiftKey: boolean = false, type: string = 'keydown'): string {
     let identifier = '';

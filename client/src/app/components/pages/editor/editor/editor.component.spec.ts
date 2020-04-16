@@ -6,7 +6,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { RouterTestingModule } from '@angular/router/testing';
 import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
 import { ToolbarModule } from '@components/pages/editor/toolbar/toolbar.module';
-import { GridVisibility } from '@tool-properties/grid-properties/grid-visibility.enum';
+import { SelectionTool } from '@tools/editing-tools/selection-tool/selection-tool';
 import { of } from 'rxjs';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { CreateDrawingModalComponent } from 'src/app/components/pages/home/create-drawing-modal/create-drawing-modal.component';
@@ -18,11 +18,9 @@ import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/re
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
 import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
 import { mouseDown } from 'src/app/models/tools/creator-tools/stroke-tools/stroke-tool.spec';
-import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool';
 import { Tool } from 'src/app/models/tools/tool';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
-import { KeyboardListenerService } from 'src/app/services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
@@ -31,28 +29,32 @@ import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.comp
 import { EditorComponent } from './editor.component';
 import createSpyObj = jasmine.createSpyObj;
 
-export const keyDown = (key: string, shiftKey: boolean = false, ctrlKey: boolean = false): KeyboardEvent => {
+export const keyDown = (key: string, shiftKey: boolean = false, ctrlKey: boolean = false, altKey: boolean = false): KeyboardEvent => {
   return {
     key,
     type: 'keydown',
     shiftKey,
     ctrlKey,
+    altKey,
+    preventDefault(): void {
+      return;
+    },
   } as KeyboardEvent;
 };
 
-export const keyUp = (key: string, shiftKey: boolean = false, ctrlKey: boolean = false): KeyboardEvent => {
+export const keyUp = (key: string, shiftKey: boolean = false, ctrlKey: boolean = false, altKey: boolean = false): KeyboardEvent => {
   return {
     key,
     type: 'keyup',
     shiftKey,
     ctrlKey,
+    altKey,
   } as KeyboardEvent;
 };
 
 describe('EditorComponent', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
-  let keyboardListener: KeyboardListenerService;
   const modalDialogServiceSpy = createSpyObj('ModalDialogService', {
     openByName: { afterClosed: () => of(true) },
   });
@@ -76,7 +78,6 @@ describe('EditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
-    keyboardListener = component['keyboardListener'];
     modalDialogServiceSpy.openByName.calls.reset();
     fixture.detectChanges();
   });
@@ -93,120 +94,11 @@ describe('EditorComponent', () => {
     expect(changeBackgroundSpy).toHaveBeenCalled();
   });
 
-  it('should catch a keyboard event on keydown', () => {
-    const spy = spyOn(keyboardListener, 'handle');
-    const keydownEvent = new Event('keydown');
-    window.dispatchEvent(keydownEvent);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should select the pen tool when typing c', () => {
-    keyboardListener.handle(keyDown('c'));
-    expect(component.currentToolType).toEqual(ToolType.Pen);
-  });
-
   it('should cancel current drawing on tool change', () => {
     component.currentToolType = ToolType.Pen;
     const cancelSpy = spyOn(component.editorService.tools.get(ToolType.Pen) as Tool, 'cancel');
     component.currentToolType = ToolType.Brush;
     expect(cancelSpy).toHaveBeenCalled();
-  });
-
-  it('should pass down events when unknown keys are pressed', () => {
-    const spy = spyOn(component.currentTool as Tool, 'handleKeyboardEvent');
-
-    keyboardListener.handle(keyDown('x'));
-
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should select the brush tool when typing w', () => {
-    keyboardListener.handle(keyDown('w'));
-    expect(component.currentToolType).toEqual(ToolType.Brush);
-  });
-
-  it('should select the rectangle tool when typing 1', () => {
-    keyboardListener.handle(keyDown('1'));
-    expect(component.currentToolType).toEqual(ToolType.Rectangle);
-  });
-
-  it('should select the line tool when typing l', () => {
-    keyboardListener.handle(keyDown('l'));
-    expect(component.currentToolType).toEqual(ToolType.Line);
-  });
-
-  it('should select the pipette tool when typing i', () => {
-    keyboardListener.handle(keyDown('i'));
-    expect(component.currentToolType).toEqual(ToolType.Pipette);
-  });
-
-  it('should select the polygon tool when typing 3', () => {
-    keyboardListener.handle(keyDown('3'));
-    expect(component.currentToolType).toEqual(ToolType.Polygon);
-  });
-
-  it('should select the color applicator tool when typing r', () => {
-    keyboardListener.handle(keyDown('r'));
-    expect(component.currentToolType).toEqual(ToolType.ColorApplicator);
-  });
-
-  it('should select the eraser tool when typing e', () => {
-    keyboardListener.handle(keyDown('e'));
-    expect(component.currentToolType).toEqual(ToolType.Eraser);
-  });
-
-  it('should select the spray tool when typing a', () => {
-    keyboardListener.handle(keyDown('a'));
-    expect(component.currentToolType).toEqual(ToolType.Spray);
-  });
-
-  it('should select the color fill tool when typing b', () => {
-    keyboardListener.handle(keyDown('b'));
-    expect(component.currentToolType).toEqual(ToolType.ColorFill);
-  });
-
-  it('should decrement grid size when typing -', () => {
-    component.editorService.gridProperties.size.value = 20;
-    keyboardListener.handle(keyDown('-', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(15);
-  });
-
-  it('should decrement grid size and set to highest multiple of 5 when typing -', () => {
-    component.editorService.gridProperties.size.value = 21;
-    keyboardListener.handle(keyDown('-', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(20);
-    component.editorService.gridProperties.size.value = 24;
-    keyboardListener.handle(keyDown('-', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(20);
-    component.editorService.gridProperties.size.value = 25;
-    keyboardListener.handle(keyDown('-', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(20);
-  });
-
-  it('should increment grid size when typing +', () => {
-    component.editorService.gridProperties.size.value = 20;
-    keyboardListener.handle(keyDown('+', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(25);
-  });
-
-  it('should increment grid size and set to highest multiple of 5 when typing +', () => {
-    component.editorService.gridProperties.size.value = 21;
-    keyboardListener.handle(keyDown('+', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(25);
-    component.editorService.gridProperties.size.value = 24;
-    keyboardListener.handle(keyDown('+', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(25);
-    component.editorService.gridProperties.size.value = 25;
-    keyboardListener.handle(keyDown('+', false, false));
-    expect(component.editorService.gridProperties.size.value).toEqual(30);
-  });
-
-  it('should set grid visible when typing g', () => {
-    component.editorService.gridProperties.visibility.value = GridVisibility.hidden;
-    keyboardListener.handle(keyDown('g', false, false));
-    expect(component.editorService.gridProperties.visibility.value).toEqual(GridVisibility.visible);
   });
 
   it('should select the line tool', () => {
@@ -235,13 +127,6 @@ describe('EditorComponent', () => {
 
     const currentTool = component.currentTool as Tool;
     expect(currentTool.constructor.name).toEqual(PenTool.name);
-  });
-
-  it('should select selection tool on typing s', () => {
-    keyboardListener.handle(keyDown('s'));
-    expect(component.currentToolType).toEqual(ToolType.Select);
-    const currentTool = component.currentTool as Tool;
-    expect(currentTool.constructor.name).toEqual(SelectionTool.name);
   });
 
   it('can get current tool', () => {
