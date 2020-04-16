@@ -1,5 +1,7 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { TestBed } from '@angular/core/testing';
+import createSpyObj = jasmine.createSpyObj;
+import { Drawing } from '@models/drawing';
 import { BaseShape } from '@models/shapes/base-shape';
 import { Ellipse } from '@models/shapes/ellipse';
 import { Line } from '@models/shapes/line';
@@ -11,7 +13,6 @@ import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
-import createSpyObj = jasmine.createSpyObj;
 
 describe('EditorService', () => {
   let service: EditorService;
@@ -48,6 +49,30 @@ describe('EditorService', () => {
       const tool = service.tools.get(key);
       expect(tool).toBeDefined();
     }
+  });
+
+  it('can export drawing', () => {
+    service.shapes.length = 0;
+    service.shapes.push(line);
+    service.shapes.push(rectangle);
+    const result = JSON.parse(service.exportDrawing());
+    expect(result.length).toEqual(2);
+    expect(result[0].svgNode).toBeFalsy();
+    expect(result[0].type).toEqual('Line');
+    expect(result[1].type).toEqual('Rectangle');
+  });
+
+  it('can import drawing', () => {
+    service.shapes.length = 0;
+    service.shapes.push(line);
+    service.shapes.push(rectangle);
+    const api = createSpyObj('api', {getDrawingById: () => {return;}});
+    api.getDrawingById = async (id: string) => {
+      return Promise.resolve({data: service.exportDrawing()} as Drawing);
+    };
+    const service2 = new EditorService(new ColorsService());
+    service2.importDrawing('', api);
+    expect(service2.shapes.values).toEqual(service.shapes.values);
   });
 
   it('updates shapes and clears buffer on applyShapeBuffer', () => {

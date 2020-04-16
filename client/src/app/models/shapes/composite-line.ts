@@ -46,21 +46,26 @@ export class CompositeLine extends BaseShape {
     if (initCoord) {
       this.addPoint(initCoord);
     }
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
-    data.junctionArray.forEach((j, index) => {
-      const junction = new Ellipse();
-      junction.readElement(JSON.stringify(j)); // todo - fix
-      if (index === 0) {
-        this.addPoint(junction.center);
-      } else {
-        this.updateCurrentCoord(junction.center);
-        this.confirmPoint();
-      }
+  readShape(data: CompositeLine): void {
+    super.readShape(data);
+    this.lineArray.length = 0;
+    this.junctionArray.length = 0;
+    data.lineArray.forEach((l) => {
+      const line = new Line(undefined, undefined, l.id);
+      line.readShape(l);
+      this.lineArray.push(line);
+      this.svgNode.appendChild(line.svgNode);
     });
+    data.junctionArray.forEach((j) => {
+      const junction = new Ellipse(undefined, undefined, undefined, j.id);
+      junction.readShape(j);
+      this.junctionArray.push(junction);
+      this.svgNode.appendChild(junction.svgNode);
+    });
+    this.updateProperties();
     this.applyTransform();
   }
 

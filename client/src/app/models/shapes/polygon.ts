@@ -50,6 +50,7 @@ export class Polygon extends BaseShape {
     this.points = new Array<Coordinate>();
     this.origin = origin;
     this.nEdges = nEdges;
+    this.applyTransform();
   }
 
   private static coordRelativeToInCircle(angle: number, dimensions: Coordinate): Coordinate {
@@ -59,22 +60,15 @@ export class Polygon extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readShape(data: Polygon): void {
+    super.readShape(data);
+    this.nEdges = data._nEdges;
     this.points.length = 0;
-    this.points.push(...data.points);
+    data.points.forEach((p) => {
+      this.points.push(Coordinate.copy(p));
+    });
     this.drawPoints();
     this.applyTransform();
-  }
-
-  private applyPoints(dimensions: Coordinate): void {
-    let angle = Polygon.ORIENTATION_ANGLE;
-    this.points.length = 0;
-    for (let i = 0; i < this.nEdges; i++) {
-      angle += this.interiorAngle;
-      this.points.push(Polygon.coordRelativeToInCircle(angle, dimensions));
-    }
   }
 
   updatePoints(dimensions: Coordinate, origin: Coordinate): void {
@@ -97,9 +91,20 @@ export class Polygon extends BaseShape {
     if (dimensions.x < 0) {
       this.origin = new Coordinate(this.origin.x + absDimensions.x - this.width, this.origin.y);
     }
+
+    this.drawPoints();
   }
 
-  drawPoints(): void {
+  private applyPoints(dimensions: Coordinate): void {
+    let angle = Polygon.ORIENTATION_ANGLE;
+    this.points.length = 0;
+    for (let i = 0; i < this.nEdges; i++) {
+      angle += this.interiorAngle;
+      this.points.push(Polygon.coordRelativeToInCircle(angle, dimensions));
+    }
+  }
+
+  private drawPoints(): void {
     let sPoints = '';
     this.points.forEach((c: Coordinate) => {
       sPoints += c.x.toString() + ',' + c.y.toString() + ' ';

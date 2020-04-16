@@ -81,7 +81,6 @@ export class Coordinate {
   }
 
   static angle(c1: Coordinate, c2: Coordinate): number {
-    // todo - rename
     return Math.atan2(c1.y - c2.y, c1.x - c2.x);
   }
 

@@ -55,17 +55,13 @@ export class EditorService {
   }
 
   exportDrawing(): string {
-    return JSON.stringify(this.shapes, (key, value) => {
-      return key === 'svgNode' ? undefined : value;
-    });
+    return JSON.stringify(this.shapes, BaseShape.jsonReplacer);
   }
 
   importDrawing(drawingId: string, apiService: APIService): void {
     apiService.getDrawingById(drawingId).then((drawing) => {
       Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
-        const { type, id } = shapeData as BaseShape;
-        const shape = EditorUtils.createShape(type, id);
-        shape.readElement(JSON.stringify(shapeData)); // todo - fix
+        const shape = EditorUtils.createShape(shapeData as BaseShape);
         this.addShapeToBuffer(shape);
       });
       this.applyShapesBuffer();
