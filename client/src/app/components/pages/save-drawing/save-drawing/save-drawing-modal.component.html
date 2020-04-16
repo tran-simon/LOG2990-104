@@ -4,9 +4,9 @@
       <div id="form-container">
         <img id="preview" [src]="previewURL">
         <form [formGroup]="formGroup"></form>
-        <app-name-input [formGroup]="formGroup" [(value)]="name" required=true>Nom du dessin</app-name-input>
+        <app-name-input [formGroup]="formGroup" [(value)]="name" >Nom du dessin</app-name-input>
         <div id="tag-container" *ngFor="let tag of tags; index as i">
-          <app-tag-input [formGroup]="formGroup" [(value)]="tags[i].value" required=true>Tag</app-tag-input>
+          <app-tag-input [formGroup]="formGroup" [(value)]="tags[i].value" >Tag</app-tag-input>
         </div>
         <div id="tag-button-container">
           <button id="btn-remove" mat-icon-button (click)="removeTag()">
