@@ -32,10 +32,10 @@ export class EditorUtils {
     const image = new Image();
     const { width, height } = view;
     const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     ctx.imageSmoothingEnabled = false;
-    ctx.canvas.width = width;
-    ctx.canvas.height = height;
 
     const xml = new XMLSerializer().serializeToString(svg);
     image.src = 'data:image/svg+xml;base64,' + btoa(xml);
@@ -64,7 +64,9 @@ export class EditorUtils {
       return [rIndex, rIndex + 1, rIndex + 2, rIndex + 3];
     };
 
-    const indices = getColorIndicesForCoord(point.x, point.y);
+    const { x, y } = Coordinate.apply(point, Math.ceil);
+
+    const indices = getColorIndicesForCoord(x, y);
     const r = data[indices[0]];
     const g = data[indices[1]];
     const b = data[indices[2]];

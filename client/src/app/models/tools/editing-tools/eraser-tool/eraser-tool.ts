@@ -1,6 +1,7 @@
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { EraserToolProperties } from '@tool-properties/editor-tool-properties/eraser-tool-properties';
 import { EditorUtils } from '@utils/color/editor-utils';
+import { MathUtils } from '@utils/math/math-utils';
 import { RemoveShapesCommand } from 'src/app/models/commands/shape-commands/remove-shapes-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
@@ -12,10 +13,9 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class EraserTool extends Tool {
   private readonly eraserView: Rectangle;
-  private ctx: CanvasRenderingContext2D | undefined;
+  private colorData: Uint8ClampedArray | undefined;
   private selectedIndexes: number[];
   private removedShapes: BaseShape[];
-  private clonedView: SVGElement | undefined;
 
   toolProperties: EraserToolProperties;
 
@@ -30,8 +30,7 @@ export class EraserTool extends Tool {
     if (shape) {
       this.editorService.removeShapeFromView(shape);
       this.removedShapes.push(shape);
-      this.ctx = undefined;
-      this.clonedView = undefined;
+      this.colorData = undefined;
       this.init();
     }
   }
@@ -52,14 +51,15 @@ export class EraserTool extends Tool {
       }
     });
 
-    this.clonedView = newClonedView;
-
-    EditorUtils.viewToCanvas(this.editorService.view, this.clonedView)
+    EditorUtils.viewToCanvas(this.editorService.view, newClonedView)
       .then((ctx) => {
         if (ctx) {
           ctx.imageSmoothingEnabled = false;
         }
-        this.ctx = ctx;
+        const width = parseInt(newClonedView.getAttribute('width') || '0', MathUtils.DECIMAL_RADIX);
+        const height = parseInt(newClonedView.getAttribute('height') || '0', MathUtils.DECIMAL_RADIX);
+
+        this.colorData = ctx.getImageData(0, 0, width, height).data;
         if (!this.editorService.view.svg.contains(this.eraserView.svgNode)) {
           this.initEraserView();
         }
@@ -70,13 +70,16 @@ export class EraserTool extends Tool {
   selectShapes(pos: Coordinate): void {
     const { x, y } = pos;
     this.selectedIndexes = [];
-    if (this.ctx) {
+    if (this.colorData) {
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
-          const color = EditorUtils.colorAtPointInCanvas(this.ctx, new Coordinate(x + i, y + j));
+          const color = EditorUtils.colorAtPointFromUint8ClampedArray(
+            this.colorData,
+            new Coordinate(x + i, y + j),
+            this.editorService.view.width,
+          );
 
-          /* ignore the color if there's red (to avoid issues with antialiasing) */
-          if (color.r > 0) {
+          if (!color || color.r > 0) {
             continue;
           }
 

@@ -38,7 +38,6 @@ export class ColorFillTool extends Tool {
       EditorUtils.viewToCanvas(this.editorService.view)
         .then((ctx) => {
           this.colorData = ctx.getImageData(0, 0, width, height).data;
-          console.log(this.colorData);
           this.floodFill();
           this.applyShape();
         })
