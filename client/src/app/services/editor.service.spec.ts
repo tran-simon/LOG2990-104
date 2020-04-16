@@ -15,7 +15,7 @@ import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
 
-fdescribe('EditorService', () => {
+describe('EditorService', () => {
   let service: EditorService;
   let line: Line;
   let rectangle: Rectangle;
