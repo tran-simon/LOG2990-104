@@ -5,7 +5,6 @@ import { Ellipse } from '@models/shapes/ellipse';
 import { Line } from '@models/shapes/line';
 import { Polygon } from '@models/shapes/polygon';
 import { Rectangle } from '@models/shapes/rectangle';
-import createSpyObj = jasmine.createSpyObj;
 import { SelectionTool } from '@tools/editing-tools/selection-tool';
 import { Coordinate } from '@utils/math/coordinate';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -14,6 +13,7 @@ import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('EditorService', () => {
   let service: EditorService;
@@ -31,7 +31,11 @@ describe('EditorService', () => {
     service = new EditorService(new ColorsService());
     line = new Line();
     rectangle = new Rectangle();
-    service.view = createSpyObj('view', ['addShape', 'removeShape', 'svg']);
+    const viewSpy = createSpyObj('view', ['addShape', 'removeShape']);
+    viewSpy.svg = {
+      contains: () => false,
+    };
+    service.view = viewSpy;
 
     service['shapesBuffer'] = [rectangle, rectangle];
     // @ts-ignore
