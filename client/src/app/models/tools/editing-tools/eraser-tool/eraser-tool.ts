@@ -1,4 +1,3 @@
-import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { EraserToolProperties } from '@tool-properties/editor-tool-properties/eraser-tool-properties';
 import { EditorUtils } from '@utils/color/editor-utils';
 import { MathUtils } from '@utils/math/math-utils';
@@ -12,6 +11,9 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class EraserTool extends Tool {
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly DARKER_HIGHLIGHT_COLOR: Color = Color.rgb(0.8, 0, 0);
+  static readonly HIGHLIGHT_COLOR: Color = Color.RED;
   private readonly eraserView: Rectangle;
   private colorData: Uint8ClampedArray | undefined;
   private selectedIndexes: number[];
@@ -101,6 +103,7 @@ export class EraserTool extends Tool {
     this.handleMouseMove = () => {
       if (this.eraserView) {
         this.eraserView.primaryColor = Color.WHITE;
+        this.eraserView.secondaryColor = Color.BLACK;
         this.eraserView.height = this.size;
         this.eraserView.width = this.size;
         this.eraserView.origin = this.eraserPosition;
@@ -141,7 +144,12 @@ export class EraserTool extends Tool {
   highlightShapeForId(id: number): void {
     const shape = this.editorService.findShapeById(id);
     if (shape) {
-      shape.highlight(Color.RED, EraserUtils.SELECTION_THICKNESS);
+      const shapeColorIsHighlight =
+        shape.primaryColor.compare(EraserTool.HIGHLIGHT_COLOR) || shape.secondaryColor.compare(EraserTool.HIGHLIGHT_COLOR);
+
+      const highlightColor = shapeColorIsHighlight ? EraserTool.DARKER_HIGHLIGHT_COLOR : EraserTool.HIGHLIGHT_COLOR;
+
+      shape.highlight(highlightColor, EraserUtils.SELECTION_THICKNESS);
       if (this.isActive) {
         this.erase(shape);
       }
@@ -155,7 +163,7 @@ export class EraserTool extends Tool {
 
   initEraserView(): void {
     this.eraserView.primaryColor = Color.TRANSPARENT;
-    this.eraserView.contourType = ContourType.FILLED;
+    this.eraserView.secondaryColor = Color.TRANSPARENT;
     this.eraserView.updateProperties();
 
     this.editorService.addPreviewShape(this.eraserView);
