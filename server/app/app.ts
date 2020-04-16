@@ -4,6 +4,7 @@ import * as cors from 'cors';
 import * as express from 'express';
 import { inject, injectable } from 'inversify';
 import * as logger from 'morgan';
+// import * as nodemailer from 'nodemailer';
 import { APIController } from './controllers/api.controller';
 import Types from './types';
 
