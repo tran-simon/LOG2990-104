@@ -136,11 +136,15 @@ describe('EraserTool', () => {
   });
 
   it('can detect collisions', () => {
-    spyOn(EditorUtils, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtils, 'colorAtPointFromUint8ClampedArray').and.callFake((data, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
+    eraser['editorService'].view = {
+      width: 100,
+    } as DrawingSurfaceComponent;
+
     // @ts-ignore
-    eraser['ctx'] = true;
+    eraser['colorData'] = true;
     spyOn(EraserUtils, 'indexFromColor').and.returnValue(1);
     spyOnProperty(eraser, 'size').and.returnValue(5);
     eraser.selectShapes(new Coordinate(2, 2));
@@ -148,7 +152,7 @@ describe('EraserTool', () => {
   });
 
   it('does not select objects that do not collide', () => {
-    spyOn(EditorUtils, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtils, 'colorAtPointFromUint8ClampedArray').and.callFake((data, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
     spyOn(EraserUtils, 'indexFromColor').and.returnValue(1);
@@ -176,11 +180,14 @@ describe('EraserTool', () => {
   });
 
   it('does not select shape if color difference is greater than tolerance', () => {
-    spyOn(EditorUtils, 'colorAtPointInCanvas').and.callFake((ctx, coord) => {
+    spyOn(EditorUtils, 'colorAtPointFromUint8ClampedArray').and.callFake((data, coord) => {
       return coord.x === 5 ? Color.BLUE : Color.RED;
     });
+    eraser['editorService'].view = {
+      width: 100,
+    } as DrawingSurfaceComponent;
     // @ts-ignore
-    eraser['ctx'] = true;
+    eraser['colorData'] = true;
     spyOn(EraserUtils, 'indexFromColor').and.returnValue(1.5);
     spyOnProperty(eraser, 'size').and.returnValue(5);
 

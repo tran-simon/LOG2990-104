@@ -1,6 +1,6 @@
-import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { EraserToolProperties } from '@tool-properties/editor-tool-properties/eraser-tool-properties';
 import { EditorUtils } from '@utils/color/editor-utils';
+import { MathUtils } from '@utils/math/math-utils';
 import { RemoveShapesCommand } from 'src/app/models/commands/shape-commands/remove-shapes-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
@@ -11,11 +11,13 @@ import { Color } from 'src/app/utils/color/color';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class EraserTool extends Tool {
+  // tslint:disable-next-line:no-magic-numbers
+  static readonly DARKER_HIGHLIGHT_COLOR: Color = Color.rgb(0.8, 0, 0);
+  static readonly HIGHLIGHT_COLOR: Color = Color.RED;
   private readonly eraserView: Rectangle;
-  private ctx: CanvasRenderingContext2D | undefined;
+  private colorData: Uint8ClampedArray | undefined;
   private selectedIndexes: number[];
   private removedShapes: BaseShape[];
-  private clonedView: SVGElement | undefined;
 
   toolProperties: EraserToolProperties;
 
@@ -30,8 +32,7 @@ export class EraserTool extends Tool {
     if (shape) {
       this.editorService.removeShapeFromView(shape);
       this.removedShapes.push(shape);
-      this.ctx = undefined;
-      this.clonedView = undefined;
+      this.colorData = undefined;
       this.init();
     }
   }
@@ -52,14 +53,15 @@ export class EraserTool extends Tool {
       }
     });
 
-    this.clonedView = newClonedView;
-
-    EditorUtils.viewToCanvas(this.editorService.view, this.clonedView)
+    EditorUtils.viewToCanvas(this.editorService.view, newClonedView)
       .then((ctx) => {
         if (ctx) {
           ctx.imageSmoothingEnabled = false;
         }
-        this.ctx = ctx;
+        const width = parseInt(newClonedView.getAttribute('width') || '0', MathUtils.DECIMAL_RADIX);
+        const height = parseInt(newClonedView.getAttribute('height') || '0', MathUtils.DECIMAL_RADIX);
+
+        this.colorData = ctx.getImageData(0, 0, width, height).data;
         if (!this.editorService.view.svg.contains(this.eraserView.svgNode)) {
           this.initEraserView();
         }
@@ -70,13 +72,16 @@ export class EraserTool extends Tool {
   selectShapes(pos: Coordinate): void {
     const { x, y } = pos;
     this.selectedIndexes = [];
-    if (this.ctx) {
+    if (this.colorData) {
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
-          const color = EditorUtils.colorAtPointInCanvas(this.ctx, new Coordinate(x + i, y + j));
+          const color = EditorUtils.colorAtPointFromUint8ClampedArray(
+            this.colorData,
+            new Coordinate(x + i, y + j),
+            this.editorService.view.width,
+          );
 
-          /* ignore the color if there's red (to avoid issues with antialiasing) */
-          if (color.r > 0) {
+          if (!color || color.r > 0) {
             continue;
           }
 
@@ -98,6 +103,7 @@ export class EraserTool extends Tool {
     this.handleMouseMove = () => {
       if (this.eraserView) {
         this.eraserView.primaryColor = Color.WHITE;
+        this.eraserView.secondaryColor = Color.BLACK;
         this.eraserView.height = this.size;
         this.eraserView.width = this.size;
         this.eraserView.origin = this.eraserPosition;
@@ -138,7 +144,12 @@ export class EraserTool extends Tool {
   highlightShapeForId(id: number): void {
     const shape = this.editorService.findShapeById(id);
     if (shape) {
-      shape.highlight(Color.RED, EraserUtils.SELECTION_THICKNESS);
+      const shapeColorIsHighlight =
+        shape.primaryColor.compare(EraserTool.HIGHLIGHT_COLOR) || shape.secondaryColor.compare(EraserTool.HIGHLIGHT_COLOR);
+
+      const highlightColor = shapeColorIsHighlight ? EraserTool.DARKER_HIGHLIGHT_COLOR : EraserTool.HIGHLIGHT_COLOR;
+
+      shape.highlight(highlightColor, EraserUtils.SELECTION_THICKNESS);
       if (this.isActive) {
         this.erase(shape);
       }
@@ -152,7 +163,7 @@ export class EraserTool extends Tool {
 
   initEraserView(): void {
     this.eraserView.primaryColor = Color.TRANSPARENT;
-    this.eraserView.contourType = ContourType.FILLED;
+    this.eraserView.secondaryColor = Color.TRANSPARENT;
     this.eraserView.updateProperties();
 
     this.editorService.addPreviewShape(this.eraserView);
