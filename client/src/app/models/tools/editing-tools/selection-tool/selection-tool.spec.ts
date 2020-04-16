@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { SharedModule } from 'src/app/components/shared/shared.module';
-import { EditorService } from 'src/app/services/editor.service';
-import { MouseListenerService } from 'src/app/services/event-listeners/mouse-listener/mouse-listener.service';
-import { Color } from 'src/app/utils/color/color';
-import { Coordinate } from 'src/app/utils/math/coordinate';
-import { BaseShape } from '../../shapes/base-shape';
-import { Rectangle } from '../../shapes/rectangle';
-import { SelectionMove } from './selection-move.enum';
-import { SelectionTool } from './selection-tool';
+import { SharedModule } from '@components/shared/shared.module';
+import { EditorService } from '@services/editor.service';
+import { MouseListenerService } from '@services/event-listeners/mouse-listener/mouse-listener.service';
+import { SelectionMove } from '@tools/editing-tools/selection-tool/selection-move.enum';
+import { Color } from '@utils/color/color';
+import { Coordinate } from '@utils/math/coordinate';
+import { BaseShape } from 'src/app/models/shapes/base-shape';
+import { Rectangle } from 'src/app/models/shapes/rectangle';
+import { SelectionTool } from 'src/app/models/tools/editing-tools/selection-tool/selection-tool';
 
 /* tslint:disable:no-string-literal */
 /* tslint:disable:no-magic-numbers */

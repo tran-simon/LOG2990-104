@@ -5,7 +5,7 @@ import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
 import { ColorFillTool } from '@tools/editing-tools/color-fill-tool/color-fill-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
-import { SelectionTool } from '@tools/editing-tools/selection-tool';
+import { SelectionTool } from '@tools/editing-tools/selection-tool/selection-tool';
 import { EditorUtils } from '@utils/color/editor-utils';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
