@@ -31,4 +31,18 @@ describe('EditorUtils', () => {
       done();
     });
   });
+
+  it('can get colorAtPointFromUint8ClampedArray', () => {
+    const coord = new Coordinate(5, 10);
+    const width = 100;
+    const data = [];
+    data[4020] = 10;
+    data[4021] = 20;
+    data[4022] = 30;
+
+    const res = EditorUtils.colorAtPointFromUint8ClampedArray(new Uint8ClampedArray(data), coord, width) as Color;
+    expect(res.rgbString).toEqual(Color.rgb255(10, 20, 30).rgbString);
+
+    expect(EditorUtils.colorAtPointFromUint8ClampedArray(undefined, coord, width)).not.toBeDefined();
+  });
 });

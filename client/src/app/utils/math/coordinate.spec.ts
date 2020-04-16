@@ -22,11 +22,11 @@ describe('Coordinate', () => {
     const coordSum: Coordinate = Coordinate.add(coord1, coord2);
     expect(coordSum).toEqual(expectedCoord);
   });
-  it('Should substract second coordinate to first coordinate', () => {
+  it('Should subtract second coordinate to first coordinate', () => {
     const coord1: Coordinate = new Coordinate(44, -9);
     const coord2: Coordinate = new Coordinate(7, -23);
     const expectedCoord: Coordinate = new Coordinate(37, 14);
-    const coordSub: Coordinate = Coordinate.substract(coord1, coord2);
+    const coordSub: Coordinate = Coordinate.subtract(coord1, coord2);
     expect(coordSub).toEqual(expectedCoord);
   });
   it('Should set coordinates to their absolute value', () => {
