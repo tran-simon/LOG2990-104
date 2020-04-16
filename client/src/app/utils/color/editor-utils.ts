@@ -56,7 +56,8 @@ export class EditorUtils {
     if (!data) {
       return undefined;
     }
-    const getColorIndicesForCoord = (x: number, y: number) => {
+    const { x, y } = Coordinate.apply(point, Math.ceil);
+    const getColorIndices = () => {
       const dataSize = 4;
       const rIndex = y * (width * dataSize) + x * dataSize;
 
@@ -64,9 +65,7 @@ export class EditorUtils {
       return [rIndex, rIndex + 1, rIndex + 2, rIndex + 3];
     };
 
-    const { x, y } = Coordinate.apply(point, Math.ceil);
-
-    const indices = getColorIndicesForCoord(x, y);
+    const indices = getColorIndices();
     const r = data[indices[0]];
     const g = data[indices[1]];
     const b = data[indices[2]];
