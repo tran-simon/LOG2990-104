@@ -41,27 +41,7 @@
   <mat-drawer #drawer mode="side">
     <mat-drawer-content [ngSwitch]="currentToolType">
       <div *ngIf=!toolbarType>
-        <!-- todo : move to a dedicated component for selection-tool?-->
-        <div id="selectPanel" *ngSwitchCase='ToolType.Select'>
-          <button id="copy" mat-button [disabled]="editorService.selectedShapes.length < 1" (click)="editorService.copySelectedShapes()">
-            <img src="../../../../../../assets/ico_copy.png" height="24" width="24" alt=""/>
-          </button>
-          <button id="cut" mat-button [disabled]="editorService.selectedShapes.length < 1" (click)="editorService.cutSelectedShapes()">
-            <img src="../../../../../../assets/ico_cut.png" height="24" width="24" alt=""/>
-          </button>
-          <button id="duplicate" mat-button [disabled]="editorService.selectedShapes.length < 1" (click)="editorService.duplicateSelectedShapes()">
-            <img src="../../../../../../assets/ico_duplicate.png" height="24" width="24" alt=""/>
-          </button>
-          <button id="paste" mat-button [disabled]="editorService.clipboard.length < 1" (click)="editorService.pasteClipboard()">
-            <img src="../../../../../../assets/ico_paste.png" height="24" width="24" alt=""/>
-          </button>
-          <button id="selectAll" mat-button [disabled]="editorService.shapes.length < 1" (click)="editorService.selectAll()">
-            <img src="../../../../../../assets/ico_selectall.png" height="24" width="24" alt=""/>
-          </button>
-          <button id="delete" mat-button [disabled]="editorService.shapes.length < 1" (click)="editorService.deleteSelectedShapes()">
-            <img src="../../../../../../assets/ico_delete.png" height="24" width="24" alt=""/>
-          </button>
-        </div>
+        <app-selection-toolbar *ngSwitchCase="ToolType.Select" class='toolbar-selection-section'></app-selection-toolbar>
         <app-pen-toolbar *ngSwitchCase='ToolType.Pen' class='toolbar-tool-section'></app-pen-toolbar>
         <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
         <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>

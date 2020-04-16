@@ -5,6 +5,9 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 
 describe('BaseShape', () => {
   class BaseShapeImpl extends BaseShape {
+    get copy(): BaseShapeImpl {
+      return this;
+    }
     get origin(): Coordinate {
       return new Coordinate();
     }

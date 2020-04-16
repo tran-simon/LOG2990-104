@@ -9,7 +9,7 @@ export class CompositeParticle extends BaseShape {
     this.cloneProperties(copy);
     return copy;
   }
-  static readonly PARTICLE_RADIUS: number = 4;
+  static readonly PARTICLE_RADIUS: number = 2;
   private readonly particles: Rectangle[];
 
   private _radius: number;

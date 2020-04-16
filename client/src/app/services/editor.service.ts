@@ -83,8 +83,8 @@ export class EditorService {
     this.tools.set(ToolType.ColorFill, new ColorFillTool(this));
   }
 
-  // todo : redo this part entirely
-  offsetCopies(buffer: BaseShape[], pastedBuffer: BaseShape[]): BaseShape[] {
+  // todo : refactor
+  private offsetCopies(buffer: BaseShape[], pastedBuffer: BaseShape[]): BaseShape[] {
     const copies = new Array<BaseShape>();
     buffer.forEach((shape: BaseShape) => {
       const copy = shape.copy;
@@ -120,7 +120,7 @@ export class EditorService {
       this.pastedBuffer.length = 0;
       this.selectedShapes.forEach((shape: BaseShape) => {
         this.clipboard.push(shape);
-        this.removeShape(shape);
+        this.commandReceiver.add(new RemoveShapesCommand(shape, this));
       });
       this.clearSelection();
       (this.tools.get(ToolType.Select) as SelectionTool).updateBoundingBox();

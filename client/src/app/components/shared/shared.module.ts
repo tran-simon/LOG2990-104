@@ -35,6 +35,7 @@ import { EnumPropertyInputComponent } from './inputs/property-inputs/enum-proper
 import { NumericPropertyInputComponent } from './inputs/property-inputs/numeric-property-input/numeric-property-input.component';
 import { TagInputComponent } from './inputs/tag-input/tag-input.component';
 import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.component';
+import { ImgButtonComponent } from './inputs/img-button/img-button.component';
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     NumericPropertyInputComponent,
     EnumPropertyInputComponent,
     UndoRedoComponent,
+    ImgButtonComponent,
   ],
   entryComponents: [AbstractModalComponent, ConfirmModalComponent],
   exports: [
@@ -106,6 +108,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     NumericPropertyInputComponent,
     EnumPropertyInputComponent,
     UndoRedoComponent,
+    ImgButtonComponent,
   ],
 })
 export class SharedModule {}
