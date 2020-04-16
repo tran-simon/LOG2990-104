@@ -26,7 +26,7 @@ describe('AbstractCanvasDrawer', () => {
     }
 
     shouldRedraw(color: Color): boolean {
-      return color === Color.RED;
+      return color.compare(Color.RED);
     }
   }
 

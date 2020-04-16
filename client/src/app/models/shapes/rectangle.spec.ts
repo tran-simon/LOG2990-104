@@ -1,4 +1,5 @@
 /* tslint:disable:no-magic-numbers */
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -8,11 +9,10 @@ describe('Rectangle', () => {
     rectangle = new Rectangle();
   });
   it('Can read shape', () => {
-    const rectangle2 = new Rectangle();
     rectangle.width = 50;
     rectangle.height = 60;
     rectangle.origin = new Coordinate(20, 30);
-    rectangle2.readShape(JSON.parse(JSON.stringify(rectangle)));
+    const rectangle2 = EditorUtils.createShape(JSON.parse(JSON.stringify(rectangle)));
     expect(Object.values(rectangle2)).toEqual(Object.values(rectangle));
   });
   it('should init with width = 0', () => {

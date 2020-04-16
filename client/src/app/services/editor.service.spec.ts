@@ -28,6 +28,7 @@ describe('EditorService', () => {
 
   beforeEach(() => {
     service = new EditorService(new ColorsService());
+    BaseShape['SHAPE_ID'] = 0;
     line = new Line();
     rectangle = new Rectangle();
     service.view = createSpyObj('view', ['addShape', 'removeShape', 'svg']);
@@ -48,23 +49,6 @@ describe('EditorService', () => {
       const tool = service.tools.get(key);
       expect(tool).toBeDefined();
     }
-  });
-
-  it('can create shape from type', () => {
-    const types =[
-      'BoundingBox',
-      'BrushPath',
-      'CompositeLine',
-      'CompositeParticle',
-      'Ellipse',
-      'Line',
-      'Path',
-      'Polygon',
-      'Rectangle',
-    ];
-    types.forEach((type) => {
-      expect(EditorService.createShape(type).constructor.name).toEqual(type);
-    });
   });
 
   it('can export drawing', () => {
@@ -189,21 +173,22 @@ describe('EditorService', () => {
   });
 
   it('can find shape by id', () => {
+    BaseShape['SHAPE_ID'] = 5;
     const rect = new Rectangle();
-    rect.svgNode.id = 'ID';
     service['shapes'].push(rect);
-    expect(service.findShapeById('ID')).toEqual(rect);
-    expect(service.findShapeById('invalid')).toEqual(undefined);
+    expect(service.findShapeById(5)).toEqual(rect);
+    expect(service.findShapeById(10)).not.toBeDefined();
   });
 
   it('throws an error if findShapeById finds multiple shapes with the same id', () => {
+    BaseShape['SHAPE_ID'] = 5;
     const ellipse = new Ellipse();
-    ellipse.svgNode.id = 'ID';
-    const rect = new Rectangle();
-    rect.svgNode.id = 'ID';
-    service['shapes'].push(rect);
+    BaseShape['SHAPE_ID'] = 5;
+    const ellipse1 = new Ellipse();
+    ellipse1.svgNode.id = 'ID';
+    service['shapes'].push(ellipse1);
     service['shapes'].push(ellipse);
 
-    expect(() => service.findShapeById('ID')).toThrowError('Shape Id collision error');
+    expect(() => service.findShapeById(5)).toThrowError('Shape Id collision error');
   });
 });

@@ -1,3 +1,4 @@
+import { EditorUtils } from '@utils/color/editor-utils';
 import { BrushPath } from 'src/app/models/shapes/brush-path';
 import { BrushTextureType } from 'src/app/models/tool-properties/creator-tool-properties/brush-texture-type.enum';
 import { Coordinate } from 'src/app/utils/math/coordinate';
@@ -26,9 +27,8 @@ describe('Path', () => {
     expect(brush.filter).toEqual(filter);
   });
   it('Can read shape', () => {
-    const brush2 = new BrushPath();
     brush.filter = BrushTextureType.TEXTURE_3;
-    brush2.readShape(JSON.parse(JSON.stringify(brush, BaseShape.jsonReplacer)));
+    const brush2 = EditorUtils.createShape(JSON.parse(JSON.stringify(brush, BaseShape.jsonReplacer)));
     expect(Object.values(brush2)).toEqual(Object.values(brush));
   });
 });

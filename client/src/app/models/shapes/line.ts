@@ -30,7 +30,7 @@ export class Line extends BaseShape {
   }
 
   set origin(c: Coordinate) {
-    const delta = Coordinate.substract(c, this.origin);
+    const delta = Coordinate.subtract(c, this.origin);
     this.startCoord = Coordinate.add(this.startCoord, delta);
     this.endCoord = Coordinate.add(this.endCoord, delta);
     this.applyTransform();
@@ -44,8 +44,8 @@ export class Line extends BaseShape {
     return Math.abs(this.endCoord.y - this.startCoord.y);
   }
 
-  constructor(startCoord: Coordinate = new Coordinate(), endCoord: Coordinate = startCoord) {
-    super('line');
+  constructor(startCoord: Coordinate = new Coordinate(), endCoord: Coordinate = startCoord, id?: number) {
+    super('line', id);
     this.startCoord = startCoord;
     this.endCoord = endCoord;
     this.applyTransform();

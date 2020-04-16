@@ -41,12 +41,12 @@ export class Polygon extends BaseShape {
     return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.offset = Coordinate.subtract(c, this.relativeOrigin);
     this.applyTransform();
   }
 
-  constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES) {
-    super('polygon');
+  constructor(origin: Coordinate = new Coordinate(), nEdges: number = Polygon.MIN_POLY_EDGES, id?: number) {
+    super('polygon', id);
     this.points = new Array<Coordinate>();
     this.origin = origin;
     this.nEdges = nEdges;

@@ -55,8 +55,6 @@ describe('BaseShape', () => {
   });
 
   it('can read shape', () => {
-    const shape = new BaseShapeImpl('rect');
-    component.id = 8;
     component.offset = new Coordinate(5, 5);
     component.rotation = 15;
     component.thickness = 50;
@@ -66,6 +64,7 @@ describe('BaseShape', () => {
     component.contourType = ContourType.FILLED;
     component.updateProperties();
 
+    const shape = new BaseShapeImpl('rect', component.id);
     shape.readShape(JSON.parse(JSON.stringify(component)));
     expect(Object.values(shape)).toEqual(Object.values(component));
   });

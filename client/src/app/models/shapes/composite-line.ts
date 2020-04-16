@@ -21,7 +21,7 @@ export class CompositeLine extends BaseShape {
   }
 
   set origin(c: Coordinate) {
-    const delta = Coordinate.substract(c, this.origin);
+    const delta = Coordinate.subtract(c, this.origin);
     const shapes: BaseShape[] = this.lineArray as BaseShape[];
     shapes.concat(this.junctionArray as BaseShape[]).forEach((shape) => {
       shape.origin = Coordinate.add(shape.origin, delta);
@@ -37,13 +37,13 @@ export class CompositeLine extends BaseShape {
     return this.junctionArray.length > 0 ? Coordinate.maxArrayXYCoord(this.junctionArray.map((shape) => shape.end)).y - this.origin.y : 0;
   }
 
-  constructor(initCoord?: Coordinate) {
-    super('g');
+  constructor(initCoord?: Coordinate, id?: number) {
+    super('g', id);
 
     this.lineArray = [];
     this.junctionArray = [];
 
-    if(initCoord) {
+    if (initCoord) {
       this.addPoint(initCoord);
     }
     this.applyTransform();
@@ -53,14 +53,14 @@ export class CompositeLine extends BaseShape {
     super.readShape(data);
     this.lineArray.length = 0;
     this.junctionArray.length = 0;
-    data.lineArray.forEach((l, index) => {
-      const line = new Line();
+    data.lineArray.forEach((l) => {
+      const line = new Line(undefined, undefined, l.id);
       line.readShape(l);
       this.lineArray.push(line);
       this.svgNode.appendChild(line.svgNode);
     });
     data.junctionArray.forEach((j) => {
-      const junction = new Ellipse();
+      const junction = new Ellipse(undefined, undefined, undefined, j.id);
       junction.readShape(j);
       this.junctionArray.push(junction);
       this.svgNode.appendChild(junction.svgNode);

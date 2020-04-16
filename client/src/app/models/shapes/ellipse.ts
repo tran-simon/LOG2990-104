@@ -43,8 +43,8 @@ export class Ellipse extends BaseShape {
     return this.radiusY * 2;
   }
 
-  constructor(center: Coordinate = new Coordinate(), rx: number = 0, ry: number = rx) {
-    super('ellipse');
+  constructor(center: Coordinate = new Coordinate(), rx: number = 0, ry: number = rx, id?: number) {
+    super('ellipse', id);
     this.radiusX = rx;
     this.radiusY = ry;
     this.center = center;

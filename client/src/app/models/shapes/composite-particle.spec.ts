@@ -1,5 +1,6 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { Rectangle } from '@models/shapes/rectangle';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Coordinate } from '../../utils/math/coordinate';
 import { CompositeParticle } from './composite-particle';
 
@@ -9,9 +10,8 @@ describe('CompositeParticle', () => {
     compositeParticle = new CompositeParticle();
   });
   it('can read shape', () => {
-    const comp2 = new CompositeParticle();
     compositeParticle.spray();
-    comp2.readShape(JSON.parse(JSON.stringify(compositeParticle)));
+    const comp2 = EditorUtils.createShape(JSON.parse(JSON.stringify(compositeParticle)));
     expect(Object.values(comp2)).toEqual(Object.values(compositeParticle));
   });
   it('should create an instance', () => {

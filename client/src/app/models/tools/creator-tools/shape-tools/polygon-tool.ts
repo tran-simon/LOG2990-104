@@ -1,8 +1,8 @@
+import { Polygon } from '@models/shapes/polygon';
+import { EditorService } from '@services/editor.service';
+import { KeyboardListenerService } from '@services/event-listeners/keyboard-listener/keyboard-listener.service';
 import { PolygonToolProperties } from '@tool-properties/creator-tool-properties/shape-tool-properties/polygon-tool-properties';
-import { EditorService } from '../../../../services/editor.service';
-import { KeyboardListenerService } from '../../../../services/event-listeners/keyboard-listener/keyboard-listener.service';
-import { Coordinate } from '../../../../utils/math/coordinate';
-import { Polygon } from '../../../shapes/polygon';
+import { Coordinate } from '@utils/math/coordinate';
 import { ShapeTool } from './shape-tool';
 
 export class PolygonTool extends ShapeTool {
@@ -31,7 +31,7 @@ export class PolygonTool extends ShapeTool {
   updateCurrentCoord(c: Coordinate): void {
     this.previewArea.origin = this.initialMouseCoord;
     this.previewArea.end = c;
-    const delta = Coordinate.substract(c, this.initialMouseCoord);
+    const delta = Coordinate.subtract(c, this.initialMouseCoord);
     this.resizeShape(delta, this.previewArea.origin);
   }
 

@@ -1,4 +1,5 @@
 /* tslint:disable:no-magic-numbers */
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Line } from 'src/app/models/shapes/line';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
@@ -8,10 +9,9 @@ describe('Line', () => {
     line = new Line();
   });
   it('Can read shape', () => {
-    const line2 = new Line();
     line.startCoord = new Coordinate(20, 50);
     line.endCoord = new Coordinate(40, 30);
-    line2.readShape(JSON.parse(JSON.stringify(line)));
+    const line2 = EditorUtils.createShape(JSON.parse(JSON.stringify(line)));
     expect(Object.values(line2)).toEqual(Object.values(line));
   });
   it('Should have center.x at 0 on init ', () => {

@@ -1,4 +1,5 @@
 /* tslint:disable: no-magic-numbers no-string-literal no-any*/
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Coordinate } from 'src/app/utils/math/coordinate';
 import { Polygon } from './polygon';
 
@@ -9,10 +10,9 @@ describe('Polygon', () => {
   });
 
   it('Can read shape', () => {
-    const polygon2 = new Polygon();
     polygon.nEdges = 8;
     polygon.updatePoints(new Coordinate(80, 100), new Coordinate(10, 25));
-    polygon2.readShape(JSON.parse(JSON.stringify(polygon)));
+    const polygon2 = EditorUtils.createShape(JSON.parse(JSON.stringify(polygon)));
     expect(Object.values(polygon2)).toEqual(Object.values(polygon));
   });
   it('should create an instance', () => {

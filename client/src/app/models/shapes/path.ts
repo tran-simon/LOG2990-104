@@ -29,7 +29,7 @@ export class Path extends BaseShape {
 
   set origin(c: Coordinate) {
     if (this.points.length > 0) {
-      const delta = Coordinate.substract(c, this.origin);
+      const delta = Coordinate.subtract(c, this.origin);
       const oldPoints = new Array<Coordinate>();
       oldPoints.push(...this.points);
       this.points.length = 0;
@@ -41,10 +41,10 @@ export class Path extends BaseShape {
     this.applyTransform();
   }
 
-  constructor(c?: Coordinate) {
-    super('path');
+  constructor(c?: Coordinate, id?: number) {
+    super('path', id);
     this.points = new Array<Coordinate>();
-    if(c) {
+    if (c) {
       this.addPoint(c);
     }
     this.applyTransform();
