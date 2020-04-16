@@ -53,6 +53,12 @@ describe('Color', () => {
     expect(colorWithAlpha.opaqueColor.a).toEqual(1);
   });
 
+  it('can create color from existing color', () => {
+    const color = Color.rgb(0.1, 0.2, 0.3, 0.4);
+    const colorAlpha = Color.copy(color);
+    expect(colorAlpha.rgbString).toEqual(color.rgbString);
+  });
+
   it('can create color from existing with different alpha', () => {
     const color = Color.rgb(0.1, 0.2, 0.3, 0.4);
     const colorAlpha = Color.alpha(color, 0.5);

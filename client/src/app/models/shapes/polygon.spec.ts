@@ -7,6 +7,14 @@ describe('Polygon', () => {
   beforeEach(() => {
     polygon = new Polygon();
   });
+
+  it('Can read shape', () => {
+    const polygon2 = new Polygon();
+    polygon.nEdges = 8;
+    polygon.updatePoints(new Coordinate(80, 100), new Coordinate(10, 25));
+    polygon2.readShape(JSON.parse(JSON.stringify(polygon)));
+    expect(Object.values(polygon2)).toEqual(Object.values(polygon));
+  });
   it('should create an instance', () => {
     expect(polygon).toBeTruthy();
   });
@@ -45,7 +53,7 @@ describe('Polygon', () => {
   });
   it('should set attribute points', () => {
     polygon['points'].push(new Coordinate(50, 50));
-    polygon.drawPoints();
+    polygon['drawPoints']();
     expect(polygon.svgNode.getAttribute('points')).toEqual('50,50 ');
   });
   it('Should be the right origin', () => {

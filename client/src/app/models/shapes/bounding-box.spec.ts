@@ -13,10 +13,6 @@ describe('BoundingBox', () => {
 
   it('can initialize bounding box', () => {
     expect(box.svgNode.children.length).toEqual(ControlPoint.count + 1);
-  });
-
-  it('can initialize control points', () => {
-    box['initControlPoints']();
     expect(box['controlPoints'].length).toEqual(ControlPoint.count);
   });
 

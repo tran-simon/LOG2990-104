@@ -7,6 +7,13 @@ describe('Line', () => {
   beforeEach(() => {
     line = new Line();
   });
+  it('Can read shape', () => {
+    const line2 = new Line();
+    line.startCoord = new Coordinate(20, 50);
+    line.endCoord = new Coordinate(40, 30);
+    line2.readShape(JSON.parse(JSON.stringify(line)));
+    expect(Object.values(line2)).toEqual(Object.values(line));
+  });
   it('Should have center.x at 0 on init ', () => {
     expect(line.center.x).toBe(0);
   });

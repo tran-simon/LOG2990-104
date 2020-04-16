@@ -1,10 +1,19 @@
 /* tslint:disable:no-magic-numbers */
+import { Coordinate } from '@utils/math/coordinate';
 import { Ellipse } from 'src/app/models/shapes/ellipse';
 
 describe('Ellipse', () => {
   let ellipse: Ellipse;
   beforeEach(() => {
     ellipse = new Ellipse();
+  });
+  it('Can read shape', () => {
+    const ellipse2 = new Ellipse();
+    ellipse.radiusX = 50;
+    ellipse.radiusX = 20;
+    ellipse.origin = new Coordinate(5, 5);
+    ellipse2.readShape(JSON.parse(JSON.stringify(ellipse)));
+    expect(Object.values(ellipse2)).toEqual(Object.values(ellipse));
   });
   it('Should have a x radius of 0 on init', () => {
     expect(ellipse.radiusX).toBe(0);

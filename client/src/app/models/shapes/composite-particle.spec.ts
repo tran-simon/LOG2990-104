@@ -8,6 +8,12 @@ describe('CompositeParticle', () => {
   beforeEach(() => {
     compositeParticle = new CompositeParticle();
   });
+  it('can read shape', () => {
+    const comp2 = new CompositeParticle();
+    compositeParticle.spray();
+    comp2.readShape(JSON.parse(JSON.stringify(compositeParticle)));
+    expect(Object.values(comp2)).toEqual(Object.values(compositeParticle));
+  });
   it('should create an instance', () => {
     expect(compositeParticle).toBeTruthy();
   });
@@ -22,7 +28,7 @@ describe('CompositeParticle', () => {
     compositeParticle.radius = -1;
     expect(compositeParticle.radius).toEqual(1);
   });
-  it('should add frequency amount of particles on addParticle call', () => {
+  it('should add frequency amount of particles on spray call', () => {
     compositeParticle.spray(new Coordinate(), 10);
     expect(compositeParticle['particles'].length).toEqual(10);
   });

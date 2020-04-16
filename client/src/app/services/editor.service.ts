@@ -86,9 +86,7 @@ export class EditorService {
   }
 
   exportDrawing(): string {
-    return JSON.stringify(this.shapes, (key, value) => {
-      return key === 'svgNode' ? undefined : value;
-    });
+    return JSON.stringify(this.shapes, BaseShape.jsonReplacer);
   }
 
   importDrawing(drawingId: string, apiService: APIService): void {
@@ -96,7 +94,7 @@ export class EditorService {
       Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
         const type = (shapeData as BaseShape).type;
         const shape = EditorService.createShape(type);
-        shape.readElement(shapeData as BaseShape);
+        shape.readShape(shapeData as BaseShape);
         this.addShapeToBuffer(shape);
       });
       this.applyShapesBuffer();

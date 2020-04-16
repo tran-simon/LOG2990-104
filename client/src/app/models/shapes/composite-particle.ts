@@ -38,14 +38,15 @@ export class CompositeParticle extends BaseShape {
     super('g');
     this.particles = [];
     this.radius = radius;
+    this.applyTransform();
   }
 
-  readElement(data: CompositeParticle): void {
-    super.readElement(data);
+  readShape(data: CompositeParticle): void {
+    super.readShape(data);
     data.particles.forEach((p) => {
       const particle = new Rectangle();
-      particle.readElement(p);
-      this.addParticle(particle.center);
+      particle.readShape(p);
+      this.addParticle(particle.origin);
     });
     this.applyTransform();
   }

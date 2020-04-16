@@ -47,13 +47,14 @@ export class Path extends BaseShape {
     if(c) {
       this.addPoint(c);
     }
+    this.applyTransform();
   }
 
-  readElement(data: Path): void {
-    super.readElement(data);
+  readShape(data: Path): void {
+    super.readShape(data);
     this.points.length = 0;
     data.points.forEach((p) => {
-      this.addPoint(p);
+      this.addPoint(Coordinate.copy(p));
     });
     this.applyTransform();
   }

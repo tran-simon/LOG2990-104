@@ -57,11 +57,12 @@ export class Rectangle extends BaseShape {
     this.origin = origin;
     this.width = width;
     this.height = height;
+    this.applyTransform();
   }
 
-  readElement(data: Rectangle): void {
-    super.readElement(data);
-    this.origin = data._origin;
+  readShape(data: Rectangle): void {
+    super.readShape(data);
+    this.origin = Coordinate.copy(data._origin);
     this.width = data._width;
     this.height = data._height;
     this.applyTransform();

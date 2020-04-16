@@ -37,6 +37,5 @@ export class PolygonTool extends ShapeTool {
 
   resizeShape(dimensions: Coordinate, origin: Coordinate = this.shape.origin): void {
     this.shape.updatePoints(dimensions, origin);
-    this.shape.drawPoints();
   }
 }

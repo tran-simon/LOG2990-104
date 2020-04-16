@@ -34,10 +34,11 @@ export class BrushPath extends Path {
   constructor(c: Coordinate = new Coordinate()) {
     super(c);
     this._filter = BrushTextureType.TEXTURE_1;
+    this.applyTransform();
   }
 
-  readElement(data: BrushPath): void {
-    super.readElement(data);
+  readShape(data: BrushPath): void {
+    super.readShape(data);
     this.filter = data._filter;
     this.applyTransform();
   }

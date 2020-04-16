@@ -70,15 +70,22 @@ export abstract class BaseShape {
     this.updateProperties();
   }
 
-  readElement(data: BaseShape): void {
-    this.id = data.id;
-    this.offset = data._offset;
+  // tslint:disable-next-line:no-any
+  static jsonReplacer = (key: string, value: any) => {  // for use with JSON.Stringify
+    return key === 'svgNode' ? undefined : value;
+  }
+
+  readShape(data: BaseShape): void {
+    if(data.id) {
+      this.id = data.id;
+    }
+    this.offset = Coordinate.copy(data._offset);
     this.rotation = data._rotation;
 
     this.thickness = data.thickness;
     this.strokeWidth = data.strokeWidth;
-    this.secondaryColor = Color.copy(data.secondaryColor);
     this.primaryColor = Color.copy(data.primaryColor);
+    this.secondaryColor = Color.copy(data.secondaryColor);
     this.contourType = data.contourType;
 
     this.updateProperties();
