@@ -105,7 +105,7 @@ export class EditorService {
   private offsetCopies(buffer: BaseShape[], pastedBuffer: BaseShape[]): BaseShape[] {
     const copies = new Array<BaseShape>();
     buffer.forEach((shape: BaseShape) => {
-      const copy = shape.copy;
+      const copy = EditorUtils.createShape(shape, false);
       copy.state = ShapeStates.PASTED;
       copy.origin = Coordinate.add(copy.origin, new Coordinate(this.pasteOffset, this.pasteOffset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
@@ -150,7 +150,7 @@ export class EditorService {
       buffer.length = 0;
       pastedBuffer.length = 0;
       this.selectedShapes.forEach((shape: BaseShape) => {
-        buffer.push(shape.copy);
+        buffer.push(EditorUtils.createShape(shape, false));
       });
     }
   }
