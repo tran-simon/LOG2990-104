@@ -5,6 +5,19 @@ export class Line extends BaseShape {
   private _startCoord: Coordinate;
   private _endCoord: Coordinate;
 
+  cloneProperties(shape: Line): void {
+    super.cloneProperties(shape);
+    shape.startCoord = this.startCoord;
+    shape.endCoord = this.endCoord;
+    shape.updateProperties();
+  }
+
+  get copy(): Line {
+    const copy = new Line(this.startCoord, this.endCoord);
+    this.cloneProperties(copy);
+    return copy;
+  }
+
   get startCoord(): Coordinate {
     return this._startCoord;
   }
@@ -48,13 +61,13 @@ export class Line extends BaseShape {
     super('line', id);
     this.startCoord = startCoord;
     this.endCoord = endCoord;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
-    this.startCoord = data._startCoord;
-    this.endCoord = data._endCoord;
+  readShape(data: Line): void {
+    super.readShape(data);
+    this.startCoord = Coordinate.copy(data._startCoord);
+    this.endCoord = Coordinate.copy(data._endCoord);
     this.applyTransform();
   }
 }

@@ -6,6 +6,19 @@ export class Rectangle extends BaseShape {
   private _height: number;
   private _width: number;
 
+  cloneProperties(shape: Rectangle): void {
+    super.cloneProperties(shape);
+    shape.width = this.width;
+    shape.height = this.height;
+    shape.updateProperties();
+  }
+
+  get copy(): Rectangle {
+    const copy = new Rectangle(this.origin, this.width, this.height);
+    this.cloneProperties(copy);
+    return copy;
+  }
+
   get height(): number {
     return this._height;
   }
@@ -57,12 +70,12 @@ export class Rectangle extends BaseShape {
     this.origin = origin;
     this.width = width;
     this.height = height;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
-    this.origin = data._origin;
+  readShape(data: Rectangle): void {
+    super.readShape(data);
+    this.origin = Coordinate.copy(data._origin);
     this.width = data._width;
     this.height = data._height;
     this.applyTransform();

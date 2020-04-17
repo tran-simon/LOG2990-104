@@ -6,6 +6,17 @@ export class Ellipse extends BaseShape {
   private _radiusX: number;
   private _radiusY: number;
 
+  get copy(): Ellipse {
+    const copy = new Ellipse(this.center, this.radiusX, this.radiusY);
+    this.cloneProperties(copy);
+    copy.updateProperties();
+    return copy;
+  }
+  cloneProperties(shape: Ellipse): void {
+    super.cloneProperties(shape);
+    shape.origin = Coordinate.copy(this.origin);
+  }
+
   get radiusX(): number {
     return this._radiusX;
   }
@@ -48,14 +59,14 @@ export class Ellipse extends BaseShape {
     this.radiusX = rx;
     this.radiusY = ry;
     this.center = center;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readShape(data: Ellipse): void {
+    super.readShape(data);
     this.radiusX = data._radiusX;
     this.radiusY = data._radiusY;
-    this.origin = data._origin;
+    this.origin = Coordinate.copy(data._origin);
     this.applyTransform();
   }
 }

@@ -8,6 +8,27 @@ export class CompositeLine extends BaseShape {
 
   lineArray: Line[];
   junctionArray: Ellipse[];
+  // todo: copy for CompositeLine
+  get copy(): CompositeLine {
+    const copy = new CompositeLine(this.junctionArray[0].center);
+    this.cloneProperties(copy);
+    copy.updateProperties();
+    return copy;
+  }
+
+  cloneProperties(shape: CompositeLine): void {
+    super.cloneProperties(shape);
+    this.lineArray.forEach((line: Line) => {
+      const lineCopy = line.copy;
+      shape.lineArray.push(lineCopy);
+      shape.svgNode.appendChild(lineCopy.svgNode);
+    });
+    this.junctionArray.forEach((junction: Ellipse) => {
+      const junctionCopy = junction.copy;
+      shape.junctionArray.push(junctionCopy);
+      shape.svgNode.appendChild(junctionCopy.svgNode);
+    });
+  }
 
   get currentLine(): Line {
     return this.lineArray[this.lineArray.length - 1];
@@ -46,21 +67,26 @@ export class CompositeLine extends BaseShape {
     if (initCoord) {
       this.addPoint(initCoord);
     }
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
-    data.junctionArray.forEach((j, index) => {
-      const junction = new Ellipse();
-      junction.readElement(JSON.stringify(j)); // todo - fix
-      if (index === 0) {
-        this.addPoint(junction.center);
-      } else {
-        this.updateCurrentCoord(junction.center);
-        this.confirmPoint();
-      }
+  readShape(data: CompositeLine): void {
+    super.readShape(data);
+    this.lineArray.length = 0;
+    this.junctionArray.length = 0;
+    data.lineArray.forEach((l) => {
+      const line = new Line(undefined, undefined, l.id);
+      line.readShape(l);
+      this.lineArray.push(line);
+      this.svgNode.appendChild(line.svgNode);
     });
+    data.junctionArray.forEach((j) => {
+      const junction = new Ellipse(undefined, undefined, undefined, j.id);
+      junction.readShape(j);
+      this.junctionArray.push(junction);
+      this.svgNode.appendChild(junction.svgNode);
+    });
+    this.updateProperties();
     this.applyTransform();
   }
 

@@ -54,6 +54,12 @@ export class SelectionToolKeyboardEvents {
           selectionTool.handleKeyboardMove(SelectionMove.LEFT, false);
         },
       ],
+      [
+        KeyboardListenerService.getIdentifier('delete', false, false, 'keyup'),
+        () => {
+          selectionTool.editorService.deleteSelectedShapes();
+        },
+      ],
       // BEGIN ROTATION
       [
         KeyboardListenerService.getIdentifier('Shift', false, true),

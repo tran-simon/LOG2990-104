@@ -1,3 +1,4 @@
+import { ShapeStates } from '@models/shapes/shape-states.enum';
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { MathUtils } from '@utils/math/math-utils';
 import { Color } from 'src/app/utils/color/color';
@@ -15,6 +16,7 @@ export abstract class BaseShape {
   private _offset: Coordinate;
   private _rotation: number;
 
+  state: ShapeStates;
   thickness: number;
   strokeWidth: number;
   secondaryColor: Color;
@@ -26,6 +28,15 @@ export abstract class BaseShape {
 
   abstract get width(): number;
   abstract get height(): number;
+  abstract get copy(): BaseShape;
+
+  cloneProperties(shape: BaseShape): void {
+    shape.contourType = this.contourType;
+    shape.primaryColor = this.primaryColor;
+    shape.secondaryColor = this.secondaryColor;
+    shape.thickness = this.thickness;
+    shape.strokeWidth = this.strokeWidth;
+  }
 
   get offset(): Coordinate {
     return this._offset;
@@ -72,19 +83,24 @@ export abstract class BaseShape {
     this.secondaryColor = Color.BLACK;
     this.primaryColor = Color.WHITE;
     this.contourType = ContourType.FILLED_CONTOUR;
+    this.state = ShapeStates.NONE;
 
     this.updateProperties();
   }
 
-  readElement(json: string): void {
-    const data = JSON.parse(json) as this;
-    this.offset = data._offset;
+  // tslint:disable-next-line:no-any
+  static jsonReplacer = (key: string, value: any) => {  // for use with JSON.Stringify
+    return key === 'svgNode' ? undefined : value;
+  }
+
+  readShape(data: BaseShape): void {
+    this.offset = Coordinate.copy(data._offset);
     this.rotation = data._rotation;
 
     this.thickness = data.thickness;
     this.strokeWidth = data.strokeWidth;
-    this.secondaryColor = Color.copy(data.secondaryColor);
     this.primaryColor = Color.copy(data.primaryColor);
+    this.secondaryColor = Color.copy(data.secondaryColor);
     this.contourType = data.contourType;
 
     this.updateProperties();
