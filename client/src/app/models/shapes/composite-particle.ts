@@ -1,4 +1,4 @@
-import { Coordinate } from '../../utils/math/coordinate';
+import { Coordinate } from '@utils/math/coordinate';
 import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
@@ -11,8 +11,8 @@ export class CompositeParticle extends BaseShape {
   }
   static readonly PARTICLE_RADIUS: number = 4;
   private readonly particles: Rectangle[];
-
   private _radius: number;
+
   get radius(): number {
     return this._radius;
   }
@@ -36,14 +36,26 @@ export class CompositeParticle extends BaseShape {
     return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.offset = Coordinate.subtract(c, this.relativeOrigin);
     this.applyTransform();
   }
 
-  constructor(radius: number = 1) {
-    super('g');
+  constructor(radius: number = 1, id?: number) {
+    super('g', id);
     this.particles = [];
     this.radius = radius;
+    this.applyTransform();
+  }
+
+  readShape(data: CompositeParticle): void {
+    super.readShape(data);
+    data.particles.forEach((p) => {
+      const particle = new Rectangle(undefined, undefined, undefined, p.id);
+      particle.readShape(p);
+      this.particles.push(particle);
+      this.svgNode.appendChild(particle.svgNode);
+    });
+    this.applyTransform();
   }
 
   cloneProperties(shape: CompositeParticle): void {
@@ -62,22 +74,29 @@ export class CompositeParticle extends BaseShape {
     return new Coordinate(x, y);
   }
 
-  addParticle(c: Coordinate = new Coordinate(), frequency: number = 1): void {
-    let particle: Rectangle;
-    for (let i = 0; i < (frequency || 1); i++) {
-      particle = new Rectangle(this.genRandomPosition(c), CompositeParticle.PARTICLE_RADIUS);
-      particle.primaryColor = this.primaryColor;
-      particle.secondaryColor = this.primaryColor;
-      this.particles.push(particle);
-      this.svgNode.appendChild(particle.svgNode);
-      particle.updateProperties();
+  spray(center: Coordinate = new Coordinate(), frequency: number = 1): void {
+    for (let i = 0; i < frequency; i++) {
+      this.addParticle(this.genRandomPosition(center));
     }
+  }
+
+  addParticle(c: Coordinate): void {
+    const particle = new Rectangle(c, CompositeParticle.PARTICLE_RADIUS);
+    particle.primaryColor = this.primaryColor;
+    particle.secondaryColor = this.primaryColor;
+    this.particles.push(particle);
+    this.svgNode.appendChild(particle.svgNode);
+    particle.updateProperties();
   }
 
   updateProperties(): void {
     super.updateProperties();
     if (this.particles) {
-      this.particles.forEach((particle: Rectangle) => particle.updateProperties());
+      this.particles.forEach((particle) => {
+        particle.primaryColor = this.primaryColor;
+        particle.secondaryColor = this.primaryColor;
+        particle.updateProperties();
+      });
     }
   }
 }

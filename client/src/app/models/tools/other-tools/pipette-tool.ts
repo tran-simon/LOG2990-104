@@ -14,9 +14,12 @@ export class PipetteTool extends Tool {
   }
 
   private pickColor(position: Coordinate, selectedColorType: SelectedColorType): void {
-    EditorUtils.colorAtPoint(this.editorService.view, position).then((color: Color) =>
-      this.editorService.colorsService.setColorByTypeAndUpdateHistory(color, selectedColorType),
-    );
+    this.editorService.loading = true;
+    EditorUtils.colorAtPoint(this.editorService.view, position)
+      .then((color: Color) => {
+        this.editorService.colorsService.setColorByTypeAndUpdateHistory(color, selectedColorType);
+      })
+      .finally(() => (this.editorService.loading = false));
   }
 
   private handleLeftOrRightClick(selectedColorType: SelectedColorType): void {

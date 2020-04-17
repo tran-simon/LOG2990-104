@@ -3,16 +3,11 @@ import { BrushTextureType } from 'src/app/models/tool-properties/creator-tool-pr
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class BrushPath extends Path {
-  readonly filter: BrushTextureType;
-
-  constructor(c: Coordinate, filter: BrushTextureType = BrushTextureType.TEXTURE_1) {
-    super(c);
-    this.filter = filter;
-  }
+  private _filter: BrushTextureType;
 
   cloneProperties(shape: BrushPath): void {
     super.cloneProperties(shape);
-    shape.changeFilter(this.filter);
+    shape.filter = (this.filter);
     shape.updateProperties();
   }
 
@@ -22,8 +17,13 @@ export class BrushPath extends Path {
     return copy;
   }
 
-  changeFilter(filter: BrushTextureType): void {
-    switch (filter) {
+  get filter(): BrushTextureType {
+    return this._filter;
+  }
+
+  set filter(filter: BrushTextureType) {
+    this._filter = filter;
+    switch (this._filter) {
       case BrushTextureType.TEXTURE_1:
         this.svgNode.setAttribute('filter', 'url(#TEXTURE_1)');
         break;
@@ -40,5 +40,17 @@ export class BrushPath extends Path {
         this.svgNode.setAttribute('filter', 'url(#TEXTURE_5)');
         break;
     }
+  }
+
+  constructor(c: Coordinate = new Coordinate(), id?: number) {
+    super(c, id);
+    this._filter = BrushTextureType.TEXTURE_1;
+    this.applyTransform();
+  }
+
+  readShape(data: BrushPath): void {
+    super.readShape(data);
+    this.filter = data._filter;
+    this.applyTransform();
   }
 }

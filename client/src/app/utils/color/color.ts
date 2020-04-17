@@ -79,10 +79,10 @@ export class Color implements ColorComponents {
 
       const f = (n: number) => {
         // tslint:disable-next-line:no-magic-numbers
-        const k = (n + h / 30) % 12;
-        const A = s * Math.min(l, 1 - l);
+        const k = (n + this.h / 30) % 12;
+        const A = this.s * Math.min(this.l, 1 - this.l);
         // tslint:disable-next-line:no-magic-numbers
-        return l - A * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return this.l - A * Math.max(Math.min(k - 3, 9 - k, 1), -1);
       };
       this.r = f(0);
       // tslint:disable-next-line:no-magic-numbers
@@ -105,6 +105,10 @@ export class Color implements ColorComponents {
 
   static alpha(color: Color, a: number = 1): Color {
     return new Color({ ...color, a }, true);
+  }
+
+  static copy(c: Color): Color {
+    return new Color({ ...c }, true);
   }
 
   /**
@@ -146,19 +150,6 @@ export class Color implements ColorComponents {
     // tslint:disable-next-line:no-magic-numbers
     const b = parseInt(hexString.substr(4, 2), 16);
     return Color.rgb255(r, g, b, a);
-  }
-
-  /* Utility methods */
-
-  get hex(): string {
-    const r = MathUtils.toHex(this.r255, 2);
-    const g = MathUtils.toHex(this.g255, 2);
-    const b = MathUtils.toHex(this.b255, 2);
-    return `${r}${g}${b}`;
-  }
-
-  get negative(): Color {
-    return Color.rgb(1 - this.r, 1 - this.g, 1 - this.b);
   }
 
   /* private static methods to get HSL components from RGB*/
@@ -227,6 +218,38 @@ export class Color implements ColorComponents {
     return `hsl(${h}, ${s * 100}%, ${l * 100}%)`;
   }
 
+  /* Utility methods */
+
+  /**
+   * Find the euclidean difference between this color and c2
+   * @param c2 the color to compare this to
+   * @return the difference value between 0 and 1
+   */
+  difference(c2: Color): number {
+    const r2 = Math.pow(c2.r - this.r, 2);
+    const g2 = Math.pow(c2.g - this.g, 2);
+    const b2 = Math.pow(c2.b - this.b, 2);
+
+    /* divide by 3 to get a value between 0 and 1 */
+    // tslint:disable-next-line:no-magic-numbers
+    return (r2 + g2 + b2) / 3;
+  }
+
+  compare(c2: Color, tolerance: number = 0): boolean {
+    return tolerance ? this.difference(c2) <= tolerance : this.rgbString === c2.rgbString;
+  }
+
+  get hex(): string {
+    const r = MathUtils.toHex(this.r255, 2);
+    const g = MathUtils.toHex(this.g255, 2);
+    const b = MathUtils.toHex(this.b255, 2);
+    return `${r}${g}${b}`;
+  }
+
+  get negative(): Color {
+    return Color.rgb(1 - this.r, 1 - this.g, 1 - this.b);
+  }
+
   /**
    * Get hex string `#FFFFFF`
    */
@@ -239,7 +262,7 @@ export class Color implements ColorComponents {
    */
   get rgbString(): string {
     // tslint:disable-next-line:no-magic-numbers
-    return `rgb(${this.r * 255}, ${this.g * 255}, ${this.b * 255})`;
+    return `rgb(${Math.round(this.r * 255)}, ${Math.round(this.g * 255)}, ${Math.round(this.b * 255)})`;
   }
 
   get hslString(): string {

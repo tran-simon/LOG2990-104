@@ -1,5 +1,6 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { Rectangle } from '@models/shapes/rectangle';
+import { EditorUtils } from '@utils/color/editor-utils';
 import { Coordinate } from '../../utils/math/coordinate';
 import { CompositeParticle } from './composite-particle';
 
@@ -7,6 +8,11 @@ describe('CompositeParticle', () => {
   let compositeParticle: CompositeParticle;
   beforeEach(() => {
     compositeParticle = new CompositeParticle();
+  });
+  it('can read shape', () => {
+    compositeParticle.spray();
+    const comp2 = EditorUtils.createShape(JSON.parse(JSON.stringify(compositeParticle)));
+    expect(Object.values(comp2)).toEqual(Object.values(compositeParticle));
   });
   it('should create an instance', () => {
     expect(compositeParticle).toBeTruthy();
@@ -22,16 +28,12 @@ describe('CompositeParticle', () => {
     compositeParticle.radius = -1;
     expect(compositeParticle.radius).toEqual(1);
   });
-  it('should add frequency amount of particles on addParticle call', () => {
-    compositeParticle.addParticle(new Coordinate(), 10);
+  it('should add frequency amount of particles on spray call', () => {
+    compositeParticle.spray(new Coordinate(), 10);
     expect(compositeParticle['particles'].length).toEqual(10);
   });
   it('should init with origin at 0,0', () => {
     expect(compositeParticle.origin).toEqual(new Coordinate());
-  });
-  it('should add 1 particle if given frequency is 0', () => {
-    compositeParticle.addParticle(new Coordinate(), 0);
-    expect(compositeParticle['particles'].length).toEqual(1);
   });
   it('should set origin relative to relative origin', () => {
     compositeParticle['particles'].push(new Rectangle(new Coordinate(5, 5), 1, 1));

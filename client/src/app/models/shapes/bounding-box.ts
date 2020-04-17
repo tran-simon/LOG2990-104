@@ -48,8 +48,8 @@ export class BoundingBox extends BaseShape {
     this.updateControlPoints();
   }
 
-  constructor(c: Coordinate) {
-    super('g');
+  constructor(c: Coordinate = new Coordinate(), id?: number) {
+    super('g', id);
     this.outline = new Rectangle(c);
     this.outline.svgNode.style.pointerEvents = BaseShape.CSS_NONE;
     this.outline.primaryColor = BoundingBox.BOUNDING_BOX_COLOR;

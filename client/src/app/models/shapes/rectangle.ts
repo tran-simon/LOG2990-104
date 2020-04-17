@@ -65,10 +65,19 @@ export class Rectangle extends BaseShape {
     this.height = end.y - this.origin.y;
   }
 
-  constructor(origin: Coordinate = new Coordinate(), width: number = 0, height: number = width) {
-    super('rect');
+  constructor(origin: Coordinate = new Coordinate(), width: number = 0, height: number = width, id?: number) {
+    super('rect', id);
     this.origin = origin;
     this.width = width;
     this.height = height;
+    this.applyTransform();
+  }
+
+  readShape(data: Rectangle): void {
+    super.readShape(data);
+    this.origin = Coordinate.copy(data._origin);
+    this.width = data._width;
+    this.height = data._height;
+    this.applyTransform();
   }
 }
