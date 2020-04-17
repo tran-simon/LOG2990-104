@@ -80,7 +80,8 @@ export abstract class BaseShape {
   }
 
   // tslint:disable-next-line:no-any
-  static jsonReplacer = (key: string, value: any) => {  // for use with JSON.Stringify
+  static jsonReplacer(key: string, value: any): any {
+    // for use with JSON.Stringify
     return key === 'svgNode' ? undefined : value;
   }
 
@@ -134,4 +135,13 @@ export abstract class BaseShape {
 
     highlightNode(this.svgNode);
   }
+
+  cloneProperties(shape: BaseShape): void {
+    shape.contourType = this.contourType;
+    shape.primaryColor = this.primaryColor;
+    shape.secondaryColor = this.secondaryColor;
+    shape.thickness = this.thickness;
+    shape.strokeWidth = this.strokeWidth;
+  }
+
 }
