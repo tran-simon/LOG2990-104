@@ -3,7 +3,13 @@ import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
-  static readonly PARTICLE_RADIUS: number = 4;
+  // todo: copy for composite particle
+  get copy(): CompositeParticle {
+    const copy = new CompositeParticle(this.radius);
+    this.cloneProperties(copy);
+    return copy;
+  }
+  static readonly PARTICLE_RADIUS: number = 2;
   private readonly particles: Rectangle[];
   private _radius: number;
 
@@ -50,6 +56,15 @@ export class CompositeParticle extends BaseShape {
       this.svgNode.appendChild(particle.svgNode);
     });
     this.applyTransform();
+  }
+
+  cloneProperties(shape: CompositeParticle): void {
+    super.cloneProperties(shape);
+    this.particles.forEach((particle: Rectangle) => {
+      const copy = particle.copy;
+      shape.particles.push(copy);
+      shape.svgNode.appendChild(copy.svgNode);
+    });
   }
 
   private genRandomPosition(c: Coordinate): Coordinate {

@@ -155,6 +155,41 @@ export class EditorKeyboardListener extends KeyboardListenerService {
         },
       ],
       [
+        KeyboardListenerService.getIdentifier('c', true, false),
+        () => {
+          editorComponent.editorService.copySelectedShapes();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('x', true, false),
+        () => {
+          editorComponent.editorService.cutSelectedShapes();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('v', true, false),
+        () => {
+          editorComponent.editorService.pasteClipboard();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('d', true, false),
+        () => {
+          editorComponent.editorService.duplicateSelectedShapes();
+          return true;
+        },
+      ],
+      [
+        KeyboardListenerService.getIdentifier('delete', false, false),
+        () => {
+          editorComponent.editorService.deleteSelectedShapes();
+          return true;
+        },
+      ],
+      [
         KeyboardListenerService.getIdentifier('s', true),
         () => {
           editorComponent.dialog.openByName(ModalType.SAVE);

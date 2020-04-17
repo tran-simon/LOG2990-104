@@ -1,4 +1,4 @@
-/* tslint:disable:max-file-line-count */ // todo - fix
+/* tslint:disable:max-file-line-count */ // todo : distribute functionality into multiple sub-tool
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { RotateShapeCommand } from '@models/commands/shape-commands/rotate-shape-command';
 import { EditorService } from '@services/editor.service';
@@ -13,6 +13,7 @@ import { BoundingBox } from 'src/app/models/shapes/bounding-box';
 import { Rectangle } from 'src/app/models/shapes/rectangle';
 
 export class SelectionTool extends SimpleSelectionTool {
+  static readonly PASTED_OFFSET: number = 10;
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
   private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
   private readonly SELECT_AREA_DASHARRAY: string = '5';
@@ -52,6 +53,13 @@ export class SelectionTool extends SimpleSelectionTool {
     this.keyboardListener.addEvents(SelectionToolKeyboardEvents.generateEvents(this));
   }
 
+  handleUndoRedoEvent(undo: boolean): void {
+    super.handleUndoRedoEvent(undo);
+    this.editorService.clearSelection();
+    this.updateBoundingBox();
+    this.applyBoundingBox();
+  }
+
   private rotateSelection(angle: number, individual: boolean = false): void {
     const center = individual ? undefined : this.boundingBox.center;
     const shapes = new Array<BaseShape>();
@@ -76,6 +84,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseDown = (e: MouseEvent) => {
       if (!this.isActive) {
         this.isActive = true;
+        this.editorService.duplicationBuffer.length = 0;
         if (this.boundingBox && SelectionTool.detectPointCollision(this.mousePosition, this.boundingBox)) {
           this.startMove(this.mousePosition);
         } else if (e.button === MouseListenerService.BUTTON_LEFT) {
@@ -95,6 +104,8 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
+        this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
+        this.applyBoundingBox();
         if (this.moveSelectionMode) {
           this.moveSelectionMode = false;
           this.endMove();
@@ -181,6 +192,8 @@ export class SelectionTool extends SimpleSelectionTool {
       this.addSelectedShape(shape);
       this.updateBoundingBox();
     }
+    this.applyBoundingBox();
+    this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
   }
 
   selectAll(): void {
@@ -224,7 +237,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.initBoundingBox();
   }
 
-  private applyBoundingBox(): void {
+  applyBoundingBox(): void {
     this.editorService.clearShapesBuffer();
     this.editorService.addPreviewShape(this.boundingBox);
   }
@@ -234,7 +247,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.updateBoundingBox();
   }
 
-  private addSelectedShape(shape: BaseShape): void {
+  addSelectedShape(shape: BaseShape): void {
     const index = this.editorService.selectedShapes.indexOf(shape);
     if (index === -1) {
       this.editorService.selectedShapes.push(shape);
@@ -261,17 +274,22 @@ export class SelectionTool extends SimpleSelectionTool {
         reverse ? this.reverseSelection(shape, this.previouslySelectedShapes) : this.addSelectedShape(shape);
       }
     });
-
     this.updateBoundingBox();
   }
 
-  private updateBoundingBox(): void {
+  updateBoundingBox(): void {
     if (this.editorService.selectedShapes.length > 0) {
       this.boundingBox.origin = this.editorService.selectedShapes[0].origin;
       this.boundingBox.end = this.editorService.selectedShapes[0].end;
       this.editorService.selectedShapes.forEach((shape) => {
-        this.boundingBox.start = Coordinate.minXYCoord(this.boundingBox.origin, shape.origin);
-        this.boundingBox.end = Coordinate.maxXYCoord(this.boundingBox.end, shape.end);
+        this.boundingBox.start = Coordinate.minXYCoord(
+          this.boundingBox.origin,
+          Coordinate.subtract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),    // todo - proper fix
+        );
+        this.boundingBox.end = Coordinate.maxXYCoord(
+          this.boundingBox.end,
+          Coordinate.add(shape.end, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),
+        );
       });
     } else {
       this.boundingBox.origin = new Coordinate();

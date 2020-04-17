@@ -41,6 +41,7 @@
   <mat-drawer #drawer mode="side">
     <mat-drawer-content [ngSwitch]="currentToolType">
       <div *ngIf=!toolbarType>
+        <app-selection-toolbar *ngSwitchCase="ToolType.Select" class='toolbar-selection-section'></app-selection-toolbar>
         <app-pen-toolbar *ngSwitchCase='ToolType.Pen' class='toolbar-tool-section'></app-pen-toolbar>
         <app-brush-toolbar *ngSwitchCase='ToolType.Brush' class='toolbar-tool-section'></app-brush-toolbar>
         <app-rectangle-toolbar *ngSwitchCase='ToolType.Rectangle' class='toolbar-tool-section'></app-rectangle-toolbar>

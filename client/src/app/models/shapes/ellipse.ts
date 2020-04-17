@@ -6,6 +6,17 @@ export class Ellipse extends BaseShape {
   private _radiusX: number;
   private _radiusY: number;
 
+  get copy(): Ellipse {
+    const copy = new Ellipse(this.center, this.radiusX, this.radiusY);
+    this.cloneProperties(copy);
+    copy.updateProperties();
+    return copy;
+  }
+  cloneProperties(shape: Ellipse): void {
+    super.cloneProperties(shape);
+    shape.origin = Coordinate.copy(this.origin);
+  }
+
   get radiusX(): number {
     return this._radiusX;
   }

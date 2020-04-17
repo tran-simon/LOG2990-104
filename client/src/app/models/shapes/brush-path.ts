@@ -5,6 +5,18 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 export class BrushPath extends Path {
   private _filter: BrushTextureType;
 
+  cloneProperties(shape: BrushPath): void {
+    super.cloneProperties(shape);
+    shape.filter = (this.filter);
+    shape.updateProperties();
+  }
+
+  get copy(): BrushPath {
+    const copy = new BrushPath(this.points[0]);
+    this.cloneProperties(copy);
+    return copy;
+  }
+
   get filter(): BrushTextureType {
     return this._filter;
   }

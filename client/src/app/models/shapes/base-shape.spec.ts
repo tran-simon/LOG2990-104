@@ -19,6 +19,9 @@ describe('BaseShape', () => {
     get width(): number {
       return 10;
     }
+    get copy(): BaseShape {
+      return this;
+    }
   }
   let component: BaseShape;
   beforeEach(() => {

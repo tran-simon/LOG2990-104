@@ -303,8 +303,8 @@ describe('SelectionTool', () => {
     tool['initBoundingBox']();
     tool['updateBoundingBox']();
 
-    expect(tool['boundingBox'].origin).toEqual(new Coordinate(50, 50));
-    expect(tool['boundingBox'].end).toEqual(new Coordinate(300, 300));
+    expect(tool['boundingBox'].origin).toEqual(new Coordinate(49.5, 49.5));
+    expect(tool['boundingBox'].end).toEqual(new Coordinate(300.5, 300.5));
   });
 
   it('can update empty bounding box', () => {
