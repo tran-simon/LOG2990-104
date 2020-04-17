@@ -141,7 +141,7 @@ describe('SelectionTool', () => {
     jasmine.clock().install();
     const moveSpy = spyOn<any>(tool, 'move');
     tool['initBoundingBox']();
-    tool.editorService.selectedShapes.push(new Rectangle());
+    tool.editorService.selection.shapes.push(new Rectangle());
     tool['startKeyboardMove']();
     expect(moveSpy).toHaveBeenCalledTimes(1);
 
@@ -173,7 +173,7 @@ describe('SelectionTool', () => {
 
   it('can move selected shapes', () => {
     tool['initBoundingBox']();
-    tool.editorService.selectedShapes.push(new Rectangle());
+    tool.editorService.selection.shapes.push(new Rectangle());
     tool['startMove']();
     const moveSpy = spyOn(tool['moveCommand'], 'execute');
 
@@ -187,7 +187,7 @@ describe('SelectionTool', () => {
 
   it('can select single shape', () => {
     tool.selectShape(shapes[0]);
-    expect(tool.editorService.selectedShapes.indexOf(shapes[0])).toEqual(0);
+    expect(tool.editorService.selection.shapes.indexOf(shapes[0])).toEqual(0);
   });
 
   it('can reverse selection', () => {
@@ -197,10 +197,10 @@ describe('SelectionTool', () => {
     tool.selectShape(shapes[1], true);
     tool.selectShape(shapes[2], true);
 
-    expect(tool.editorService.selectedShapes.length).toEqual(2);
-    expect(tool.editorService.selectedShapes.indexOf(shapes[0])).toEqual(0);
-    expect(tool.editorService.selectedShapes.indexOf(shapes[1])).toEqual(-1);
-    expect(tool.editorService.selectedShapes.indexOf(shapes[2])).toEqual(1);
+    expect(tool.editorService.selection.shapes.length).toEqual(2);
+    expect(tool.editorService.selection.shapes.indexOf(shapes[0])).toEqual(0);
+    expect(tool.editorService.selection.shapes.indexOf(shapes[1])).toEqual(-1);
+    expect(tool.editorService.selection.shapes.indexOf(shapes[2])).toEqual(1);
   });
 
   it('should not add shape if already selected', () => {
@@ -208,22 +208,22 @@ describe('SelectionTool', () => {
     tool['addSelectedShape'](shapes[1]);
     tool['addSelectedShape'](shapes[0]);
     tool['addSelectedShape'](shapes[0]);
-    expect(tool.editorService.selectedShapes.length).toEqual(2);
+    expect(tool.editorService.selection.shapes.length).toEqual(2);
   });
 
   it('can remove selected shape', () => {
     tool['addSelectedShape'](shapes[0]);
     tool['addSelectedShape'](shapes[1]);
     tool['removeSelectedShape'](shapes[0]);
-    expect(tool.editorService.selectedShapes.indexOf(shapes[1])).toEqual(0);
-    expect(tool.editorService.selectedShapes.length).toEqual(1);
+    expect(tool.editorService.selection.shapes.indexOf(shapes[1])).toEqual(0);
+    expect(tool.editorService.selection.shapes.length).toEqual(1);
   });
 
   it('should not remove shape if not selected', () => {
-    const spliceSpy = spyOn(tool.editorService.selectedShapes, 'splice');
+    const spliceSpy = spyOn(tool.editorService.selection.shapes, 'splice');
     tool['addSelectedShape'](shapes[0]);
     tool['removeSelectedShape'](shapes[1]);
-    expect(tool.editorService.selectedShapes.length).toEqual(1);
+    expect(tool.editorService.selection.shapes.length).toEqual(1);
     expect(spliceSpy).not.toHaveBeenCalled();
   });
 
@@ -234,7 +234,7 @@ describe('SelectionTool', () => {
     tool.editorService.applyShapesBuffer();
 
     tool.selectAll();
-    expect(tool.editorService.selectedShapes.length).toEqual(3);
+    expect(tool.editorService.selection.shapes.length).toEqual(3);
   });
 
   it('can begin selection', () => {
@@ -242,7 +242,7 @@ describe('SelectionTool', () => {
 
     expect(tool['reverseSelectionMode']).toBeFalsy();
     expect(tool['initialMouseCoord']).toEqual(coord1);
-    expect(tool.editorService.selectedShapes.length).toEqual(0);
+    expect(tool.editorService.selection.shapes.length).toEqual(0);
   });
 
   it('can begin reverse selection', () => {
@@ -250,7 +250,7 @@ describe('SelectionTool', () => {
 
     expect(tool['reverseSelectionMode']).toBeTruthy();
     expect(tool['initialMouseCoord']).toEqual(coord1);
-    expect(tool['previouslySelectedShapes']).toEqual(tool.editorService.selectedShapes);
+    expect(tool['previouslySelectedShapes']).toEqual(tool.editorService.selection.shapes);
   });
 
   it('can initialize select area', () => {
@@ -282,7 +282,7 @@ describe('SelectionTool', () => {
 
     tool['resetSelection']();
     expect(tool.editorService['previewShapes'].length).toEqual(0);
-    expect(tool.editorService.selectedShapes.length).toEqual(0);
+    expect(tool.editorService.selection.shapes.length).toEqual(0);
     expect(addPreviewSpy).toHaveBeenCalledTimes(2);
   });
 
@@ -311,7 +311,7 @@ describe('SelectionTool', () => {
     tool['initBoundingBox']();
     tool['updateBoundingBox']();
 
-    expect(tool.editorService.selectedShapes.length).toEqual(0);
+    expect(tool.editorService.selection.shapes.length).toEqual(0);
     expect(tool['boundingBox'].origin).toEqual(new Coordinate());
     expect(tool['boundingBox'].end).toEqual(new Coordinate());
   });
@@ -346,7 +346,7 @@ describe('SelectionTool', () => {
     const updateSpy = spyOn<any>(tool, 'updateBoundingBox');
 
     tool.editorService.shapes.push(...shapes);
-    tool.editorService.selectedShapes.push(shapes[0]);
+    tool.editorService.selection.shapes.push(shapes[0]);
     tool['beginReverseSelection'](new Coordinate());
     tool['selectArea'] = new Rectangle(new Coordinate(), 500, 500);
     tool['updateSelection'](true);

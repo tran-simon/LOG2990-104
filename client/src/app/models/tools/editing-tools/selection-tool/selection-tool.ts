@@ -55,7 +55,7 @@ export class SelectionTool extends SimpleSelectionTool {
 
   handleUndoRedoEvent(undo: boolean): void {
     super.handleUndoRedoEvent(undo);
-    this.editorService.clearSelection();
+    this.editorService.selection.clear();
     this.updateBoundingBox();
     this.applyBoundingBox();
   }
@@ -63,7 +63,7 @@ export class SelectionTool extends SimpleSelectionTool {
   private rotateSelection(angle: number, individual: boolean = false): void {
     const center = individual ? undefined : this.boundingBox.center;
     const shapes = new Array<BaseShape>();
-    shapes.push(...this.editorService.selectedShapes);
+    shapes.push(...this.editorService.selection.shapes);
     const rotationCommand = new RotateShapeCommand(shapes, this.editorService, angle, center);
 
     this.editorService.commandReceiver.add(rotationCommand);
@@ -84,7 +84,6 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseDown = (e: MouseEvent) => {
       if (!this.isActive) {
         this.isActive = true;
-        this.editorService.duplicationBuffer.length = 0;
         if (this.boundingBox && SelectionTool.detectPointCollision(this.mousePosition, this.boundingBox)) {
           this.startMove(this.mousePosition);
         } else if (e.button === MouseListenerService.BUTTON_LEFT) {
@@ -104,7 +103,6 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
-        this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
         this.applyBoundingBox();
         if (this.moveSelectionMode) {
           this.moveSelectionMode = false;
@@ -170,7 +168,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.moveSelectionMode = true;
 
     const moveShapes = new Array<BaseShape>();
-    moveShapes.push(...this.editorService.selectedShapes);
+    moveShapes.push(...this.editorService.selection.shapes);
     moveShapes.push(this.boundingBox);
     this.moveCommand = new MoveShapeCommand(moveShapes, this.editorService);
   }
@@ -193,12 +191,11 @@ export class SelectionTool extends SimpleSelectionTool {
       this.updateBoundingBox();
     }
     this.applyBoundingBox();
-    this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
   }
 
   selectAll(): void {
     this.resetSelection();
-    this.editorService.selectedShapes.push(...this.editorService.shapes);
+    this.editorService.selection.shapes.push(...this.editorService.shapes);
     this.updateBoundingBox();
   }
 
@@ -213,7 +210,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.initialMouseCoord = Coordinate.copy(c);
     this.initSelectArea();
     this.previouslySelectedShapes.length = 0;
-    this.previouslySelectedShapes.push(...this.editorService.selectedShapes);
+    this.previouslySelectedShapes.push(...this.editorService.selection.shapes);
   }
 
   private initSelectArea(): void {
@@ -232,7 +229,7 @@ export class SelectionTool extends SimpleSelectionTool {
 
   private resetSelection(): void {
     this.editorService.clearShapesBuffer();
-    this.editorService.clearSelection();
+    this.editorService.selection.clear();
     this.initSelectArea();
     this.initBoundingBox();
   }
@@ -242,22 +239,22 @@ export class SelectionTool extends SimpleSelectionTool {
     this.editorService.addPreviewShape(this.boundingBox);
   }
 
-  private reverseSelection(shape: BaseShape, array: BaseShape[] = this.editorService.selectedShapes): void {
+  private reverseSelection(shape: BaseShape, array: BaseShape[] = this.editorService.selection.shapes): void {
     array.indexOf(shape) === -1 ? this.addSelectedShape(shape) : this.removeSelectedShape(shape);
     this.updateBoundingBox();
   }
 
   addSelectedShape(shape: BaseShape): void {
-    const index = this.editorService.selectedShapes.indexOf(shape);
+    const index = this.editorService.selection.shapes.indexOf(shape);
     if (index === -1) {
-      this.editorService.selectedShapes.push(shape);
+      this.editorService.selection.shapes.push(shape);
     }
   }
 
   private removeSelectedShape(shape: BaseShape): void {
-    const index = this.editorService.selectedShapes.indexOf(shape);
+    const index = this.editorService.selection.shapes.indexOf(shape);
     if (index !== -1) {
-      this.editorService.selectedShapes.splice(index, 1);
+      this.editorService.selection.shapes.splice(index, 1);
     }
   }
 
@@ -266,7 +263,7 @@ export class SelectionTool extends SimpleSelectionTool {
     this.resizeSelectArea();
 
     if (reverse) {
-      this.editorService.selectedShapes.push(...this.previouslySelectedShapes);
+      this.editorService.selection.shapes.push(...this.previouslySelectedShapes);
     }
 
     this.editorService.shapes.forEach((shape) => {
@@ -278,10 +275,10 @@ export class SelectionTool extends SimpleSelectionTool {
   }
 
   updateBoundingBox(): void {
-    if (this.editorService.selectedShapes.length > 0) {
-      this.boundingBox.origin = this.editorService.selectedShapes[0].origin;
-      this.boundingBox.end = this.editorService.selectedShapes[0].end;
-      this.editorService.selectedShapes.forEach((shape) => {
+    if (this.editorService.selection.shapes.length > 0) {
+      this.boundingBox.origin = this.editorService.selection.shapes[0].origin;
+      this.boundingBox.end = this.editorService.selection.shapes[0].end;
+      this.editorService.selection.shapes.forEach((shape) => {
         this.boundingBox.start = Coordinate.minXYCoord(
           this.boundingBox.origin,
           Coordinate.subtract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),    // todo - proper fix
