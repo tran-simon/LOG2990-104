@@ -52,7 +52,7 @@ export class EditorService {
 
   constructor(public colorsService: ColorsService) {
     this._commandReceiver = new CommandReceiver();
-
+    this.selection = new Selection();
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
 
@@ -60,7 +60,6 @@ export class EditorService {
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
     this.selectionTool = this.tools.get(ToolType.Select) as SelectionTool;
-    this.selection = new Selection();
     this.gridProperties = new GridProperties();
 
     this.clipboard = new Array<BaseShape>();
@@ -118,10 +117,10 @@ export class EditorService {
       this.commandReceiver.add(new AddShapesCommand(copies, this));
       this.selection.clear();
       for (let i = copies.length - buffer.length; i < copies.length; i++) {
-        this.selectionTool.addSelectedShape(copies[i]);
+        this.selection.addSelectedShape(copies[i]);
       }
       this.pasteOffset += SelectionTool.PASTED_OFFSET;
-      this.selectionTool.updateBoundingBox();
+      this.selection.updateBoundingBox();
       this.selectionTool.applyBoundingBox();
     }
   }
@@ -134,7 +133,7 @@ export class EditorService {
         this.commandReceiver.add(new RemoveShapesCommand(shape, this));
       });
       this.selection.clear();
-      this.selectionTool.updateBoundingBox();
+      this.selection.updateBoundingBox();
     }
   }
   copySelectedShapes(buffer: BaseShape[] = this.clipboard): void {
@@ -155,7 +154,7 @@ export class EditorService {
       deletedShapes.push(...this.selection.shapes);
       this.commandReceiver.add(new RemoveShapesCommand(deletedShapes, this));
       this.selection.clear();
-      this.selectionTool.updateBoundingBox();
+      this.selection.updateBoundingBox();
       this.selectionTool.applyBoundingBox();
     }
   }
@@ -179,10 +178,6 @@ export class EditorService {
     this.previewShapes.forEach(removeShapes);
     this.shapesBuffer = [];
     this.previewShapes = [];
-  }
-
-  clearSelection(): void {
-    this.selection.shapes.length = 0;
   }
 
   clearClipboard(): void {
