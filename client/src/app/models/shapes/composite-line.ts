@@ -10,7 +10,24 @@ export class CompositeLine extends BaseShape {
   junctionArray: Ellipse[];
   // todo: copy for CompositeLine
   get copy(): CompositeLine {
-    return this;
+    const copy = new CompositeLine(this.junctionArray[0].center);
+    this.cloneProperties(copy);
+    copy.updateProperties();
+    return copy;
+  }
+
+  cloneProperties(shape: CompositeLine): void {
+    super.cloneProperties(shape);
+    this.lineArray.forEach((line: Line) => {
+      const lineCopy = line.copy;
+      shape.lineArray.push(lineCopy);
+      shape.svgNode.appendChild(lineCopy.svgNode);
+    });
+    this.junctionArray.forEach((junction: Ellipse) => {
+      const junctionCopy = junction.copy;
+      shape.junctionArray.push(junctionCopy);
+      shape.svgNode.appendChild(junctionCopy.svgNode);
+    });
   }
 
   get currentLine(): Line {

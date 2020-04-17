@@ -23,7 +23,6 @@ export class Polygon extends BaseShape {
   get nEdges(): number {
     return this._nEdges;
   }
-
   set nEdges(nEdges: number) {
     this._nEdges = nEdges ? MathUtils.fit(nEdges, Polygon.MIN_POLY_EDGES, Polygon.MAX_POLY_EDGES) : Polygon.MIN_POLY_EDGES;
     this._interiorAngle = (2 * Math.PI) / this.nEdges;
