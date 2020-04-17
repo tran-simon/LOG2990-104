@@ -6,7 +6,7 @@ export class RemoveShapesCommand extends ShapesCommand {
   }
 
   undo(): void {
-    this.editorService.addShapesToBuffer(this.shapes);
+    this.editorService.addShapeToBuffer(this.shapes);
     this.editorService.applyShapesBuffer();
   }
 }

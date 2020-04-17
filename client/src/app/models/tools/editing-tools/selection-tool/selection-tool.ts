@@ -6,24 +6,19 @@ import { MouseListenerService } from '@services/event-listeners/mouse-listener/m
 import { SelectionMove } from '@tools/editing-tools/selection-tool/selection-move.enum';
 import { SelectionToolKeyboardEvents } from '@tools/editing-tools/selection-tool/selection-tool-keyboard-events';
 import { SimpleSelectionTool } from '@tools/editing-tools/simple-selection-tool';
-import { Color } from '@utils/color/color';
 import { Coordinate } from '@utils/math/coordinate';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { BoundingBox } from 'src/app/models/shapes/bounding-box';
-import { Rectangle } from 'src/app/models/shapes/rectangle';
+import { Selection } from './selection';
 
 export class SelectionTool extends SimpleSelectionTool {
   static readonly PASTED_OFFSET: number = 10;
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
   private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
-  private readonly SELECT_AREA_DASHARRAY: string = '5';
 
-  private boundingBox: BoundingBox;
-  private selectArea: Rectangle;
   private initialMouseCoord: Coordinate;
   private reverseSelectionMode: boolean; // todo - create states
   private moveSelectionMode: boolean;
-  previouslySelectedShapes: BaseShape[];
 
   private keyPresses: boolean[] = [];
   private keyInterval: number;
@@ -34,19 +29,9 @@ export class SelectionTool extends SimpleSelectionTool {
   shiftKey: boolean;
   altKey: boolean;
 
-  static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
-    return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
-  }
-
-  static detectPointCollision(point: Coordinate, shape: BaseShape): boolean {
-    return point.x >= shape.origin.x && point.x <= shape.end.x && point.y >= shape.origin.y && point.y <= shape.end.y;
-  }
-
-  constructor(public editorService: EditorService) {
+  constructor(public editorService: EditorService, private selection: Selection = editorService.selection) {
     super(editorService);
     this.reverseSelectionMode = false;
-    this.previouslySelectedShapes = new Array<BaseShape>();
-
     this.shiftKey = false;
     this.altKey = false;
 
@@ -55,19 +40,19 @@ export class SelectionTool extends SimpleSelectionTool {
 
   handleUndoRedoEvent(undo: boolean): void {
     super.handleUndoRedoEvent(undo);
-    this.editorService.clearSelection();
-    this.updateBoundingBox();
+    this.selection.clear();
+    this.selection.updateBoundingBox();
     this.applyBoundingBox();
   }
 
   private rotateSelection(angle: number, individual: boolean = false): void {
-    const center = individual ? undefined : this.boundingBox.center;
+    const center = individual ? undefined : this.selection.boundingBox.center;
     const shapes = new Array<BaseShape>();
-    shapes.push(...this.editorService.selectedShapes);
+    shapes.push(...this.selection.shapes);
     const rotationCommand = new RotateShapeCommand(shapes, this.editorService, angle, center);
 
     this.editorService.commandReceiver.add(rotationCommand);
-    this.boundingBox.rotation += angle;
+    this.selection.boundingBox.rotation += angle;
   }
 
   // END ROTATION
@@ -84,13 +69,12 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseDown = (e: MouseEvent) => {
       if (!this.isActive) {
         this.isActive = true;
-        this.editorService.duplicationBuffer.length = 0;
-        if (this.boundingBox && SelectionTool.detectPointCollision(this.mousePosition, this.boundingBox)) {
+        if (this.selection.boundingBox && Selection.detectPointCollision(this.mousePosition, this.selection.boundingBox)) {
           this.startMove(this.mousePosition);
         } else if (e.button === MouseListenerService.BUTTON_LEFT) {
           this.beginSelection(this.mousePosition);
         } else if (e.button === MouseListenerService.BUTTON_RIGHT) {
-          this.beginReverseSelection(this.mousePosition);
+          this.beginSelection(this.mousePosition, true);
         }
       }
     };
@@ -104,7 +88,6 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
-        this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
         this.applyBoundingBox();
         if (this.moveSelectionMode) {
           this.moveSelectionMode = false;
@@ -168,10 +151,9 @@ export class SelectionTool extends SimpleSelectionTool {
   private startMove(c: Coordinate = new Coordinate()): void {
     this.initialMouseCoord = Coordinate.copy(c);
     this.moveSelectionMode = true;
-
     const moveShapes = new Array<BaseShape>();
-    moveShapes.push(...this.editorService.selectedShapes);
-    moveShapes.push(this.boundingBox);
+    moveShapes.push(...this.selection.shapes);
+    moveShapes.push(this.selection.boundingBox);
     this.moveCommand = new MoveShapeCommand(moveShapes, this.editorService);
   }
 
@@ -186,119 +168,68 @@ export class SelectionTool extends SimpleSelectionTool {
 
   selectShape(shape: BaseShape, rightClick: boolean = false): void {
     if (rightClick) {
-      this.reverseSelection(shape);
+      this.selection.reverse(shape);
     } else {
       this.resetSelection();
-      this.addSelectedShape(shape);
-      this.updateBoundingBox();
+      this.selection.addSelectedShape(shape);
+      this.selection.updateBoundingBox();
     }
     this.applyBoundingBox();
-    this.editorService.copySelectedShapes(this.editorService.duplicationBuffer, this.editorService.pastedDuplicateBuffer);
   }
 
   selectAll(): void {
     this.resetSelection();
-    this.editorService.selectedShapes.push(...this.editorService.shapes);
-    this.updateBoundingBox();
+    this.selection.shapes.push(...this.editorService.shapes);
+    this.selection.updateBoundingBox();
   }
 
-  private beginSelection(c: Coordinate): void {
-    this.reverseSelectionMode = false;
+  private beginSelection(c: Coordinate, reverse: boolean = false): void {
+    this.reverseSelectionMode = reverse;
     this.initialMouseCoord = Coordinate.copy(c);
-    this.resetSelection();
-  }
-
-  private beginReverseSelection(c: Coordinate): void {
-    this.reverseSelectionMode = true;
-    this.initialMouseCoord = Coordinate.copy(c);
-    this.initSelectArea();
-    this.previouslySelectedShapes.length = 0;
-    this.previouslySelectedShapes.push(...this.editorService.selectedShapes);
+    if(reverse) {
+      this.initSelectArea();
+      this.selection.previous.length = 0;
+      this.selection.previous.push(...this.selection.shapes);
+    } else {
+      this.resetSelection();
+    }
   }
 
   private initSelectArea(): void {
-    this.selectArea = new Rectangle(this.initialMouseCoord);
-    this.selectArea.primaryColor = Color.TRANSPARENT;
-    this.selectArea.svgNode.style.pointerEvents = BaseShape.CSS_NONE;
-    this.selectArea.svgNode.style.strokeDasharray = this.SELECT_AREA_DASHARRAY;
-    this.selectArea.updateProperties();
-    this.editorService.addPreviewShape(this.selectArea);
+    this.selection.resizeArea(this.initialMouseCoord);
+    this.editorService.addPreviewShape(this.selection.area);
   }
 
   private initBoundingBox(): void {
-    this.boundingBox = new BoundingBox(this.initialMouseCoord);
-    this.editorService.addPreviewShape(this.boundingBox);
+    this.selection.boundingBox = new BoundingBox(this.initialMouseCoord);
+    this.editorService.addPreviewShape(this.selection.boundingBox);
   }
 
   private resetSelection(): void {
     this.editorService.clearShapesBuffer();
-    this.editorService.clearSelection();
+    this.selection.clear();
     this.initSelectArea();
     this.initBoundingBox();
   }
 
   applyBoundingBox(): void {
     this.editorService.clearShapesBuffer();
-    this.editorService.addPreviewShape(this.boundingBox);
-  }
-
-  private reverseSelection(shape: BaseShape, array: BaseShape[] = this.editorService.selectedShapes): void {
-    array.indexOf(shape) === -1 ? this.addSelectedShape(shape) : this.removeSelectedShape(shape);
-    this.updateBoundingBox();
-  }
-
-  addSelectedShape(shape: BaseShape): void {
-    const index = this.editorService.selectedShapes.indexOf(shape);
-    if (index === -1) {
-      this.editorService.selectedShapes.push(shape);
-    }
-  }
-
-  private removeSelectedShape(shape: BaseShape): void {
-    const index = this.editorService.selectedShapes.indexOf(shape);
-    if (index !== -1) {
-      this.editorService.selectedShapes.splice(index, 1);
-    }
+    this.editorService.addPreviewShape(this.selection.boundingBox);
   }
 
   private updateSelection(reverse: boolean = this.reverseSelectionMode): void {
     this.resetSelection();
-    this.resizeSelectArea();
+    this.selection.resizeArea(this.initialMouseCoord, this.mousePosition);
 
     if (reverse) {
-      this.editorService.selectedShapes.push(...this.previouslySelectedShapes);
+      this.selection.shapes.push(...this.selection.previous);
     }
 
     this.editorService.shapes.forEach((shape) => {
-      if (SelectionTool.detectBoundingBoxCollision(this.selectArea, shape)) {
-        reverse ? this.reverseSelection(shape, this.previouslySelectedShapes) : this.addSelectedShape(shape);
+      if (Selection.detectBoundingBoxCollision(this.selection.area, shape)) {
+        reverse ? this.selection.reverse(shape, this.selection.previous) : this.selection.addSelectedShape(shape);
       }
     });
-    this.updateBoundingBox();
-  }
-
-  updateBoundingBox(): void {
-    if (this.editorService.selectedShapes.length > 0) {
-      this.boundingBox.origin = this.editorService.selectedShapes[0].origin;
-      this.boundingBox.end = this.editorService.selectedShapes[0].end;
-      this.editorService.selectedShapes.forEach((shape) => {
-        this.boundingBox.start = Coordinate.minXYCoord(
-          this.boundingBox.origin,
-          Coordinate.subtract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),    // todo - proper fix
-        );
-        this.boundingBox.end = Coordinate.maxXYCoord(
-          this.boundingBox.end,
-          Coordinate.add(shape.end, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),
-        );
-      });
-    } else {
-      this.boundingBox.origin = new Coordinate();
-      this.boundingBox.end = new Coordinate();
-    }
-  }
-
-  private resizeSelectArea(origin: Coordinate = this.initialMouseCoord, end: Coordinate = this.mousePosition): void {
-    this.selectArea.origin = origin;
-    this.selectArea.end = end;
+    this.selection.updateBoundingBox();
   }
 }

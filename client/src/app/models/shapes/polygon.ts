@@ -11,12 +11,6 @@ export class Polygon extends BaseShape {
   private _interiorAngle: number;
   private _nEdges: number;
 
-  get copy(): Polygon {
-    const copy = new Polygon(this.origin, this.nEdges);
-    this.cloneProperties(copy);
-    copy.updateProperties();
-    return copy;
-  }
   get interiorAngle(): number {
     return this._interiorAngle;
   }
@@ -61,13 +55,6 @@ export class Polygon extends BaseShape {
     const x = minDimension / 2 + (minDimension / 2) * Math.cos(angle);
     const y = minDimension / 2 + (minDimension / 2) * Math.sin(angle);
     return new Coordinate(x, y);
-  }
-
-  cloneProperties(shape: Polygon): void {
-    super.cloneProperties(shape);
-    shape.points.push(...this.points);
-    shape.origin = this.origin;
-    shape.drawPoints();
   }
 
   readShape(data: Polygon): void {
