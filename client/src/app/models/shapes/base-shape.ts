@@ -30,45 +30,6 @@ export abstract class BaseShape {
   abstract get height(): number;
   abstract get copy(): BaseShape;
 
-  cloneProperties(shape: BaseShape): void {
-    shape.contourType = this.contourType;
-    shape.primaryColor = this.primaryColor;
-    shape.secondaryColor = this.secondaryColor;
-    shape.thickness = this.thickness;
-    shape.strokeWidth = this.strokeWidth;
-  }
-
-  get offset(): Coordinate {
-    return this._offset;
-  }
-
-  set offset(c: Coordinate) {
-    this._offset = c;
-    this.applyTransform();
-  }
-
-  get rotation(): number {
-    return this._rotation;
-  }
-
-  set rotation(angle: number) {
-    this._rotation = angle;
-    this.applyTransform();
-  }
-
-  get center(): Coordinate {
-    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
-  }
-
-  set center(c: Coordinate) {
-    this.origin = new Coordinate(c.x - this.width / 2, c.y - this.height / 2);
-    this.applyTransform();
-  }
-
-  get end(): Coordinate {
-    return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
-  }
-
   constructor(svgType: string, id?: number) {
     this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, svgType) as SVGElement;
     this.svgNode.setAttribute(BaseShape.TYPE_ATTRIBUTE, this.constructor.name);
@@ -89,7 +50,8 @@ export abstract class BaseShape {
   }
 
   // tslint:disable-next-line:no-any
-  static jsonReplacer = (key: string, value: any) => {  // for use with JSON.Stringify
+  static jsonReplacer(key: string, value: any): any {
+    // for use with JSON.Stringify
     return key === 'svgNode' ? undefined : value;
   }
 
@@ -142,5 +104,44 @@ export abstract class BaseShape {
     };
 
     highlightNode(this.svgNode);
+  }
+
+  cloneProperties(shape: BaseShape): void {
+    shape.contourType = this.contourType;
+    shape.primaryColor = this.primaryColor;
+    shape.secondaryColor = this.secondaryColor;
+    shape.thickness = this.thickness;
+    shape.strokeWidth = this.strokeWidth;
+  }
+
+  get offset(): Coordinate {
+    return this._offset;
+  }
+
+  set offset(c: Coordinate) {
+    this._offset = c;
+    this.applyTransform();
+  }
+
+  get rotation(): number {
+    return this._rotation;
+  }
+
+  set rotation(angle: number) {
+    this._rotation = angle;
+    this.applyTransform();
+  }
+
+  get center(): Coordinate {
+    return new Coordinate(this.origin.x + this.width / 2, this.origin.y + this.height / 2);
+  }
+
+  set center(c: Coordinate) {
+    this.origin = new Coordinate(c.x - this.width / 2, c.y - this.height / 2);
+    this.applyTransform();
+  }
+
+  get end(): Coordinate {
+    return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
   }
 }
