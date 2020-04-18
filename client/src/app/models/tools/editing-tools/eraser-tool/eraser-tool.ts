@@ -39,27 +39,27 @@ export class EraserTool extends Tool {
 
   init(): void {
     this.editorService.loading = true;
-    const newClonedView = this.editorService.view.svg.cloneNode(true) as SVGElement;
+    const clonedView = this.editorService.view.svg.cloneNode(true) as SVGElement;
 
-    const background = newClonedView.querySelector('#background');
+    const background = clonedView.querySelector('#background');
     if (background) {
       background.setAttribute('fill', Color.RED.rgbString);
     }
 
-    newClonedView.childNodes.forEach((node: SVGElement) => {
+    clonedView.childNodes.forEach((node: SVGElement) => {
       if (node.id.startsWith('shape-')) {
         const id = node.id.split('-').pop() as string;
         EraserUtils.sanitizeAndAssignColorToSvgNode(node, +id + 1);
       }
     });
 
-    EditorUtils.viewToCanvas(this.editorService.view, newClonedView)
+    EditorUtils.viewToCanvas(this.editorService.view, clonedView)
       .then((ctx) => {
         if (ctx) {
           ctx.imageSmoothingEnabled = false;
         }
-        const width = parseInt(newClonedView.getAttribute('width') || '0', MathUtils.DECIMAL_RADIX);
-        const height = parseInt(newClonedView.getAttribute('height') || '0', MathUtils.DECIMAL_RADIX);
+        const width = parseInt(clonedView.getAttribute('width') || '0', MathUtils.DECIMAL_RADIX);
+        const height = parseInt(clonedView.getAttribute('height') || '0', MathUtils.DECIMAL_RADIX);
 
         this.colorData = ctx.getImageData(0, 0, width, height).data;
         if (!this.editorService.view.svg.contains(this.eraserView.svgNode)) {

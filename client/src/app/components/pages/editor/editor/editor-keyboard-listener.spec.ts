@@ -176,4 +176,34 @@ describe('EditorKeyboardListener', () => {
     keyboardListener.handle(keyDown('s', false, true));
     expect(openDialogSpy).toHaveBeenCalledWith('save');
   });
+
+  it('can copy', () => {
+    const copySpy = spyOn(component.editorService, 'copySelectedShapes');
+    keyboardListener.handle(keyDown('c', false, true));
+    expect(copySpy).toHaveBeenCalled();
+  });
+
+  it('can cut', () => {
+    const cutSpy = spyOn(component.editorService, 'cutSelectedShapes');
+    keyboardListener.handle(keyDown('x', false, true));
+    expect(cutSpy).toHaveBeenCalled();
+  });
+
+  it('can paste ', () => {
+    const pasteSpy = spyOn(component.editorService, 'pasteClipboard');
+    keyboardListener.handle(keyDown('v', false, true));
+    expect(pasteSpy).toHaveBeenCalled();
+  });
+
+  it('can duplicate', () => {
+    const dulicateSpy = spyOn(component.editorService, 'duplicateSelectedShapes');
+    keyboardListener.handle(keyDown('d', false, true));
+    expect(dulicateSpy).toHaveBeenCalled();
+  });
+
+  it('can delete', () => {
+    const deleteSpy = spyOn(component.editorService, 'deleteSelectedShapes');
+    keyboardListener.handle(keyDown('delete', false, false));
+    expect(deleteSpy).toHaveBeenCalled();
+  });
 });

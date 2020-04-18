@@ -80,7 +80,6 @@ export class DatabaseService {
         for (let i = 0; i < tags.length; ++i) {
           regex[i] = new RegExp('^' + tags[i]);
         }
-        console.log(regex);
         drawingModel.find(
           {
             name: { $regex: '.*' + name + '.*' },
