@@ -4,7 +4,9 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-toolbar/eraser-toolbar.component';
+import { FillToolbarComponent } from '@components/pages/editor/toolbar/fill-toolbar/fill-toolbar.component';
 import { GridToolbarComponent } from '@components/pages/editor/toolbar/grid-toolbar/grid-toolbar.component';
+import { SelectionToolbarComponent } from '@components/pages/editor/toolbar/selection-toolbar/selection-toolbar.component';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
@@ -39,6 +41,8 @@ describe('ToolbarComponent', () => {
         SprayToolbarComponent,
         EraserToolbarComponent,
         GridToolbarComponent,
+        FillToolbarComponent,
+        SelectionToolbarComponent,
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, { set: { entryComponents: [UserGuideModalComponent] } })

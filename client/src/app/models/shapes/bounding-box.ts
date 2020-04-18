@@ -43,8 +43,8 @@ export class BoundingBox extends BaseShape {
     this.updateControlPoints();
   }
 
-  constructor(c: Coordinate = new Coordinate()) {
-    super('g');
+  constructor(c: Coordinate = new Coordinate(), id?: number) {
+    super('g', id);
     this.outline = new Rectangle(c);
     this.outline.svgNode.style.pointerEvents = BaseShape.CSS_NONE;
     this.outline.primaryColor = BoundingBox.BOUNDING_BOX_COLOR;
@@ -53,13 +53,6 @@ export class BoundingBox extends BaseShape {
     this.svgNode.appendChild(this.outline.svgNode);
 
     this.initControlPoints();
-  }
-
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
-    this.outline = data.outline;
-    this.applyTransform();
   }
 
   private initControlPoints(): void {

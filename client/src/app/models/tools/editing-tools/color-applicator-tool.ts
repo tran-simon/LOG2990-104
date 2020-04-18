@@ -1,3 +1,4 @@
+import { ColorizeShapeCommand } from '@models/commands/shape-commands/colorize-shape-command';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
 import { EditorService } from 'src/app/services/editor.service';
@@ -8,11 +9,7 @@ export class ColorApplicatorTool extends SimpleSelectionTool {
   }
 
   selectShape(shape: BaseShape, rightClick: boolean = false): void {
-    if (!rightClick) {
-      shape.primaryColor = this.editorService.colorsService.primaryColor;
-    } else {
-      shape.secondaryColor = this.editorService.colorsService.secondaryColor;
-    }
-    shape.updateProperties();
+    const color = rightClick ? this.editorService.colorsService.secondaryColor : this.editorService.colorsService.primaryColor;
+    this.editorService.commandReceiver.add(new ColorizeShapeCommand(shape, this.editorService, color, !rightClick));
   }
 }

@@ -1,0 +1,18 @@
+<img-button id="copy" [src]="'../../../../../../../assets/ico_copy.png'"
+            [disable]="editorService.selection.shapes.length < 1" (click)="editorService.copySelectedShapes()">
+</img-button>
+<img-button id="cut" [src]="'../../../../../../assets/ico_cut.png'"
+            [disable]="editorService.selection.shapes.length < 1" (click)="editorService.cutSelectedShapes()">
+</img-button>
+<img-button id="duplicate" [src]="'../../../../../../assets/ico_duplicate.png'"
+            [disable]="editorService.selection.shapes.length < 1" (click)="editorService.duplicateSelectedShapes()">
+</img-button>
+<img-button id="paste" [src]="'../../../../../../assets/ico_paste.png'"
+            [disable]="editorService.clipboard.length < 1" (click)="editorService.pasteClipboard()">
+</img-button>
+<img-button id="selectAll" [src]="'../../../../../../assets/ico_selectall.png'"
+            [disable]="editorService.shapes.length < 1" (click)="editorService.selectAll()">
+</img-button>
+<img-button id="delete" [src]="'../../../../../../assets/ico_delete.png'"
+            [disable]="editorService.selection.shapes.length < 1" (click)="editorService.deleteSelectedShapes()">
+</img-button>
