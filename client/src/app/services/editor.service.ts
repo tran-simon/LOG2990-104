@@ -26,6 +26,7 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { ColorsService } from 'src/app/services/colors.service';
 import { APIService } from './api.service';
 import { LocalSaveService } from './localsave.service';
+import { Drawing } from '@models/drawing';
 
 @Injectable({
   providedIn: 'root',
@@ -76,7 +77,7 @@ export class EditorService {
     this.shapesBuffer.length = 0;
     this.shapes.length = 0;
     this.previewShapes.length = 0;
-    this.selectedShapes.length = 0;
+    this.selection.shapes.length = 0;
 
     setTimeout(() => {
       this.commandReceiver.clear();
@@ -101,9 +102,7 @@ export class EditorService {
 
   importLocalDrawing(): void {
     Object.values(JSON.parse(this.localSaveService.drawing.data)).forEach((shapeData) => {
-      const type = (shapeData as BaseShape).type;
-      const shape = EditorService.createShape(type);
-      shape.readElement(JSON.stringify(shapeData)); // todo - fix
+      const shape = EditorUtils.createShape(shapeData as BaseShape);
       this.addShapeToBuffer(shape);
     });
     this.applyShapesBuffer();
