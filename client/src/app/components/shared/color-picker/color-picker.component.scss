@@ -1,29 +1,51 @@
+.canvas-v{
+  margin-bottom: 1rem;
+}
+.canvas-h{
+  margin-right: 1rem;
+}
 canvas {
-  margin-top: 1rem;
   border-style: solid;
   width: 294px;
+  height: 294px;
+}
+.vertical {
+  flex-direction: column;
+  display: flex;
+}
+.horizontal{
+  display:flex;
 }
 
 #lightness-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
 
   #color-preview {
     border-style: solid;
     width: 50px;
     height: 50px;
   }
+
+  .preview-v,
+  .lightness-v{
+    margin-right: 1rem;
+  }
+}
+#lightness-section.vertical{
+  height: 300px;
+}
+#lightness-section.horizontal{
+  margin-bottom: 1rem;
 }
 
 #color-components {
   display: flex;
   justify-content: space-between;
 
-  form {
-    display: flex;
-    flex-direction: column;
+  #color-components-form.components-v{
+    margin-right: 1rem;
   }
 
   #alpha-form {

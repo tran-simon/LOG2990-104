@@ -57,7 +57,7 @@
         <h3 class="toolbar-option-section">Options du color picker</h3>
         <label *ngSwitchCase="SelectedColorType.primary">Couleur primaire</label>
         <label *ngSwitchCase="SelectedColorType.secondary">Couleur secondaire</label>
-        <app-color-picker [showHistory]=true #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"
+        <app-color-picker [isVertical]=true [showHistory]=true #colorPicker [color]="color" (colorChanged)="handleColorChanged($event)"
           (closed)='close()'></app-color-picker>
         <button id='btn-update-background' mat-flat-button (click)='updateBackground(colorPicker.color)'>Appliquer comme
           couleur de fond

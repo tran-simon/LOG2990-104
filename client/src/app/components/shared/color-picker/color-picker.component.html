@@ -1,30 +1,34 @@
-<div id="color-picker">
+<div id="color-picker" [ngClass]="isVertical ? 'vertical' : 'horizontal'">
   <div *ngIf=showHistory>
     <app-color-history (colorSelectedEvent)='closed.emit()'></app-color-history>
   </div>
-  <div>
-    <canvas #canvas id="color-square"
+  <div id=canvas-container [ngClass]="isVertical ? 'vertical' : 'horizontal'" >
+    <canvas #canvas
+      id='color-square'
+      [ngClass]="isVertical ? 'canvas-v' : 'canvas-h'"
       width="{{size}}"
       height="{{size}}"
       (mousemove)="onMouseMove($event)"
       (mousedown)="onMouseDown($event)">
     </canvas>
 
-    <div id='lightness-section'>
-      <app-color-lightness [color]="color"
+    <div id='lightness-section' [ngClass]='!isVertical ? "vertical" : "horizontal"'>
+      <app-color-lightness
+        [ngClass]="!isVertical ? 'lightness-v' : 'lightness-h'"
+        [color]="color"
         [length]=225
         (colorChanged)="colorChange($event)"
-        [isVertical]="isVertical"
+        [isVertical]="!isVertical"
       ></app-color-lightness>
       <div id='color-preview'
+        [ngClass]="!isVertical ? 'preview-v' : 'preview-h'"
         [style.opacity]=color.a
         [style.background-color]=color.rgbString
       ></div>
     </div>
   </div>
-
   <div id='color-components'>
-    <form #form [formGroup]="formGroup" >
+    <form #form [formGroup]="formGroup" id=color-components-form [ngClass]="isVertical ? 'vertical components-v' : 'vertical components-h'">
       <app-hex-input  #redinput
         id="red-color-input"
         [errorMessages]="hexInputErrorMessages"
@@ -62,18 +66,17 @@
         [formGroup]="formGroup">Hex:
       </app-hex-input>
     </form>
-    <div id='alpha-form'>
+    <div *ngIf='showHistory' id='alpha-form'>
       <app-alpha [color]='color'
         [length]=225
         (colorChanged)="alphaChangeColor($event)"
-        [isVertical]="true"
+        [isVertical]="isVertical"
       ></app-alpha>
       <app-number-input #alphainput
         max=100
         min=0
         (valueChange)=alphaChange(alphainput.value)
         [value]='alpha'
-
       >Alpha:
       </app-number-input>
     </div>
