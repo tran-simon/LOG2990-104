@@ -10,7 +10,19 @@ import { ToolType } from '@tools/tool-type.enum';
   styleUrls: ['./selection-toolbar.component.scss'],
 })
 export class SelectionToolbarComponent extends AbstractToolbarEntry<SelectionToolProperties> {
-  constructor(editorService: EditorService) {
+  constructor(protected editorService: EditorService) {
     super(editorService, ToolType.Select);
+  }
+
+  get hasSelectedShapes(): boolean {
+    return !!this.editorService.selectedShapes.length;
+  }
+
+  get hasShapesInClipboard(): boolean {
+    return !!this.editorService.clipboard.length;
+  }
+
+  get hasShapes(): boolean {
+    return !!this.editorService.shapes.length;
   }
 }
