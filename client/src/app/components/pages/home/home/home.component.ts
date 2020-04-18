@@ -1,8 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { EditorParams } from '@components/pages/editor/editor/editor-params';
-import { LocalSaveService } from '@services/localsave.service';
 import { HomeKeyboardListener } from '@components/pages/home/home/home-keyboard-listener';
+import { LocalSaveService } from '@services/localsave.service';
 import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service';
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 

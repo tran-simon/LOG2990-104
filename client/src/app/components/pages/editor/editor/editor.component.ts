@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EditorKeyboardListener } from '@components/pages/editor/editor/editor-keyboard-listener';
 import { Drawing } from '@models/drawing';
 import { APIService } from '@services/api.service';
 import { LocalSaveService } from '@services/localsave.service';
-import { EditorKeyboardListener } from '@components/pages/editor/editor/editor-keyboard-listener';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
