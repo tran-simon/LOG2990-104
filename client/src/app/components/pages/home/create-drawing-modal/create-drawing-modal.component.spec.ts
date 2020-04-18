@@ -5,9 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Color } from 'src/app/utils/color/color';
 import { SharedModule } from '../../../shared/shared.module';
 
-import { CreateDrawingModalComponent } from './create-drawing-modal.component';
 import createSpyObj = jasmine.createSpyObj;
 import createSpy = jasmine.createSpy;
+import { LocalSaveService } from '@services/localsave.service';
+import { CreateDrawingModalComponent } from './create-drawing-modal.component';
 
 describe('CreateDrawingModalComponent', () => {
   const dialogRefCloseSpy = createSpy('close');
@@ -62,6 +63,7 @@ describe('CreateDrawingModalComponent', () => {
           width: '2',
           height: '3',
           color: 'ff0000',
+          id: LocalSaveService.LOCAL_DRAWING_ID,
         },
       ]);
 

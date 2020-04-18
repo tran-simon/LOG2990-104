@@ -13,6 +13,7 @@ import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
+import { LocalSaveService } from './localsave.service';
 
 describe('EditorService', () => {
   let service: EditorService;
@@ -27,7 +28,7 @@ describe('EditorService', () => {
   });
 
   beforeEach(() => {
-    service = new EditorService(new ColorsService());
+    service = new EditorService(new ColorsService(), new LocalSaveService());
     BaseShape['SHAPE_ID'] = 0;
     line = new Line();
     rectangle = new Rectangle();
@@ -78,8 +79,8 @@ describe('EditorService', () => {
     api.getDrawingById = async (id: string) => {
       return Promise.resolve({ data: service.exportDrawing() } as Drawing);
     };
-    const service2 = new EditorService(new ColorsService());
-    service2.importDrawing('', api);
+    const service2 = new EditorService(new ColorsService(), new LocalSaveService());
+    service2.importDrawingById('', api);
     expect(service2.shapes.values).toEqual(service.shapes.values);
   });
 

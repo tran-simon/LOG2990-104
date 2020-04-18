@@ -12,7 +12,8 @@
       Continuer mon dessin
     </button>
     <ng-template #noPreviousDrawings>
-      <button mat-raised-button disabled>Continuer mon dessin</button>
+      <button mat-raised-button [disabled]="isDrawingNull" (click)="continueDrawing()">Continuer mon
+        dessin</button>
     </ng-template>
   </div>
 </div>

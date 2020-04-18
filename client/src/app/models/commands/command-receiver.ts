@@ -1,6 +1,9 @@
+import { EventEmitter } from 'events';
 import { Command } from './command';
 
-export class CommandReceiver {
+export class CommandReceiver extends EventEmitter {
+  private static readonly EVENT_TEXT: string = 'action';
+
   private _commands: Command[];
   private _revertedCommands: Command[];
 
@@ -13,6 +16,7 @@ export class CommandReceiver {
   }
 
   constructor() {
+    super();
     this._commands = new Array<Command>();
     this._revertedCommands = new Array<Command>();
   }
@@ -21,6 +25,7 @@ export class CommandReceiver {
     this._revertedCommands = new Array<Command>();
     this._commands.push(command);
     command.execute();
+    this.emit(CommandReceiver.EVENT_TEXT);
   }
 
   undo(): void {
@@ -28,6 +33,7 @@ export class CommandReceiver {
     if (command) {
       this._revertedCommands.push(command);
       command.undo();
+      this.emit(CommandReceiver.EVENT_TEXT);
     }
   }
 
@@ -36,6 +42,12 @@ export class CommandReceiver {
     if (command) {
       this._commands.push(command);
       command.execute();
+      this.emit(CommandReceiver.EVENT_TEXT);
     }
+  }
+
+  clear(): void {
+    this._commands.length = 0;
+    this._revertedCommands.length = 0;
   }
 }

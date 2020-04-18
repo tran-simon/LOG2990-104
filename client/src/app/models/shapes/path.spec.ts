@@ -14,7 +14,7 @@ describe('Path', () => {
     path = new Path(new Coordinate());
   });
   it('Can read shape', () => {
-    for(const c of coord) {
+    for (const c of coord) {
       path.addPoint(c);
     }
     const path2 = EditorUtils.createShape(JSON.parse(JSON.stringify(path)));
