@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
+import * as fs from 'fs';
 import { inject, injectable } from 'inversify';
 import * as logger from 'morgan';
 // import * as nodemailer from 'nodemailer';
@@ -23,6 +24,10 @@ export class Application {
 
   private config(): void {
     // Middlewares configuration
+    fs.readFile('emailAPI.env', (err, data) => {
+        console.log(data.toString());
+        process.env.API_KEY = data.toString();
+    });
     this.app.use(logger('dev'));
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
