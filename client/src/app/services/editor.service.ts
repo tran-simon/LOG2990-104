@@ -3,25 +3,26 @@ import { CommandReceiver } from '@models/commands/command-receiver';
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
 import { ShapeStates } from '@models/shapes/shape-states.enum';
+import { Selection } from '@models/tools/editing-tools/selection-tool/selection';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
+import { LineTool } from '@tools/creator-tools/line-tool/line-tool';
+import { EllipseTool } from '@tools/creator-tools/shape-tools/ellipse-tool';
 import { PolygonTool } from '@tools/creator-tools/shape-tools/polygon-tool';
+import { RectangleTool } from '@tools/creator-tools/shape-tools/rectangle-tool';
 import { SprayTool } from '@tools/creator-tools/spray-tool/spray-tool';
+import { BrushTool } from '@tools/creator-tools/stroke-tools/brush-tool/brush-tool';
+import { PenTool } from '@tools/creator-tools/stroke-tools/pen-tool/pen-tool';
+import { ColorApplicatorTool } from '@tools/editing-tools/color-applicator-tool';
 import { ColorFillTool } from '@tools/editing-tools/color-fill-tool/color-fill-tool';
 import { EraserTool } from '@tools/editing-tools/eraser-tool/eraser-tool';
 import { SelectionTool } from '@tools/editing-tools/selection-tool/selection-tool';
+import { PipetteTool } from '@tools/other-tools/pipette-tool';
+import { Tool } from '@tools/tool';
+import { ToolType } from '@tools/tool-type.enum';
 import { EditorUtils } from '@utils/color/editor-utils';
 import { Coordinate } from '@utils/math/coordinate';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
-import { LineTool } from 'src/app/models/tools/creator-tools/line-tool/line-tool';
-import { EllipseTool } from 'src/app/models/tools/creator-tools/shape-tools/ellipse-tool';
-import { RectangleTool } from 'src/app/models/tools/creator-tools/shape-tools/rectangle-tool';
-import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
-import { PenTool } from 'src/app/models/tools/creator-tools/stroke-tools/pen-tool/pen-tool';
-import { ColorApplicatorTool } from 'src/app/models/tools/editing-tools/color-applicator-tool';
-import { PipetteTool } from 'src/app/models/tools/other-tools/pipette-tool';
-import { Tool } from 'src/app/models/tools/tool';
-import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from 'src/app/services/colors.service';
 import { APIService } from './api.service';
 
@@ -30,18 +31,16 @@ import { APIService } from './api.service';
 })
 export class EditorService {
   readonly tools: Map<ToolType, Tool>;
-  readonly selectedShapes: BaseShape[];
   readonly shapes: BaseShape[];
   private shapesBuffer: BaseShape[];
   private previewShapes: BaseShape[];
   private readonly _commandReceiver: CommandReceiver;
 
+  readonly selection: Selection;
+  private selectionTool: SelectionTool;
+
   readonly clipboard: BaseShape[];
-  readonly pastedBuffer: BaseShape[];
-  readonly duplicationBuffer: BaseShape[];
-  readonly pastedDuplicateBuffer: BaseShape[];
-  readonly deletedBuffer: BaseShape[];
-  pasteOffset: number;
+  private pasteOffset: number;
 
   readonly gridProperties: GridProperties;
   view: DrawingSurfaceComponent;
@@ -53,21 +52,17 @@ export class EditorService {
 
   constructor(public colorsService: ColorsService) {
     this._commandReceiver = new CommandReceiver();
-
+    this.selection = new Selection();
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
 
     this.shapesBuffer = new Array<BaseShape>();
     this.shapes = new Array<BaseShape>();
     this.previewShapes = new Array<BaseShape>();
-    this.selectedShapes = new Array<BaseShape>();
+    this.selectionTool = this.tools.get(ToolType.Select) as SelectionTool;
     this.gridProperties = new GridProperties();
 
     this.clipboard = new Array<BaseShape>();
-    this.duplicationBuffer = new Array<BaseShape>();
-    this.pastedBuffer = new Array<BaseShape>();
-    this.pastedDuplicateBuffer = new Array<BaseShape>();
-    this.deletedBuffer = new Array<BaseShape>();
     this.pasteOffset = SelectionTool.PASTED_OFFSET;
     this.loading = false;
   }
@@ -102,73 +97,69 @@ export class EditorService {
   }
 
   // todo : refactor
-  private offsetCopies(buffer: BaseShape[], pastedBuffer: BaseShape[]): BaseShape[] {
+  private offsetCopies(buffer: BaseShape[]): BaseShape[] {
     const copies = new Array<BaseShape>();
     buffer.forEach((shape: BaseShape) => {
-      const copy = shape.copy;
+      const copy = EditorUtils.createShape(shape, false);
       copy.state = ShapeStates.PASTED;
       copy.origin = Coordinate.add(copy.origin, new Coordinate(this.pasteOffset, this.pasteOffset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
-        copy.origin = Coordinate.copy(pastedBuffer[0].origin);
+        copy.origin = Coordinate.copy(this.clipboard[0].origin); // todo - check if right
         this.pasteOffset = 0;
       }
       copies.push(copy);
-      pastedBuffer.push(copy);
     });
     return copies;
   }
-  pasteClipboard(buffer: BaseShape[] = this.clipboard, pastedBuffer: BaseShape[] = this.pastedBuffer): void {
+  pasteClipboard(buffer: BaseShape[] = this.clipboard): void {
     if (buffer.length > 0) {
-      this.clearSelection();
-      const copies = this.offsetCopies(buffer, pastedBuffer);
+      const copies = this.offsetCopies(buffer);
       this.commandReceiver.add(new AddShapesCommand(copies, this));
-      // todo : This must be illegal... Right?
-      for (let i = pastedBuffer.length - buffer.length; i < pastedBuffer.length; i++) {
-        (this.tools.get(ToolType.Select) as SelectionTool).addSelectedShape(pastedBuffer[i]);
+      this.selection.clear();
+      for (let i = copies.length - buffer.length; i < copies.length; i++) {
+        this.selection.addSelectedShape(copies[i]);
       }
       this.pasteOffset += SelectionTool.PASTED_OFFSET;
-      (this.tools.get(ToolType.Select) as SelectionTool).updateBoundingBox();
-      (this.tools.get(ToolType.Select) as SelectionTool).applyBoundingBox();
+      this.selection.updateBoundingBox();
+      this.selectionTool.applyBoundingBox();
     }
   }
   cutSelectedShapes(): void {
-    if (this.selectedShapes.length > 0) {
+    if (this.selection.shapes.length > 0) {
       this.pasteOffset = SelectionTool.PASTED_OFFSET;
       this.clearClipboard();
-      this.pastedBuffer.length = 0;
-      this.selectedShapes.forEach((shape: BaseShape) => {
+      this.selection.shapes.forEach((shape: BaseShape) => {
         this.clipboard.push(shape);
         this.commandReceiver.add(new RemoveShapesCommand(shape, this));
       });
-      this.clearSelection();
-      (this.tools.get(ToolType.Select) as SelectionTool).updateBoundingBox();
+      this.selection.clear();
+      this.selection.updateBoundingBox();
     }
   }
-  copySelectedShapes(buffer: BaseShape[] = this.clipboard, pastedBuffer: BaseShape[] = this.pastedBuffer): void {
-    if (this.selectedShapes.length > 0) {
+  copySelectedShapes(buffer: BaseShape[] = this.clipboard): void {
+    if (this.selection.shapes.length > 0) {
       this.pasteOffset = SelectionTool.PASTED_OFFSET;
       buffer.length = 0;
-      pastedBuffer.length = 0;
-      this.selectedShapes.forEach((shape: BaseShape) => {
-        buffer.push(shape.copy);
+      this.selection.shapes.forEach((shape: BaseShape) => {
+        buffer.push(EditorUtils.createShape(shape, false));
       });
     }
   }
   duplicateSelectedShapes(): void {
-    // this.copySelectedShapes(this.duplicationBuffer, this.pastedDuplicateBuffer);
-    this.pasteClipboard(this.duplicationBuffer, this.pastedDuplicateBuffer);
+    this.pasteClipboard(this.selection.shapes);
   }
   deleteSelectedShapes(): void {
-    if (this.selectedShapes.length > 0) {
-      this.deletedBuffer.push(...this.selectedShapes);
-      this.commandReceiver.add(new RemoveShapesCommand(this.deletedBuffer, this));
-      this.clearSelection();
-      (this.tools.get(ToolType.Select) as SelectionTool).updateBoundingBox();
-      (this.tools.get(ToolType.Select) as SelectionTool).applyBoundingBox();
+    if (this.selection.shapes.length > 0) {
+      const deletedShapes = new Array<BaseShape>();
+      deletedShapes.push(...this.selection.shapes);
+      this.commandReceiver.add(new RemoveShapesCommand(deletedShapes, this));
+      this.selection.clear();
+      this.selection.updateBoundingBox();
+      this.selectionTool.applyBoundingBox();
     }
   }
   selectAll(): void {
-    (this.tools.get(ToolType.Select) as SelectionTool).selectAll();
+    this.selectionTool.selectAll();
   }
 
   applyShapesBuffer(): void {
@@ -189,10 +180,6 @@ export class EditorService {
     this.previewShapes = [];
   }
 
-  clearSelection(): void {
-    this.selectedShapes.length = 0;
-  }
-
   clearClipboard(): void {
     this.clipboard.length = 0;
   }
@@ -204,17 +191,16 @@ export class EditorService {
     }
   }
 
-  addShapesToBuffer(shapes: BaseShape[]): void {
-    shapes.forEach(this.addShapeToBuffer, this);
-  }
-
-  addShapeToBuffer(shape: BaseShape): void {
-    if (!this.view) {
-      this.shapesBuffer.push(shape);
-    } else if (!this.view.svg.contains(shape.svgNode)) {
-      this.shapesBuffer.push(shape);
-      this.view.addShape(shape);
-    }
+  addShapeToBuffer(shapes: BaseShape | BaseShape[]): void {
+    shapes = Array.isArray(shapes) ? shapes : [shapes];
+    shapes.forEach((shape) => {
+      if (!this.view) {
+        this.shapesBuffer.push(shape);
+      } else if (!this.view.svg.contains(shape.svgNode)) {
+        this.shapesBuffer.push(shape);
+        this.view.addShape(shape);
+      }
+    });
   }
 
   removeShapes(shapes: BaseShape[]): void {
@@ -229,18 +215,10 @@ export class EditorService {
   }
 
   removeShape(shape: BaseShape): void {
-    let index = this.shapes.findIndex((s) => s === shape);
+    const index = this.shapes.findIndex((s) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
       this.removeShapeFromView(shape);
-    }
-    index = this.pastedBuffer.findIndex((s) => s === shape);
-    if (index !== -1) {
-      this.pastedBuffer.splice(index, 1);
-    }
-    index = this.pastedDuplicateBuffer.findIndex((s) => s === shape);
-    if (index !== -1) {
-      this.pastedDuplicateBuffer.splice(index, 1);
     }
   }
 

@@ -108,35 +108,36 @@ export class EditorUtils {
     return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
 
-  static createShape(data: BaseShape): BaseShape {
+  static createShape(data: BaseShape, preserveId: boolean = true): BaseShape {
     let shape: BaseShape;
+    const id = preserveId ? data.id : undefined;
     switch (data.type) {
       case 'BoundingBox':
-        shape = new BoundingBox(undefined, data.id);
+        shape = new BoundingBox(undefined, id);
         break;
       case 'BrushPath':
-        shape = new BrushPath(undefined, data.id);
+        shape = new BrushPath(undefined, id);
         break;
       case 'CompositeLine':
-        shape = new CompositeLine(undefined, data.id);
+        shape = new CompositeLine(undefined, id);
         break;
       case 'CompositeParticle':
-        shape = new CompositeParticle(undefined, data.id);
+        shape = new CompositeParticle(undefined, id);
         break;
       case 'Ellipse':
-        shape = new Ellipse(undefined, undefined, undefined, data.id);
+        shape = new Ellipse(undefined, undefined, undefined, id);
         break;
       case 'Line':
-        shape = new Line(undefined, undefined, data.id);
+        shape = new Line(undefined, undefined, id);
         break;
       case 'Path':
-        shape = new Path(undefined, data.id);
+        shape = new Path(undefined, id);
         break;
       case 'Polygon':
-        shape = new Polygon(undefined, undefined, data.id);
+        shape = new Polygon(undefined, undefined, id);
         break;
       case 'Rectangle':
-        shape = new Rectangle(undefined, undefined, undefined, data.id);
+        shape = new Rectangle(undefined, undefined, undefined, id);
         break;
       default:
         throw new Error('Shape type not found');

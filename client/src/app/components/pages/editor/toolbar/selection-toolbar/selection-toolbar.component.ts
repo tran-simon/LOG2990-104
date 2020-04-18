@@ -39,7 +39,7 @@ export class SelectionToolbarComponent extends AbstractToolbarEntry<SelectionToo
   }
 
   get hasSelectedShapes(): boolean {
-    return !!this.editorService.selectedShapes.length;
+    return !!this.editorService.selection.shapes.length;
   }
 
   get hasShapesInClipboard(): boolean {

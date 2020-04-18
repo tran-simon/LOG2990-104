@@ -2,7 +2,7 @@ import { ShapesCommand } from 'src/app/models/commands/shape-commands/shapes-com
 
 export class AddShapesCommand extends ShapesCommand {
   execute(): void {
-    this.editorService.addShapesToBuffer(this.shapes);
+    this.editorService.addShapeToBuffer(this.shapes);
     this.editorService.applyShapesBuffer();
   }
 
