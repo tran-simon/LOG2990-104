@@ -10,7 +10,43 @@ import { ToolType } from '@tools/tool-type.enum';
   styleUrls: ['./selection-toolbar.component.scss'],
 })
 export class SelectionToolbarComponent extends AbstractToolbarEntry<SelectionToolProperties> {
-  constructor(editorService: EditorService) {
+  constructor(protected editorService: EditorService) {
     super(editorService, ToolType.Select);
+  }
+
+  copy(): void {
+    this.editorService.copySelectedShapes();
+  }
+
+  cut(): void {
+    this.editorService.cutSelectedShapes();
+  }
+
+  duplicate(): void {
+    this.editorService.duplicateSelectedShapes();
+  }
+
+  paste(): void {
+    this.editorService.pasteClipboard();
+  }
+
+  selectAll(): void {
+    this.editorService.selectAll();
+  }
+
+  delete(): void {
+    this.editorService.deleteSelectedShapes();
+  }
+
+  get hasSelectedShapes(): boolean {
+    return !!this.editorService.selection.shapes.length;
+  }
+
+  get hasShapesInClipboard(): boolean {
+    return !!this.editorService.clipboard.length;
+  }
+
+  get hasShapes(): boolean {
+    return !!this.editorService.shapes.length;
   }
 }

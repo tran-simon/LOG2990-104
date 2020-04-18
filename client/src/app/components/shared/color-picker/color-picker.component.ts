@@ -85,8 +85,13 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
     this.color = color;
   }
 
-  alphaChange(color: Color): void {
+  alphaChangeColor(color: Color): void {
     this.color = Color.alpha(this.color, color.a);
+  }
+
+  alphaChange(value: string): void {
+    // tslint:disable-next-line:no-magic-numbers
+    this.color = Color.alpha(this.color, parseInt(value, 10) / 100);
   }
 
   rgbChange(value: string, component: string): void {
@@ -120,11 +125,19 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   confirm(): void {
-    const colorHasChanged = this.initialColor.rgbString !== this.color.rgbString;
-    if (colorHasChanged) {
+    if (this.colorHasChanged) {
       ColorsService.pushHistory(this.color.opaqueColor);
     }
     this.initialColor = this.color;
     this.colorChanged.emit(this.color);
+  }
+
+  get colorHasChanged(): boolean {
+    return this.initialColor.rgbString !== this.color.rgbString;
+  }
+
+  get alpha(): string {
+    // tslint:disable-next-line:no-magic-numbers
+    return Math.round(this.color.a * 100).toString();
   }
 }

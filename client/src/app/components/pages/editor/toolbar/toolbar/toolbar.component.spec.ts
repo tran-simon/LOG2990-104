@@ -1,3 +1,4 @@
+/* tslint:disable:no-string-literal */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
@@ -7,6 +8,7 @@ import { EraserToolbarComponent } from '@components/pages/editor/toolbar/eraser-
 import { FillToolbarComponent } from '@components/pages/editor/toolbar/fill-toolbar/fill-toolbar.component';
 import { GridToolbarComponent } from '@components/pages/editor/toolbar/grid-toolbar/grid-toolbar.component';
 import { SelectionToolbarComponent } from '@components/pages/editor/toolbar/selection-toolbar/selection-toolbar.component';
+import { ToolbarType } from '@components/pages/editor/toolbar/toolbar/toolbar-type.enum';
 import { BrushToolbarComponent } from 'src/app/components/pages/editor/toolbar/brush-toolbar/brush-toolbar.component';
 import { EllipseToolbarComponent } from 'src/app/components/pages/editor/toolbar/ellipse-toolbar/ellipse-toolbar.component';
 import { LineToolbarComponent } from 'src/app/components/pages/editor/toolbar/line-toolbar/line-toolbar.component';
@@ -20,6 +22,7 @@ import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { PolygonToolbarComponent } from '../polygon-toolbar/polygon-toolbar.component';
 import { SprayToolbarComponent } from '../spray-toolbar/spray-toolbar.component';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -174,5 +177,40 @@ describe('ToolbarComponent', () => {
 
   it('can get toolbar icons', () => {
     expect(component.toolbarIcons.get(ToolType.Pen)).toEqual('edit');
+  });
+
+  it('can open/close drawer', () => {
+    const drawerSpy = createSpyObj('drawer', ['open', 'close']);
+    drawerSpy.open.and.callFake(() => {
+      component['drawer'].opened = true;
+    });
+
+    drawerSpy.close.and.callFake(() => {
+      component['drawer'].opened = false;
+    });
+
+    component['drawer'] = drawerSpy;
+
+    component.open();
+    expect(component.drawerOpened).toBeTruthy();
+    component.close();
+    expect(component.drawerOpened).toBeFalsy();
+  });
+
+  it('can edit grid', () => {
+    const drawerSpy = createSpyObj('drawer', ['open', 'close']);
+    drawerSpy.open.and.callFake(() => {
+      component['drawer'].opened = true;
+    });
+
+    component.editGrid();
+    expect(component.drawerOpened).toBeTruthy();
+    expect(component.toolbarType).toEqual(ToolbarType.grid);
+  });
+
+  it('can open choose export save', () => {
+    const emitSpy = spyOn(component.chooseExportSaveButtonClicked, 'emit');
+    component.openChooseExportSave();
+    expect(emitSpy).toHaveBeenCalled();
   });
 });
