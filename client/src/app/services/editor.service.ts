@@ -109,9 +109,11 @@ export class EditorService {
   }
 
   saveLocally(): void {
-    this.localSaveService.takeSnapshot(
-      new Drawing('localsave', [], this.exportDrawing(), this.view.color.hex, this.view.width, this.view.height, ''),
-    );
+    if (this.view) {
+      this.localSaveService.takeSnapshot(
+        new Drawing('localsave', [], this.exportDrawing(), this.view.color.hex, this.view.width, this.view.height, ''),
+      );
+    }
   }
 
   private initTools(): void {
