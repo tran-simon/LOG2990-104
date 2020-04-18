@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CommandReceiver } from '@models/commands/command-receiver';
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
+import { Drawing } from '@models/drawing';
 import { ShapeStates } from '@models/shapes/shape-states.enum';
 import { Selection } from '@models/tools/editing-tools/selection-tool/selection';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
@@ -26,7 +27,6 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { ColorsService } from 'src/app/services/colors.service';
 import { APIService } from './api.service';
 import { LocalSaveService } from './localsave.service';
-import { Drawing } from '@models/drawing';
 
 @Injectable({
   providedIn: 'root',
