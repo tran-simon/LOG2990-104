@@ -104,7 +104,7 @@ export class EditorService {
       copy.state = ShapeStates.PASTED;
       copy.origin = Coordinate.add(copy.origin, new Coordinate(this.pasteOffset, this.pasteOffset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
-        copy.origin = Coordinate.copy(this.clipboard[0].origin);    // todo - check if right
+        copy.origin = Coordinate.copy(this.clipboard[0].origin); // todo - check if right
         this.pasteOffset = 0;
       }
       copies.push(copy);

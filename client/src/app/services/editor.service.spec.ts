@@ -70,9 +70,13 @@ describe('EditorService', () => {
     service.shapes.length = 0;
     service.shapes.push(line);
     service.shapes.push(rectangle);
-    const api = createSpyObj('api', {getDrawingById: () => {return;}});
+    const api = createSpyObj('api', {
+      getDrawingById: () => {
+        return;
+      },
+    });
     api.getDrawingById = async (id: string) => {
-      return Promise.resolve({data: service.exportDrawing()} as Drawing);
+      return Promise.resolve({ data: service.exportDrawing() } as Drawing);
     };
     const service2 = new EditorService(new ColorsService());
     service2.importDrawing('', api);

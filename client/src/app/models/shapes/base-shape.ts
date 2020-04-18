@@ -143,5 +143,4 @@ export abstract class BaseShape {
     shape.thickness = this.thickness;
     shape.strokeWidth = this.strokeWidth;
   }
-
 }

@@ -186,7 +186,7 @@ export class SelectionTool extends SimpleSelectionTool {
   private beginSelection(c: Coordinate, reverse: boolean = false): void {
     this.reverseSelectionMode = reverse;
     this.initialMouseCoord = Coordinate.copy(c);
-    if(reverse) {
+    if (reverse) {
       this.initSelectArea();
       this.selection.previous.length = 0;
       this.selection.previous.push(...this.selection.shapes);
