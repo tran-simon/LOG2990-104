@@ -36,7 +36,7 @@ export class ToolbarComponent {
   toolbarType: ToolbarType;
 
   @ViewChild('drawer', { static: false })
-  private readonly drawer: MatDrawer;
+  private drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
@@ -119,6 +119,10 @@ export class ToolbarComponent {
 
   updateBackground(color: Color): void {
     this.editorBackgroundChanged.emit(color);
+  }
+
+  get drawerOpened(): boolean {
+    return this.drawer && this.drawer.opened;
   }
 
   get primaryColor(): Color {
