@@ -22,7 +22,7 @@ export class BrushTool extends StrokeTool {
 
   createShape(): BrushPath {
     const shape = new BrushPath(this.mousePosition);
-    if(this.shape) {
+    if (this.shape) {
       shape.filter = this.shape.filter;
     }
     return shape;

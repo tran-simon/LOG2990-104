@@ -13,6 +13,7 @@ import { EraserUtils } from '@tools/editing-tools/eraser-tool/eraser-utils';
 import { Color } from '@utils/color/color';
 import { EditorUtils } from '@utils/color/editor-utils';
 import { Coordinate } from '@utils/math/coordinate';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('EraserTool', () => {
   let eraser: EraserTool;
@@ -199,7 +200,11 @@ describe('EraserTool', () => {
   it('creates a copy of the view with assigned colors on init', () => {
     const viewToCanvasSpy = spyOn(EditorUtils, 'viewToCanvas').and.returnValue(
       new Promise<CanvasRenderingContext2D>((resolve) => {
-        resolve();
+        const ctx = createSpyObj<CanvasRenderingContext2D>('ctx', ['getImageData']);
+        ctx.getImageData.and.returnValue({
+          data: new Uint8ClampedArray(),
+        } as ImageData);
+        resolve(ctx);
         return;
       }),
     );

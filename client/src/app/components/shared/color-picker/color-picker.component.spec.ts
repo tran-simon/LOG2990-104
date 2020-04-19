@@ -215,6 +215,7 @@ describe('ColorPickerComponent', () => {
   it('adds to color history on confirm', () => {
     component.initialColor = Color.RED;
     component.color = Color.GREEN;
+    fixture.detectChanges();
 
     fixture.debugElement.nativeElement.querySelector('#btn-confirm').click();
     expect(ColorsService.getColorHistory()[9]).toEqual(Color.GREEN);

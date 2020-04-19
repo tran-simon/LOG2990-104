@@ -56,7 +56,7 @@ describe('EditorUtils', () => {
   });
 
   it('can create shape from existing shape', () => {
-    const types =[
+    const types = [
       new BoundingBox(),
       new BrushPath(),
       new CompositeLine(),

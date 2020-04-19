@@ -1,4 +1,5 @@
 /* tslint:disable:no-string-literal */
+import { LocalSaveService } from '@services/localsave.service';
 import { Property } from '@tool-properties/props/property';
 import { ToolProperties } from '@tool-properties/tool-properties';
 import { Tool } from '@tools/tool';
@@ -19,17 +20,17 @@ describe('AbstractToolbarEntry', () => {
   let editorService: EditorService;
   const type: ToolType = 'MockType' as ToolType;
   const toolProperties = {
-    prop: {value: 'VALUE'} as Property<string>
+    prop: { value: 'VALUE' } as Property<string>,
   } as ToolProperties;
 
   beforeEach(() => {
-    editorService = new EditorService(new ColorsService());
+    editorService = new EditorService(new ColorsService(), new LocalSaveService());
     editorService.tools.set(type, { toolProperties } as Tool);
     toolbarEntry = new AbstractToolbarEntryMock(editorService);
   });
 
   it('can get tool properties', () => {
-    const {toolProperties: props} = toolbarEntry;
+    const { toolProperties: props } = toolbarEntry;
     expect(props).toEqual(toolProperties);
     expect(props['prop'].value).toEqual('VALUE');
   });
