@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FilterType } from '@components/pages/export-modal/filter-type.enum';
@@ -9,7 +8,7 @@ import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing
   providedIn: 'root',
 })
 export class ImageExportService {
-  constructor(private sanitizer: DomSanitizer, private http: HttpClient) {}
+  constructor(private sanitizer: DomSanitizer) {}
 
   safeURL(surface: DrawingSurfaceComponent): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(EditorUtils.createDataURL(surface));
@@ -38,12 +37,5 @@ export class ImageExportService {
     dataUrl = this.safeURL(surface);
     EditorUtils.removeFilter(surface);
     return dataUrl;
-  }
-  sendEmail(url: string, userName: string, userEmail: string): void {
-    const user = {
-      name: userName,
-      email: userEmail,
-    };
-    this.http.post(url, user);
   }
 }

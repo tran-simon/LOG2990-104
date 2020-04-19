@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { APIService } from '@services/api.service';
 import { EditorService } from 'src/app//services/editor.service';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ImageExportService } from 'src/app/services/image-export.service';
@@ -31,6 +32,7 @@ export class ExportModalComponent extends AbstractModalComponent {
     public dialogRef: MatDialogRef<AbstractModalComponent>,
     private editorService: EditorService,
     private imageExportService: ImageExportService,
+    private apiService: APIService,
   ) {
     super(dialogRef);
     editorService.clearShapesBuffer();
@@ -94,7 +96,7 @@ export class ExportModalComponent extends AbstractModalComponent {
   send(): void {
     if (this.emailValid) {
       console.log('sending');
-      this.imageExportService.sendEmail('http://localhost:3000/sendEmail', this.userName, this.email);
+      this.apiService.sendEmail(this.userName, this.email, this.href.toString(), this.fullName, this.selectedExtension);
     }
   }
 
