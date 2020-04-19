@@ -97,29 +97,32 @@ export class EditorService {
   }
 
   // todo : refactor
-  private offsetCopies(buffer: BaseShape[]): BaseShape[] {
+  private offsetCopies(buffer: BaseShape[], offset: number): BaseShape[] {
     const copies = new Array<BaseShape>();
     buffer.forEach((shape: BaseShape) => {
       const copy = EditorUtils.createShape(shape, false);
       copy.state = ShapeStates.PASTED;
-      copy.origin = Coordinate.add(copy.origin, new Coordinate(this.pasteOffset, this.pasteOffset));
+      copy.origin = Coordinate.add(copy.origin, new Coordinate(offset, offset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
-        copy.origin = Coordinate.copy(this.clipboard[0].origin);    // todo - check if right
+        copy.origin = Coordinate.copy(this.clipboard[0].origin); // todo - check if right
         this.pasteOffset = 0;
       }
       copies.push(copy);
     });
     return copies;
   }
-  pasteClipboard(buffer: BaseShape[] = this.clipboard): void {
+  pasteClipboard(buffer: BaseShape[] = this.clipboard, duplication: boolean = false): void {
     if (buffer.length > 0) {
-      const copies = this.offsetCopies(buffer);
+      const offset = duplication ? SelectionTool.PASTED_OFFSET : this.pasteOffset;
+      const copies = this.offsetCopies(buffer, offset);
       this.commandReceiver.add(new AddShapesCommand(copies, this));
       this.selection.clear();
-      for (let i = copies.length - buffer.length; i < copies.length; i++) {
-        this.selection.addSelectedShape(copies[i]);
+      for (const copy of copies) {
+        this.selection.addSelectedShape(copy);
       }
-      this.pasteOffset += SelectionTool.PASTED_OFFSET;
+      if (!duplication) {
+        this.pasteOffset += SelectionTool.PASTED_OFFSET;
+      }
       this.selection.updateBoundingBox();
       this.selectionTool.applyBoundingBox();
     }
@@ -136,17 +139,17 @@ export class EditorService {
       this.selection.updateBoundingBox();
     }
   }
-  copySelectedShapes(buffer: BaseShape[] = this.clipboard): void {
+  copySelectedShapes(): void {
     if (this.selection.shapes.length > 0) {
       this.pasteOffset = SelectionTool.PASTED_OFFSET;
-      buffer.length = 0;
+      this.clipboard.length = 0;
       this.selection.shapes.forEach((shape: BaseShape) => {
-        buffer.push(EditorUtils.createShape(shape, false));
+        this.clipboard.push(EditorUtils.createShape(shape, false));
       });
     }
   }
   duplicateSelectedShapes(): void {
-    this.pasteClipboard(this.selection.shapes);
+    this.pasteClipboard(this.selection.shapes, true);
   }
   deleteSelectedShapes(): void {
     if (this.selection.shapes.length > 0) {
@@ -193,7 +196,7 @@ export class EditorService {
 
   addShapeToBuffer(shapes: BaseShape | BaseShape[]): void {
     shapes = Array.isArray(shapes) ? shapes : [shapes];
-    shapes.forEach((shape) => {
+    shapes.forEach((shape: BaseShape) => {
       if (!this.view) {
         this.shapesBuffer.push(shape);
       } else if (!this.view.svg.contains(shape.svgNode)) {
@@ -215,7 +218,7 @@ export class EditorService {
   }
 
   removeShape(shape: BaseShape): void {
-    const index = this.shapes.findIndex((s) => s === shape);
+    const index = this.shapes.findIndex((s: BaseShape) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
       this.removeShapeFromView(shape);
@@ -223,7 +226,7 @@ export class EditorService {
   }
 
   findShapeById(id: number): BaseShape | undefined {
-    const matchingShapes = this.shapes.filter((shape) => shape.id === id);
+    const matchingShapes = this.shapes.filter((shape: BaseShape) => shape.id === id);
     if (matchingShapes.length > 1) {
       throw new Error('Shape Id collision error');
     }

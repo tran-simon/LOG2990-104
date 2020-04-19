@@ -7,6 +7,8 @@ import { Ellipse } from '@models/shapes/ellipse';
 import { Line } from '@models/shapes/line';
 import { Polygon } from '@models/shapes/polygon';
 import { Rectangle } from '@models/shapes/rectangle';
+import { SelectionTool } from '@tools/editing-tools/selection-tool/selection-tool';
+import { Coordinate } from '@utils/math/coordinate';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { CompositeLine } from 'src/app/models/shapes/composite-line';
@@ -70,9 +72,13 @@ describe('EditorService', () => {
     service.shapes.length = 0;
     service.shapes.push(line);
     service.shapes.push(rectangle);
-    const api = createSpyObj('api', {getDrawingById: () => {return;}});
+    const api = createSpyObj('api', {
+      getDrawingById: () => {
+        return;
+      },
+    });
     api.getDrawingById = async (id: string) => {
-      return Promise.resolve({data: service.exportDrawing()} as Drawing);
+      return Promise.resolve({ data: service.exportDrawing() } as Drawing);
     };
     const service2 = new EditorService(new ColorsService());
     service2.importDrawing('', api);
@@ -189,56 +195,103 @@ describe('EditorService', () => {
     expect(() => service.findShapeById(5)).toThrowError('Shape Id collision error');
   });
 
-  /* BEGIN TEST CLIPBOARD  //todo : fix tests
+  // BEGIN TEST CLIPBOARD  //todo : fix tests
   it('should copy items into clipboard', () => {
     service.selection.shapes.push(...service.shapes);
     service.copySelectedShapes();
-    expect(service.clipboard[0]).toEqual(line);
+    expect(service.clipboard[0]).toBeDefined();
   });
-  it('should keep copies into clipboard after removal', () => {
+  it("copied items shouldn't have identical id's", () => {
     service.selection.shapes.push(...service.shapes);
     service.copySelectedShapes();
+    expect(service.clipboard[0].id).not.toEqual(line.id);
+  });
+  it('should keep copies into clipboard after removal', () => {
+    service['selectionTool']['resetSelection']();
+    service.selection.addSelectedShape(line);
+    service.copySelectedShapes();
     service.removeShape(service.shapes[0]);
-    expect(service.clipboard[0]).toEqual(line);
+    expect(service.clipboard.length).toBeGreaterThan(0);
   });
   it('should replace clipboard with new element on copy', () => {
     const shape = new Rectangle(new Coordinate(1, 1), 2, 2);
     const newShape = new Ellipse(new Coordinate(1, 1), 2, 2);
-    service.selection.shapes.push(shape);
+    service.selection.addSelectedShape(shape);
     service.copySelectedShapes();
     service.selection.clear();
-    service.selection.shapes.push(newShape);
+    service.selection.addSelectedShape(newShape);
     service.copySelectedShapes();
-    expect(service.clipboard[0]).toEqual(newShape);
+    expect(service.clipboard[0].id).not.toEqual(shape.id);
   });
   it('should add selectedShapes into clipboard on cut', () => {
-    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
+    service['selectionTool']['resetSelection']();
     service.selection.shapes.push(...service.shapes);
     service.cutSelectedShapes();
     expect(service.clipboard[0]).toEqual(line);
   });
   it('should remove shape from drawingSurface on cut', () => {
-    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
+    service['selectionTool']['resetSelection']();
     service.selection.shapes.push(...service.shapes);
     service.cutSelectedShapes();
     expect(service.shapes.length).toEqual(0);
   });
   it('should replace clipboard with new element on cut', () => {
-    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
     const shape = new Rectangle(new Coordinate(1, 1), 2, 2);
     const newShape = new Ellipse(new Coordinate(1, 1), 2, 2);
+    service['selectionTool']['resetSelection']();
     service.selection.shapes.push(shape);
     service.cutSelectedShapes();
     service.selection.clear();
     service.selection.shapes.push(newShape);
     service.cutSelectedShapes();
-    expect(service.clipboard[0]).toEqual(newShape);
+    expect(service.clipboard[0].id).toEqual(newShape.id);
   });
   it('should add clipboard shapes onto view on paste', () => {
-    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
+    service['selectionTool']['resetSelection']();
     service.selection.shapes.push(...service.shapes);
     service.copySelectedShapes();
     service.pasteClipboard();
     expect(service.shapes.length).toEqual(2);
+  });
+  it('should offset copied shapes on paste', () => {
+    service['selectionTool']['resetSelection']();
+    service.selection.shapes.push(...service.shapes);
+    service.copySelectedShapes();
+    service.pasteClipboard();
+    expect(service.shapes[1].origin).toEqual(
+      Coordinate.add(line.origin, new Coordinate(SelectionTool.PASTED_OFFSET, SelectionTool.PASTED_OFFSET)),
+    );
+  });
+  it('should offset cut shapes on paste', () => {
+    service['selectionTool']['resetSelection']();
+    service.selection.shapes.push(...service.shapes);
+    service.cutSelectedShapes();
+    service.pasteClipboard();
+    expect(service.shapes[0].origin).toEqual(
+      Coordinate.add(line.origin, new Coordinate(SelectionTool.PASTED_OFFSET, SelectionTool.PASTED_OFFSET)),
+    );
+  });
+  it('should offset shapes on duplication', () => {
+    service['selectionTool']['resetSelection']();
+    service.selection.shapes.push(...service.shapes);
+    service.duplicateSelectedShapes();
+    expect(service.shapes[1].origin).toEqual(
+      Coordinate.add(line.origin, new Coordinate(SelectionTool.PASTED_OFFSET, SelectionTool.PASTED_OFFSET)),
+    );
+  });
+  it('should not modify clipboard on duplication', () => {
+    service['selectionTool']['resetSelection']();
+    const shape = new Rectangle(new Coordinate(1, 1), 2, 2);
+    service.shapes.push(shape);
+    service.selection.shapes.push(service.shapes[0]);
+    service.copySelectedShapes();
+    const buffer = service.clipboard[0].id;
+    service.selection.clear();
+    service.selection.shapes.push(service.shapes[1]);
+    service.duplicateSelectedShapes();
+    expect(service.clipboard[0].id).toEqual(buffer);
+  });
+  /*it('should paste at first location when out of view', ()=> {
+
   });*/
 });
