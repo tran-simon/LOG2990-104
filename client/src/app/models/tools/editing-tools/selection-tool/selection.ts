@@ -43,7 +43,7 @@ export class Selection {
       this.shapes.forEach((shape) => {
         this.boundingBox.start = Coordinate.minXYCoord(
           this.boundingBox.origin,
-          Coordinate.subtract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),    // todo - proper fix
+          Coordinate.subtract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)), // todo - proper fix
         );
         this.boundingBox.end = Coordinate.maxXYCoord(
           this.boundingBox.end,

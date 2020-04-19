@@ -3,6 +3,7 @@ import { CommandReceiver } from '@models/commands/command-receiver';
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
 import { CopyShapeCommand } from '@models/commands/shape-commands/copy-shape-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
+import { Drawing } from '@models/drawing';
 import { ShapeStates } from '@models/shapes/shape-states.enum';
 import { Selection } from '@models/tools/editing-tools/selection-tool/selection';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
@@ -26,6 +27,7 @@ import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { ColorsService } from 'src/app/services/colors.service';
 import { APIService } from './api.service';
+import { LocalSaveService } from './localsave.service';
 
 @Injectable({
   providedIn: 'root',
@@ -51,8 +53,12 @@ export class EditorService {
     return this._commandReceiver;
   }
 
-  constructor(public colorsService: ColorsService) {
+  constructor(public colorsService: ColorsService, private localSaveService: LocalSaveService) {
     this._commandReceiver = new CommandReceiver();
+    this.commandReceiver.on('action', () => {
+      this.saveLocally();
+    });
+
     this.selection = new Selection();
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
@@ -68,18 +74,47 @@ export class EditorService {
     this.loading = false;
   }
 
+  resetDrawing(): void {
+    this.shapesBuffer.length = 0;
+    this.shapes.length = 0;
+    this.previewShapes.length = 0;
+    this.selection.shapes.length = 0;
+
+    setTimeout(() => {
+      this.commandReceiver.clear();
+    });
+  }
+
   exportDrawing(): string {
     return JSON.stringify(this.shapes, BaseShape.jsonReplacer);
   }
 
-  importDrawing(drawingId: string, apiService: APIService): void {
-    apiService.getDrawingById(drawingId).then((drawing) => {
-      Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
-        const shape = EditorUtils.createShape(shapeData as BaseShape);
-        this.addShapeToBuffer(shape);
+  async importDrawingById(drawingId: string, apiService: APIService): Promise<void> {
+    return new Promise<void>((resolve) => {
+      apiService.getDrawingById(drawingId).then((drawing) => {
+        Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
+          const shape = EditorUtils.createShape(shapeData as BaseShape);
+          this.addShapeToBuffer(shape);
+          resolve();
+        });
       });
-      this.applyShapesBuffer();
     });
+  }
+
+  importLocalDrawing(): void {
+    Object.values(JSON.parse(this.localSaveService.drawing.data)).forEach((shapeData) => {
+      const shape = EditorUtils.createShape(shapeData as BaseShape);
+      this.addShapeToBuffer(shape);
+    });
+    this.applyShapesBuffer();
+  }
+
+  saveLocally(): void {
+    if (this.view) {
+      this.localSaveService.takeSnapshot(
+        new Drawing('localsave', [], this.exportDrawing(), this.view.color.hex, this.view.width, this.view.height, ''),
+      );
+    }
   }
 
   private initTools(): void {
@@ -105,7 +140,7 @@ export class EditorService {
       copy.state = ShapeStates.PASTED;
       copy.origin = Coordinate.add(copy.origin, new Coordinate(offset, offset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
-        copy.origin = Coordinate.copy(this.clipboard[0].origin);    // todo - check if right
+        copy.origin = Coordinate.copy(this.clipboard[0].origin); // todo - check if right
         this.pasteOffset = 0;
       }
       copies.push(copy);
