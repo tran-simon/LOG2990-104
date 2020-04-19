@@ -12,7 +12,6 @@ export class EmailController {
     private configureRouter(): void {
         this.router = express.Router();
         this.router.post('/drawing', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            console.log(req.body.email);
             this.emailService.sendEmail(req.body.name, req.body.email, req.body.dataURL, req.body.file, req.body.ext);
         });
     }
