@@ -4,7 +4,7 @@ import { Coordinate } from 'src/app/utils/math/coordinate';
 export class Path extends BaseShape {
   static readonly PATH_STYLE: string = 'round';
   private _trace: string;
-  private points: Coordinate[];
+  protected points: Coordinate[];
 
   get trace(): string {
     return this._trace;
@@ -47,14 +47,14 @@ export class Path extends BaseShape {
     if (c) {
       this.addPoint(c);
     }
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readShape(data: Path): void {
+    super.readShape(data);
     this.points.length = 0;
     data.points.forEach((p) => {
-      this.addPoint(p);
+      this.addPoint(Coordinate.copy(p));
     });
     this.applyTransform();
   }

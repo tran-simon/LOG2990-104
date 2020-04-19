@@ -108,28 +108,41 @@ export class EditorUtils {
     return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
 
-  static createShape(type: string, id: number): BaseShape {
-    switch (type) {
+  static createShape(data: BaseShape, preserveId: boolean = true): BaseShape {
+    let shape: BaseShape;
+    const id = preserveId ? data.id : undefined;
+    switch (data.type) {
       case 'BoundingBox':
-        return new BoundingBox(new Coordinate(), id);
+        shape = new BoundingBox(undefined, id);
+        break;
       case 'BrushPath':
-        return new BrushPath(new Coordinate(), id);
+        shape = new BrushPath(undefined, id);
+        break;
       case 'CompositeLine':
-        return new CompositeLine(undefined, id);
+        shape = new CompositeLine(undefined, id);
+        break;
       case 'CompositeParticle':
-        return new CompositeParticle(1, id);
+        shape = new CompositeParticle(undefined, id);
+        break;
       case 'Ellipse':
-        return new Ellipse(new Coordinate(), 0, 0, id);
+        shape = new Ellipse(undefined, undefined, undefined, id);
+        break;
       case 'Line':
-        return new Line(new Coordinate(), new Coordinate(), id);
+        shape = new Line(undefined, undefined, id);
+        break;
       case 'Path':
-        return new Path(undefined, id);
+        shape = new Path(undefined, id);
+        break;
       case 'Polygon':
-        return new Polygon(new Coordinate(), Polygon.MIN_POLY_EDGES, id);
+        shape = new Polygon(undefined, undefined, id);
+        break;
       case 'Rectangle':
-        return new Rectangle(new Coordinate(), 0, 0, id);
+        shape = new Rectangle(undefined, undefined, undefined, id);
+        break;
       default:
         throw new Error('Shape type not found');
     }
+    shape.readShape(data);
+    return shape;
   }
 }

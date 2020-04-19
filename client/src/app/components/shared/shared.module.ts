@@ -30,6 +30,7 @@ import { AbstractModalComponent } from './abstract-modal/abstract-modal.componen
 import { ConfirmModalComponent } from './abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
 import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { ImgButtonComponent } from './inputs/img-button/img-button.component';
 import { NameInputComponent } from './inputs/name-input/name-input.component';
 import { EnumPropertyInputComponent } from './inputs/property-inputs/enum-property-input/enum-property-input.component';
 import { NumericPropertyInputComponent } from './inputs/property-inputs/numeric-property-input/numeric-property-input.component';
@@ -74,6 +75,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     NumericPropertyInputComponent,
     EnumPropertyInputComponent,
     UndoRedoComponent,
+    ImgButtonComponent,
   ],
   entryComponents: [AbstractModalComponent, ConfirmModalComponent],
   exports: [
@@ -106,6 +108,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     NumericPropertyInputComponent,
     EnumPropertyInputComponent,
     UndoRedoComponent,
+    ImgButtonComponent,
   ],
 })
 export class SharedModule {}

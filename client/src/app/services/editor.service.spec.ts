@@ -1,5 +1,7 @@
 /* tslint:disable:no-string-literal no-magic-numbers */
 import { TestBed } from '@angular/core/testing';
+import createSpyObj = jasmine.createSpyObj;
+import { Drawing } from '@models/drawing';
 import { BaseShape } from '@models/shapes/base-shape';
 import { Ellipse } from '@models/shapes/ellipse';
 import { Line } from '@models/shapes/line';
@@ -11,7 +13,7 @@ import { CompositeLine } from 'src/app/models/shapes/composite-line';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { ColorsService } from './colors.service';
 import { EditorService } from './editor.service';
-import createSpyObj = jasmine.createSpyObj;
+import { LocalSaveService } from './localsave.service';
 
 describe('EditorService', () => {
   let service: EditorService;
@@ -26,11 +28,15 @@ describe('EditorService', () => {
   });
 
   beforeEach(() => {
-    service = new EditorService(new ColorsService());
+    service = new EditorService(new ColorsService(), new LocalSaveService());
     BaseShape['SHAPE_ID'] = 0;
     line = new Line();
     rectangle = new Rectangle();
-    service.view = createSpyObj('view', ['addShape', 'removeShape', 'svg']);
+    const viewSpy = createSpyObj('view', ['addShape', 'removeShape']);
+    viewSpy.svg = {
+      contains: () => false,
+    };
+    service.view = viewSpy;
 
     service['shapesBuffer'] = [rectangle, rectangle];
     // @ts-ignore
@@ -50,6 +56,34 @@ describe('EditorService', () => {
     }
   });
 
+  it('can export drawing', () => {
+    service.shapes.length = 0;
+    service.shapes.push(line);
+    service.shapes.push(rectangle);
+    const result = JSON.parse(service.exportDrawing());
+    expect(result.length).toEqual(2);
+    expect(result[0].svgNode).toBeFalsy();
+    expect(result[0].type).toEqual('Line');
+    expect(result[1].type).toEqual('Rectangle');
+  });
+
+  it('can import drawing', () => {
+    service.shapes.length = 0;
+    service.shapes.push(line);
+    service.shapes.push(rectangle);
+    const api = createSpyObj('api', {
+      getDrawingById: () => {
+        return;
+      },
+    });
+    api.getDrawingById = async (id: string) => {
+      return Promise.resolve({ data: service.exportDrawing() } as Drawing);
+    };
+    const service2 = new EditorService(new ColorsService(), new LocalSaveService());
+    service2.importDrawingById('', api);
+    expect(service2.shapes.values).toEqual(service.shapes.values);
+  });
+
   it('updates shapes and clears buffer on applyShapeBuffer', () => {
     const clearShapesBufferSpy = spyOn(service, 'clearShapesBuffer');
 
@@ -67,14 +101,12 @@ describe('EditorService', () => {
   });
 
   it('can add multiple shapes', () => {
-    const addedShapes: BaseShape[] = [];
-    const addShapeSpy = spyOn(service, 'addShapeToBuffer').and.callFake((shape) => {
-      addedShapes.push(shape);
-    });
+    service.shapes.length = 0;
+    service['shapesBuffer'].length = 0;
     const shapes = [new Rectangle(), new CompositeLine()];
-    service.addShapesToBuffer(shapes);
-    expect(addShapeSpy).toHaveBeenCalledTimes(2);
-    expect(addedShapes).toEqual(shapes);
+    service.addShapeToBuffer(shapes);
+    service.applyShapesBuffer();
+    expect(service.shapes).toEqual(shapes);
   });
 
   it('can remove multiple shapes', () => {
@@ -142,11 +174,6 @@ describe('EditorService', () => {
     expect(service.view.removeShape).not.toHaveBeenCalled();
   });
 
-  it('can clear selection', () => {
-    service.clearSelection();
-    expect(service.selectedShapes).toEqual([]);
-  });
-
   it('can find shape by id', () => {
     BaseShape['SHAPE_ID'] = 5;
     const rect = new Rectangle();
@@ -166,4 +193,57 @@ describe('EditorService', () => {
 
     expect(() => service.findShapeById(5)).toThrowError('Shape Id collision error');
   });
+
+  /* BEGIN TEST CLIPBOARD  //todo : fix tests
+  it('should copy items into clipboard', () => {
+    service.selection.shapes.push(...service.shapes);
+    service.copySelectedShapes();
+    expect(service.clipboard[0]).toEqual(line);
+  });
+  it('should keep copies into clipboard after removal', () => {
+    service.selection.shapes.push(...service.shapes);
+    service.copySelectedShapes();
+    service.removeShape(service.shapes[0]);
+    expect(service.clipboard[0]).toEqual(line);
+  });
+  it('should replace clipboard with new element on copy', () => {
+    const shape = new Rectangle(new Coordinate(1, 1), 2, 2);
+    const newShape = new Ellipse(new Coordinate(1, 1), 2, 2);
+    service.selection.shapes.push(shape);
+    service.copySelectedShapes();
+    service.selection.clear();
+    service.selection.shapes.push(newShape);
+    service.copySelectedShapes();
+    expect(service.clipboard[0]).toEqual(newShape);
+  });
+  it('should add selectedShapes into clipboard on cut', () => {
+    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
+    service.selection.shapes.push(...service.shapes);
+    service.cutSelectedShapes();
+    expect(service.clipboard[0]).toEqual(line);
+  });
+  it('should remove shape from drawingSurface on cut', () => {
+    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
+    service.selection.shapes.push(...service.shapes);
+    service.cutSelectedShapes();
+    expect(service.shapes.length).toEqual(0);
+  });
+  it('should replace clipboard with new element on cut', () => {
+    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
+    const shape = new Rectangle(new Coordinate(1, 1), 2, 2);
+    const newShape = new Ellipse(new Coordinate(1, 1), 2, 2);
+    service.selection.shapes.push(shape);
+    service.cutSelectedShapes();
+    service.selection.clear();
+    service.selection.shapes.push(newShape);
+    service.cutSelectedShapes();
+    expect(service.clipboard[0]).toEqual(newShape);
+  });
+  it('should add clipboard shapes onto view on paste', () => {
+    (service.tools.get(ToolType.Select) as SelectionTool)['resetSelection'](); // Need a refactor
+    service.selection.shapes.push(...service.shapes);
+    service.copySelectedShapes();
+    service.pasteClipboard();
+    expect(service.shapes.length).toEqual(2);
+  });*/
 });

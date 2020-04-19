@@ -33,11 +33,11 @@ export class BrushPath extends Path {
   constructor(c: Coordinate = new Coordinate(), id?: number) {
     super(c, id);
     this._filter = BrushTextureType.TEXTURE_1;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readShape(data: BrushPath): void {
+    super.readShape(data);
     this.filter = data._filter;
     this.applyTransform();
   }

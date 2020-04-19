@@ -48,13 +48,13 @@ export class Line extends BaseShape {
     super('line', id);
     this.startCoord = startCoord;
     this.endCoord = endCoord;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
-    this.startCoord = data._startCoord;
-    this.endCoord = data._endCoord;
+  readShape(data: Line): void {
+    super.readShape(data);
+    this.startCoord = Coordinate.copy(data._startCoord);
+    this.endCoord = Coordinate.copy(data._endCoord);
     this.applyTransform();
   }
 }

@@ -55,13 +55,6 @@ export class BoundingBox extends BaseShape {
     this.initControlPoints();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
-    this.outline = data.outline;
-    this.applyTransform();
-  }
-
   private initControlPoints(): void {
     this.controlPoints = new Array<Rectangle>();
     for (let i = 0; i < ControlPoint.count; i++) {

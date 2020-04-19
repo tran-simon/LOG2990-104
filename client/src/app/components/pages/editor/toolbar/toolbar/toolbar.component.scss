@@ -24,14 +24,12 @@
 
 #toolbar-bottom-buttons{
   padding-bottom: 20px;
-  padding-top: 10px;
   background-color: $secondary;
 }
 
 #toolbar-middle-buttons {
   height: 100%;
   justify-content: flex-end;
-  padding-bottom: 10px;
 }
 
 #swap-button {
@@ -41,28 +39,35 @@
   flex-direction: column;
   height: 30px;
   width: 30px;
-  position: absolute;
-  bottom: 335px;
 }
 
+#toolbar-color-buttons{
+  position: relative;
+  align-self: flex-start;
+  height: 60px;
+}
 #toolbar-primary-color {
   border: 1px solid $accent;
   height: 35px;
   width: 35px;
   z-index: 1000;
   position: absolute;
-  bottom: 280px;
-  right: 15px;
+  left: 5px;
+  top:5px;
 }
-
+app-undo-redo{
+  button{
+    height:1rem;
+  }
+}
 #toolbar-secondary-color {
   border: 1px solid $accent;
   height: 35px;
   width: 35px;
   z-index: 500;
   position: absolute;
-  bottom: 270px;
-  left: 15px;
+  left: 20px;
+  top:20px;
 }
 
 button {
@@ -72,13 +77,8 @@ button {
 }
 
 #back-button {
-  width: 60px;
-  height: 60px;
-}
-
-.toolbar-section-divider {
-  padding: 10px 0;
-  width: 100%;
+  width: 30px;
+  height: 30px;
 }
 
 mat-drawer-container {
@@ -103,8 +103,16 @@ mat-drawer-content {
   width: 300px;
   flex-direction: column;
   align-items: flex-start;
+  app-color-picker{
+    width: 100%;
+  }
 }
-
+.toolbar-selection-section {
+  display: flex;
+  width: 60px;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .selected-tool {
   background-color: $secondary;
 }
