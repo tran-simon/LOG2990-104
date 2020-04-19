@@ -1,4 +1,3 @@
-/* tslint:disable:max-file-line-count */ // todo : distribute functionality into multiple sub-tool
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { RotateShapeCommand } from '@models/commands/shape-commands/rotate-shape-command';
 import { EditorService } from '@services/editor.service';
@@ -64,6 +63,7 @@ export class SelectionTool extends SimpleSelectionTool {
         angle = -angle;
       }
       this.rotateSelection(angle, this.shiftKey);
+      return false;
     };
 
     this.handleMouseDown = (e: MouseEvent) => {

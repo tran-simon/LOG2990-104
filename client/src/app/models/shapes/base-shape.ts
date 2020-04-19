@@ -60,6 +60,20 @@ export abstract class BaseShape {
     return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
   }
 
+  get corners(): Coordinate[] {
+    const s = this.strokeWidth / 2;
+    const corners: Coordinate[] = [
+      Coordinate.add(this.origin, new Coordinate(-s, -s)),
+      Coordinate.add(new Coordinate(this.end.x, this.origin.y), new Coordinate(s, -s)),
+      Coordinate.add(this.end, new Coordinate(s, s)),
+      Coordinate.add(new Coordinate(this.origin.x, this.end.y), new Coordinate(-s, s))
+    ];
+    corners.forEach((corner, index) => {
+      corners[index] = corner.rotate(this.rotation, this.center);
+    });
+    return corners;
+  }
+
   constructor(svgType: string, id?: number) {
     this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, svgType) as SVGElement;
     this.svgNode.setAttribute(BaseShape.TYPE_ATTRIBUTE, this.constructor.name);
