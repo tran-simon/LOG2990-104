@@ -57,19 +57,12 @@ describe('APIService', () => {
       expect(deleteSpy).toHaveBeenCalled();
     });
   });
-  it('should tell the user about sending email', () => {
-    const spyNotif = spyOn(apiService['notification'], 'open');
-    const test = 'test';
-    apiService.sendEmail(test, test, test, test, test);
-    expect(spyNotif).toHaveBeenCalled();
-  });
-  // it('should get call http post on sendMail with the right data', () => {
+  // it('should get call http post on sendMail with the right data', async () => {
   //   const spy = spyOn(apiService['http'], 'post');
   //   const test = 'test';
   //   const dataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABzwAAAOjCAYAAADOH3L6AAAgAElEQVR4XuzZQQ2DQBBA0cVDdRD89FibiCDowANN8LCHH14';
   //   const data = 'iVBORw0KGgoAAAANSUhEUgAABzwAAAOjCAYAAADOH3L6AAAgAElEQVR4XuzZQQ2DQBBA0cVDdRD89FibiCDowANN8LCHH14';
   //   apiService.sendEmail(test, test, dataUrl, test, 'png');
-  //   // tslint:disable-next-line: max-line-length
-  //   expect(spy).toHaveBeenCalledWith('http://localhost:3000/api/email/drawing', {name: test, email: test, dataURL: data, file: test, ext: 'png'}, { responseType: 'text' });
+  //   expect(spy).toHaveBeenCalled();
   // });
 });

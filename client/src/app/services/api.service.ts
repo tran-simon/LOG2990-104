@@ -74,10 +74,7 @@ export class APIService {
     });
   }
   sendEmail(userName: string, userEmail: string, dataUrl: string, fileName: string, extension: string): void {
-    const url = APIService.API_BASE_URL + APIService.API_EMAIL_ROUTE + APIService.API_DRAWING_ROUTE;
-    this.notification.open('sending email', '', {
-      duration: 5000,
-    });
+    const url = APIService.API_BASE_URL + APIService.API_EMAIL_ROUTE;
     if (extension !== 'svg') {
       dataUrl = dataUrl.split(',')[1];
     }
@@ -89,22 +86,24 @@ export class APIService {
       ext: extension,
     };
     this.http.post(url, user, { responseType: 'text' }).subscribe(
-      // tslint:disable-next-line: no-any
-      (res: any) => {
-        if (res.message) {
-          console.log(res.message);
-          this.notification.open(res.message, 'ok', {
-            duration: 5000,
-          });
-        } else if (res.error) {
-          console.log(res.error);
-          this.notification.open(res.error, 'ok', {
-            duration: 5000,
-          });
+      (res: string) => {
+        const response = res.split('"')[1];
+        switch (response) {
+          case 'message': {
+            this.notification.open('Envoi du courriel en cours', '', { duration: 5000 });
+            break;
+          }
+          case 'error': {
+            this.notification.open('Nous ne trouvons pas votre courriel', '', { duration: 5000 });
+            break;
+          }
+          case 'detail': {
+            this.notification.open('Les données soumises ne sont pas valides', '', { duration: 5000 });
+            break;
+          }
         }
       },
       (error: ErrorEvent) => {
-        console.log(error.message);
         this.notification.open('Error: ' + error.message, 'ok', {
           duration: 5000,
         });

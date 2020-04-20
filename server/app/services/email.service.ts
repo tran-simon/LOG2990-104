@@ -1,28 +1,36 @@
-import axios from 'axios';
 import { Buffer } from 'buffer';
-import * as FormData from 'form-data';
 import { injectable } from 'inversify';
+import * as request from 'request';
+
 @injectable()
 export class EmailService {
-// tslint:disable-next-line: no-any
-    async sendEmail(userEmail: string, dataUrl: string, fileName: string, extension: string): Promise<any> {
-        // tslint:disable-next-line: no-any
-        return new Promise((resolve: any, reject: any) => {
-            const data: FormData = new FormData();
-            data.append('to', userEmail);
+    async sendEmail(userEmail: string, dataUrl: string, fileName: string, extension: string): Promise<string> {
+        return new Promise<string>((resolve) => {
+            let mimeType: string;
+            let fileContent: string | Buffer;
             if (extension !== 'svg') {
-                const buffer = Buffer.from(dataUrl, 'base64');
-                data.append('payload', buffer, {filename: fileName, contentType: `image/${extension}`});
+                fileContent = Buffer.from(dataUrl, 'base64');
+                mimeType = `image/${extension}`;
             } else {
-                data.append('payload', dataUrl, {filename: fileName, contentType: 'image/svg+xml'});
+                fileContent = dataUrl;
+                mimeType = 'image/svg+xml';
             }
-            axios.post('https://log2990.step.polymtl.ca/email?address_validation=true&quick_return=true', data, {headers:
-            {...data.getHeaders({'X-Team-Key': process.env.API_KEY})}}).then((res) => {
-                console.log(res);
-                resolve(res);
-            }).catch((err) => {
-                console.log(err);
-                reject(err);
+            const options = {
+                method: 'POST',
+                url: 'https://log2990.step.polymtl.ca/email?address_validation=true&quick_return=true',
+                headers: {'x-team-key': process.env.API_KEY, 'content-type': 'multipart/form-data'
+                },
+                formData: {
+                    to: userEmail,
+                    payload: {
+                        value: fileContent,
+                        options: {filename: fileName, contentType: mimeType}
+                    }
+                }
+            };
+            request(options, (err: string | undefined, response: {body: string; }) => {
+                console.log(response.body);
+                resolve(response.body);
             });
         });
     }
