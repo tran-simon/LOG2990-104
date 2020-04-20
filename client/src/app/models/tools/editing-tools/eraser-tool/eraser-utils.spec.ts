@@ -17,10 +17,6 @@ describe('EraserUtils', () => {
     expect(EraserUtils.indexFromColor(Color.rgb255(0, 0, 5))).toEqual(1);
   });
 
-  it('throws an error if there are no available colors', () => {
-    expect(() => EraserUtils.assignColorToShapeFromIndex({} as SVGElement, 9999999)).toThrow(new Error('Too many drawings'));
-  });
-
   it('can assign color to shape from index', () => {
     const node = createSpyObj('node', ['style']);
     node.style.and.returnValue({
