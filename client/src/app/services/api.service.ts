@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-// import { SafeResourceUrl } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material';
 import { Drawing } from '../models/drawing';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class APIService {
   private static API_DRAWING_ROUTE: string;
   private static API_EMAIL_ROUTE: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private notification: MatSnackBar) {
     APIService.API_BASE_URL = 'http://localhost:3000/api';
     APIService.API_EMAIL_ROUTE = '/email';
     APIService.API_DATABASE_ROUTE = '/database';
@@ -73,22 +73,42 @@ export class APIService {
       });
     });
   }
-  async sendEmail(userName: string, userEmail: string, dataUrl: string, fileName: string, extension: string): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const url = APIService.API_BASE_URL + APIService.API_EMAIL_ROUTE + APIService.API_DRAWING_ROUTE;
-      const imageURL = dataUrl.split(',')[1];
-      console.log(imageURL);
-      const user = {
-        name: userName,
-        email: userEmail,
-        dataURL: imageURL,
-        file: fileName,
-        ext: extension,
-      };
-      const reqHeaders = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-      this.http.post(url, user, { responseType: 'text', headers: reqHeaders }).subscribe(() => {
-        resolve();
-      });
+  sendEmail(userName: string, userEmail: string, dataUrl: string, fileName: string, extension: string): void {
+    const url = APIService.API_BASE_URL + APIService.API_EMAIL_ROUTE + APIService.API_DRAWING_ROUTE;
+    this.notification.open('sending email', '', {
+      duration: 5000,
     });
+    if (extension !== 'svg') {
+      dataUrl = dataUrl.split(',')[1];
+    }
+    const user = {
+      name: userName,
+      email: userEmail,
+      dataURL: dataUrl,
+      file: fileName,
+      ext: extension,
+    };
+    this.http.post(url, user, { responseType: 'text' }).subscribe(
+      // tslint:disable-next-line: no-any
+      (res: any) => {
+        if (res.message) {
+          console.log(res.message);
+          this.notification.open(res.message, 'ok', {
+            duration: 5000,
+          });
+        } else if (res.error) {
+          console.log(res.error);
+          this.notification.open(res.error, 'ok', {
+            duration: 5000,
+          });
+        }
+      },
+      (error: ErrorEvent) => {
+        console.log(error.message);
+        this.notification.open('Error: ' + error.message, 'ok', {
+          duration: 5000,
+        });
+      },
+    );
   }
 }

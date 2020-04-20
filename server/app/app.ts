@@ -25,8 +25,7 @@ export class Application {
   private config(): void {
     // Middlewares configuration
     fs.readFile('emailAPI.env', (err, data) => {
-        console.log(data.toString());
-        process.env.API_KEY = data.toString();
+        process.env.API_KEY = data.toString().split('@')[0];
     });
     this.app.use(logger('dev'));
     this.app.use(bodyParser.json());

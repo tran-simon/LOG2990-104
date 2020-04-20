@@ -2,5 +2,5 @@ export enum ExtensionType {
   EMPTY = '',
   SVG = 'svg',
   PNG = 'png',
-  JPG = 'jpg',
+  JPG = 'jpeg',
 }

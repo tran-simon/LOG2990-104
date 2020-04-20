@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import createSpy = jasmine.createSpy;
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { EditorService } from 'src/app/services/editor.service';
 import { EditorModule } from '../../editor/editor.module';
@@ -11,7 +12,6 @@ import { EditorComponent } from '../../editor/editor/editor.component';
 import { ExtensionType } from '../extension-type.enum';
 import { FilterType } from '../filter-type.enum';
 import { ExportModalComponent } from './export-modal.component';
-import createSpy = jasmine.createSpy;
 
 describe('ExportModalComponent', () => {
   let component: ExportModalComponent;
@@ -115,11 +115,68 @@ describe('ExportModalComponent', () => {
     expect(spySvg).not.toHaveBeenCalled();
     expect(spyImage).toHaveBeenCalled();
   });
-  it('should close dialog because the submission is valid', () => {
+  it('should not call api service because email form is not valid', () => {
+    const spyApi = spyOn(component['apiService'], 'sendEmail');
+    const spyNotif = spyOn(component['notification'], 'open');
     component.selectedExtension = ExtensionType.PNG;
     component.fileName = 'test';
+    component.email = 'theo.st-denis@polymtl';
     spyOnProperty(component.formGroup, 'invalid').and.returnValue(false);
-    component.submit();
-    expect(dialogRefCloseSpy).toHaveBeenCalled();
+    spyOnProperty(component.sendFormGroup, 'valid').and.returnValue(false);
+    component.send();
+    expect(spyApi).not.toHaveBeenCalled();
+    expect(spyNotif).toHaveBeenCalled();
+  });
+  it('should not call api service because email is not gmail or poly', () => {
+    const spyApi = spyOn(component['apiService'], 'sendEmail');
+    const spyNotif = spyOn(component['notification'], 'open');
+    component.selectedExtension = ExtensionType.PNG;
+    component.fileName = 'test';
+    component.email = 'theo.stdenis@outlook.com';
+    spyOnProperty(component.formGroup, 'invalid').and.returnValue(false);
+    spyOnProperty(component.sendFormGroup, 'valid').and.returnValue(true);
+    component.send();
+    expect(spyApi).not.toHaveBeenCalled();
+    expect(spyNotif).toHaveBeenCalled();
+  });
+  it('should call sendEmail with componenent serialized string because extension is svg', () => {
+    const spyApi = spyOn(component['apiService'], 'sendEmail');
+    const spyNotif = spyOn(component['notification'], 'open');
+    component.selectedExtension = ExtensionType.SVG;
+    component.fileName = 'test';
+    component.changeExtension();
+    component.email = 'theo.st-denis@polymtl.ca';
+    spyOnProperty(component.formGroup, 'invalid').and.returnValue(false);
+    spyOnProperty(component.sendFormGroup, 'valid').and.returnValue(true);
+    component.send();
+    // tslint:disable-next-line: max-line-length
+    expect(spyApi).toHaveBeenCalledWith(
+      component.userName,
+      component.email,
+      component.serializedString,
+      component.fullName,
+      component.selectedExtension,
+    );
+    expect(spyNotif).not.toHaveBeenCalled();
+  });
+  it('should call sendEmail with componenent href because extension is not svg', () => {
+    const spyApi = spyOn(component['apiService'], 'sendEmail');
+    const spyNotif = spyOn(component['notification'], 'open');
+    component.selectedExtension = ExtensionType.PNG;
+    component.fileName = 'test';
+    component.changeExtension();
+    component.email = 'theo.st-denis@polymtl.ca';
+    spyOnProperty(component.formGroup, 'invalid').and.returnValue(false);
+    spyOnProperty(component.sendFormGroup, 'valid').and.returnValue(true);
+    component.send();
+    // tslint:disable-next-line: max-line-length
+    expect(spyApi).toHaveBeenCalledWith(
+      component.userName,
+      component.email,
+      component.href.toString(),
+      component.fullName,
+      component.selectedExtension,
+    );
+    expect(spyNotif).not.toHaveBeenCalled();
   });
 });

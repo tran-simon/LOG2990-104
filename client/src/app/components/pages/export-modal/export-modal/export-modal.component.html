@@ -35,8 +35,8 @@
           <form [formGroup]="sendFormGroup">
             <app-name-input id="inputUserName" [formGroup]="sendFormGroup" [(value)]="userName" required=true>Votre nom
             </app-name-input>
-            <app-name-input id="inputEmail" [formGroup]="sendFormGroup" [(value)]="email" required=true>Votre email
-            </app-name-input>
+            <app-email-input id="inputEmail" [formGroup]="sendFormGroup" [(value)]="email" required=true>Votre email
+            </app-email-input>
           </form>
         </div>
       </mat-expansion-panel>
@@ -44,8 +44,7 @@
     <p></p>
   </div>
   <div actions>
-    <a mat-stroked-button [disabled]="!valid" id="save-button" [href]="valid ? href : ''" [download]="fullName"
-      (click)="submit()">Sauvegarder</a>
+    <a mat-stroked-button [disabled]="!valid" id="save-button" [href]="valid ? href : ''" [download]="fullName">Sauvegarder</a>
     <button mat-stroked-button [disabled]="!emailValid" id="send-button"
       (click)="send()">Envoyer</button>
   </div>
