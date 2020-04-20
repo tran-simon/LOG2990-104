@@ -168,7 +168,6 @@ describe('ExportModalComponent', () => {
     spyOnProperty(component.formGroup, 'invalid').and.returnValue(false);
     spyOnProperty(component.sendFormGroup, 'valid').and.returnValue(true);
     component.send();
-    // tslint:disable-next-line: max-line-length
     expect(spyApi).toHaveBeenCalledWith(
       component.userName,
       component.email,
