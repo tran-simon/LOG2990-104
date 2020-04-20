@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EditorKeyboardListener } from '@components/pages/editor/editor/editor-keyboard-listener';
 import { Drawing } from '@models/drawing';
 import { APIService } from '@services/api.service';
@@ -38,7 +38,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     public editorService: EditorService,
     public dialog: ModalDialogService,
     private apiService: APIService,
@@ -59,12 +58,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
       this.drawingId = params.id;
     });
-    window.addEventListener('wheel', (e) => {
-      console.log(this.router.url.split(';')[0]);
-      if(this.router.url.split(';')[0] === '/edit') {   // todo - fix
-        this.editorService.selection.blockScroll(e);
-      }
-    }, {passive: false} );
   }
 
   ngAfterViewInit(): void {

@@ -49,6 +49,9 @@ export const keyUp = (key: string, shiftKey: boolean = false, ctrlKey: boolean =
     shiftKey,
     ctrlKey,
     altKey,
+    preventDefault(): void {
+      return;
+    },
   } as KeyboardEvent;
 };
 

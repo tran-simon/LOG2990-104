@@ -51,19 +51,22 @@ export class SelectionTool extends SimpleSelectionTool {
     const rotationCommand = new RotateShapeCommand(shapes, this.editorService, angle, center);
 
     this.editorService.commandReceiver.add(rotationCommand);
-    this.selection.boundingBox.rotation += angle;
+    individual ? this.selection.updateBoundingBox() : this.selection.boundingBox.rotation += angle;
   }
 
   // END ROTATION
 
   initMouseHandler(): void {
     this.handleWheel = (e: WheelEvent) => {
+      if (this.selection.shapes.length === 0) {
+        return false;
+      }
       let angle = this.altKey ? 1 : this.ROTATION_AMOUNT;
       if (e.deltaY < 0) {
         angle = -angle;
       }
       this.rotateSelection(angle, this.shiftKey);
-      return false;
+      return true;
     };
 
     this.handleMouseDown = (e: MouseEvent) => {

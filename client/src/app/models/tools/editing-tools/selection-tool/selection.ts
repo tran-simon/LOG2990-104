@@ -12,6 +12,10 @@ export class Selection {
   readonly previous: BaseShape[];
   boundingBox: BoundingBox;
 
+  get isEmpty(): boolean {
+    return this.shapes.length === 0;
+  }
+
   constructor() {
     this.shapes = new Array<BaseShape>();
     this.previous = new Array<BaseShape>();
@@ -57,12 +61,6 @@ export class Selection {
       box.rotation = shape.rotation;
     }
     return box;
-  }
-
-  blockScroll(e: WheelEvent): void {
-    if(this.shapes.length > 0) {
-      e.preventDefault();
-    }
   }
 
   clear(): void {
