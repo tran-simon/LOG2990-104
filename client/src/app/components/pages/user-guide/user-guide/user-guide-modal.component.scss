@@ -5,6 +5,9 @@ mat-sidenav-container {
 mat-sidenav, mat-sidenav-content {
  padding: 16px;
 }
+mat-sidenav-content {
+  background-color: #ffffff;
+}
 mat-sidenav {
  width: 250px;
  min-height: 90%;
