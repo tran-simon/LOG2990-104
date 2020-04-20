@@ -27,10 +27,7 @@ export class MathUtils {
   }
 
   static fitAngle(angle: number): number {
-    if (angle < 0) {
-      return this.MAX_ANGLE - this.fitAngle(-angle);
-    }
-    return angle % this.MAX_ANGLE;
+    return angle < 0 ? this.MAX_ANGLE - this.fitAngle(-angle) : angle % this.MAX_ANGLE;
   }
 
   static toHex(value: number, padding: number = 0): string {
