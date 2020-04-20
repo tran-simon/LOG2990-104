@@ -58,7 +58,7 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
       width: this.width,
       height: this.height,
       color: this.colorPicker.color.hex,
-      id: LocalSaveService.LOCAL_DRAWING_ID,
+      id: LocalSaveService.NEW_DRAWING_ID,
     };
     this.router.navigate(['/'], { skipLocationChange: true }).then((a) => this.router.navigate(['edit', params]));
     this.dialogRef.close();

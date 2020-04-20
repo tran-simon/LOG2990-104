@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditorKeyboardListener } from '@components/pages/editor/editor/editor-keyboard-listener';
 import { Drawing } from '@models/drawing';
 import { APIService } from '@services/api.service';
@@ -14,6 +14,7 @@ import { ModalDialogService } from 'src/app/services/modal/modal-dialog.service'
 import { ModalType } from 'src/app/services/modal/modal-type.enum';
 import { Color } from 'src/app/utils/color/color';
 import { DrawingSurfaceComponent } from '../drawing-surface/drawing-surface.component';
+import { EditorParams } from './editor-params';
 
 @Component({
   selector: 'app-editor',
@@ -38,6 +39,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     public editorService: EditorService,
     public dialog: ModalDialogService,
     private apiService: APIService,
@@ -63,7 +65,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.editorService.resetDrawing();
     this.editorService.view = this.drawingSurface;
-    if (this.drawingId === LocalSaveService.LOCAL_DRAWING_ID) {
+    if (this.drawingId === LocalSaveService.NEW_DRAWING_ID) {
+      this.editorService.saveLocally();
+      const params: EditorParams = {
+        width: this.editorService.view.width.toString(),
+        height: this.editorService.view.height.toString(),
+        color: this.editorService.view.color.hex,
+        id: LocalSaveService.LOCAL_DRAWING_ID,
+      };
+      this.router.navigate(['edit', params]);
+    } else if (this.drawingId === LocalSaveService.LOCAL_DRAWING_ID) {
       this.editorService.importLocalDrawing();
       this.editorService.saveLocally();
     } else if (this.drawingId) {
