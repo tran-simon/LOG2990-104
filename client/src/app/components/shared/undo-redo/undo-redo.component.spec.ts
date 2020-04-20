@@ -23,4 +23,14 @@ describe('UndoRedoComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should undo on call', () => {
+    const undoSpy = spyOn(component.editorService.commandReceiver, 'undo');
+    component.onUndo();
+    expect(undoSpy).toHaveBeenCalled();
+  });
+  it('should redo on call', () => {
+    const redoSpy = spyOn(component.editorService.commandReceiver, 'redo');
+    component.onRedo();
+    expect(redoSpy).toHaveBeenCalled();
+  });
 });
