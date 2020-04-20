@@ -7,11 +7,7 @@ import { EditorService } from '@services/editor.service';
   styleUrls: ['./undo-redo.component.scss'],
 })
 export class UndoRedoComponent {
-  canUndo: boolean;
-  canRedo: boolean;
-
   constructor(public editorService: EditorService) {}
-
   onUndo(): void {
     this.editorService.commandReceiver.undo();
   }

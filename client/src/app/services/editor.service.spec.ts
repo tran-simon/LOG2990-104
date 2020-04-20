@@ -35,6 +35,8 @@ describe('EditorService', () => {
     line = new Line();
     rectangle = new Rectangle();
     const viewSpy = createSpyObj('view', ['addShape', 'removeShape']);
+    viewSpy.width = 10;
+    viewSpy.height = 10;
     viewSpy.svg = {
       contains: () => false,
     };
@@ -198,8 +200,18 @@ describe('EditorService', () => {
 
     expect(() => service.findShapeById(5)).toThrowError('Shape Id collision error');
   });
+  it('should increase offset updateShapeOffset call with true', () => {
+    const offset = service['pasteOffset'];
+    service.updateShapeOffset(true);
+    expect(service['pasteOffset']).toBeGreaterThan(offset);
+  });
+  it('should decrease offset updateShapeOffset call with false', () => {
+    const offset = service['pasteOffset'];
+    service.updateShapeOffset(false);
+    expect(service['pasteOffset']).toBeLessThan(offset);
+  });
 
-  // BEGIN TEST CLIPBOARD  //todo : fix tests
+  // BEGIN TEST CLIPBOARD
   it('should copy items into clipboard', () => {
     service.selection.shapes.push(...service.shapes);
     service.copySelectedShapes();
@@ -295,7 +307,30 @@ describe('EditorService', () => {
     service.duplicateSelectedShapes();
     expect(service.clipboard[0].id).toEqual(buffer);
   });
-  /*it('should paste at first location when out of view', ()=> {
-
-  });*/
+  it('should paste at first location when out of view', () => {
+    service['selectionTool']['resetSelection']();
+    const shape = new Rectangle(new Coordinate(9, 9), 2, 2);
+    service.shapes.push(shape);
+    service.selection.shapes.push(service.shapes[1]);
+    service.copySelectedShapes();
+    service.pasteClipboard();
+    expect(service.shapes[2].origin).toEqual(service.clipboard[0].origin);
+  });
+  it('should delete selected shapes', () => {
+    service['selectionTool']['resetSelection']();
+    service.selection.shapes.push(service.shapes[0]);
+    service.deleteSelectedShapes();
+    expect(service.shapes.length).toEqual(0);
+  });
+  it('should delete selected shapes', () => {
+    service['selectionTool']['resetSelection']();
+    service.selection.shapes.push(service.shapes[0]);
+    service.deleteSelectedShapes();
+    expect(service.shapes.length).toEqual(0);
+  });
+  it('should selectAll on call', () => {
+    const selectAllSpy = spyOn(service['selectionTool'], 'selectAll');
+    service.selectAll();
+    expect(selectAllSpy).toHaveBeenCalled();
+  });
 });

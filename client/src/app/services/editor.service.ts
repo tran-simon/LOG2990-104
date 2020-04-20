@@ -4,7 +4,6 @@ import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-com
 import { CopyShapeCommand } from '@models/commands/shape-commands/copy-shape-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
 import { Drawing } from '@models/drawing';
-import { ShapeStates } from '@models/shapes/shape-states.enum';
 import { Selection } from '@models/tools/editing-tools/selection-tool/selection';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { LineTool } from '@tools/creator-tools/line-tool/line-tool';
@@ -137,7 +136,6 @@ export class EditorService {
     const copies = new Array<BaseShape>();
     buffer.forEach((shape: BaseShape) => {
       const copy = EditorUtils.createShape(shape, false);
-      copy.state = ShapeStates.PASTED;
       copy.origin = Coordinate.add(copy.origin, new Coordinate(offset, offset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
         copy.origin = Coordinate.copy(this.clipboard[0].origin); // todo - check if right
