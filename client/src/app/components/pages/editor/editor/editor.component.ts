@@ -37,7 +37,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   modalTypes: typeof ModalType;
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
     public editorService: EditorService,
     public dialog: ModalDialogService,
     private apiService: APIService,
@@ -52,7 +52,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.router.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
       this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
       this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
