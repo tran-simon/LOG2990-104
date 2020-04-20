@@ -1,11 +1,16 @@
-/* tslint:disable:no-magic-numbers */
+/* tslint:disable:no-magic-numbers no-string-literal */
+import { BaseShape } from '@models/shapes/base-shape';
 import { Color } from '@utils/color/color';
 import { EraserUtils } from './eraser-utils';
 import createSpyObj = jasmine.createSpyObj;
 
 describe('EraserUtils', () => {
+  const maxId = 13107;
   it('can get color from index', () => {
     expect(EraserUtils.colorFromIndex(1)).toEqual(Color.rgb255(0, 0, 5));
+    expect(EraserUtils.colorFromIndex(maxId - 1)).toEqual(Color.rgb255(0, 255, 250));
+    expect(EraserUtils.colorFromIndex(maxId)).toEqual(Color.rgb255(0, 0, 0));
+    expect(EraserUtils.colorFromIndex(maxId + 1)).toEqual(Color.rgb255(0, 0, 5));
   });
 
   it('can get index from color', () => {
@@ -64,5 +69,13 @@ describe('EraserUtils', () => {
 
     expect(sanitizeSvgNodeSpy).toHaveBeenCalledWith(node);
     expect(assignColorSpy).toHaveBeenCalledWith(node, 7);
+  });
+
+  it('can fit index', () => {
+    BaseShape['SHAPE_ID'] = 13107;
+    expect(EraserUtils.fitIndex(0)).toEqual(0);
+    expect(EraserUtils.fitIndex(maxId - 1)).toEqual(maxId - 1);
+    expect(EraserUtils.fitIndex(maxId)).toEqual(0);
+    expect(EraserUtils.fitIndex(maxId + 1)).toEqual(1);
   });
 });

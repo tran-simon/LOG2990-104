@@ -10,6 +10,7 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { BoundingBox } from 'src/app/models/shapes/bounding-box';
 import { Selection } from './selection';
 
+// todo : distribute functionality into multiple sub-tool
 export class SelectionTool extends SimpleSelectionTool {
   static readonly PASTED_OFFSET: number = 10;
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
