@@ -2,6 +2,8 @@ export class MathUtils {
   static readonly MAX_ANGLE: number = 360;
   static readonly HEX_RADIX: number = 16;
   static readonly DECIMAL_RADIX: number = 10;
+  static readonly HEX_PADDING: number = 6;
+  static readonly PERCENT_FACTOR: number = 100;
 
   /**
    * Returns value greater or equal to min
