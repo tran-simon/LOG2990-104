@@ -4,7 +4,6 @@ import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-com
 import { CopyShapeCommand } from '@models/commands/shape-commands/copy-shape-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
 import { Drawing } from '@models/drawing';
-import { ShapeStates } from '@models/shapes/shape-states.enum';
 import { Selection } from '@models/tools/editing-tools/selection-tool/selection';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { LineTool } from '@tools/creator-tools/line-tool/line-tool';
@@ -137,7 +136,6 @@ export class EditorService {
     const copies = new Array<BaseShape>();
     buffer.forEach((shape: BaseShape) => {
       const copy = EditorUtils.createShape(shape, false);
-      copy.state = ShapeStates.PASTED;
       copy.origin = Coordinate.add(copy.origin, new Coordinate(offset, offset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
         copy.origin = Coordinate.copy(this.clipboard[0].origin); // todo - check if right
@@ -172,12 +170,12 @@ export class EditorService {
       this.selection.updateBoundingBox();
     }
   }
-  copySelectedShapes(buffer: BaseShape[] = this.clipboard): void {
+  copySelectedShapes(): void {
     if (this.selection.shapes.length > 0) {
       this.pasteOffset = SelectionTool.PASTED_OFFSET;
-      buffer.length = 0;
+      this.clipboard.length = 0;
       this.selection.shapes.forEach((shape: BaseShape) => {
-        buffer.push(EditorUtils.createShape(shape, false));
+        this.clipboard.push(EditorUtils.createShape(shape, false));
       });
     }
   }
@@ -186,7 +184,7 @@ export class EditorService {
   }
 
   updateShapeOffset(add: boolean = true): void {
-    add ? this.pasteOffset += SelectionTool.PASTED_OFFSET : this.pasteOffset -= SelectionTool.PASTED_OFFSET;
+    add ? (this.pasteOffset += SelectionTool.PASTED_OFFSET) : (this.pasteOffset -= SelectionTool.PASTED_OFFSET);
   }
 
   deleteSelectedShapes(): void {
@@ -234,7 +232,7 @@ export class EditorService {
 
   addShapeToBuffer(shapes: BaseShape | BaseShape[]): void {
     shapes = Array.isArray(shapes) ? shapes : [shapes];
-    shapes.forEach((shape) => {
+    shapes.forEach((shape: BaseShape) => {
       if (!this.view) {
         this.shapesBuffer.push(shape);
       } else if (!this.view.svg.contains(shape.svgNode)) {
@@ -253,7 +251,7 @@ export class EditorService {
   }
 
   removeShape(shape: BaseShape): void {
-    const index = this.shapes.findIndex((s) => s === shape);
+    const index = this.shapes.findIndex((s: BaseShape) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
       this.removeShapeFromView(shape);
@@ -261,7 +259,7 @@ export class EditorService {
   }
 
   findShapeById(id: number): BaseShape | undefined {
-    const matchingShapes = this.shapes.filter((shape) => shape.id === id);
+    const matchingShapes = this.shapes.filter((shape: BaseShape) => shape.id === id);
     if (matchingShapes.length > 1) {
       throw new Error('Shape Id collision error');
     }
