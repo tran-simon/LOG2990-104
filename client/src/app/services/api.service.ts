@@ -104,9 +104,16 @@ export class APIService {
         }
       },
       (error: ErrorEvent) => {
-        this.notification.open('Error: ' + error.message, 'ok', {
-          duration: 5000,
-        });
+        const errorMessage = error.message.split(': ')[1];
+        if (errorMessage.includes('500')) {
+          this.notification.open('Problèmes de serveurs, essayez plus tard', 'ok', {
+            duration: 10000,
+          });
+        } else {
+          this.notification.open('Votre fichier png est probablement trop gros, essayez svg ou jpg', 'ok', {
+            duration: 10000,
+          });
+        }
       },
     );
   }

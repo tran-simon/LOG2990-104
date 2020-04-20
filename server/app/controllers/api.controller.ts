@@ -20,8 +20,10 @@ export class APIController {
     this.router.use('/database', this.databaseController.router);
     this.router.post('/email', async (req, res) => {
         this.emailService.sendEmail(req.body.email, req.body.dataURL, req.body.file, req.body.ext).then((returnValue: string) => {
+            console.log(returnValue);
             res.send(returnValue);
         }).catch((err: Error) => {
+            console.log(err.message);
             res.send(err.message);
         });
     });
