@@ -6,6 +6,7 @@ import { Drawing } from '@models/drawing';
 })
 export class LocalSaveService {
   static readonly LOCAL_DRAWING_ID: string = 'localsave';
+  static readonly NEW_DRAWING_ID: string = 'newdrawing';
 
   private _drawing: Drawing;
 
