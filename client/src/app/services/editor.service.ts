@@ -95,6 +95,7 @@ export class EditorService {
         Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
           const shape = EditorUtils.createShape(shapeData as BaseShape);
           this.addShapeToBuffer(shape);
+          this.applyShapesBuffer();
           resolve();
         });
       });

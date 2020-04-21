@@ -48,13 +48,15 @@ export class DatabaseService {
   }
 
   connectDB(): void {
-    mongoose.connect(
-      'mongodb+srv://polydessin:letmein1@cluster0-lgpty.azure.mongodb.net/polydessin?retryWrites=true&w=majority',
-      DatabaseService.CONNECTION_OPTIONS,
-      (err: mongoose.Error) => {
-        err ? console.error(err.message) : console.log('Connected to MongoDB Atlas Cloud');
-      },
-    );
+    if (process.env.MONGODB_KEY) {
+      mongoose.connect(
+        process.env.MONGODB_KEY,
+        DatabaseService.CONNECTION_OPTIONS,
+        (err: mongoose.Error) => {
+          err ? console.error(err.message) : console.log('Connected to MongoDB Atlas Cloud');
+        },
+      );
+    }
   }
 
   async disconnectDB(): Promise<void> {
