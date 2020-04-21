@@ -202,12 +202,4 @@ describe('ColorFillUtils', () => {
     util.floodFill(new Coordinate(3, 0), valueToColor(0), valueToColor(2));
     expect(dataToString(data)).toEqual(dataToString(expectedData));
   });
-
-  it('throws an error if getColor or setColor is not defined', () => {
-    // @ts-ignore
-    util.setColor = undefined;
-    expect(() => util.floodFill(new Coordinate(), Color.RED, Color.GREEN)).toThrowError(
-      'ColorFillUtils::floodFill error: missing required methods getColor or setColor',
-    );
-  });
 });
