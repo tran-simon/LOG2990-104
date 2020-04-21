@@ -1,3 +1,6 @@
+# How to use:
+https://log2990-104.web.app/
+
 # Log2990
 
 Projet généré avec [Angular CLI](https://github.com/angular/angular-cli) version 8.1.2.
