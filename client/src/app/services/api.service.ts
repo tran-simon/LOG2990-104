@@ -107,6 +107,13 @@ export class APIService {
       file: fileName,
       ext: extension,
     };
-    this.http.post(url, user, { responseType: 'text' }).subscribe(this.handleResponse, this.handleError);
+    this.http.post(url, user, { responseType: 'text' }).subscribe(
+      (res) => {
+        this.handleResponse(res);
+      },
+      (error) => {
+        this.handleError(error);
+      },
+    );
   }
 }
