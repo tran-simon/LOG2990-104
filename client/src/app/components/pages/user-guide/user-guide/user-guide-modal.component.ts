@@ -16,11 +16,13 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   selectedSubject: GuideSubject;
   panelOpenState1: boolean;
   panelOpenState2: boolean;
+  panelOpenState3: boolean;
 
   constructor(public dialogRef: MatDialogRef<AbstractModalComponent>) {
     super(dialogRef);
     this.panelOpenState1 = false;
     this.panelOpenState2 = false;
+    this.panelOpenState3 = false;
   }
 
   ngOnInit(): void {
@@ -33,6 +35,7 @@ export class UserGuideModalComponent extends AbstractModalComponent implements O
   private openCategories(): void {
     this.panelOpenState1 = true;
     this.panelOpenState2 = true;
+    this.panelOpenState3 = true;
   }
 
   previousSubject(): void {
