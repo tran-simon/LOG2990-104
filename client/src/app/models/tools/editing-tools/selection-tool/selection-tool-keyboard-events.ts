@@ -77,24 +77,28 @@ export class SelectionToolKeyboardEvents {
         KeyboardListenerService.getIdentifier('Alt'),
         () => {
           selectionTool.altKey = true;
+          return true;
         },
       ],
       [
         KeyboardListenerService.getIdentifier('Alt', false, true), // todo - add a wildcard for keyboard events
         () => {
           selectionTool.altKey = true;
+          return true;
         },
       ],
       [
         KeyboardListenerService.getIdentifier('Alt', false, false, 'keyup'),
         () => {
           selectionTool.altKey = false;
+          return true;
         },
       ],
       [
         KeyboardListenerService.getIdentifier('Alt', false, true, 'keyup'),
         () => {
           selectionTool.altKey = false;
+          return true;
         },
       ],
     ];

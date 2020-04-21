@@ -12,6 +12,10 @@ export class Selection {
   readonly previous: BaseShape[];
   boundingBox: BoundingBox;
 
+  get isEmpty(): boolean {
+    return this.shapes.length === 0;
+  }
+
   constructor() {
     this.shapes = new Array<BaseShape>();
     this.previous = new Array<BaseShape>();
@@ -24,12 +28,39 @@ export class Selection {
     this.area.updateProperties();
   }
 
+  private static detectOneWayCollision(shape: BaseShape, candidate: BaseShape): boolean {
+    for(const point of shape.corners) {
+      if(this.detectPointCollision(point, candidate)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   static detectBoundingBoxCollision(area: Rectangle, shape: BaseShape): boolean {
-    return !(area.end.x < shape.origin.x || area.end.y < shape.origin.y || area.origin.x > shape.end.x || area.origin.y > shape.end.y);
+    return Selection.detectOneWayCollision(area, shape) || Selection.detectOneWayCollision(shape, area);
   }
 
   static detectPointCollision(point: Coordinate, shape: BaseShape): boolean {
-    return point.x >= shape.origin.x && point.x <= shape.end.x && point.y >= shape.origin.y && point.y <= shape.end.y;
+    const box = this.calculateBoundingBox(shape);
+    const rotatedPoint = point.rotate(-shape.rotation, shape.center);
+    return rotatedPoint.inBounds(box.end, box.origin);
+  }
+
+  static calculateBoundingBox(shape: BaseShape, multiple: boolean = false): Rectangle {
+    const box = new Rectangle();
+    if(multiple) {
+      const origin = Coordinate.minArrayXYCoord(shape.corners);
+      const end = Coordinate.maxArrayXYCoord(shape.corners);
+      box.origin = origin;
+      box.end = end;
+    } else {
+      const offset = new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2);
+      box.origin = Coordinate.subtract(shape.origin, offset);
+      box.end = Coordinate.add(shape.end, offset);
+      box.rotation = shape.rotation;
+    }
+    return box;
   }
 
   clear(): void {
@@ -37,22 +68,23 @@ export class Selection {
   }
 
   updateBoundingBox(): void {
-    if (this.shapes.length > 0) {
-      this.boundingBox.origin = this.shapes[0].origin;
-      this.boundingBox.end = this.shapes[0].end;
-      this.shapes.forEach((shape) => {
-        this.boundingBox.start = Coordinate.minXYCoord(
-          this.boundingBox.origin,
-          Coordinate.subtract(shape.origin, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)), // todo - proper fix
-        );
-        this.boundingBox.end = Coordinate.maxXYCoord(
-          this.boundingBox.end,
-          Coordinate.add(shape.end, new Coordinate(shape.strokeWidth / 2, shape.strokeWidth / 2)),
-        );
-      });
-    } else {
+    if(this.shapes.length < 1) {
       this.boundingBox.origin = new Coordinate();
       this.boundingBox.end = new Coordinate();
+      return;
+    }
+    let shapeBox = new Rectangle();
+    if(this.shapes.length === 1) {
+      shapeBox = Selection.calculateBoundingBox(this.shapes[0]);
+      this.boundingBox.readShape(shapeBox);
+    } else if (this.shapes.length > 1) {
+      shapeBox = Selection.calculateBoundingBox(this.shapes[0], true);
+      this.boundingBox.readShape(shapeBox);
+      this.shapes.forEach((shape) => {
+        shapeBox = Selection.calculateBoundingBox(shape, true);
+        this.boundingBox.start = Coordinate.minXYCoord(this.boundingBox.origin, shapeBox.origin);
+        this.boundingBox.end = Coordinate.maxXYCoord(this.boundingBox.end, shapeBox.end);
+      });
     }
   }
 

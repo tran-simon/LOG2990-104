@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EditorKeyboardListener } from '@components/pages/editor/editor/editor-keyboard-listener';
+import { Drawing } from '@models/drawing';
 import { APIService } from '@services/api.service';
+import { LocalSaveService } from '@services/localsave.service';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { SimpleSelectionTool } from 'src/app/models/tools/editing-tools/simple-selection-tool';
@@ -31,10 +33,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
   surfaceWidth: number;
   surfaceHeight: number;
   drawingId: string;
+  drawing: Drawing;
   modalTypes: typeof ModalType;
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
     public editorService: EditorService,
     public dialog: ModalDialogService,
     private apiService: APIService,
@@ -49,7 +52,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.router.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this.surfaceWidth = params.width ? +params.width : this.surfaceWidth;
       this.surfaceHeight = params.height ? +params.height : this.surfaceHeight;
       this.surfaceColor = params.color ? Color.hex(params.color) : this.surfaceColor;
@@ -58,9 +61,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.editorService.resetDrawing();
     this.editorService.view = this.drawingSurface;
-    if (this.drawingId) {
-      this.editorService.importDrawing(this.drawingId, this.apiService);
+    if (this.drawingId === LocalSaveService.LOCAL_DRAWING_ID) {
+      this.editorService.importLocalDrawing();
+      this.editorService.saveLocally();
+    } else if (this.drawingId) {
+      this.editorService.importDrawingById(this.drawingId, this.apiService).then(() => {
+        this.editorService.saveLocally();
+      });
     }
   }
 
@@ -69,6 +78,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.currentTool.handleMouseEvent(e);
     }
   }
+
   changeBackground(color: Color): void {
     this.drawingSurface.color = color;
   }

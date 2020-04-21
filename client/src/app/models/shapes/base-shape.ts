@@ -1,4 +1,3 @@
-import { ShapeStates } from '@models/shapes/shape-states.enum';
 import { ContourType } from '@tool-properties/creator-tool-properties/contour-type.enum';
 import { MathUtils } from '@utils/math/math-utils';
 import { Color } from 'src/app/utils/color/color';
@@ -16,7 +15,6 @@ export abstract class BaseShape {
   private _offset: Coordinate;
   private _rotation: number;
 
-  state: ShapeStates;
   thickness: number;
   strokeWidth: number;
   secondaryColor: Color;
@@ -60,6 +58,20 @@ export abstract class BaseShape {
     return Coordinate.add(this.origin, new Coordinate(this.width, this.height));
   }
 
+  get corners(): Coordinate[] {
+    const s = this.strokeWidth / 2;
+    const corners: Coordinate[] = [
+      Coordinate.add(this.origin, new Coordinate(-s, -s)),
+      Coordinate.add(new Coordinate(this.end.x, this.origin.y), new Coordinate(s, -s)),
+      Coordinate.add(this.end, new Coordinate(s, s)),
+      Coordinate.add(new Coordinate(this.origin.x, this.end.y), new Coordinate(-s, s))
+    ];
+    corners.forEach((corner, index) => {
+      corners[index] = corner.rotate(this.rotation, this.center);
+    });
+    return corners;
+  }
+
   constructor(svgType: string, id?: number) {
     this.svgNode = document.createElementNS(BaseShape.SVG_NAMESPACE_URL, svgType) as SVGElement;
     this.svgNode.setAttribute(BaseShape.TYPE_ATTRIBUTE, this.constructor.name);
@@ -74,7 +86,6 @@ export abstract class BaseShape {
     this.secondaryColor = Color.BLACK;
     this.primaryColor = Color.WHITE;
     this.contourType = ContourType.FILLED_CONTOUR;
-    this.state = ShapeStates.NONE;
 
     this.updateProperties();
   }
@@ -134,13 +145,5 @@ export abstract class BaseShape {
     };
 
     highlightNode(this.svgNode);
-  }
-
-  cloneProperties(shape: BaseShape): void {
-    shape.contourType = this.contourType;
-    shape.primaryColor = this.primaryColor;
-    shape.secondaryColor = this.secondaryColor;
-    shape.thickness = this.thickness;
-    shape.strokeWidth = this.strokeWidth;
   }
 }

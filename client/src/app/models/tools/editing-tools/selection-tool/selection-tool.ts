@@ -1,4 +1,3 @@
-/* tslint:disable:max-file-line-count */ // todo : distribute functionality into multiple sub-tool
 import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { RotateShapeCommand } from '@models/commands/shape-commands/rotate-shape-command';
 import { EditorService } from '@services/editor.service';
@@ -11,6 +10,7 @@ import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { BoundingBox } from 'src/app/models/shapes/bounding-box';
 import { Selection } from './selection';
 
+// todo : distribute functionality into multiple sub-tool
 export class SelectionTool extends SimpleSelectionTool {
   static readonly PASTED_OFFSET: number = 10;
   private readonly KEYBOARD_MOVE_RIGHT: Coordinate = new Coordinate(SelectionMove.KEYBOARD_MOVE_DISTANCE, 0);
@@ -52,18 +52,22 @@ export class SelectionTool extends SimpleSelectionTool {
     const rotationCommand = new RotateShapeCommand(shapes, this.editorService, angle, center);
 
     this.editorService.commandReceiver.add(rotationCommand);
-    this.selection.boundingBox.rotation += angle;
+    individual ? this.selection.updateBoundingBox() : this.selection.boundingBox.rotation += angle;
   }
 
   // END ROTATION
 
   initMouseHandler(): void {
     this.handleWheel = (e: WheelEvent) => {
+      if (this.selection.shapes.length === 0) {
+        return false;
+      }
       let angle = this.altKey ? 1 : this.ROTATION_AMOUNT;
       if (e.deltaY < 0) {
         angle = -angle;
       }
       this.rotateSelection(angle, this.shiftKey);
+      return true;
     };
 
     this.handleMouseDown = (e: MouseEvent) => {

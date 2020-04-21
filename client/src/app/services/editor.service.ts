@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CommandReceiver } from '@models/commands/command-receiver';
 import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-command';
+import { CopyShapeCommand } from '@models/commands/shape-commands/copy-shape-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
-import { ShapeStates } from '@models/shapes/shape-states.enum';
+import { Drawing } from '@models/drawing';
 import { Selection } from '@models/tools/editing-tools/selection-tool/selection';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { LineTool } from '@tools/creator-tools/line-tool/line-tool';
@@ -25,6 +26,7 @@ import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing
 import { BaseShape } from 'src/app/models/shapes/base-shape';
 import { ColorsService } from 'src/app/services/colors.service';
 import { APIService } from './api.service';
+import { LocalSaveService } from './localsave.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,8 +52,12 @@ export class EditorService {
     return this._commandReceiver;
   }
 
-  constructor(public colorsService: ColorsService) {
+  constructor(public colorsService: ColorsService, private localSaveService: LocalSaveService) {
     this._commandReceiver = new CommandReceiver();
+    this.commandReceiver.on('action', () => {
+      this.saveLocally();
+    });
+
     this.selection = new Selection();
     this.tools = new Map<ToolType, Tool>();
     this.initTools();
@@ -67,18 +73,47 @@ export class EditorService {
     this.loading = false;
   }
 
+  resetDrawing(): void {
+    this.shapesBuffer.length = 0;
+    this.shapes.length = 0;
+    this.previewShapes.length = 0;
+    this.selection.shapes.length = 0;
+
+    setTimeout(() => {
+      this.commandReceiver.clear();
+    });
+  }
+
   exportDrawing(): string {
     return JSON.stringify(this.shapes, BaseShape.jsonReplacer);
   }
 
-  importDrawing(drawingId: string, apiService: APIService): void {
-    apiService.getDrawingById(drawingId).then((drawing) => {
-      Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
-        const shape = EditorUtils.createShape(shapeData as BaseShape);
-        this.addShapeToBuffer(shape);
+  async importDrawingById(drawingId: string, apiService: APIService): Promise<void> {
+    return new Promise<void>((resolve) => {
+      apiService.getDrawingById(drawingId).then((drawing) => {
+        Object.values(JSON.parse(drawing.data)).forEach((shapeData) => {
+          const shape = EditorUtils.createShape(shapeData as BaseShape);
+          this.addShapeToBuffer(shape);
+          resolve();
+        });
       });
-      this.applyShapesBuffer();
     });
+  }
+
+  importLocalDrawing(): void {
+    Object.values(JSON.parse(this.localSaveService.drawing.data)).forEach((shapeData) => {
+      const shape = EditorUtils.createShape(shapeData as BaseShape);
+      this.addShapeToBuffer(shape);
+    });
+    this.applyShapesBuffer();
+  }
+
+  saveLocally(): void {
+    if (this.view) {
+      this.localSaveService.takeSnapshot(
+        new Drawing('localsave', [], this.exportDrawing(), this.view.color.hex, this.view.width, this.view.height, ''),
+      );
+    }
   }
 
   private initTools(): void {
@@ -97,12 +132,11 @@ export class EditorService {
   }
 
   // todo : refactor
-  private offsetCopies(buffer: BaseShape[]): BaseShape[] {
+  private offsetCopies(buffer: BaseShape[], offset: number): BaseShape[] {
     const copies = new Array<BaseShape>();
     buffer.forEach((shape: BaseShape) => {
       const copy = EditorUtils.createShape(shape, false);
-      copy.state = ShapeStates.PASTED;
-      copy.origin = Coordinate.add(copy.origin, new Coordinate(this.pasteOffset, this.pasteOffset));
+      copy.origin = Coordinate.add(copy.origin, new Coordinate(offset, offset));
       if (copy.origin.x > this.view.width || copy.origin.y > this.view.height) {
         copy.origin = Coordinate.copy(this.clipboard[0].origin); // todo - check if right
         this.pasteOffset = 0;
@@ -111,15 +145,15 @@ export class EditorService {
     });
     return copies;
   }
-  pasteClipboard(buffer: BaseShape[] = this.clipboard): void {
+  pasteClipboard(buffer: BaseShape[] = this.clipboard, duplication: boolean = false): void {
     if (buffer.length > 0) {
-      const copies = this.offsetCopies(buffer);
-      this.commandReceiver.add(new AddShapesCommand(copies, this));
+      const offset = duplication ? SelectionTool.PASTED_OFFSET : this.pasteOffset;
+      const copies = this.offsetCopies(buffer, offset);
+      this.commandReceiver.add(duplication ? new AddShapesCommand(copies, this) : new CopyShapeCommand(copies, this));
       this.selection.clear();
-      for (let i = copies.length - buffer.length; i < copies.length; i++) {
-        this.selection.addSelectedShape(copies[i]);
+      for (const copy of copies) {
+        this.selection.addSelectedShape(copy);
       }
-      this.pasteOffset += SelectionTool.PASTED_OFFSET;
       this.selection.updateBoundingBox();
       this.selectionTool.applyBoundingBox();
     }
@@ -136,18 +170,23 @@ export class EditorService {
       this.selection.updateBoundingBox();
     }
   }
-  copySelectedShapes(buffer: BaseShape[] = this.clipboard): void {
+  copySelectedShapes(): void {
     if (this.selection.shapes.length > 0) {
       this.pasteOffset = SelectionTool.PASTED_OFFSET;
-      buffer.length = 0;
+      this.clipboard.length = 0;
       this.selection.shapes.forEach((shape: BaseShape) => {
-        buffer.push(EditorUtils.createShape(shape, false));
+        this.clipboard.push(EditorUtils.createShape(shape, false));
       });
     }
   }
   duplicateSelectedShapes(): void {
-    this.pasteClipboard(this.selection.shapes);
+    this.pasteClipboard(this.selection.shapes, true);
   }
+
+  updateShapeOffset(add: boolean = true): void {
+    add ? (this.pasteOffset += SelectionTool.PASTED_OFFSET) : (this.pasteOffset -= SelectionTool.PASTED_OFFSET);
+  }
+
   deleteSelectedShapes(): void {
     if (this.selection.shapes.length > 0) {
       const deletedShapes = new Array<BaseShape>();
@@ -193,7 +232,7 @@ export class EditorService {
 
   addShapeToBuffer(shapes: BaseShape | BaseShape[]): void {
     shapes = Array.isArray(shapes) ? shapes : [shapes];
-    shapes.forEach((shape) => {
+    shapes.forEach((shape: BaseShape) => {
       if (!this.view) {
         this.shapesBuffer.push(shape);
       } else if (!this.view.svg.contains(shape.svgNode)) {
@@ -204,9 +243,6 @@ export class EditorService {
   }
 
   removeShapes(shapes: BaseShape[]): void {
-    if (shapes.findIndex((shape: BaseShape) => shape.state !== ShapeStates.PASTED) === -1) {
-      this.pasteOffset -= SelectionTool.PASTED_OFFSET;
-    }
     shapes.forEach(this.removeShape, this);
   }
 
@@ -215,7 +251,7 @@ export class EditorService {
   }
 
   removeShape(shape: BaseShape): void {
-    const index = this.shapes.findIndex((s) => s === shape);
+    const index = this.shapes.findIndex((s: BaseShape) => s === shape);
     if (index !== -1) {
       this.shapes.splice(index, 1);
       this.removeShapeFromView(shape);
@@ -223,7 +259,7 @@ export class EditorService {
   }
 
   findShapeById(id: number): BaseShape | undefined {
-    const matchingShapes = this.shapes.filter((shape) => shape.id === id);
+    const matchingShapes = this.shapes.filter((shape: BaseShape) => shape.id === id);
     if (matchingShapes.length > 1) {
       throw new Error('Shape Id collision error');
     }

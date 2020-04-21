@@ -17,7 +17,7 @@ describe('CompositeLine', () => {
     cLine = new CompositeLine(coord[0]);
   });
   it('Can read shape', () => {
-    for(let i = 0; i < coord.length; i++) {
+    for (let i = 0; i < coord.length; i++) {
       cLine.addPoint(coord[i]);
       cLine.updateCurrentCoord(coord[(i + 1) % coord.length]);
       cLine.confirmPoint();
