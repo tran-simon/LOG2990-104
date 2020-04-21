@@ -1,12 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { Drawing } from '../models/drawing';
+import { Drawing } from '@models/drawing';
 
 @Injectable({
   providedIn: 'root',
 })
 export class APIService {
+  static readonly SENDING_MSG: string = 'Envoi du courriel en cours . . .';
+  static readonly EMAIL_NOT_FOUND_MSG: string = 'Nous ne trouvons pas votre courriel';
+  static readonly INVALID_DATA_MSG: string = 'Les données soumises ne sont pas valides';
+  static readonly SERVER_PROBLEM_MSG: string = 'Problèmes de serveurs, essayez plus tard';
+  static readonly FILE_TOO_LARGE_MSG: string = 'Votre format png est probablement trop gros';
+
   private static API_BASE_URL: string;
   private static API_DATABASE_ROUTE: string;
   private static API_DRAWINGS_ROUTE: string;
@@ -74,12 +80,26 @@ export class APIService {
     });
   }
 
+  handleResponse(res: string): void {
+    const response = res.split('"')[1];
+    const message =
+      response === 'message' ? APIService.SENDING_MSG : response === 'error' ? APIService.EMAIL_NOT_FOUND_MSG : APIService.INVALID_DATA_MSG;
+    this.notification.open(message, '', { duration: 5000 });
+  }
+
+  handleError(error: ErrorEvent): void {
+    const errorMessage = error.message.split(': ')[1];
+    const message = errorMessage.includes('500') ? APIService.SERVER_PROBLEM_MSG : APIService.FILE_TOO_LARGE_MSG;
+    this.notification.open(message, 'ok', {
+      duration: 10000,
+    });
+  }
+
   sendEmail(userName: string, userEmail: string, dataUrl: string, fileName: string, extension: string): void {
     const url = APIService.API_BASE_URL + APIService.API_EMAIL_ROUTE;
     if (extension !== 'svg') {
       dataUrl = dataUrl.split(',')[1];
     }
-    // console.log(dataUrl);
     const user = {
       name: userName,
       email: userEmail,
@@ -87,38 +107,6 @@ export class APIService {
       file: fileName,
       ext: extension,
     };
-    this.http.post(url, user, { responseType: 'text' }).subscribe(
-      (res: string) => {
-        console.log(res);
-        const response = res.split('"')[1];
-        switch (response) {
-          case 'message': {
-            this.notification.open('Envoi du courriel en cours . . .', '', { duration: 5000 });
-            break;
-          }
-          case 'error': {
-            this.notification.open('Nous ne trouvons pas votre courriel', '', { duration: 5000 });
-            break;
-          }
-          case 'detail': {
-            this.notification.open('Les données soumises ne sont pas valides', '', { duration: 5000 });
-            break;
-          }
-        }
-      },
-      (error: ErrorEvent) => {
-        console.log(error.message);
-        const errorMessage = error.message.split(': ')[1];
-        if (errorMessage.includes('500')) {
-          this.notification.open('Problèmes de serveurs, essayez plus tard', 'ok', {
-            duration: 10000,
-          });
-        } else {
-          this.notification.open('Votre format png est probablement trop gros', 'ok', {
-            duration: 10000,
-          });
-        }
-      },
-    );
+    this.http.post(url, user, { responseType: 'text' }).subscribe(this.handleResponse, this.handleError);
   }
 }
