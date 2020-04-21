@@ -97,7 +97,7 @@ export class ExportModalComponent extends AbstractModalComponent {
 
     this.emailValid
       ? this.apiService.sendEmail(this.userName, this.email, content, this.fullName, this.selectedExtension)
-      : this.notification.open('Veuillez enter un courriel gmail ou poly', '', {
+      : this.notification.open('Veuillez entrer un courriel gmail ou poly', '', {
           duration: 2000,
         });
   }
