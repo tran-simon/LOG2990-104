@@ -1,7 +1,6 @@
 import { BaseShape } from '@models/shapes/base-shape';
 import { EditorService } from '@services/editor.service';
 import { Coordinate } from '@utils/math/coordinate';
-import { MathUtils } from '@utils/math/math-utils';
 import { ShapesCommand } from './shapes-command';
 
 export class RotateShapeCommand extends ShapesCommand {
@@ -9,7 +8,7 @@ export class RotateShapeCommand extends ShapesCommand {
   private individual: boolean;
   private center: Coordinate;
 
-  constructor(shapes: BaseShape[] | BaseShape, editorService: EditorService, angle: number, center: Coordinate | undefined) {
+  constructor(shapes: BaseShape[] | BaseShape, editorService: EditorService, angle: number, center?: Coordinate) {
     super(shapes, editorService);
     this.angle = angle;
     center ? (this.center = center) : (this.individual = true);
@@ -31,13 +30,6 @@ export class RotateShapeCommand extends ShapesCommand {
 
   private applyRotationOffset(shape: BaseShape, angle: number, center: Coordinate): void {
     shape.rotation += angle;
-    angle = -MathUtils.toRad(angle);
-    const shapeAngle = -Coordinate.angle(shape.center, center) + angle;
-
-    const delta = Coordinate.distance(shape.center, center);
-    const xOffset = Math.cos(shapeAngle) * delta;
-    const yOffset = -Math.sin(shapeAngle) * delta;
-
-    shape.center = Coordinate.add(new Coordinate(xOffset, yOffset), center);
+    shape.center = shape.center.rotate(angle, center);
   }
 }

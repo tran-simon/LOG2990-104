@@ -55,6 +55,12 @@ export class BoundingBox extends BaseShape {
     this.initControlPoints();
   }
 
+  readShape(data: BaseShape): void {
+    this.origin = Coordinate.copy(data.origin);
+    this.end = Coordinate.copy(data.end);
+    this.rotation = data.rotation;
+  }
+
   private initControlPoints(): void {
     this.controlPoints = new Array<Rectangle>();
     for (let i = 0; i < ControlPoint.count; i++) {

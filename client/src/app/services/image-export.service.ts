@@ -15,19 +15,19 @@ export class ImageExportService {
   }
 
   async exportImageElement(surface: DrawingSurfaceComponent, extension: string, filter: FilterType): Promise<string> {
+    const image = new Image();
+    const canvas = document.createElement('canvas');
+    EditorUtils.addFilter(surface, filter);
+    image.src = EditorUtils.createDataURL(surface);
+    const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
+    EditorUtils.removeFilter(surface);
     return new Promise<string>((resolve) => {
-      const image = new Image();
-      const canvas = document.createElement('canvas');
-      EditorUtils.addFilter(surface, filter);
-      image.src = EditorUtils.createDataURL(surface);
-      const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
       image.onload = (): void => {
         canvas.width = surface.width;
         canvas.height = surface.height;
         ctx.drawImage(image, 0, 0);
         resolve(canvas.toDataURL(`image/${extension}`));
       };
-      EditorUtils.removeFilter(surface);
     });
   }
 

@@ -114,15 +114,12 @@ describe('ImageExportService', () => {
     const addFilterSpy = spyOn(EditorUtils, 'addFilter');
     const removeFilterSpy = spyOn(EditorUtils, 'removeFilter');
     const filter = FilterType.BLACKWHITE;
-    service.exportImageElement(fixture.componentInstance.drawingSurface, 'png', filter).finally(() => {
+    service.exportImageElement(fixture.componentInstance.drawingSurface, 'png', filter).then(() => {
       done();
     });
 
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(addFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface, filter);
-      expect(removeFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface);
-    });
+    expect(addFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface, filter);
+    expect(removeFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface);
   });
   it('should call addFilter when sending svg', () => {
     const addFilterSpy = spyOn(EditorUtils, 'addFilter');

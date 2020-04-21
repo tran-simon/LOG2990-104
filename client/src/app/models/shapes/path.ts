@@ -43,6 +43,7 @@ export class Path extends BaseShape {
 
   constructor(c?: Coordinate, id?: number) {
     super('path', id);
+    this._trace = '';
     this.points = new Array<Coordinate>();
     if (c) {
       this.addPoint(c);

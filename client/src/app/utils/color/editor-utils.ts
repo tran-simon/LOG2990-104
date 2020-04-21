@@ -10,6 +10,7 @@ import { Line } from '@models/shapes/line';
 import { Path } from '@models/shapes/path';
 import { Polygon } from '@models/shapes/polygon';
 import { Rectangle } from '@models/shapes/rectangle';
+import { ShapeError } from '@models/shapes/shape-error/shape-error';
 import { Color } from '@utils/color/color';
 import { Coordinate } from '@utils/math/coordinate';
 
@@ -145,7 +146,7 @@ export class EditorUtils {
         shape = new Rectangle(undefined, undefined, undefined, id);
         break;
       default:
-        throw new Error('Shape type not found');
+        throw ShapeError.typeNotFound(data.type);
     }
     shape.readShape(data);
     return shape;

@@ -4,6 +4,7 @@ import { AddShapesCommand } from '@models/commands/shape-commands/add-shapes-com
 import { CopyShapeCommand } from '@models/commands/shape-commands/copy-shape-command';
 import { RemoveShapesCommand } from '@models/commands/shape-commands/remove-shapes-command';
 import { Drawing } from '@models/drawing';
+import { ShapeError } from '@models/shapes/shape-error/shape-error';
 import { Selection } from '@models/tools/editing-tools/selection-tool/selection';
 import { GridProperties } from '@tool-properties/grid-properties/grid-properties';
 import { LineTool } from '@tools/creator-tools/line-tool/line-tool';
@@ -261,7 +262,7 @@ export class EditorService {
   findShapeById(id: number): BaseShape | undefined {
     const matchingShapes = this.shapes.filter((shape: BaseShape) => shape.id === id);
     if (matchingShapes.length > 1) {
-      throw new Error('Shape Id collision error');
+      throw ShapeError.idCollision();
     }
     return matchingShapes.length ? matchingShapes[0] : undefined;
   }
