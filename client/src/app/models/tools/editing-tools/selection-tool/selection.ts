@@ -90,7 +90,6 @@ export class Selection {
 
   reverse(shape: BaseShape, array: BaseShape[] = this.shapes): void {
     array.indexOf(shape) === -1 ? this.addSelectedShape(shape) : this.removeSelectedShape(shape);
-    this.updateBoundingBox();
   }
 
   addSelectedShape(shape: BaseShape): void {
