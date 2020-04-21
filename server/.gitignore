@@ -25,4 +25,4 @@ npm-debug.log
 !tsconfig.json
 !package-lock.json
 
-*.env
+mongo.env
