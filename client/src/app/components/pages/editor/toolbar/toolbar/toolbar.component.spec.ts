@@ -213,4 +213,16 @@ describe('ToolbarComponent', () => {
     component.openChooseExportSave();
     expect(emitSpy).toHaveBeenCalled();
   });
+
+  it('should undo command', () => {
+    const undoSpy = spyOn(component.editorService.commandReceiver, 'undo');
+    component.undo();
+    expect(undoSpy).toHaveBeenCalled();
+  });
+
+  it('should redo command', () => {
+    const redoSpy = spyOn(component.editorService.commandReceiver, 'redo');
+    component.redo();
+    expect(redoSpy).toHaveBeenCalled();
+  });
 });

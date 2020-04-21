@@ -1,4 +1,11 @@
-img-button {
+icon-button {
   padding-top: 5px;
   padding-bottom: 5px;
+  .mat-icon-button:disabled{
+    opacity: 50%;
+  }
+}
+
+icon-button:disabled {
+  opacity: 50%;
 }
