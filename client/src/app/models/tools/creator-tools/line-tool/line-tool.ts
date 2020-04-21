@@ -94,20 +94,20 @@ export class LineTool extends CreatorTool {
     return this.calculateNoLock;
   }
 
-  private calculateHorizontalLock(c: Coordinate): Coordinate {
+  calculateHorizontalLock(c: Coordinate): Coordinate {
     return new Coordinate(c.x, this.shape.currentLine.startCoord.y);
   }
 
-  private calculateVerticalLock(c: Coordinate): Coordinate {
+  calculateVerticalLock(c: Coordinate): Coordinate {
     return new Coordinate(this.shape.currentLine.startCoord.x, c.y);
   }
 
-  private calculatePositiveDiagonalLock(c: Coordinate): Coordinate {
+  calculatePositiveDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.shape.currentLine.startCoord.x;
     return new Coordinate(c.x, this.shape.currentLine.startCoord.y + deltaX);
   }
 
-  private calculateNegativeDiagonalLock(c: Coordinate): Coordinate {
+  calculateNegativeDiagonalLock(c: Coordinate): Coordinate {
     const deltaX = c.x - this.shape.currentLine.startCoord.x;
     return new Coordinate(c.x, this.shape.currentLine.startCoord.y - deltaX);
   }

@@ -206,4 +206,36 @@ describe('LineTool', () => {
     lineTool['isActive'] = false;
     expect(lineTool.determineLockMethod()).toEqual(lineTool['calculateNoLock']);
   });
+
+  it('can calculate horizontal lock', () => {
+    lineTool.shape = new CompositeLine(new Coordinate(1, 2));
+    const coord = new Coordinate(3, 4);
+    const res = lineTool.calculateHorizontalLock(coord);
+
+    expect(res.toString()).toEqual(new Coordinate(3, 2).toString());
+  });
+
+  it('can calculate vertical lock', () => {
+    lineTool.shape = new CompositeLine(new Coordinate(1, 2));
+    const coord = new Coordinate(3, 4);
+    const res = lineTool.calculateVerticalLock(coord);
+
+    expect(res.toString()).toEqual(new Coordinate(1, 4).toString());
+  });
+
+  it('can calculate positive diagonal lock', () => {
+    lineTool.shape = new CompositeLine(new Coordinate(1, 2));
+    const coord = new Coordinate(3, 4);
+    const res = lineTool.calculatePositiveDiagonalLock(coord);
+
+    expect(res.toString()).toEqual(new Coordinate(3, 4).toString());
+  });
+
+  it('can calculate negative diagonal lock', () => {
+    lineTool.shape = new CompositeLine(new Coordinate(1, 2));
+    const coord = new Coordinate(3, 4);
+    const res = lineTool.calculateNegativeDiagonalLock(coord);
+
+    expect(res.toString()).toEqual(new Coordinate(3, 0).toString());
+  });
 });
