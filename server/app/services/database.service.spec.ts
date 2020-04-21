@@ -1,10 +1,6 @@
 /* tslint:disable:no-any no-magic-numbers */
 /* tslint:disable:no-any no-string-literal */
 import { expect } from 'chai';
-import * as sinon from 'sinon';
-
-import { Mongoose } from 'mongoose';
-
 import * as httpStatus from 'http-status-codes';
 
 import drawingModel from '../../models/drawing';
@@ -151,14 +147,6 @@ describe('Database Service', () => {
         done();
       });
     });
-  });
-
-  it('should call mongoose.coonnect on the cloud connect function', (done: Mocha.Done) => {
-    const stub = sinon.stub(Mongoose.prototype, 'connect');
-    databaseService.connectDB();
-    expect(stub.called).to.equal(true);
-    stub.restore();
-    done();
   });
 
   afterEach(async () => {
