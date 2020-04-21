@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBarContainer, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlphaComponent } from 'src/app/components/shared/color-picker/color-strip/alpha/alpha.component';
@@ -30,6 +31,7 @@ import { AbstractModalComponent } from './abstract-modal/abstract-modal.componen
 import { ConfirmModalComponent } from './abstract-modal/confirm-modal/confirm-modal/confirm-modal.component';
 import { ColorHistoryComponent } from './color-picker/color-history/color-history.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { EmailInputComponent } from './inputs/email-input/email-input.component';
 import { ImgButtonComponent } from './inputs/img-button/img-button.component';
 import { NameInputComponent } from './inputs/name-input/name-input.component';
 import { EnumPropertyInputComponent } from './inputs/property-inputs/enum-property-input/enum-property-input.component';
@@ -45,6 +47,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     BrowserAnimationsModule,
     MatSliderModule,
     MatDialogModule,
+    MatSnackBarModule,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
@@ -64,6 +67,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     ColorPickerComponent,
     ColorLightnessComponent,
     AlphaComponent,
+    EmailInputComponent,
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
@@ -77,7 +81,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     UndoRedoComponent,
     ImgButtonComponent,
   ],
-  entryComponents: [AbstractModalComponent, ConfirmModalComponent],
+  entryComponents: [AbstractModalComponent, ConfirmModalComponent, MatSnackBarContainer],
   exports: [
     AbstractModalComponent,
     ReactiveFormsModule,
@@ -85,6 +89,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     CommonModule,
     MatSliderModule,
     MatDialogModule,
+    MatSnackBarModule,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
@@ -92,6 +97,7 @@ import { TagListInputComponent } from './inputs/tag-list-input/tag-list-input.co
     MatRadioModule,
     MatSidenavModule,
     ColorPickerComponent,
+    EmailInputComponent,
     NumberInputComponent,
     CustomInputComponent,
     HexInputComponent,
