@@ -63,7 +63,7 @@ describe('CreateDrawingModalComponent', () => {
           width: '2',
           height: '3',
           color: 'ff0000',
-          id: LocalSaveService.LOCAL_DRAWING_ID,
+          id: LocalSaveService.NEW_DRAWING_ID,
         },
       ]);
 

@@ -1,4 +1,5 @@
 import { Input } from '@angular/core';
+import { ShapeError } from '@models/shapes/shape-error/shape-error';
 import { EditorService } from '@services/editor.service';
 import { ToolbarComponent } from 'src/app/components/pages/editor/toolbar/toolbar/toolbar.component';
 import { ToolProperties } from 'src/app/models/tool-properties/tool-properties';
@@ -14,7 +15,7 @@ export abstract class AbstractToolbarEntry<T extends ToolProperties> {
   get toolProperties(): T {
     const tool = this.editorService.tools.get(this.type);
     if (!tool) {
-      throw new Error('Tool not found error: ' + this.type);
+      throw ShapeError.typeNotFound(this.type);
     } else {
       return tool.toolProperties as T;
     }
