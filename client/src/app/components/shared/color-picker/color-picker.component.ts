@@ -90,8 +90,7 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   alphaChange(value: string): void {
-    // tslint:disable-next-line:no-magic-numbers
-    this.color = Color.alpha(this.color, parseInt(value, 10) / 100);
+    this.color = Color.alpha(this.color, parseInt(value, MathUtils.DECIMAL_RADIX) / MathUtils.PERCENT_FACTOR);
   }
 
   rgbChange(value: string, component: string): void {
@@ -137,7 +136,6 @@ export class ColorPickerComponent extends AbstractCanvasDrawer implements OnInit
   }
 
   get alpha(): string {
-    // tslint:disable-next-line:no-magic-numbers
-    return Math.round(this.color.a * 100).toString();
+    return Math.round(this.color.a * MathUtils.PERCENT_FACTOR).toString();
   }
 }

@@ -57,10 +57,6 @@ export class ColorFillUtils {
   }
 
   floodFill(node: Coordinate, targetColor: Color, replacementColor: Color, tolerance: number = 0): void {
-    if (!this.getColor || !this.setColor) {
-      throw new Error('ColorFillUtils::floodFill error: missing required methods getColor or setColor');
-    }
-
     this.node = node;
     this.targetColor = targetColor;
     this.replacementColor = replacementColor;

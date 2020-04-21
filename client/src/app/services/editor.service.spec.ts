@@ -7,6 +7,7 @@ import { Ellipse } from '@models/shapes/ellipse';
 import { Line } from '@models/shapes/line';
 import { Polygon } from '@models/shapes/polygon';
 import { Rectangle } from '@models/shapes/rectangle';
+import { ShapeError } from '@models/shapes/shape-error/shape-error';
 import { SelectionTool } from '@tools/editing-tools/selection-tool/selection-tool';
 import { Coordinate } from '@utils/math/coordinate';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
@@ -83,7 +84,7 @@ describe('EditorService', () => {
         return;
       },
     });
-    api.getDrawingById = async (id: string) => {
+    api.getDrawingById = async () => {
       return Promise.resolve({ data: service.exportDrawing() } as Drawing);
     };
     const service2 = new EditorService(new ColorsService(), new LocalSaveService());
@@ -198,7 +199,7 @@ describe('EditorService', () => {
     service['shapes'].push(ellipse1);
     service['shapes'].push(ellipse);
 
-    expect(() => service.findShapeById(5)).toThrowError('Shape Id collision error');
+    expect(() => service.findShapeById(5)).toThrow(ShapeError.idCollision());
   });
   it('should increase offset updateShapeOffset call with true', () => {
     const offset = service['pasteOffset'];
