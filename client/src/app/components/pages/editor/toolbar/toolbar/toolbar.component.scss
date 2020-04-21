@@ -4,13 +4,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   position: fixed;
   width: 60px;
   height: calc(100vh - 0px);
-
   background-color: $primary;
-
   z-index: 1000;
 }
 
@@ -23,15 +20,13 @@
 }
 
 #toolbar-bottom-buttons{
-  padding-bottom: 20px;
-  padding-top: 10px;
+  padding-bottom: 10px;
   background-color: $secondary;
 }
 
 #toolbar-middle-buttons {
   height: 100%;
   justify-content: flex-end;
-  padding-bottom: 10px;
 }
 
 #swap-button {
@@ -41,8 +36,12 @@
   flex-direction: column;
   height: 30px;
   width: 30px;
-  position: absolute;
-  bottom: 335px;
+}
+
+#toolbar-color-buttons{
+  position: relative;
+  align-self: flex-start;
+  height: 60px;
 }
 
 #toolbar-primary-color {
@@ -51,8 +50,8 @@
   width: 35px;
   z-index: 1000;
   position: absolute;
-  bottom: 280px;
-  right: 15px;
+  left: 5px;
+  top:5px;
 }
 
 #toolbar-secondary-color {
@@ -61,24 +60,14 @@
   width: 35px;
   z-index: 500;
   position: absolute;
-  bottom: 270px;
-  left: 15px;
+  left: 20px;
+  top:20px;
 }
 
-button {
-  width: 50px;
-  height: 50px;
+icon-button {
+  width: 40px;
+  height: 40px;
   color: $accent;
-}
-
-#back-button {
-  width: 60px;
-  height: 60px;
-}
-
-.toolbar-section-divider {
-  padding: 10px 0;
-  width: 100%;
 }
 
 mat-drawer-container {
@@ -103,10 +92,17 @@ mat-drawer-content {
   width: 300px;
   flex-direction: column;
   align-items: flex-start;
+  app-color-picker{
+    width: 100%;
+  }
 }
 
-.selected-tool {
-  background-color: $secondary;
+.toolbar-selection-section {
+  display: flex;
+  padding-left: 10px;
+  width: 50px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .toolbar-option-section {
@@ -123,13 +119,4 @@ mat-drawer-content {
 #btn-update-background {
   color: black;
   width: 100%;
-}
-
-app-undo-redo {
-  width: 30px;
-  color: $accent;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
 }

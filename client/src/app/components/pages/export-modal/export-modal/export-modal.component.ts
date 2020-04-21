@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { APIService } from '@services/api.service';
 import { EditorService } from 'src/app//services/editor.service';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
 import { ImageExportService } from 'src/app/services/image-export.service';
@@ -19,23 +21,31 @@ export class ExportModalComponent extends AbstractModalComponent {
   href: SafeResourceUrl;
   fileName: string;
   formGroup: FormGroup;
+  sendFormGroup: FormGroup;
   selectedFilter: FilterType;
   filters: string[] = Object.values(FilterType);
-  validity: boolean;
+  userName: string;
+  email: string;
+  serializedString: string;
 
   constructor(
     public dialogRef: MatDialogRef<AbstractModalComponent>,
     private editorService: EditorService,
     private imageExportService: ImageExportService,
+    private apiService: APIService,
+    private notification: MatSnackBar,
   ) {
     super(dialogRef);
     editorService.clearShapesBuffer();
     this.fileName = '';
+    this.email = '';
+    this.userName = '';
     this.selectedExtension = ExtensionType.EMPTY;
     this.selectedFilter = FilterType.EMPTY;
     this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter);
     this.formGroup = new FormGroup({});
-    this.validity = !this.formGroup.invalid && this.selectedExtension !== '';
+    this.sendFormGroup = new FormGroup({});
+    this.serializedString = '';
   }
 
   get fullName(): string {
@@ -70,7 +80,10 @@ export class ExportModalComponent extends AbstractModalComponent {
   changeExtension(): void {
     if (this.selectedExtension !== ExtensionType.EMPTY) {
       this.selectedExtension === ExtensionType.SVG
-        ? (this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter))
+        ? (() => {
+            this.href = this.imageExportService.exportSVGElement(this.editorService.view, this.selectedFilter);
+            this.serializedString = this.imageExportService.sendSVGElement(this.editorService.view, this.selectedFilter);
+          })()
         : this.imageExportService
             .exportImageElement(this.editorService.view, this.selectedExtension, this.selectedFilter)
             .then((data: string) => {
@@ -79,14 +92,21 @@ export class ExportModalComponent extends AbstractModalComponent {
     }
   }
 
-  submit(): void {
-    if (this.valid) {
-      this.dialogRef.close();
-    }
+  send(): void {
+    const content = this.selectedExtension === ExtensionType.SVG ? this.serializedString : this.href.toString();
+
+    this.emailValid
+      ? this.apiService.sendEmail(this.userName, this.email, content, this.fullName, this.selectedExtension)
+      : this.notification.open('Veuillez entrer un courriel gmail ou poly', '', {
+          duration: 2000,
+        });
   }
 
   get valid(): boolean {
     return !this.formGroup.invalid && this.selectedExtension !== ExtensionType.EMPTY;
+  }
+  get emailValid(): boolean {
+    return this.sendFormGroup.valid && this.valid;
   }
 
   get previewURL(): SafeResourceUrl {

@@ -1,3 +1,6 @@
+import { Direction } from '@utils/math/direction.enum';
+import { MathUtils } from './math-utils';
+
 export class Coordinate {
   readonly x: number;
   readonly y: number;
@@ -11,12 +14,15 @@ export class Coordinate {
     return new Coordinate(c1.x + c2.x, c1.y + c2.y);
   }
 
-  static substract(c1: Coordinate, c2: Coordinate): Coordinate {
+  static subtract(c1: Coordinate, c2: Coordinate): Coordinate {
     return new Coordinate(c1.x - c2.x, c1.y - c2.y);
+  }
+  static apply(c: Coordinate, operation: (component: number) => number): Coordinate {
+    return new Coordinate(operation(c.x), operation(c.y));
   }
 
   static abs(c: Coordinate): Coordinate {
-    return new Coordinate(Math.abs(c.x), Math.abs(c.y));
+    return this.apply(c, Math.abs);
   }
 
   static copy(c: Coordinate): Coordinate {
@@ -76,7 +82,37 @@ export class Coordinate {
   }
 
   static angle(c1: Coordinate, c2: Coordinate): number {
-    // todo - rename
     return Math.atan2(c1.y - c2.y, c1.x - c2.x);
+  }
+
+  rotate(angle: number, center: Coordinate): Coordinate {    // todo - test
+    angle = -MathUtils.toRad(angle);
+    const angleToPoint = -Coordinate.angle(this, center) + angle;
+    const delta = Coordinate.distance(this, center);
+    const xOffset = Math.cos(angleToPoint) * delta;
+    const yOffset = -Math.sin(angleToPoint) * delta;
+
+    return Coordinate.add(new Coordinate(xOffset, yOffset), center);
+  }
+
+  inBounds(upper: Coordinate, lower: Coordinate = new Coordinate()): boolean {
+    return this.x >= lower.x && this.x <= upper.x && this.y >= lower.y && this.y <= upper.y;
+  }
+
+  neighbor(direction: Direction): Coordinate {
+    switch (direction) {
+      case Direction.North:
+        return Coordinate.add(this, new Coordinate(0, 1));
+      case Direction.East:
+        return Coordinate.add(this, new Coordinate(1, 0));
+      case Direction.South:
+        return Coordinate.add(this, new Coordinate(0, -1));
+      case Direction.West:
+        return Coordinate.add(this, new Coordinate(-1, 0));
+    }
+  }
+
+  toString(): string {
+    return `[${this.x};${this.y}]`;
   }
 }

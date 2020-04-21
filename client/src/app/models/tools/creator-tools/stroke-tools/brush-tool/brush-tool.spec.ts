@@ -4,6 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DrawingSurfaceComponent } from '@components/pages/editor/drawing-surface/drawing-surface.component';
 import { GridComponent } from '@components/pages/editor/drawing-surface/grid/grid.component';
 import { ToolbarModule } from '@components/pages/editor/toolbar/toolbar.module';
+import { BrushPath } from '@models/shapes/brush-path';
+import { BrushTextureType } from '@tool-properties/creator-tool-properties/brush-texture-type.enum';
 import { EditorComponent } from 'src/app/components/pages/editor/editor/editor.component';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { BrushTool } from 'src/app/models/tools/creator-tools/stroke-tools/brush-tool/brush-tool';
@@ -41,5 +43,12 @@ describe('BrushTool', () => {
     const addShapeSpy = spyOn(brushTool, 'addShape');
     brushTool.handleMouseEvent(mouseDown(new Coordinate(100, 100)));
     expect(addShapeSpy).toHaveBeenCalled();
+  });
+
+  it('should set old filter on createShape', () => {
+    brushTool.shape = new BrushPath();
+    brushTool.shape.filter = BrushTextureType.TEXTURE_2;
+    const newShape = brushTool.createShape();
+    expect(newShape.filter).toEqual(BrushTextureType.TEXTURE_2);
   });
 });

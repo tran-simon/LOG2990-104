@@ -3,7 +3,6 @@ import { BrushTextureType } from 'src/app/models/tool-properties/creator-tool-pr
 import { Coordinate } from 'src/app/utils/math/coordinate';
 
 export class BrushPath extends Path {
-
   private _filter: BrushTextureType;
 
   get filter(): BrushTextureType {
@@ -31,14 +30,14 @@ export class BrushPath extends Path {
     }
   }
 
-  constructor(c: Coordinate = new Coordinate()) {
-    super(c);
+  constructor(c: Coordinate = new Coordinate(), id?: number) {
+    super(c, id);
     this._filter = BrushTextureType.TEXTURE_1;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readShape(data: BrushPath): void {
+    super.readShape(data);
     this.filter = data._filter;
     this.applyTransform();
   }

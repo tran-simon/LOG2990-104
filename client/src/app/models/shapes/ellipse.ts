@@ -43,19 +43,19 @@ export class Ellipse extends BaseShape {
     return this.radiusY * 2;
   }
 
-  constructor(center: Coordinate = new Coordinate(), rx: number = 0, ry: number = rx) {
-    super('ellipse');
+  constructor(center: Coordinate = new Coordinate(), rx: number = 0, ry: number = rx, id?: number) {
+    super('ellipse', id);
     this.radiusX = rx;
     this.radiusY = ry;
     this.center = center;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readShape(data: Ellipse): void {
+    super.readShape(data);
     this.radiusX = data._radiusX;
     this.radiusY = data._radiusY;
-    this.origin = data._origin;
+    this.origin = Coordinate.copy(data._origin);
     this.applyTransform();
   }
 }

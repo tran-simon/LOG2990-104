@@ -1,9 +1,9 @@
-import { Coordinate } from '../../utils/math/coordinate';
+import { Coordinate } from '@utils/math/coordinate';
 import { BaseShape } from './base-shape';
 import { Rectangle } from './rectangle';
 
 export class CompositeParticle extends BaseShape {
-  static readonly PARTICLE_RADIUS: number = 4;
+  static readonly PARTICLE_RADIUS: number = 2;
   private readonly particles: Rectangle[];
   private _radius: number;
 
@@ -30,23 +30,24 @@ export class CompositeParticle extends BaseShape {
     return Coordinate.add(this.relativeOrigin, this.offset);
   }
   set origin(c: Coordinate) {
-    this.offset = Coordinate.substract(c, this.relativeOrigin);
+    this.offset = Coordinate.subtract(c, this.relativeOrigin);
     this.applyTransform();
   }
 
-  constructor(radius: number = 1) {
-    super('g');
+  constructor(radius: number = 1, id?: number) {
+    super('g', id);
     this.particles = [];
     this.radius = radius;
+    this.applyTransform();
   }
 
-  readElement(json: string): void {
-    super.readElement(json);
-    const data = JSON.parse(json) as this;
+  readShape(data: CompositeParticle): void {
+    super.readShape(data);
     data.particles.forEach((p) => {
-      const particle = new Rectangle();
-      particle.readElement(JSON.stringify(p));      // todo - fix
-      this.addParticle(particle.center);
+      const particle = new Rectangle(undefined, undefined, undefined, p.id);
+      particle.readShape(p);
+      this.particles.push(particle);
+      this.svgNode.appendChild(particle.svgNode);
     });
     this.applyTransform();
   }
@@ -76,7 +77,11 @@ export class CompositeParticle extends BaseShape {
   updateProperties(): void {
     super.updateProperties();
     if (this.particles) {
-      this.particles.forEach((particle) => particle.updateProperties());
+      this.particles.forEach((particle) => {
+        particle.primaryColor = this.primaryColor;
+        particle.secondaryColor = this.primaryColor;
+        particle.updateProperties();
+      });
     }
   }
 }

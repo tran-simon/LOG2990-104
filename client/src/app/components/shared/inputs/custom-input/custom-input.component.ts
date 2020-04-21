@@ -45,7 +45,7 @@ export class CustomInputComponent implements OnInit, OnChanges {
     this.id = `custom-input-${CustomInputComponent.id++}`;
     this.autofocus = true;
     this.formGroup = new FormGroup({});
-    this.required = false;
+    this.required = true;
     this.allowExternalUpdatesWhenFocused = false;
     this.hintLabel = '';
     this._focused = false;

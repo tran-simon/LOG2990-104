@@ -3,14 +3,22 @@ import { Color } from 'src/app/utils/color/color';
 import { MathUtils } from 'src/app/utils/math/math-utils';
 
 export class EraserUtils {
+  static readonly MAX_HEX: string = '0x010000';
   static readonly COLOR_DELTA: number = 5;
   static readonly SELECTION_THICKNESS: number = 3;
   static readonly TOLERANCE: number = 0.000000001;
 
+  static get maxIndex(): number {
+    const maxHex = parseInt(this.MAX_HEX, MathUtils.HEX_RADIX);
+    return Math.floor(maxHex / this.COLOR_DELTA);
+  }
+
+  static fitIndex(index: number): number {
+    return index % this.maxIndex;
+  }
+
   static colorFromIndex(index: number): Color {
-    /* disabling tslint because 6 is the number of 0s to append to a hex color */
-    // tslint:disable-next-line:no-magic-numbers
-    const hex: string = MathUtils.toHex(index * this.COLOR_DELTA, 6);
+    const hex: string = MathUtils.toHex(this.fitIndex(index) * this.COLOR_DELTA, MathUtils.HEX_PADDING);
     return Color.hex(hex);
   }
 
@@ -20,9 +28,6 @@ export class EraserUtils {
 
   static assignColorToShapeFromIndex(node: SVGElement, index: number): void {
     const color = this.colorFromIndex(index);
-    if (color.r > 0) {
-      throw new Error('Too many drawings');
-    }
 
     const style = node.style;
     if (style.fill !== BaseShape.CSS_NONE) {
@@ -48,20 +53,5 @@ export class EraserUtils {
       childNode.childNodes.forEach(sanitizeChildNodes);
     };
     sanitizeChildNodes(node);
-  }
-
-  static highlightShape(shape: BaseShape): void {
-    const highlightNode = (node: SVGElement) => {
-      const { strokeWidth } = node.style;
-      if (!strokeWidth || +strokeWidth < this.SELECTION_THICKNESS) {
-        node.style.strokeWidth = this.SELECTION_THICKNESS.toString();
-      }
-
-      node.style.stroke = Color.RED.rgbString;
-      node.style.strokeOpacity = '1';
-      node.childNodes.forEach(highlightNode);
-    };
-
-    highlightNode(shape.svgNode);
   }
 }

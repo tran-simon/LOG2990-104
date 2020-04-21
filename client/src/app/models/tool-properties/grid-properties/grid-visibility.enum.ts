@@ -1,4 +1,4 @@
 export enum GridVisibility {
-  visible = 'visible',
-  hidden = 'hidden',
+  visible = 'Visible',
+  hidden = 'Non-visible',
 }

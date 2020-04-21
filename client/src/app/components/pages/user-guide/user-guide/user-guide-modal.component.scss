@@ -5,6 +5,9 @@ mat-sidenav-container {
 mat-sidenav, mat-sidenav-content {
  padding: 16px;
 }
+mat-sidenav-content {
+  background-color: #ffffff;
+}
 mat-sidenav {
  width: 250px;
  min-height: 90%;
@@ -60,7 +63,6 @@ mat-sidenav {
 }
 #welcomeContent{
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 300px;
@@ -156,4 +158,16 @@ mat-sidenav {
   align-items: center;
   height: 275px;
   min-width: 1000px;
+}
+#emailContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 350px;
+}
+#fillerContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 300px;
 }

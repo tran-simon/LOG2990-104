@@ -3,6 +3,7 @@ import { MatDrawer } from '@angular/material';
 import { Router } from '@angular/router';
 import { ToolbarType } from '@components/pages/editor/toolbar/toolbar/toolbar-type.enum';
 
+import { Tool } from '@tools/tool';
 import { ColorPickerComponent } from 'src/app/components/shared/color-picker/color-picker.component';
 import { ToolType } from 'src/app/models/tools/tool-type.enum';
 import { EditorService } from 'src/app/services/editor.service';
@@ -36,12 +37,13 @@ export class ToolbarComponent {
   toolbarType: ToolbarType;
 
   @ViewChild('drawer', { static: false })
-  private readonly drawer: MatDrawer;
+  private drawer: MatDrawer;
 
   @ViewChild('colorPicker', { static: false })
   colorPicker: ColorPickerComponent;
 
   readonly toolbarIcons: Map<ToolType | string, string>;
+  readonly toolbarNames: Map<ToolType | string, string>;
 
   constructor(private router: Router, public editorService: EditorService) {
     this.stepThickness = ToolbarComponent.SLIDER_STEP;
@@ -64,6 +66,20 @@ export class ToolbarComponent {
       [ToolType.ColorFill, 'format_paint'],
       [ToolType.Select, 'near_me'],
       [ToolType.Eraser, 'delete_outline'],
+    ]);
+    this.toolbarNames = new Map<ToolType | string, string>([
+      [ToolType.Pen, 'Crayon'],
+      [ToolType.Brush, 'Pinceau'],
+      [ToolType.Rectangle, 'Rectangle'],
+      [ToolType.Line, 'Ligne'],
+      [ToolType.Ellipse, 'Ellipse'],
+      [ToolType.Pipette, 'Sélection de couleur'],
+      [ToolType.Polygon, 'Polygone'],
+      [ToolType.Spray, 'Aérosol'],
+      [ToolType.ColorApplicator, 'Applicateur de couleur'],
+      [ToolType.ColorFill, 'Outil de remplissage'],
+      [ToolType.Select, 'Sélection'],
+      [ToolType.Eraser, 'Efface'],
     ]);
   }
 
@@ -119,6 +135,24 @@ export class ToolbarComponent {
 
   updateBackground(color: Color): void {
     this.editorBackgroundChanged.emit(color);
+  }
+
+  undo(): void {
+    this.editorService.commandReceiver.undo();
+    if (this.currentToolType) {
+      (this.editorService.tools.get(this.currentToolType) as Tool).handleUndoRedoEvent(true);
+    }
+  }
+
+  redo(): void {
+    this.editorService.commandReceiver.redo();
+    if (this.currentToolType) {
+      (this.editorService.tools.get(this.currentToolType) as Tool).handleUndoRedoEvent(false);
+    }
+  }
+
+  get drawerOpened(): boolean {
+    return this.drawer && this.drawer.opened;
   }
 
   get primaryColor(): Color {

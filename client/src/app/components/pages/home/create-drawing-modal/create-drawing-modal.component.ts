@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, HostListener, ViewChild } 
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { LocalSaveService } from '@services/localsave.service';
 import { DrawingSurfaceComponent } from 'src/app/components/pages/editor/drawing-surface/drawing-surface.component';
 import { EditorParams } from 'src/app/components/pages/editor/editor/editor-params';
 import { AbstractModalComponent } from 'src/app/components/shared/abstract-modal/abstract-modal.component';
@@ -53,7 +54,12 @@ export class CreateDrawingModalComponent extends AbstractModalComponent implemen
   }
 
   onCreateClick(): void {
-    const params: EditorParams = { width: this.width, height: this.height, color: this.colorPicker.color.hex };
+    const params: EditorParams = {
+      width: this.width,
+      height: this.height,
+      color: this.colorPicker.color.hex,
+      id: LocalSaveService.NEW_DRAWING_ID,
+    };
     this.router.navigate(['/'], { skipLocationChange: true }).then((a) => this.router.navigate(['edit', params]));
     this.dialogRef.close();
   }

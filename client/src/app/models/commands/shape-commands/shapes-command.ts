@@ -4,7 +4,8 @@ import { BaseShape } from '../../shapes/base-shape';
 
 export abstract class ShapesCommand implements Command {
   constructor(shapes: BaseShape[] | BaseShape, protected editorService: EditorService) {
-    this.shapes = Array.isArray(shapes) ? shapes : [shapes];
+    shapes = Array.isArray(shapes) ? shapes : [shapes];
+    this.shapes = Array.from(shapes);
   }
 
   protected readonly shapes: BaseShape[];

@@ -1,6 +1,9 @@
 export class MathUtils {
   static readonly MAX_ANGLE: number = 360;
   static readonly HEX_RADIX: number = 16;
+  static readonly DECIMAL_RADIX: number = 10;
+  static readonly HEX_PADDING: number = 6;
+  static readonly PERCENT_FACTOR: number = 100;
 
   /**
    * Returns value greater or equal to min
@@ -24,10 +27,7 @@ export class MathUtils {
   }
 
   static fitAngle(angle: number): number {
-    if (angle < 0) {
-      return this.MAX_ANGLE - this.fitAngle(-angle);
-    }
-    return angle % this.MAX_ANGLE;
+    return angle < 0 ? this.MAX_ANGLE - this.fitAngle(-angle) : angle % this.MAX_ANGLE;
   }
 
   static toHex(value: number, padding: number = 0): string {
