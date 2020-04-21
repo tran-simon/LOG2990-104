@@ -8,7 +8,7 @@ export class RotateShapeCommand extends ShapesCommand {
   private individual: boolean;
   private center: Coordinate;
 
-  constructor(shapes: BaseShape[] | BaseShape, editorService: EditorService, angle: number, center: Coordinate | undefined) {
+  constructor(shapes: BaseShape[] | BaseShape, editorService: EditorService, angle: number, center?: Coordinate) {
     super(shapes, editorService);
     this.angle = angle;
     center ? (this.center = center) : (this.individual = true);
