@@ -1,3 +1,5 @@
+# SVG drawing app in angular
+
 # How to use:
 https://log2990-104.web.app/
 
