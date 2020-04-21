@@ -1,4 +1,5 @@
 /* tslint:disable:no-string-literal */
+import { ShapeError } from '@models/shapes/shape-error/shape-error';
 import { LocalSaveService } from '@services/localsave.service';
 import { Property } from '@tool-properties/props/property';
 import { ToolProperties } from '@tool-properties/tool-properties';
@@ -38,6 +39,6 @@ describe('AbstractToolbarEntry', () => {
   it('throws error if tool does not exist', () => {
     const invalidType = 'invalid_type' as ToolType;
     toolbarEntry['type'] = invalidType;
-    expect(() => toolbarEntry.toolProperties).toThrow(new Error('Tool not found error: ' + invalidType));
+    expect(() => toolbarEntry.toolProperties).toThrow(ShapeError.typeNotFound(invalidType));
   });
 });
