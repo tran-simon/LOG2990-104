@@ -157,3 +157,15 @@ mat-sidenav {
   height: 275px;
   min-width: 1000px;
 }
+#emailContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 350px;
+}
+#fillerContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 300px;
+}
