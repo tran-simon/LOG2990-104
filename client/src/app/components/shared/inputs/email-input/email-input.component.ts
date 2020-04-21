@@ -7,11 +7,14 @@ import { CustomInputComponent } from '../custom-input/custom-input.component';
   styleUrls: ['../custom-input/custom-input.component.scss'],
 })
 export class EmailInputComponent extends CustomInputComponent implements OnInit {
+  static readonly EMAIL_REGEX: string = '^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@((\\bpolymtl.ca)|(\\bgmail.com))$';
+  static readonly INVALID_EMAIL_MSG: string = 'Doit être un email valide du domaine polymtl.ca ou gmail.com';
+
   ngOnInit(): void {
-    // tslint:disable-next-line: max-line-length
-    this.stringToMatch = '^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$';
+    this.stringToMatch = EmailInputComponent.EMAIL_REGEX;
     this.format = (v: string): string => v;
     this.hintLabel = 'Lettres, espaces et nombres. Maximum 20 charactères';
+    this.errorMessages.pattern = EmailInputComponent.INVALID_EMAIL_MSG;
     super.ngOnInit();
   }
 }

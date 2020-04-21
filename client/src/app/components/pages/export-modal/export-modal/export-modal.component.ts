@@ -26,7 +26,6 @@ export class ExportModalComponent extends AbstractModalComponent {
   filters: string[] = Object.values(FilterType);
   userName: string;
   email: string;
-  pattern: string;
   serializedString: string;
 
   constructor(
@@ -94,15 +93,13 @@ export class ExportModalComponent extends AbstractModalComponent {
   }
 
   send(): void {
-    if (this.emailValid && (this.email.includes('polymtl.ca') || this.email.includes('gmail.com'))) {
-      this.selectedExtension === ExtensionType.SVG
-        ? this.apiService.sendEmail(this.userName, this.email, this.serializedString, this.fullName, this.selectedExtension)
-        : this.apiService.sendEmail(this.userName, this.email, this.href.toString(), this.fullName, this.selectedExtension);
-    } else {
-      this.notification.open('Veuillez enter un courriel gmail ou poly', '', {
-        duration: 2000,
-      });
-    }
+    const content = this.selectedExtension === ExtensionType.SVG ? this.serializedString : this.href.toString();
+
+    this.emailValid
+      ? this.apiService.sendEmail(this.userName, this.email, content, this.fullName, this.selectedExtension)
+      : this.notification.open('Veuillez enter un courriel gmail ou poly', '', {
+          duration: 2000,
+        });
   }
 
   get valid(): boolean {

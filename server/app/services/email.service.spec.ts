@@ -1,16 +1,9 @@
-/* tslint:disable:no-any no-magic-numbers */
-/* tslint:disable:no-any no-string-literal */
 import { expect } from 'chai';
-// import * as sinon from 'sinon';
-
-// import { Mongoose } from 'mongoose';
-
-// import * as httpStatus from 'http-status-codes';
-
-import { EmailService } from './email.service';
 
 import { testingContainer } from '../../test/test-utils';
 import Types from '../types';
+
+import { EmailService } from './email.service';
 
 describe('Email Service', () => {
     let emailService: EmailService;
@@ -19,7 +12,6 @@ describe('Email Service', () => {
         await testingContainer().then((instance) => {
           emailService = instance[0].get<EmailService>(Types.EmailService);
         });
-        // tslint:disable-next-line: max-line-length
     });
 
     it('should instanciate correctly', (done: Mocha.Done) => {
