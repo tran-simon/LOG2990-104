@@ -22,6 +22,12 @@ describe('Selection', () => {
     selection = new Selection();
   });
 
+  it('can determine empty state', () => {
+    expect(selection.isEmpty).toBeTruthy();
+    selection.shapes.push(shapes[0]);
+    expect(selection.isEmpty).toBeFalsy();
+  });
+
   it('can detect bounding box collision', () => {
     expect(Selection.detectBoundingBoxCollision(shapes[3] as Rectangle, shapes[0])).toBeTruthy();
     expect(Selection.detectBoundingBoxCollision(shapes[2] as Rectangle, shapes[2])).toBeTruthy();
@@ -32,6 +38,14 @@ describe('Selection', () => {
   it('can clear selection', () => {
     selection.clear();
     expect(selection.shapes).toEqual([]);
+  });
+
+  it('can update bounding box for single shape', () => {
+    selection.addSelectedShape(shapes[0]);
+    selection.updateBoundingBox();
+
+    expect(selection.boundingBox.origin).toEqual(new Coordinate(99.5, 49.5));
+    expect(selection.boundingBox.end).toEqual(new Coordinate(105.5, 55.5));
   });
 
   it('can update bounding box', () => {

@@ -121,4 +121,19 @@ describe('ImageExportService', () => {
     expect(addFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface, filter);
     expect(removeFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface);
   });
+  it('should call addFilter when sending svg', () => {
+    const addFilterSpy = spyOn(EditorUtils, 'addFilter');
+    const uRLSpy = spyOn(EditorUtils, 'createSerializedString');
+    const removeFilterSpy = spyOn(EditorUtils, 'removeFilter');
+    const filter = FilterType.BLACKWHITE;
+    service.sendSVGElement(fixture.componentInstance.drawingSurface, filter);
+    expect(addFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface, filter);
+    expect(uRLSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface);
+    expect(removeFilterSpy).toHaveBeenCalledWith(fixture.componentInstance.drawingSurface);
+  });
+  it('should return non encoded dataURL', () => {
+    const returnValue = EditorUtils.createSerializedString(fixture.componentInstance.drawingSurface);
+    // tslint:disable-next-line: max-line-length
+    expect(returnValue).toEqual(xmlSerializer.serializeToString(fixture.componentInstance.drawingSurface.svg));
+  });
 });

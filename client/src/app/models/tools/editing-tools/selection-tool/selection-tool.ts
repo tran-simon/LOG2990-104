@@ -17,6 +17,7 @@ export class SelectionTool extends SimpleSelectionTool {
   private readonly KEYBOARD_MOVE_DOWN: Coordinate = new Coordinate(0, SelectionMove.KEYBOARD_MOVE_DISTANCE);
 
   private initialMouseCoord: Coordinate;
+  private mouseMoved: boolean;
   private reverseSelectionMode: boolean; // todo - create states
   private moveSelectionMode: boolean;
 
@@ -45,18 +46,6 @@ export class SelectionTool extends SimpleSelectionTool {
     this.applyBoundingBox();
   }
 
-  private rotateSelection(angle: number, individual: boolean = false): void {
-    const center = individual ? undefined : this.selection.boundingBox.center;
-    const shapes = new Array<BaseShape>();
-    shapes.push(...this.selection.shapes);
-    const rotationCommand = new RotateShapeCommand(shapes, this.editorService, angle, center);
-
-    this.editorService.commandReceiver.add(rotationCommand);
-    individual ? this.selection.updateBoundingBox() : this.selection.boundingBox.rotation += angle;
-  }
-
-  // END ROTATION
-
   initMouseHandler(): void {
     this.handleWheel = (e: WheelEvent) => {
       if (this.selection.shapes.length === 0) {
@@ -73,18 +62,20 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseDown = (e: MouseEvent) => {
       if (!this.isActive) {
         this.isActive = true;
-        if (this.selection.boundingBox && Selection.detectPointCollision(this.mousePosition, this.selection.boundingBox)) {
+        this.mouseMoved = false;
+        if (e.button === MouseListenerService.BUTTON_RIGHT) {
+          this.beginSelection(this.mousePosition, true);
+        } else if (this.selection.boundingBox && Selection.detectPointCollision(this.mousePosition, this.selection.boundingBox)) {
           this.startMove(this.mousePosition);
         } else if (e.button === MouseListenerService.BUTTON_LEFT) {
           this.beginSelection(this.mousePosition);
-        } else if (e.button === MouseListenerService.BUTTON_RIGHT) {
-          this.beginSelection(this.mousePosition, true);
         }
       }
     };
 
     this.handleMouseMove = () => {
       if (this.isActive) {
+        this.mouseMoved = true;
         this.moveSelectionMode ? this.move() : this.updateSelection(this.reverseSelectionMode);
       }
     };
@@ -92,14 +83,26 @@ export class SelectionTool extends SimpleSelectionTool {
     this.handleMouseUp = () => {
       if (this.isActive) {
         this.isActive = false;
-        this.applyBoundingBox();
         if (this.moveSelectionMode) {
           this.moveSelectionMode = false;
-          this.endMove();
+          this.mouseMoved ? this.endMove() : this.updateSelection();
         }
+        setTimeout(() => {
+          this.mouseMoved = false;
+        });
         this.applyBoundingBox();
       }
     };
+  }
+
+  private rotateSelection(angle: number, individual: boolean = false): void {
+    const center = individual ? undefined : this.selection.boundingBox.center;
+    const shapes = new Array<BaseShape>();
+    shapes.push(...this.selection.shapes);
+    const rotationCommand = new RotateShapeCommand(shapes, this.editorService, angle, center);
+
+    this.editorService.commandReceiver.add(rotationCommand);
+    individual ? this.selection.updateBoundingBox() : this.selection.boundingBox.rotation += angle;
   }
 
   private calculateKeyboardMove(keyPresses: boolean[]): Coordinate {
@@ -171,13 +174,15 @@ export class SelectionTool extends SimpleSelectionTool {
   }
 
   selectShape(shape: BaseShape, rightClick: boolean = false): void {
-    if (rightClick) {
+    if(this.mouseMoved) {
+      return;
+    } else if (rightClick) {
       this.selection.reverse(shape);
     } else {
       this.resetSelection();
       this.selection.addSelectedShape(shape);
-      this.selection.updateBoundingBox();
     }
+    this.selection.updateBoundingBox();
     this.applyBoundingBox();
   }
 

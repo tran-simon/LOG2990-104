@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SharedModule } from '@components/shared/shared.module';
+import { MoveShapeCommand } from '@models/commands/shape-commands/move-shape-command';
 import { EditorService } from '@services/editor.service';
 import { MouseListenerService } from '@services/event-listeners/mouse-listener/mouse-listener.service';
 import { SelectionMove } from '@tools/editing-tools/selection-tool/selection-move.enum';
@@ -39,18 +40,23 @@ const mouseUp = (c: Coordinate = new Coordinate()): MouseEvent => {
   } as MouseEvent;
 };
 
+const mouseWheel = (delta: number): MouseEvent => {
+  return {
+    type: 'wheel',
+    deltaY: delta,
+    preventDefault: () => {
+      return;
+    },
+  } as WheelEvent;
+};
+
 describe('SelectionTool', () => {
   let tool: SelectionTool;
   const coord1 = new Coordinate(100, 50);
   const coord2 = new Coordinate(150, 250);
   const coord3 = new Coordinate(50, 150);
 
-  const shapes: BaseShape[] = [
-    new Rectangle(coord1, 5, 5),
-    new Rectangle(coord2, 50, 50),
-    new Rectangle(coord3, 20, 20),
-    new Rectangle(coord1, 200, 150),
-  ];
+  let shapes: BaseShape[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -59,14 +65,51 @@ describe('SelectionTool', () => {
     }).compileComponents();
 
     tool = new SelectionTool(TestBed.get(EditorService));
+    shapes = [
+      new Rectangle(coord1, 5, 5),
+      new Rectangle(coord2, 50, 50),
+      new Rectangle(coord3, 20, 20),
+      new Rectangle(coord1, 200, 150),
+    ];
   });
 
   it('should create an instance', () => {
     expect(tool).toBeTruthy();
   });
 
+  it('can handle undo/redo event', () => {
+    const clearSpy = spyOn(tool['selection'], 'clear');
+    const updateSpy = spyOn(tool['selection'], 'updateBoundingBox');
+    const applySpy = spyOn(tool, 'applyBoundingBox');
+
+    tool.handleUndoRedoEvent(true);
+    expect(clearSpy).toHaveBeenCalled();
+    expect(updateSpy).toHaveBeenCalled();
+    expect(applySpy).toHaveBeenCalled();
+  });
+
+  it('can handle wheel', () => {
+    const rotateSpy = spyOn<any>(tool, 'rotateSelection');
+    tool.handleMouseEvent(mouseWheel(1));
+    expect(rotateSpy).not.toHaveBeenCalled();
+
+    tool['selection'].shapes.push(...shapes);
+    tool.handleMouseEvent(mouseWheel(1));
+    expect(rotateSpy).toHaveBeenCalledWith(tool['ROTATION_AMOUNT'], tool['shiftKey']);
+
+    rotateSpy.calls.reset();
+    tool.handleMouseEvent(mouseWheel(-1));
+    expect(rotateSpy).toHaveBeenCalledWith(-tool['ROTATION_AMOUNT'], tool['shiftKey']);
+
+    rotateSpy.calls.reset();
+    tool['altKey'] = true;
+    tool.handleMouseEvent(mouseWheel(1));
+    expect(rotateSpy).toHaveBeenCalledWith(1, tool['shiftKey']);
+  });
+
   it('can handle mouse down', () => {
     const beginSpy = spyOn<any>(tool, 'beginSelection');
+    const moveSpy = spyOn<any>(tool, 'startMove');
     // left click
     tool.handleMouseEvent(mouseDown(coord1, false));
     expect(tool['isActive']).toBeTruthy();
@@ -74,6 +117,12 @@ describe('SelectionTool', () => {
     // no double click
     tool.handleMouseDown(mouseDown(coord1, false));
     expect(beginSpy).toHaveBeenCalledTimes(1);
+    // left drag
+    tool['isActive'] = false;
+    tool['selection'].shapes.push(shapes[0]);
+    tool['selection'].updateBoundingBox();
+    tool.handleMouseEvent(mouseDown(coord1, false));
+    expect(moveSpy).toHaveBeenCalled();
     // right click
     beginSpy.calls.reset();
     tool['isActive'] = false;
@@ -107,6 +156,23 @@ describe('SelectionTool', () => {
     tool.handleMouseEvent(mouseUp());
     expect(applySpy).toHaveBeenCalled();
     expect(tool['isActive']).toBeFalsy();
+
+    const endSpy = spyOn<any>(tool, 'endMove');
+    tool['isActive'] = true;
+    tool['moveSelectionMode'] = true;
+    tool['mouseMoved'] = true;
+    tool.handleMouseEvent(mouseUp());
+    expect(endSpy).toHaveBeenCalled();
+  });
+
+  it('can rotate selection', () => {
+    const angle = 30;
+    tool['selection'].shapes.push(...shapes);
+    tool['rotateSelection'](angle);
+
+    tool['selection'].shapes.forEach((shape) => {
+      expect(shape.rotation).toEqual(angle);
+    });
   });
 
   it('can calculate keyboard move', () => {
@@ -141,6 +207,12 @@ describe('SelectionTool', () => {
     const moveSpy = spyOn<any>(tool, 'move');
     tool['initBoundingBox']();
     tool['selection'].shapes.push(new Rectangle());
+
+    tool['keyTimeout'] = 1;
+    tool['startKeyboardMove']();
+    expect(moveSpy).not.toHaveBeenCalled();
+    tool['keyTimeout'] = 0;
+
     tool['startKeyboardMove']();
     expect(moveSpy).toHaveBeenCalledTimes(1);
 
@@ -184,9 +256,21 @@ describe('SelectionTool', () => {
     expect(moveSpy).toHaveBeenCalledTimes(2);
   });
 
+  it('can end move', () => {
+    const command = new MoveShapeCommand(tool['selection'].shapes, tool.editorService);
+    tool['moveCommand'] = command;
+    tool['endMove']();
+    expect(tool.editorService.commandReceiver['_commands'].pop()).toEqual(command);
+  });
+
   it('can select single shape', () => {
     tool.selectShape(shapes[0]);
     expect(tool['selection'].shapes.indexOf(shapes[0])).toEqual(0);
+
+    tool['mouseMoved'] = true;
+    tool.selectShape(shapes[2]);
+    expect(tool['selection'].shapes.indexOf(shapes[0])).toEqual(0);
+    expect(tool['selection'].shapes.indexOf(shapes[2])).toEqual(-1);
   });
 
   it('can reverse selection', () => {
@@ -328,8 +412,4 @@ describe('SelectionTool', () => {
     expect(reverseSpy).toHaveBeenCalledTimes(4);
     expect(updateSpy).toHaveBeenCalled();
   });
-
-  // todo - update bounding box
-
-  // todo - detect collision
 });

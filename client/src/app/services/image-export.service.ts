@@ -38,4 +38,11 @@ export class ImageExportService {
     EditorUtils.removeFilter(surface);
     return dataUrl;
   }
+  sendSVGElement(surface: DrawingSurfaceComponent, filter: FilterType): string {
+    let dataUrl: string;
+    EditorUtils.addFilter(surface, filter);
+    dataUrl = EditorUtils.createSerializedString(surface);
+    EditorUtils.removeFilter(surface);
+    return dataUrl;
+  }
 }

@@ -108,6 +108,11 @@ export class EditorUtils {
     const svgString = xmlSerializer.serializeToString(surface.svg);
     return 'data:image/svg+xml,' + encodeURIComponent(svgString);
   }
+  static createSerializedString(surface: DrawingSurfaceComponent): string {
+    const xmlSerializer = new XMLSerializer();
+    const svgString = xmlSerializer.serializeToString(surface.svg);
+    return svgString;
+  }
 
   static createShape(data: BaseShape, preserveId: boolean = true): BaseShape {
     let shape: BaseShape;
