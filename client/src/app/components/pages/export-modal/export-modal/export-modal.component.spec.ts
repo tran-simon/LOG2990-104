@@ -127,18 +127,6 @@ describe('ExportModalComponent', () => {
     expect(spyApi).not.toHaveBeenCalled();
     expect(spyNotif).toHaveBeenCalled();
   });
-  it('should not call api service because email is not gmail or poly', () => {
-    const spyApi = spyOn(component['apiService'], 'sendEmail');
-    const spyNotif = spyOn(component['notification'], 'open');
-    component.selectedExtension = ExtensionType.PNG;
-    component.fileName = 'test';
-    component.email = 'theo.stdenis@outlook.com';
-    spyOnProperty(component.formGroup, 'invalid').and.returnValue(false);
-    spyOnProperty(component.sendFormGroup, 'valid').and.returnValue(true);
-    component.send();
-    expect(spyApi).not.toHaveBeenCalled();
-    expect(spyNotif).toHaveBeenCalled();
-  });
   it('should call sendEmail with componenent serialized string because extension is svg', () => {
     const spyApi = spyOn(component['apiService'], 'sendEmail');
     const spyNotif = spyOn(component['notification'], 'open');
