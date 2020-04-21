@@ -6,14 +6,11 @@ import * as request from 'request';
 export class EmailService {
     async sendEmail(userEmail: string, dataUrl: string, fileName: string, extension: string): Promise<string> {
         return new Promise<string>((resolve) => {
-            let mimeType: string;
             let fileContent: string | Buffer;
             if (extension !== 'svg') {
                 fileContent = Buffer.from(dataUrl, 'base64');
-                mimeType = `image/${extension}`;
             } else {
                 fileContent = dataUrl;
-                mimeType = 'image/svg+xml';
             }
             const options = {
                 method: 'POST',
@@ -24,7 +21,7 @@ export class EmailService {
                     to: userEmail,
                     payload: {
                         value: fileContent,
-                        options: {filename: fileName, contentType: mimeType}
+                        options: {filename: fileName, contentType: null}
                     }
                 }
             };

@@ -73,11 +73,13 @@ export class APIService {
       });
     });
   }
+
   sendEmail(userName: string, userEmail: string, dataUrl: string, fileName: string, extension: string): void {
     const url = APIService.API_BASE_URL + APIService.API_EMAIL_ROUTE;
     if (extension !== 'svg') {
       dataUrl = dataUrl.split(',')[1];
     }
+    // console.log(dataUrl);
     const user = {
       name: userName,
       email: userEmail,
@@ -87,10 +89,11 @@ export class APIService {
     };
     this.http.post(url, user, { responseType: 'text' }).subscribe(
       (res: string) => {
+        console.log(res);
         const response = res.split('"')[1];
         switch (response) {
           case 'message': {
-            this.notification.open('Envoi du courriel en cours', '', { duration: 5000 });
+            this.notification.open('Envoi du courriel en cours . . .', '', { duration: 5000 });
             break;
           }
           case 'error': {
@@ -104,13 +107,14 @@ export class APIService {
         }
       },
       (error: ErrorEvent) => {
+        console.log(error.message);
         const errorMessage = error.message.split(': ')[1];
         if (errorMessage.includes('500')) {
           this.notification.open('Problèmes de serveurs, essayez plus tard', 'ok', {
             duration: 10000,
           });
         } else {
-          this.notification.open('Votre fichier png est probablement trop gros, essayez svg ou jpg', 'ok', {
+          this.notification.open('Votre format png est probablement trop gros', 'ok', {
             duration: 10000,
           });
         }

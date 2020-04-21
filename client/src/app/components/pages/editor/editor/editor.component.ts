@@ -86,9 +86,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    // if (!this.dialog.modalIsOpened) {
-    this.keyboardListener.handle(event);
-    // }
+    if (!this.dialog.modalIsOpened) {
+      this.keyboardListener.handle(event);
+    }
   }
 
   openGuide(): void {
