@@ -11,7 +11,6 @@ import { APIController } from './api.controller';
 
 describe('API Controller', () => {
   let apiController: APIController;
-  // tslint:disable-next-line: prefer-const
   let application: Application;
   beforeEach(async () => {
     await testingContainer().then((instance) => {
